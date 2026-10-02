@@ -20,6 +20,9 @@ import OrderHistoryPage from "./pages/OrderHistoryPage";
 import TechnicalSupportPage from "./pages/TechnicalSupportPage";
 import ContactPharmacistPage from "./pages/ContactPharmacistPage";
 
+import PatientProfilePage from "./pages/PatientProfilePage";
+import PatientSettingsPage from "./pages/PatientSettingsPage";
+
 import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
@@ -82,6 +85,16 @@ function App() {
           <Route
             path="contact-pharmacist"
             element={<ContactPharmacistPage />}
+          />
+
+          <Route
+            path="profile"
+            element={<PatientProfilePage />}
+          />
+
+          <Route
+            path="settings"
+            element={<PatientSettingsPage />}
           />
         </Route>
 

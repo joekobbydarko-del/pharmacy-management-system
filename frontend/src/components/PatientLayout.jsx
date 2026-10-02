@@ -5,6 +5,8 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+import Notifications from "./Notifications";
+
 import "./PatientLayout.css";
 
 function Icon({ name, size = 20 }) {
@@ -74,13 +76,6 @@ function Icon({ name, size = 20 }) {
       <>
         <circle cx="10.8" cy="10.8" r="6.5" />
         <path d="m16 16 4.5 4.5" />
-      </>
-    ),
-
-    bell: (
-      <>
-        <path d="M18 9a6 6 0 0 0-12 0c0 6.8-3 7.2-3 9h18c0-1.8-3-2.2-3-9Z" />
-        <path d="M10 21h4" />
       </>
     ),
 
@@ -167,14 +162,12 @@ function PatientLayout() {
   const [mobileOpen, setMobileOpen] =
     useState(false);
 
-  const [notificationsOpen, setNotificationsOpen] =
-    useState(false);
-
   const [profileOpen, setProfileOpen] =
     useState(false);
 
   const userName =
-    localStorage.getItem("user_name") || "Patient";
+    localStorage.getItem("user_name") ||
+    "Patient";
 
   const initials =
     userName
@@ -182,19 +175,39 @@ function PatientLayout() {
       .split(/\s+/)
       .filter(Boolean)
       .slice(0, 2)
-      .map((part) => part[0]?.toUpperCase())
+      .map((part) =>
+        part[0]?.toUpperCase()
+      )
       .join("") || "P";
 
-  const closeMenus = () => {
-    setNotificationsOpen(false);
+  const closeProfileMenu = () => {
     setProfileOpen(false);
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("user_name");
-    localStorage.removeItem("role");
-    localStorage.removeItem("token");
+    localStorage.removeItem(
+      "access_token"
+    );
+
+    localStorage.removeItem(
+      "user_id"
+    );
+
+    localStorage.removeItem(
+      "user_role"
+    );
+
+    localStorage.removeItem(
+      "user_name"
+    );
+
+    localStorage.removeItem(
+      "user_email"
+    );
+
+    localStorage.removeItem(
+      "patient_notifications"
+    );
 
     navigate("/login");
   };
@@ -205,14 +218,18 @@ function PatientLayout() {
         <button
           type="button"
           className="mobile-backdrop"
-          onClick={() => setMobileOpen(false)}
+          onClick={() =>
+            setMobileOpen(false)
+          }
           aria-label="Close navigation"
         />
       )}
 
       <aside
         className={`patient-sidebar ${
-          mobileOpen ? "is-open" : ""
+          mobileOpen
+            ? "is-open"
+            : ""
         }`}
       >
         <div className="patient-sidebar__brand">
@@ -244,7 +261,9 @@ function PatientLayout() {
               key={item.to}
               to={item.to}
               end={item.end}
-              className={({ isActive }) =>
+              className={({
+                isActive,
+              }) =>
                 `patient-nav-link ${
                   isActive
                     ? "is-active"
@@ -275,7 +294,10 @@ function PatientLayout() {
             className="patient-support-button"
             onClick={() => {
               setMobileOpen(false);
-              navigate("/patient/support");
+
+              navigate(
+                "/patient/support"
+              );
             }}
           >
             <span>
@@ -330,8 +352,6 @@ function PatientLayout() {
             <span />
           </button>
 
-          {/* HEADER LOGO */}
-
           <div className="patient-topbar__logo">
             <img
               src="/dr-evans-logo.png"
@@ -349,8 +369,6 @@ function PatientLayout() {
             </div>
           </div>
 
-          {/* CENTERED SEARCH */}
-
           <div className="patient-topbar__search-wrap">
             <div className="patient-search">
               <Icon
@@ -367,80 +385,21 @@ function PatientLayout() {
           </div>
 
           <div className="patient-topbar__actions">
-            <div className="topbar-menu">
-              <button
-                type="button"
-                className="notification-button"
-                onClick={() => {
-                  setNotificationsOpen(
-                    !notificationsOpen
-                  );
-
-                  setProfileOpen(false);
-                }}
-                aria-label="Notifications"
-              >
-                <Icon
-                  name="bell"
-                  size={20}
-                />
-
-                <span className="notification-dot">
-                  0
-                </span>
-              </button>
-
-              {notificationsOpen && (
-                <div className="notification-menu">
-                  <div className="dropdown-eyebrow">
-                    PHARMACY UPDATES
-                  </div>
-
-                  <h3>
-                    Notifications
-                  </h3>
-
-                  <div className="notification-empty">
-                    <span>
-                      <Icon
-                        name="bell"
-                        size={20}
-                      />
-                    </span>
-
-                    <div>
-                      <strong>
-                        No new notifications
-                      </strong>
-
-                      <p>
-                        Pharmacy updates,
-                        refill reminders,
-                        appointment reminders,
-                        and prescription
-                        notifications will
-                        appear here.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
+            <Notifications />
 
             <div className="topbar-menu">
               <button
                 type="button"
                 className="profile-trigger"
-                onClick={() => {
+                onClick={() =>
                   setProfileOpen(
-                    !profileOpen
-                  );
-
-                  setNotificationsOpen(
-                    false
-                  );
-                }}
-                aria-expanded={profileOpen}
+                    (current) =>
+                      !current
+                  )
+                }
+                aria-expanded={
+                  profileOpen
+                }
               >
                 <span className="profile-avatar">
                   {initials}
@@ -488,7 +447,11 @@ function PatientLayout() {
                     <button
                       type="button"
                       onClick={() => {
-                        closeMenus();
+                        closeProfileMenu();
+
+                        navigate(
+                          "/patient/profile"
+                        );
                       }}
                     >
                       <Icon
@@ -502,8 +465,7 @@ function PatientLayout() {
                         </strong>
 
                         <small>
-                          View your patient
-                          information
+                          View your patient information
                         </small>
                       </div>
                     </button>
@@ -511,7 +473,11 @@ function PatientLayout() {
                     <button
                       type="button"
                       onClick={() => {
-                        closeMenus();
+                        closeProfileMenu();
+
+                        navigate(
+                          "/patient/settings"
+                        );
                       }}
                     >
                       <Icon
@@ -525,8 +491,7 @@ function PatientLayout() {
                         </strong>
 
                         <small>
-                          Manage your account
-                          preferences
+                          Manage your account preferences
                         </small>
                       </div>
                     </button>
@@ -535,7 +500,9 @@ function PatientLayout() {
                   <button
                     type="button"
                     className="profile-menu__logout"
-                    onClick={handleLogout}
+                    onClick={
+                      handleLogout
+                    }
                   >
                     <Icon
                       name="logout"

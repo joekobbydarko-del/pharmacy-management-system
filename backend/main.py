@@ -3,11 +3,14 @@ from fastapi import (
     FastAPI,
     HTTPException,
 )
+
 from fastapi.middleware.cors import CORSMiddleware
+
 from fastapi.security import (
     HTTPAuthorizationCredentials,
     HTTPBearer,
 )
+
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
@@ -25,12 +28,20 @@ from security import (
 )
 
 
+# ============================================================
+# APP
+# ============================================================
+
 app = FastAPI(
     title="Dr. Evans Pharmacy API",
     description="Backend API for Dr. Evans Pharmacy",
     version="1.0.0",
 )
 
+
+# ============================================================
+# CORS
+# ============================================================
 
 app.add_middleware(
     CORSMiddleware,
@@ -44,22 +55,23 @@ app.add_middleware(
 )
 
 
-# ================================
+# ============================================================
 # DATABASE
-# ================================
+# ============================================================
 
 def get_db():
     db = SessionLocal()
 
     try:
         yield db
+
     finally:
         db.close()
 
 
-# ================================
+# ============================================================
 # AUTHENTICATION
-# ================================
+# ============================================================
 
 bearer_scheme = HTTPBearer()
 
@@ -103,9 +115,34 @@ def get_current_user(
     return user
 
 
-# ================================
+# ============================================================
+# ACCESS HELPER
+# ============================================================
+
+def verify_patient_access(
+    requested_user_id: int,
+    current_user: User,
+):
+    """
+    Patients may access only their own records.
+
+    Admin support can be expanded later when the
+    admin dashboard is implemented.
+    """
+
+    if current_user.role == "admin":
+        return
+
+    if current_user.id != requested_user_id:
+        raise HTTPException(
+            status_code=403,
+            detail="You do not have permission to access this patient account.",
+        )
+
+
+# ============================================================
 # REQUEST MODELS
-# ================================
+# ============================================================
 
 class MedicineOrderRequest(BaseModel):
     user_id: int
@@ -120,9 +157,9 @@ class RefillRequestCreate(BaseModel):
     notes: str | None = None
 
 
-# ================================
+# ============================================================
 # DATABASE TABLE CREATION
-# ================================
+# ============================================================
 
 @app.on_event("startup")
 def create_new_tables():
@@ -130,6 +167,11 @@ def create_new_tables():
 
     try:
         bind = db.get_bind()
+
+        MedicineOrder.__table__.create(
+            bind=bind,
+            checkfirst=True,
+        )
 
         Prescription.__table__.create(
             bind=bind,
@@ -145,9 +187,9 @@ def create_new_tables():
         db.close()
 
 
-# ================================
+# ============================================================
 # ROOT
-# ================================
+# ============================================================
 
 @app.get("/")
 def root():
@@ -156,9 +198,9 @@ def root():
     }
 
 
-# ================================
+# ============================================================
 # SIGN UP
-# ================================
+# ============================================================
 
 @app.post("/signup")
 def signup(
@@ -180,7 +222,9 @@ def signup(
     new_user = User(
         full_name=user.full_name,
         email=user.email,
-        password_hash=hash_password(user.password),
+        password_hash=hash_password(
+            user.password
+        ),
         role="patient",
         is_active=True,
     )
@@ -198,9 +242,9 @@ def signup(
     }
 
 
-# ================================
+# ============================================================
 # LOGIN
-# ================================
+# ============================================================
 
 @app.post("/login")
 def login(
@@ -250,13 +294,15 @@ def login(
     }
 
 
-# ================================
+# ============================================================
 # CURRENT USER
-# ================================
+# ============================================================
 
 @app.get("/me")
 def get_me(
-    current_user: User = Depends(get_current_user),
+    current_user: User = Depends(
+        get_current_user
+    ),
 ):
     return {
         "user_id": current_user.id,
@@ -267,15 +313,23 @@ def get_me(
     }
 
 
-# ================================
+# ============================================================
 # MEDICINE ORDERS
-# ================================
+# ============================================================
 
 @app.post("/orders")
 def create_order(
     order: MedicineOrderRequest,
     db: Session = Depends(get_db),
+    current_user: User = Depends(
+        get_current_user
+    ),
 ):
+    verify_patient_access(
+        order.user_id,
+        current_user,
+    )
+
     user = (
         db.query(User)
         .filter(User.id == order.user_id)
@@ -288,11 +342,27 @@ def create_order(
             detail="Patient account not found.",
         )
 
+    medicine_name = (
+        order.medicine_name.strip()
+    )
+
+    if not medicine_name:
+        raise HTTPException(
+            status_code=400,
+            detail="Medicine name is required.",
+        )
+
+    notes = (
+        order.notes.strip()
+        if order.notes
+        else None
+    )
+
     new_order = MedicineOrder(
         user_id=order.user_id,
-        medicine_name=order.medicine_name,
+        medicine_name=medicine_name,
         quantity=order.quantity,
-        notes=order.notes,
+        notes=notes,
         status="pending",
     )
 
@@ -315,7 +385,15 @@ def create_order(
 def get_user_orders(
     user_id: int,
     db: Session = Depends(get_db),
+    current_user: User = Depends(
+        get_current_user
+    ),
 ):
+    verify_patient_access(
+        user_id,
+        current_user,
+    )
+
     user = (
         db.query(User)
         .filter(User.id == user_id)
@@ -330,8 +408,12 @@ def get_user_orders(
 
     orders = (
         db.query(MedicineOrder)
-        .filter(MedicineOrder.user_id == user_id)
-        .order_by(MedicineOrder.id.desc())
+        .filter(
+            MedicineOrder.user_id == user_id
+        )
+        .order_by(
+            MedicineOrder.id.desc()
+        )
         .all()
     )
 
@@ -348,15 +430,23 @@ def get_user_orders(
     ]
 
 
-# ================================
+# ============================================================
 # PRESCRIPTIONS
-# ================================
+# ============================================================
 
 @app.get("/prescriptions/{user_id}")
 def get_user_prescriptions(
     user_id: int,
     db: Session = Depends(get_db),
+    current_user: User = Depends(
+        get_current_user
+    ),
 ):
+    verify_patient_access(
+        user_id,
+        current_user,
+    )
+
     user = (
         db.query(User)
         .filter(User.id == user_id)
@@ -371,8 +461,12 @@ def get_user_prescriptions(
 
     prescriptions = (
         db.query(Prescription)
-        .filter(Prescription.user_id == user_id)
-        .order_by(Prescription.id.desc())
+        .filter(
+            Prescription.user_id == user_id
+        )
+        .order_by(
+            Prescription.id.desc()
+        )
         .all()
     )
 
@@ -390,18 +484,28 @@ def get_user_prescriptions(
     ]
 
 
-# ================================
+# ============================================================
 # REFILL REQUESTS
-# ================================
+# ============================================================
 
 @app.post("/refill-requests")
 def create_refill_request(
     request: RefillRequestCreate,
     db: Session = Depends(get_db),
+    current_user: User = Depends(
+        get_current_user
+    ),
 ):
+    verify_patient_access(
+        request.user_id,
+        current_user,
+    )
+
     user = (
         db.query(User)
-        .filter(User.id == request.user_id)
+        .filter(
+            User.id == request.user_id
+        )
         .first()
     )
 
@@ -414,8 +518,11 @@ def create_refill_request(
     prescription = (
         db.query(Prescription)
         .filter(
-            Prescription.id == request.prescription_id,
-            Prescription.user_id == request.user_id,
+            Prescription.id
+            == request.prescription_id,
+
+            Prescription.user_id
+            == request.user_id,
         )
         .first()
     )
@@ -426,16 +533,58 @@ def create_refill_request(
             detail="Prescription not found.",
         )
 
-    if prescription.status.lower() != "active":
+    if (
+        prescription.status.lower()
+        != "active"
+    ):
         raise HTTPException(
             status_code=400,
             detail="This prescription is not active.",
         )
 
+    # --------------------------------------------------------
+    # PREVENT DUPLICATE PENDING REFILL REQUESTS
+    # --------------------------------------------------------
+
+    existing_request = (
+        db.query(RefillRequest)
+        .filter(
+            RefillRequest.user_id
+            == request.user_id,
+
+            RefillRequest.prescription_id
+            == request.prescription_id,
+
+            RefillRequest.status.in_(
+                [
+                    "pending",
+                    "processing",
+                    "requested",
+                ]
+            ),
+        )
+        .first()
+    )
+
+    if existing_request:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "A refill request for this prescription "
+                "is already awaiting pharmacy review."
+            ),
+        )
+
+    notes = (
+        request.notes.strip()
+        if request.notes
+        else None
+    )
+
     new_request = RefillRequest(
         user_id=request.user_id,
         prescription_id=request.prescription_id,
-        notes=request.notes,
+        notes=notes,
         status="pending",
     )
 
@@ -457,10 +606,20 @@ def create_refill_request(
 def get_user_refill_requests(
     user_id: int,
     db: Session = Depends(get_db),
+    current_user: User = Depends(
+        get_current_user
+    ),
 ):
+    verify_patient_access(
+        user_id,
+        current_user,
+    )
+
     user = (
         db.query(User)
-        .filter(User.id == user_id)
+        .filter(
+            User.id == user_id
+        )
         .first()
     )
 
@@ -472,8 +631,13 @@ def get_user_refill_requests(
 
     requests = (
         db.query(RefillRequest)
-        .filter(RefillRequest.user_id == user_id)
-        .order_by(RefillRequest.id.desc())
+        .filter(
+            RefillRequest.user_id
+            == user_id
+        )
+        .order_by(
+            RefillRequest.id.desc()
+        )
         .all()
     )
 

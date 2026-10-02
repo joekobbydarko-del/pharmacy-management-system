@@ -51,3 +51,29 @@
     min-width: 0;
   }
 }
+/* =========================================================
+   PATIENT DATE CARD - DARK MODE POLISH
+========================================================= */
+
+html[data-theme="dark"] .patient-date-card {
+  background: #14323d;
+
+  border-color: #355864;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.16);
+}
+
+html[data-theme="dark"] .patient-date-card__icon {
+  background: #dff7f4;
+
+  color: #0f9f98;
+}
+
+html[data-theme="dark"] .patient-date-card strong {
+  color: #f1fbfc;
+}
+
+html[data-theme="dark"] .patient-date-card small {
+  color: #a7c0c8;
+}

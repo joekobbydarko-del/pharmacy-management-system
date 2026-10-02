@@ -595,3 +595,291 @@
     padding: 17px;
   }
 }
+
+/* =========================================================
+   APPOINTMENTS PAGE - DARK MODE POLISH
+========================================================= */
+
+html[data-theme="dark"] .appointments-page {
+  color: #eefafa;
+}
+
+/* PAGE HEADER */
+
+html[data-theme="dark"] .appointments-heading h1 {
+  color: #f3fbfc;
+}
+
+html[data-theme="dark"] .appointments-heading p {
+  color: #a7c0c8;
+}
+
+html[data-theme="dark"] .appointments-eyebrow {
+  color: #5ed7d1;
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
+
+html[data-theme="dark"] .appointments-summary-card {
+  background: #122d37;
+  border-color: #294b57;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.16);
+}
+
+html[data-theme="dark"]
+.appointments-summary-card
+> div
+> span {
+  color: #7ce0da;
+}
+
+html[data-theme="dark"]
+.appointments-summary-card
+strong {
+  color: #f1fbfc;
+}
+
+html[data-theme="dark"]
+.appointments-summary-card
+small {
+  color: #a6bdc5;
+}
+
+
+/* =========================================================
+   MAIN PANELS
+========================================================= */
+
+html[data-theme="dark"] .appointments-panel {
+  background: #122d37;
+  border-color: #294b57;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.16);
+}
+
+html[data-theme="dark"] .appointments-panel-header {
+  border-bottom-color: #31515c;
+}
+
+html[data-theme="dark"] .appointments-section-label {
+  color: #5ed7d1;
+}
+
+html[data-theme="dark"] .appointments-panel-header h2 {
+  color: #f1fbfc;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+html[data-theme="dark"] .appointments-empty h3 {
+  color: #f1fbfc;
+}
+
+html[data-theme="dark"] .appointments-empty p {
+  color: #a7c0c8;
+}
+
+html[data-theme="dark"] .appointments-empty-icon {
+  background: #dff7f4;
+  color: #0f9f98;
+}
+
+
+/* =========================================================
+   FORM LABELS
+========================================================= */
+
+html[data-theme="dark"] .appointment-field label {
+  color: #eaf7f8;
+}
+
+html[data-theme="dark"] .appointment-field select,
+html[data-theme="dark"] .appointment-field input,
+html[data-theme="dark"] .appointment-field textarea {
+  border-color: #365864 !important;
+
+  background: #17343e !important;
+
+  color: #effafa !important;
+}
+
+html[data-theme="dark"]
+.appointment-field select:hover,
+html[data-theme="dark"]
+.appointment-field input:hover,
+html[data-theme="dark"]
+.appointment-field textarea:hover {
+  border-color: #4a707c !important;
+}
+
+html[data-theme="dark"]
+.appointment-field select:focus,
+html[data-theme="dark"]
+.appointment-field input:focus,
+html[data-theme="dark"]
+.appointment-field textarea:focus {
+  border-color: #14b8b0 !important;
+
+  background: #17343e !important;
+
+  box-shadow:
+    0 0 0 4px rgba(20, 184, 176, 0.14) !important;
+}
+
+html[data-theme="dark"]
+.appointment-field textarea::placeholder {
+  color: #89a7b1 !important;
+}
+
+html[data-theme="dark"]
+.appointment-field select option {
+  background: #17343e;
+
+  color: #effafa;
+}
+
+
+/* =========================================================
+   DATE INPUT
+========================================================= */
+
+html[data-theme="dark"]
+.appointment-field input[type="date"] {
+  color-scheme: dark;
+}
+
+
+/* =========================================================
+   NOTICE
+========================================================= */
+
+html[data-theme="dark"] .appointment-notice {
+  background: #17343e;
+
+  border-color: #31515c;
+}
+
+html[data-theme="dark"] .appointment-notice p {
+  color: #b2c8cf;
+}
+
+html[data-theme="dark"] .appointment-notice > span {
+  background: #dff7f4;
+
+  color: #0f9f98;
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+========================================================= */
+
+html[data-theme="dark"] .appointment-submit-button {
+  background: #14a8a2;
+
+  color: #ffffff;
+
+  box-shadow:
+    0 10px 22px rgba(20, 168, 162, 0.18);
+}
+
+html[data-theme="dark"]
+.appointment-submit-button:hover {
+  background: #0f918c;
+
+  box-shadow:
+    0 12px 25px rgba(20, 168, 162, 0.23);
+}
+
+
+/* =========================================================
+   SUCCESS STATE
+========================================================= */
+
+html[data-theme="dark"] .appointment-success h3 {
+  color: #f1fbfc;
+}
+
+html[data-theme="dark"] .appointment-success p {
+  color: #a7c0c8;
+}
+
+html[data-theme="dark"] .appointment-success-icon {
+  background: #dff7f4;
+
+  color: #0f9f98;
+}
+
+html[data-theme="dark"] .appointment-success button {
+  background: #17343e;
+
+  border-color: #416673;
+
+  color: #dff7f4;
+}
+
+html[data-theme="dark"]
+.appointment-success button:hover {
+  background: #1d3d48;
+
+  border-color: #14b8b0;
+}
+
+
+/* =========================================================
+   SECURITY BAR
+========================================================= */
+
+html[data-theme="dark"] .appointments-security {
+  background: #12353a;
+
+  border-color: #31515c;
+}
+
+html[data-theme="dark"]
+.appointments-security strong {
+  color: #dff8f6;
+}
+
+html[data-theme="dark"]
+.appointments-security small {
+  color: #a6bdc5;
+}
+
+
+/* =========================================================
+   APPOINTMENT ITEMS IF DATA EXISTS LATER
+========================================================= */
+
+html[data-theme="dark"] .appointment-item {
+  border-color: #31515c;
+
+  background: #17343e;
+}
+
+html[data-theme="dark"] .appointment-item-info span {
+  color: #65d6d0;
+}
+
+html[data-theme="dark"] .appointment-item-info h3 {
+  color: #f1fbfc;
+}
+
+html[data-theme="dark"] .appointment-item-info p {
+  color: #a7c0c8;
+}
+
+html[data-theme="dark"] .appointment-item-date {
+  background: #dff7f4;
+
+  color: #0f9f98;
+}

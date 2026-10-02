@@ -1,19 +1,51 @@
-import { useMemo, useState } from "react";
+import {
+  useMemo,
+  useState,
+} from "react";
 
 import PatientDateCard from "../components/PatientDateCard";
 import PatientIcon from "../components/PatientIcon";
 
+import {
+  createMedicineOrder,
+} from "../api";
+
+import {
+  addPatientNotification,
+} from "../utils/patientNotifications";
+
 import "./OrderMedicinesPage.css";
 
 function OrderMedicinesPage() {
-  const userName =
-    localStorage.getItem("user_name") || "Patient";
+  const userId =
+    localStorage.getItem("user_id");
 
-  const [search, setSearch] = useState("");
-  const [selectedMedicine, setSelectedMedicine] =
+  const [search, setSearch] =
     useState("");
-  const [quantity, setQuantity] = useState(1);
-  const [submitted, setSubmitted] = useState(false);
+
+  const [
+    selectedMedicine,
+    setSelectedMedicine,
+  ] = useState(null);
+
+  const [quantity, setQuantity] =
+    useState(1);
+
+  const [notes, setNotes] =
+    useState("");
+
+  const [
+    submitting,
+    setSubmitting,
+  ] = useState(false);
+
+  const [
+    submitted,
+    setSubmitted,
+  ] = useState(false);
+
+  const [error, setError] =
+    useState("");
 
   const medicines = useMemo(
     () => [
@@ -41,29 +73,69 @@ function OrderMedicinesPage() {
     []
   );
 
-  const filteredMedicines = medicines.filter(
-    (medicine) =>
-      medicine.name
-        .toLowerCase()
-        .includes(search.toLowerCase())
-  );
+  const filteredMedicines =
+    medicines.filter((medicine) => {
+      const query =
+        search.toLowerCase();
 
-  const selectedMedicineData = medicines.find(
-    (medicine) =>
-      medicine.name === selectedMedicine
-  );
+      return (
+        medicine.name
+          .toLowerCase()
+          .includes(query) ||
+        medicine.category
+          .toLowerCase()
+          .includes(query)
+      );
+    });
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit =
+    async (event) => {
+      event.preventDefault();
 
-    if (!selectedMedicine) return;
+      if (
+        !userId ||
+        !selectedMedicine
+      ) {
+        return;
+      }
 
-    setSubmitted(true);
-  };
+      try {
+        setSubmitting(true);
+        setError("");
+
+        await createMedicineOrder(
+          userId,
+          selectedMedicine.name,
+          quantity,
+          notes.trim() || null
+        );
+
+        addPatientNotification({
+          title:
+            "Medicine order submitted",
+
+          message:
+            `Your order for ${quantity} × ${selectedMedicine.name} has been sent to the pharmacy.`,
+
+          icon: "package",
+        });
+
+        setSubmitted(true);
+      } catch (err) {
+        setError(
+          err.message ||
+            "Unable to submit medicine order."
+        );
+      } finally {
+        setSubmitting(false);
+      }
+    };
 
   const resetOrder = () => {
-    setSelectedMedicine("");
+    setSelectedMedicine(null);
     setQuantity(1);
+    setNotes("");
+    setError("");
     setSubmitted(false);
   };
 
@@ -75,11 +147,14 @@ function OrderMedicinesPage() {
             PATIENT MEDICINE ORDERS
           </span>
 
-          <h1>Order Medicines</h1>
+          <h1>
+            Order Medicines
+          </h1>
 
           <p>
-            Browse available medicines and submit a
-            pharmacy order from your patient account.
+            Browse available medicines
+            and submit a pharmacy order
+            from your patient account.
           </p>
         </div>
 
@@ -91,13 +166,19 @@ function OrderMedicinesPage() {
           <span className="medicine-summary-icon medicine-summary-icon--teal">
             <PatientIcon
               name="medicine"
-              size={23}
+              size={22}
             />
           </span>
 
           <div>
-            <span>AVAILABLE MEDICINES</span>
-            <strong>{medicines.length}</strong>
+            <span>
+              AVAILABLE MEDICINES
+            </span>
+
+            <strong>
+              {medicines.length}
+            </strong>
+
             <small>
               Medicines currently listed
             </small>
@@ -108,15 +189,19 @@ function OrderMedicinesPage() {
           <span className="medicine-summary-icon medicine-summary-icon--blue">
             <PatientIcon
               name="check"
-              size={23}
+              size={22}
             />
           </span>
 
           <div>
-            <span>SELECTED ITEM</span>
+            <span>
+              SELECTED ITEM
+            </span>
 
             <strong>
-              {selectedMedicine ? 1 : 0}
+              {selectedMedicine
+                ? 1
+                : 0}
             </strong>
 
             <small>
@@ -129,12 +214,14 @@ function OrderMedicinesPage() {
           <span className="medicine-summary-icon medicine-summary-icon--orange">
             <PatientIcon
               name="package"
-              size={23}
+              size={22}
             />
           </span>
 
           <div>
-            <span>ORDER QUANTITY</span>
+            <span>
+              ORDER QUANTITY
+            </span>
 
             <strong>
               {selectedMedicine
@@ -142,7 +229,9 @@ function OrderMedicinesPage() {
                 : 0}
             </strong>
 
-            <small>Requested units</small>
+            <small>
+              Requested units
+            </small>
           </div>
         </article>
       </div>
@@ -163,7 +252,9 @@ function OrderMedicinesPage() {
                   PHARMACY CATALOGUE
                 </span>
 
-                <h2>Select Medicine</h2>
+                <h2>
+                  Select Medicine
+                </h2>
               </div>
             </div>
           </div>
@@ -189,82 +280,53 @@ function OrderMedicinesPage() {
               />
             </div>
 
-            {filteredMedicines.length === 0 ? (
-              <div className="medicine-empty">
-                <div className="medicine-empty-icon">
-                  <PatientIcon
-                    name="search"
-                    size={27}
-                  />
-                </div>
+            <div className="medicine-list">
+              {filteredMedicines.map(
+                (medicine) => (
+                  <button
+                    key={medicine.id}
+                    type="button"
+                    className={`medicine-item ${
+                      selectedMedicine?.id ===
+                      medicine.id
+                        ? "medicine-item--selected"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      setSelectedMedicine(
+                        medicine
+                      )
+                    }
+                  >
+                    <span className="medicine-item-icon">
+                      <PatientIcon
+                        name="pill"
+                        size={19}
+                      />
+                    </span>
 
-                <h3>
-                  No medicines found
-                </h3>
+                    <span className="medicine-item-info">
+                      <strong>
+                        {medicine.name}
+                      </strong>
 
-                <p>
-                  Try searching with a different
-                  medicine name.
-                </p>
-              </div>
-            ) : (
-              <div className="medicine-list">
-                {filteredMedicines.map(
-                  (medicine) => {
-                    const active =
-                      selectedMedicine ===
-                      medicine.name;
+                      <small>
+                        {
+                          medicine.category
+                        }
+                      </small>
+                    </span>
 
-                    return (
-                      <button
-                        key={medicine.id}
-                        type="button"
-                        className={`medicine-item ${
-                          active
-                            ? "medicine-item--selected"
-                            : ""
-                        }`}
-                        onClick={() => {
-                          setSelectedMedicine(
-                            medicine.name
-                          );
-
-                          setSubmitted(false);
-                        }}
-                      >
-                        <span className="medicine-item-icon">
-                          <PatientIcon
-                            name="pill"
-                            size={20}
-                          />
-                        </span>
-
-                        <span className="medicine-item-info">
-                          <strong>
-                            {medicine.name}
-                          </strong>
-
-                          <small>
-                            {medicine.category}
-                          </small>
-                        </span>
-
-                        <span className="medicine-item-action">
-                          <PatientIcon
-                            name={
-                              active
-                                ? "check"
-                                : "plus"
-                            }
-                            size={18}
-                          />
-                        </span>
-                      </button>
-                    );
-                  }
-                )}
-              </div>
-            )}
+                    <span className="medicine-item-action">
+                      <PatientIcon
+                        name="plus"
+                        size={16}
+                      />
+                    </span>
+                  </button>
+                )
+              )}
+            </div>
           </div>
         </article>
 
@@ -273,7 +335,7 @@ function OrderMedicinesPage() {
             <div className="medicine-panel-title">
               <span className="medicine-panel-icon">
                 <PatientIcon
-                  name="clipboard"
+                  name="package"
                   size={20}
                 />
               </span>
@@ -283,7 +345,9 @@ function OrderMedicinesPage() {
                   ORDER DETAILS
                 </span>
 
-                <h2>Order Summary</h2>
+                <h2>
+                  Order Summary
+                </h2>
               </div>
             </div>
           </div>
@@ -294,34 +358,45 @@ function OrderMedicinesPage() {
                 <div className="medicine-success-icon">
                   <PatientIcon
                     name="check"
-                    size={27}
+                    size={28}
                   />
                 </div>
 
                 <h3>
-                  Medicine request prepared
+                  Medicine order sent
                 </h3>
 
                 <p>
-                  Your medicine request has been
-                  prepared for pharmacy processing.
+                  Your medicine order was
+                  submitted successfully
+                  and is now awaiting
+                  pharmacy review.
                 </p>
 
                 <button
                   type="button"
                   onClick={resetOrder}
                 >
-                  Start Another Order
+                  Place Another Order
                 </button>
               </div>
             ) : (
               <form
                 className="medicine-order-form"
-                onSubmit={handleSubmit}
+                onSubmit={
+                  handleSubmit
+                }
               >
                 <div className="medicine-order-detail">
-                  <span>PATIENT</span>
-                  <strong>{userName}</strong>
+                  <span>
+                    PATIENT
+                  </span>
+
+                  <strong>
+                    {localStorage.getItem(
+                      "user_name"
+                    ) || "Patient"}
+                  </strong>
                 </div>
 
                 <div className="medicine-order-detail">
@@ -329,17 +404,17 @@ function OrderMedicinesPage() {
                     SELECTED MEDICINE
                   </span>
 
-                  {selectedMedicineData ? (
+                  {selectedMedicine ? (
                     <div className="medicine-selected-info">
                       <strong>
                         {
-                          selectedMedicineData.name
+                          selectedMedicine.name
                         }
                       </strong>
 
                       <small>
                         {
-                          selectedMedicineData.category
+                          selectedMedicine.category
                         }
                       </small>
                     </div>
@@ -351,7 +426,7 @@ function OrderMedicinesPage() {
                 </div>
 
                 <div className="medicine-order-field">
-                  <label htmlFor="medicine-quantity">
+                  <label>
                     Quantity
                   </label>
 
@@ -372,7 +447,6 @@ function OrderMedicinesPage() {
                     </button>
 
                     <input
-                      id="medicine-quantity"
                       type="number"
                       min="1"
                       value={quantity}
@@ -381,7 +455,8 @@ function OrderMedicinesPage() {
                           Math.max(
                             1,
                             Number(
-                              event.target.value
+                              event.target
+                                .value
                             ) || 1
                           )
                         )
@@ -402,33 +477,65 @@ function OrderMedicinesPage() {
                   </div>
                 </div>
 
+                <div className="medicine-order-field">
+                  <label htmlFor="medicine-notes">
+                    Additional note
+                  </label>
+
+                  <textarea
+                    id="medicine-notes"
+                    rows="4"
+                    value={notes}
+                    onChange={(event) =>
+                      setNotes(
+                        event.target.value
+                      )
+                    }
+                    placeholder="Optional message for the pharmacy..."
+                  />
+                </div>
+
                 <div className="medicine-order-notice">
                   <span>
                     <PatientIcon
                       name="info"
-                      size={17}
+                      size={16}
                     />
                   </span>
 
                   <p>
-                    Medicine availability and final
-                    pricing will be confirmed by the
-                    pharmacy before the order is
-                    processed.
+                    Medicine availability
+                    and final pricing will
+                    be confirmed by the
+                    pharmacy before the
+                    order is processed.
                   </p>
                 </div>
+
+                {error && (
+                  <div className="medicine-order-error">
+                    {error}
+                  </div>
+                )}
 
                 <button
                   type="submit"
                   className="medicine-submit-button"
-                  disabled={!selectedMedicine}
+                  disabled={
+                    !selectedMedicine ||
+                    submitting
+                  }
                 >
-                  Submit Medicine Request
+                  {submitting
+                    ? "Submitting..."
+                    : "Submit Medicine Request"}
 
-                  <PatientIcon
-                    name="arrow"
-                    size={16}
-                  />
+                  {!submitting && (
+                    <PatientIcon
+                      name="arrow"
+                      size={16}
+                    />
+                  )}
                 </button>
               </form>
             )}
@@ -440,7 +547,7 @@ function OrderMedicinesPage() {
         <span>
           <PatientIcon
             name="shield"
-            size={20}
+            size={19}
           />
         </span>
 
@@ -450,8 +557,9 @@ function OrderMedicinesPage() {
           </strong>
 
           <small>
-            Your medicine requests are securely linked
-            to your patient account.
+            Your medicine requests are
+            securely linked to your
+            patient account.
           </small>
         </div>
       </div>

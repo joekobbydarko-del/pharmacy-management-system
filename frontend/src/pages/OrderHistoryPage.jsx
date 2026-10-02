@@ -1,32 +1,110 @@
-import { useMemo, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import PatientDateCard from "../components/PatientDateCard";
 import PatientIcon from "../components/PatientIcon";
 
+import {
+  getUserOrders,
+} from "../api";
+
 import "./OrderHistoryPage.css";
 
 function OrderHistoryPage() {
-  const [search, setSearch] = useState("");
+  const userId =
+    localStorage.getItem("user_id");
 
-  const orders = useMemo(() => [], []);
+  const [orders, setOrders] =
+    useState([]);
 
-  const filteredOrders = orders.filter(
-    (order) => {
-      const term =
+  const [search, setSearch] =
+    useState("");
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [error, setError] =
+    useState("");
+
+  useEffect(() => {
+    async function loadOrders() {
+      if (!userId) {
+        setError(
+          "Patient information could not be found."
+        );
+
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError("");
+
+        const data =
+          await getUserOrders(userId);
+
+        setOrders(
+          Array.isArray(data)
+            ? data
+            : []
+        );
+      } catch (err) {
+        setError(
+          err.message ||
+            "Unable to load your orders."
+        );
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadOrders();
+  }, [userId]);
+
+  const filteredOrders =
+    useMemo(() => {
+      const query =
         search.trim().toLowerCase();
 
-      if (!term) return true;
+      if (!query) {
+        return orders;
+      }
 
-      return (
-        String(order.id || "")
-          .toLowerCase()
-          .includes(term) ||
-        String(order.status || "")
-          .toLowerCase()
-          .includes(term)
+      return orders.filter(
+        (order) =>
+          order.medicine_name
+            ?.toLowerCase()
+            .includes(query) ||
+          order.status
+            ?.toLowerCase()
+            .includes(query)
       );
-    }
-  );
+    }, [orders, search]);
+
+  const processingOrders =
+    orders.filter((order) =>
+      [
+        "pending",
+        "processing",
+      ].includes(
+        String(
+          order.status || ""
+        ).toLowerCase()
+      )
+    );
+
+  const completedOrders =
+    orders.filter(
+      (order) =>
+        String(
+          order.status || ""
+        ).toLowerCase() ===
+        "completed"
+    );
 
   return (
     <section className="orders-page">
@@ -36,11 +114,14 @@ function OrderHistoryPage() {
             PATIENT ORDERS
           </span>
 
-          <h1>My Orders</h1>
+          <h1>
+            My Orders
+          </h1>
 
           <p>
-            Review your medicine orders, payment status,
-            and pharmacy order history.
+            Review your medicine orders,
+            payment status, and pharmacy
+            order history.
           </p>
         </div>
 
@@ -52,14 +133,22 @@ function OrderHistoryPage() {
           <div className="orders-summary-icon blue">
             <PatientIcon
               name="package"
-              size={23}
+              size={22}
             />
           </div>
 
           <div>
-            <span>TOTAL ORDERS</span>
-            <strong>{orders.length}</strong>
-            <small>Pharmacy orders</small>
+            <span>
+              TOTAL ORDERS
+            </span>
+
+            <strong>
+              {orders.length}
+            </strong>
+
+            <small>
+              Pharmacy orders
+            </small>
           </div>
         </article>
 
@@ -67,13 +156,21 @@ function OrderHistoryPage() {
           <div className="orders-summary-icon orange">
             <PatientIcon
               name="clock"
-              size={23}
+              size={22}
             />
           </div>
 
           <div>
-            <span>PROCESSING</span>
-            <strong>0</strong>
+            <span>
+              PROCESSING
+            </span>
+
+            <strong>
+              {
+                processingOrders.length
+              }
+            </strong>
+
             <small>
               Orders in progress
             </small>
@@ -84,13 +181,21 @@ function OrderHistoryPage() {
           <div className="orders-summary-icon teal">
             <PatientIcon
               name="check"
-              size={23}
+              size={22}
             />
           </div>
 
           <div>
-            <span>COMPLETED</span>
-            <strong>0</strong>
+            <span>
+              COMPLETED
+            </span>
+
+            <strong>
+              {
+                completedOrders.length
+              }
+            </strong>
+
             <small>
               Completed orders
             </small>
@@ -123,7 +228,7 @@ function OrderHistoryPage() {
             <span>
               <PatientIcon
                 name="search"
-                size={18}
+                size={17}
               />
             </span>
 
@@ -141,12 +246,42 @@ function OrderHistoryPage() {
         </div>
 
         <div className="orders-panel-body">
-          {filteredOrders.length === 0 ? (
+          {loading ? (
             <div className="orders-empty">
               <div className="orders-empty-icon">
                 <PatientIcon
                   name="package"
-                  size={29}
+                  size={27}
+                />
+              </div>
+
+              <h3>
+                Loading orders
+              </h3>
+
+              <p>
+                Please wait while we
+                load your medicine order
+                history.
+              </p>
+            </div>
+          ) : error ? (
+            <div className="orders-empty">
+              <h3>
+                Unable to load orders
+              </h3>
+
+              <p>
+                {error}
+              </p>
+            </div>
+          ) : filteredOrders.length ===
+            0 ? (
+            <div className="orders-empty">
+              <div className="orders-empty-icon">
+                <PatientIcon
+                  name="package"
+                  size={27}
                 />
               </div>
 
@@ -155,64 +290,60 @@ function OrderHistoryPage() {
               </h3>
 
               <p>
-                Your medicine order history will appear
-                here after an order has been submitted.
+                Your medicine order
+                history will appear here
+                after an order has been
+                submitted.
               </p>
             </div>
           ) : (
-            <div className="orders-table-wrapper">
-              <table className="orders-table">
-                <thead>
-                  <tr>
-                    <th>Order</th>
-                    <th>Date</th>
-                    <th>Items</th>
-                    <th>Payment</th>
-                    <th>Status</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
+            <div className="orders-list">
+              {filteredOrders.map(
+                (order) => (
+                  <article
+                    key={
+                      order.order_id
+                    }
+                    className="order-history-item"
+                  >
+                    <span className="order-history-icon">
+                      <PatientIcon
+                        name="package"
+                        size={20}
+                      />
+                    </span>
 
-                <tbody>
-                  {filteredOrders.map(
-                    (order) => (
-                      <tr key={order.id}>
-                        <td>
-                          <strong>
-                            #{order.id}
-                          </strong>
-                        </td>
+                    <div className="order-history-info">
+                      <strong>
+                        {
+                          order.medicine_name
+                        }
+                      </strong>
 
-                        <td>
-                          {order.date}
-                        </td>
+                      <small>
+                        Quantity:{" "}
+                        {order.quantity}
+                      </small>
 
-                        <td>
-                          {order.items}
-                        </td>
+                      {order.notes && (
+                        <small>
+                          {order.notes}
+                        </small>
+                      )}
+                    </div>
 
-                        <td>
-                          {
-                            order.paymentStatus
-                          }
-                        </td>
-
-                        <td>
-                          <span className="order-status">
-                            {
-                              order.status
-                            }
-                          </span>
-                        </td>
-
-                        <td>
-                          {order.total}
-                        </td>
-                      </tr>
-                    )
-                  )}
-                </tbody>
-              </table>
+                    <span
+                      className={`order-status order-status--${String(
+                        order.status ||
+                          "pending"
+                      ).toLowerCase()}`}
+                    >
+                      {order.status ||
+                        "pending"}
+                    </span>
+                  </article>
+                )
+              )}
             </div>
           )}
         </div>
@@ -222,7 +353,7 @@ function OrderHistoryPage() {
         <span>
           <PatientIcon
             name="shield"
-            size={20}
+            size={19}
           />
         </span>
 
@@ -232,8 +363,9 @@ function OrderHistoryPage() {
           </strong>
 
           <small>
-            Your pharmacy orders are securely linked to
-            your patient account.
+            Your pharmacy orders are
+            securely linked to your
+            patient account.
           </small>
         </div>
       </div>

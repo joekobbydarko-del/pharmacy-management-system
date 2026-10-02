@@ -1,0 +1,245 @@
+/* =========================================================
+   GLOBAL BASE
+========================================================= */
+
+:root {
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  color: #073b4c;
+  background: #eef5f7;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+
+/* =========================================================
+   DR. EVANS PATIENT PORTAL - DARK MODE
+========================================================= */
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+html[data-theme="dark"] body {
+  background: #071920;
+}
+
+html[data-theme="dark"] .patient-main,
+html[data-theme="dark"] .patient-content {
+  background: #0b2029;
+}
+
+html[data-theme="dark"] .patient-topbar {
+  background: #102a34;
+  border-bottom-color: #28434d;
+}
+
+html[data-theme="dark"] .patient-topbar__logo strong,
+html[data-theme="dark"] .profile-trigger__text strong {
+  color: #edfafa;
+}
+
+html[data-theme="dark"] .patient-topbar__logo span,
+html[data-theme="dark"] .profile-trigger__text small {
+  color: #8ba9b5;
+}
+
+html[data-theme="dark"] .patient-search {
+  border-color: #31505b;
+  background: #17333d;
+}
+
+html[data-theme="dark"] .patient-search input {
+  color: #eaf7f8;
+  background: transparent;
+}
+
+html[data-theme="dark"] .patient-search input::placeholder {
+  color: #7595a1;
+}
+
+html[data-theme="dark"] .notification-button,
+html[data-theme="dark"] .profile-trigger {
+  border-color: #31505b;
+  background: #17333d;
+  color: #cce3e7;
+}
+
+html[data-theme="dark"] .notification-menu,
+html[data-theme="dark"] .profile-menu {
+  border-color: #31505b;
+  background: #122b35;
+  color: #eaf7f8;
+}
+
+
+/* =========================================================
+   PAGE TITLES / TEXT
+========================================================= */
+
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3 {
+  color: #edfafa;
+}
+
+html[data-theme="dark"] p,
+html[data-theme="dark"] small {
+  color: #92adb8;
+}
+
+
+/* =========================================================
+   COMMON CARDS
+========================================================= */
+
+html[data-theme="dark"] .stat-card,
+html[data-theme="dark"] .dashboard-panel,
+html[data-theme="dark"] .quick-action,
+html[data-theme="dark"] .dashboard-date-card,
+html[data-theme="dark"] .patient-date-card,
+
+html[data-theme="dark"] .appointments-summary-card,
+html[data-theme="dark"] .appointments-panel,
+
+html[data-theme="dark"] .prescriptions-summary-card,
+html[data-theme="dark"] .prescriptions-panel,
+html[data-theme="dark"] .prescription-card,
+
+html[data-theme="dark"] .medicine-summary-card,
+html[data-theme="dark"] .medicine-panel,
+
+html[data-theme="dark"] .refill-summary-card,
+html[data-theme="dark"] .refill-panel,
+
+html[data-theme="dark"] .orders-summary-card,
+html[data-theme="dark"] .orders-panel,
+
+html[data-theme="dark"] .patient-profile-card,
+html[data-theme="dark"] .patient-profile-info-panel,
+
+html[data-theme="dark"] .patient-settings-panel,
+html[data-theme="dark"] .patient-settings-security-panel,
+
+html[data-theme="dark"] .pharmacist-summary__card,
+html[data-theme="dark"] .pharmacist-panel,
+html[data-theme="dark"] .pharmacist-help-card,
+html[data-theme="dark"] .pharmacist-response-card {
+  background: #122b35;
+  border-color: #294550;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+
+/* =========================================================
+   CARD TEXT
+========================================================= */
+
+html[data-theme="dark"] .stat-card__label,
+html[data-theme="dark"] .stat-card__content strong,
+html[data-theme="dark"] .dashboard-panel__title h2,
+html[data-theme="dark"] .quick-action__text strong,
+html[data-theme="dark"] .dashboard-date-card strong,
+
+html[data-theme="dark"] .patient-profile-card strong,
+html[data-theme="dark"] .patient-profile-detail strong,
+
+html[data-theme="dark"] .patient-settings-panel strong,
+html[data-theme="dark"] .patient-settings-field label,
+
+html[data-theme="dark"] .pharmacist-summary__card strong,
+html[data-theme="dark"] .pharmacist-field label {
+  color: #edfafa;
+}
+
+
+/* =========================================================
+   FORM FIELDS
+========================================================= */
+
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+  border-color: #31505b !important;
+  background: #17333d !important;
+  color: #edfafa !important;
+}
+
+html[data-theme="dark"] input:disabled {
+  background: #102933 !important;
+  color: #839ea9 !important;
+}
+
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder {
+  color: #718f9a !important;
+}
+
+
+/* =========================================================
+   SETTINGS THEME OPTIONS
+========================================================= */
+
+html[data-theme="dark"] .theme-option {
+  border-color: #31505b;
+  background: #17333d;
+  color: #edfafa;
+}
+
+html[data-theme="dark"] .theme-option.is-selected {
+  border-color: #14b8b0;
+  background: #103b3d;
+}
+
+
+/* =========================================================
+   SECURITY / INFO BARS
+========================================================= */
+
+html[data-theme="dark"] .dashboard-security,
+html[data-theme="dark"] .appointments-security,
+html[data-theme="dark"] .prescriptions-security,
+html[data-theme="dark"] .medicine-security,
+html[data-theme="dark"] .refill-security,
+html[data-theme="dark"] .orders-security,
+html[data-theme="dark"] .patient-profile-security,
+html[data-theme="dark"] .pharmacist-security {
+  border-color: #284950;
+  background: #103034;
+}
+
+
+/* =========================================================
+   TABLES
+========================================================= */
+
+html[data-theme="dark"] .orders-table th,
+html[data-theme="dark"] .orders-table td {
+  border-color: #294550;
+  color: #dbecee;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+html[data-theme="dark"] .patient-sidebar {
+  box-shadow:
+    8px 0 30px rgba(0, 0, 0, 0.13);
+}

@@ -1,16 +1,43 @@
-import { useMemo, useState } from "react";
+import {
+  useMemo,
+  useState,
+} from "react";
+
 import PatientDateCard from "../components/PatientDateCard";
 import PatientIcon from "../components/PatientIcon";
+
+import {
+  addPatientNotification,
+} from "../utils/patientNotifications";
+
 import "./AppointmentsPage.css";
 
 function AppointmentsPage() {
-  const [selectedType, setSelectedType] = useState("");
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedTime, setSelectedTime] = useState("");
-  const [note, setNote] = useState("");
-  const [submitted, setSubmitted] = useState(false);
+  const [
+    selectedType,
+    setSelectedType,
+  ] = useState("");
 
-  const appointments = useMemo(() => [], []);
+  const [
+    selectedDate,
+    setSelectedDate,
+  ] = useState("");
+
+  const [
+    selectedTime,
+    setSelectedTime,
+  ] = useState("");
+
+  const [note, setNote] =
+    useState("");
+
+  const [
+    submitted,
+    setSubmitted,
+  ] = useState(false);
+
+  const appointments =
+    useMemo(() => [], []);
 
   const appointmentTypes = [
     "Medication Consultation",
@@ -29,7 +56,9 @@ function AppointmentsPage() {
     "03:00 PM",
   ];
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (
+    event
+  ) => {
     event.preventDefault();
 
     if (
@@ -41,6 +70,15 @@ function AppointmentsPage() {
     }
 
     setSubmitted(true);
+
+    addPatientNotification({
+      title:
+        "Appointment request prepared",
+      message:
+        `${selectedType} requested for ` +
+        `${selectedDate} at ${selectedTime}.`,
+      icon: "calendar",
+    });
   };
 
   const resetForm = () => {
@@ -59,11 +97,14 @@ function AppointmentsPage() {
             PATIENT APPOINTMENTS
           </span>
 
-          <h1>Appointments</h1>
+          <h1>
+            Appointments
+          </h1>
 
           <p>
-            View your upcoming pharmacy appointments and
-            schedule a new appointment with Dr. Evans
+            View your upcoming pharmacy
+            appointments and schedule a
+            new appointment with Dr. Evans
             Pharmacy.
           </p>
         </div>
@@ -74,37 +115,72 @@ function AppointmentsPage() {
       <div className="appointments-summary-grid">
         <article className="appointments-summary-card">
           <span className="appointments-summary-icon appointments-summary-icon--blue">
-            <PatientIcon name="calendar" size={23} />
+            <PatientIcon
+              name="calendar"
+              size={23}
+            />
           </span>
 
           <div>
-            <span>UPCOMING APPOINTMENTS</span>
-            <strong>{appointments.length}</strong>
-            <small>Scheduled visits</small>
+            <span>
+              UPCOMING APPOINTMENTS
+            </span>
+
+            <strong>
+              {appointments.length}
+            </strong>
+
+            <small>
+              Scheduled visits
+            </small>
           </div>
         </article>
 
         <article className="appointments-summary-card">
           <span className="appointments-summary-icon appointments-summary-icon--teal">
-            <PatientIcon name="plus" size={23} />
+            <PatientIcon
+              name="plus"
+              size={23}
+            />
           </span>
 
           <div>
-            <span>AVAILABLE SERVICES</span>
-            <strong>{appointmentTypes.length}</strong>
-            <small>Pharmacy appointment types</small>
+            <span>
+              AVAILABLE SERVICES
+            </span>
+
+            <strong>
+              {
+                appointmentTypes.length
+              }
+            </strong>
+
+            <small>
+              Pharmacy appointment types
+            </small>
           </div>
         </article>
 
         <article className="appointments-summary-card">
           <span className="appointments-summary-icon appointments-summary-icon--orange">
-            <PatientIcon name="check" size={23} />
+            <PatientIcon
+              name="check"
+              size={23}
+            />
           </span>
 
           <div>
-            <span>COMPLETED</span>
-            <strong>0</strong>
-            <small>Past appointments</small>
+            <span>
+              COMPLETED
+            </span>
+
+            <strong>
+              0
+            </strong>
+
+            <small>
+              Past appointments
+            </small>
           </div>
         </article>
       </div>
@@ -125,13 +201,16 @@ function AppointmentsPage() {
                   YOUR SCHEDULE
                 </span>
 
-                <h2>Upcoming Appointments</h2>
+                <h2>
+                  Upcoming Appointments
+                </h2>
               </div>
             </div>
           </div>
 
           <div className="appointments-panel-body">
-            {appointments.length === 0 ? (
+            {appointments.length ===
+            0 ? (
               <div className="appointments-empty">
                 <div className="appointments-empty-icon">
                   <PatientIcon
@@ -140,46 +219,63 @@ function AppointmentsPage() {
                   />
                 </div>
 
-                <h3>No appointments scheduled</h3>
+                <h3>
+                  No appointments
+                  scheduled
+                </h3>
 
                 <p>
-                  Your upcoming pharmacy appointments
-                  will appear here after you schedule a
-                  visit.
+                  Your upcoming pharmacy
+                  appointments will appear
+                  here after you schedule
+                  a visit.
                 </p>
               </div>
             ) : (
               <div className="appointments-list">
-                {appointments.map((appointment) => (
-                  <article
-                    key={appointment.id}
-                    className="appointment-item"
-                  >
-                    <div className="appointment-item-date">
-                      <strong>
-                        {appointment.day}
-                      </strong>
+                {appointments.map(
+                  (appointment) => (
+                    <article
+                      key={
+                        appointment.id
+                      }
+                      className="appointment-item"
+                    >
+                      <div className="appointment-item-date">
+                        <strong>
+                          {
+                            appointment.day
+                          }
+                        </strong>
 
-                      <span>
-                        {appointment.month}
-                      </span>
-                    </div>
+                        <span>
+                          {
+                            appointment.month
+                          }
+                        </span>
+                      </div>
 
-                    <div className="appointment-item-info">
-                      <span>
-                        UPCOMING APPOINTMENT
-                      </span>
+                      <div className="appointment-item-info">
+                        <span>
+                          UPCOMING
+                          APPOINTMENT
+                        </span>
 
-                      <h3>
-                        {appointment.type}
-                      </h3>
+                        <h3>
+                          {
+                            appointment.type
+                          }
+                        </h3>
 
-                      <p>
-                        {appointment.time}
-                      </p>
-                    </div>
-                  </article>
-                ))}
+                        <p>
+                          {
+                            appointment.time
+                          }
+                        </p>
+                      </div>
+                    </article>
+                  )
+                )}
               </div>
             )}
           </div>
@@ -200,7 +296,9 @@ function AppointmentsPage() {
                   PHARMACY SERVICE
                 </span>
 
-                <h2>Book Appointment</h2>
+                <h2>
+                  Book Appointment
+                </h2>
               </div>
             </div>
           </div>
@@ -216,26 +314,34 @@ function AppointmentsPage() {
                 </div>
 
                 <h3>
-                  Appointment request prepared
+                  Appointment request
+                  prepared
                 </h3>
 
                 <p>
-                  Your appointment request has been
-                  prepared. We will connect this page to
-                  the backend during integration.
+                  Your appointment request
+                  has been prepared and a
+                  notification has been
+                  added to your patient
+                  portal.
                 </p>
 
                 <button
                   type="button"
-                  onClick={resetForm}
+                  onClick={
+                    resetForm
+                  }
                 >
-                  Book Another Appointment
+                  Book Another
+                  Appointment
                 </button>
               </div>
             ) : (
               <form
                 className="appointment-form"
-                onSubmit={handleSubmit}
+                onSubmit={
+                  handleSubmit
+                }
               >
                 <div className="appointment-field">
                   <label htmlFor="appointment-type">
@@ -244,16 +350,22 @@ function AppointmentsPage() {
 
                   <select
                     id="appointment-type"
-                    value={selectedType}
-                    onChange={(event) =>
+                    value={
+                      selectedType
+                    }
+                    onChange={(
+                      event
+                    ) =>
                       setSelectedType(
-                        event.target.value
+                        event.target
+                          .value
                       )
                     }
                     required
                   >
                     <option value="">
-                      Select appointment type
+                      Select appointment
+                      type
                     </option>
 
                     {appointmentTypes.map(
@@ -278,10 +390,15 @@ function AppointmentsPage() {
                     <input
                       id="appointment-date"
                       type="date"
-                      value={selectedDate}
-                      onChange={(event) =>
+                      value={
+                        selectedDate
+                      }
+                      onChange={(
+                        event
+                      ) =>
                         setSelectedDate(
-                          event.target.value
+                          event.target
+                            .value
                         )
                       }
                       required
@@ -295,10 +412,15 @@ function AppointmentsPage() {
 
                     <select
                       id="appointment-time"
-                      value={selectedTime}
-                      onChange={(event) =>
+                      value={
+                        selectedTime
+                      }
+                      onChange={(
+                        event
+                      ) =>
                         setSelectedTime(
-                          event.target.value
+                          event.target
+                            .value
                         )
                       }
                       required
@@ -307,14 +429,20 @@ function AppointmentsPage() {
                         Select time
                       </option>
 
-                      {availableTimes.map((time) => (
-                        <option
-                          key={time}
-                          value={time}
-                        >
-                          {time}
-                        </option>
-                      ))}
+                      {availableTimes.map(
+                        (time) => (
+                          <option
+                            key={
+                              time
+                            }
+                            value={
+                              time
+                            }
+                          >
+                            {time}
+                          </option>
+                        )
+                      )}
                     </select>
                   </div>
                 </div>
@@ -328,8 +456,13 @@ function AppointmentsPage() {
                     id="appointment-note"
                     rows="4"
                     value={note}
-                    onChange={(event) =>
-                      setNote(event.target.value)
+                    onChange={(
+                      event
+                    ) =>
+                      setNote(
+                        event.target
+                          .value
+                      )
                     }
                     placeholder="Add any information for the pharmacist..."
                   />
@@ -344,8 +477,10 @@ function AppointmentsPage() {
                   </span>
 
                   <p>
-                    Appointment availability will be
-                    confirmed by the pharmacy before the
+                    Appointment
+                    availability will be
+                    confirmed by the
+                    pharmacy before the
                     booking is finalized.
                   </p>
                 </div>
@@ -377,12 +512,15 @@ function AppointmentsPage() {
 
         <div>
           <strong>
-            Secure appointment scheduling
+            Secure appointment
+            scheduling
           </strong>
 
           <small>
-            Your appointment information is securely
-            linked to your patient account.
+            Your appointment
+            information is securely
+            linked to your patient
+            account.
           </small>
         </div>
       </div>

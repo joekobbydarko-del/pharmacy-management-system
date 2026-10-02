@@ -1,88 +1,78 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import PatientIcon from "./PatientIcon";
+
+import {
+  getPatientNotifications,
+} from "../utils/patientNotifications";
+
 import "./Notifications.css";
 
-function BellIcon({ size = 21 }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9Z" />
-      <path d="M10 21h4" />
-    </svg>
+const STORAGE_KEY =
+  "patient_notifications";
+
+function Notifications() {
+  const [open, setOpen] =
+    useState(false);
+
+  const [
+    notifications,
+    setNotifications,
+  ] = useState(() =>
+    getPatientNotifications()
   );
-}
 
-function PrescriptionIcon() {
-  return (
-    <span className="notification-type-icon prescription">
-      ✓
-    </span>
-  );
-}
+  const refreshNotifications = () => {
+    setNotifications(
+      getPatientNotifications()
+    );
+  };
 
-function RefillIcon() {
-  return (
-    <span className="notification-type-icon refill">
-      ↻
-    </span>
-  );
-}
+  useEffect(() => {
+    window.addEventListener(
+      "patient-notifications-updated",
+      refreshNotifications
+    );
 
-function AppointmentIcon() {
-  return (
-    <span className="notification-type-icon appointment">
-      ●
-    </span>
-  );
-}
+    window.addEventListener(
+      "storage",
+      refreshNotifications
+    );
 
-export default function Notifications() {
-  const [isOpen, setIsOpen] = useState(false);
+    return () => {
+      window.removeEventListener(
+        "patient-notifications-updated",
+        refreshNotifications
+      );
 
-  const [notifications, setNotifications] = useState([
-    {
-      id: 1,
-      type: "prescription",
-      title: "Prescription update",
-      message: "Your prescription information has been updated.",
-      time: "10 minutes ago",
-      unread: true,
-    },
-    {
-      id: 2,
-      type: "refill",
-      title: "Refill request",
-      message: "Your refill request is waiting for review.",
-      time: "1 hour ago",
-      unread: true,
-    },
-    {
-      id: 3,
-      type: "appointment",
-      title: "Appointment reminder",
-      message: "You have an upcoming pharmacy appointment.",
-      time: "Yesterday",
-      unread: false,
-    },
-  ]);
+      window.removeEventListener(
+        "storage",
+        refreshNotifications
+      );
+    };
+  }, []);
 
-  const unreadCount = notifications.filter(
-    (notification) => notification.unread
-  ).length;
+  useEffect(() => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(notifications)
+    );
+  }, [notifications]);
+
+  const unreadCount =
+    notifications.filter(
+      (notification) =>
+        !notification.read
+    ).length;
 
   const markAsRead = (id) => {
     setNotifications((current) =>
       current.map((notification) =>
         notification.id === id
-          ? { ...notification, unread: false }
+          ? {
+              ...notification,
+              read: true,
+            }
           : notification
       )
     );
@@ -90,129 +80,193 @@ export default function Notifications() {
 
   const markAllAsRead = () => {
     setNotifications((current) =>
-      current.map((notification) => ({
-        ...notification,
-        unread: false,
-      }))
+      current.map(
+        (notification) => ({
+          ...notification,
+          read: true,
+        })
+      )
     );
   };
 
-  return (
-    <div className="notifications-wrapper">
+  const clearNotifications = () => {
+    setNotifications([]);
+  };
 
+  return (
+    <div className="patient-notifications">
       <button
         type="button"
-        className={`notification-button ${
-          isOpen ? "is-open" : ""
-        }`}
+        className="patient-notifications__trigger"
+        onClick={() =>
+          setOpen(
+            (current) => !current
+          )
+        }
         aria-label="Notifications"
-        aria-expanded={isOpen}
-        onClick={() => setIsOpen((current) => !current)}
+        aria-expanded={open}
       >
-        <BellIcon size={21} />
+        <PatientIcon
+          name="bell"
+          size={20}
+        />
 
         {unreadCount > 0 && (
-          <span className="notification-dot">
-            {unreadCount}
+          <span className="patient-notifications__badge">
+            {unreadCount > 9
+              ? "9+"
+              : unreadCount}
           </span>
         )}
       </button>
 
-      {isOpen && (
-        <div className="notifications-panel">
-
-          <div className="notifications-header">
+      {open && (
+        <div className="patient-notifications__menu">
+          <div className="patient-notifications__header">
             <div>
-              <span className="notifications-eyebrow">
-                PHARMACY UPDATES
+              <span>
+                PATIENT UPDATES
               </span>
 
-              <h2>Notifications</h2>
+              <h3>
+                Notifications
+              </h3>
             </div>
 
             {unreadCount > 0 && (
+              <span className="patient-notifications__unread">
+                {unreadCount} unread
+              </span>
+            )}
+          </div>
+
+          {notifications.length >
+            0 && (
+            <div className="patient-notifications__actions">
               <button
                 type="button"
-                className="mark-all-button"
-                onClick={markAllAsRead}
+                onClick={
+                  markAllAsRead
+                }
+                disabled={
+                  unreadCount === 0
+                }
               >
                 Mark all as read
               </button>
-            )}
-          </div>
 
-          <div className="notifications-list">
+              <button
+                type="button"
+                className="patient-notifications__clear"
+                onClick={
+                  clearNotifications
+                }
+              >
+                Clear all
+              </button>
+            </div>
+          )}
 
-            {notifications.length === 0 ? (
-              <div className="notifications-empty">
-                <div className="notifications-empty-icon">
-                  <BellIcon size={25} />
-                </div>
+          <div className="patient-notifications__body">
+            {notifications.length ===
+            0 ? (
+              <div className="patient-notifications__empty">
+                <span className="patient-notifications__empty-icon">
+                  <PatientIcon
+                    name="bell"
+                    size={25}
+                  />
+                </span>
 
-                <h3>No notifications</h3>
+                <h4>
+                  You’re all caught up
+                </h4>
 
                 <p>
-                  You're all caught up. New pharmacy
-                  updates will appear here.
+                  Appointment reminders,
+                  refill updates,
+                  prescription
+                  notifications, and
+                  pharmacy messages will
+                  appear here.
                 </p>
               </div>
             ) : (
-              notifications.map((notification) => (
-                <button
-                  key={notification.id}
-                  type="button"
-                  className={`notification-item ${
-                    notification.unread ? "unread" : ""
-                  }`}
-                  onClick={() => markAsRead(notification.id)}
-                >
-                  {notification.type === "prescription" && (
-                    <PrescriptionIcon />
-                  )}
+              <div className="patient-notifications__list">
+                {notifications.map(
+                  (notification) => (
+                    <button
+                      key={
+                        notification.id
+                      }
+                      type="button"
+                      className={`patient-notification-item ${
+                        notification.read
+                          ? ""
+                          : "is-unread"
+                      }`}
+                      onClick={() =>
+                        markAsRead(
+                          notification.id
+                        )
+                      }
+                    >
+                      <span className="patient-notification-item__icon">
+                        <PatientIcon
+                          name={
+                            notification.icon ||
+                            "bell"
+                          }
+                          size={18}
+                        />
+                      </span>
 
-                  {notification.type === "refill" && (
-                    <RefillIcon />
-                  )}
+                      <span className="patient-notification-item__content">
+                        <strong>
+                          {
+                            notification.title
+                          }
+                        </strong>
 
-                  {notification.type === "appointment" && (
-                    <AppointmentIcon />
-                  )}
+                        <p>
+                          {
+                            notification.message
+                          }
+                        </p>
 
-                  <span className="notification-content">
-                    <strong>
-                      {notification.title}
-                    </strong>
+                        {notification.time && (
+                          <small>
+                            {
+                              notification.time
+                            }
+                          </small>
+                        )}
+                      </span>
 
-                    <span>
-                      {notification.message}
-                    </span>
-
-                    <small>
-                      {notification.time}
-                    </small>
-                  </span>
-
-                  {notification.unread && (
-                    <span className="notification-unread-dot" />
-                  )}
-                </button>
-              ))
+                      {!notification.read && (
+                        <span className="patient-notification-item__dot" />
+                      )}
+                    </button>
+                  )
+                )}
+              </div>
             )}
-
           </div>
 
-          <div className="notifications-footer">
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-            >
-              Close
-            </button>
-          </div>
+          <div className="patient-notifications__footer">
+            <PatientIcon
+              name="shield"
+              size={15}
+            />
 
+            <span>
+              Secure patient notifications
+            </span>
+          </div>
         </div>
       )}
-
     </div>
   );
 }
+
+export default Notifications;

@@ -413,3 +413,309 @@
     font-size: 34px;
   }
 }
+/* =========================================================
+   REFILL REQUESTS PAGE - DARK MODE POLISH
+========================================================= */
+
+html[data-theme="dark"] .refill-page {
+  color: #eefafa;
+}
+
+/* PAGE HEADER */
+
+html[data-theme="dark"] .refill-page-header h1 {
+  color: #f3fbfc;
+}
+
+html[data-theme="dark"] .refill-page-header p {
+  color: #a7c0c8;
+}
+
+html[data-theme="dark"] .refill-eyebrow {
+  color: #5ed7d1;
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
+
+html[data-theme="dark"] .refill-summary-card {
+  background: #122d37;
+  border-color: #294b57;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.16);
+}
+
+html[data-theme="dark"]
+.refill-summary-card
+> div:last-child
+> span {
+  color: #7ce0da;
+}
+
+html[data-theme="dark"]
+.refill-summary-card
+strong {
+  color: #f1fbfc;
+}
+
+html[data-theme="dark"]
+.refill-summary-card
+small {
+  color: #a6bdc5;
+}
+
+
+/* =========================================================
+   MAIN PANELS
+========================================================= */
+
+html[data-theme="dark"] .refill-panel {
+  background: #122d37;
+  border-color: #294b57;
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.16);
+}
+
+html[data-theme="dark"] .refill-panel-header {
+  border-bottom-color: #31515c;
+}
+
+html[data-theme="dark"] .refill-section-label {
+  color: #5ed7d1;
+}
+
+html[data-theme="dark"] .refill-panel-header h2 {
+  color: #f1fbfc;
+}
+
+
+/* =========================================================
+   EMPTY STATES
+========================================================= */
+
+html[data-theme="dark"] .refill-empty h3 {
+  color: #f1fbfc;
+}
+
+html[data-theme="dark"] .refill-empty p {
+  color: #a7c0c8;
+}
+
+html[data-theme="dark"] .refill-empty-icon {
+  background: #dff7f4;
+  color: #0f9f98;
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+html[data-theme="dark"] .refill-field label {
+  color: #eaf7f8;
+}
+
+html[data-theme="dark"] .refill-field select,
+html[data-theme="dark"] .refill-field textarea {
+  border-color: #365864 !important;
+  background: #17343e !important;
+  color: #effafa !important;
+}
+
+html[data-theme="dark"]
+.refill-field select:hover,
+html[data-theme="dark"]
+.refill-field textarea:hover {
+  border-color: #4a707c !important;
+}
+
+html[data-theme="dark"]
+.refill-field select:focus,
+html[data-theme="dark"]
+.refill-field textarea:focus {
+  border-color: #14b8b0 !important;
+
+  box-shadow:
+    0 0 0 4px rgba(20, 184, 176, 0.14) !important;
+}
+
+html[data-theme="dark"]
+.refill-field textarea::placeholder {
+  color: #89a7b1 !important;
+}
+
+html[data-theme="dark"]
+.refill-field select option {
+  background: #17343e;
+  color: #effafa;
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+========================================================= */
+
+html[data-theme="dark"] .refill-submit-button {
+  background: #14a8a2;
+  color: #ffffff;
+
+  box-shadow:
+    0 10px 22px rgba(20, 168, 162, 0.18);
+}
+
+html[data-theme="dark"]
+.refill-submit-button:hover {
+  background: #0f918c;
+
+  box-shadow:
+    0 12px 25px rgba(20, 168, 162, 0.23);
+}
+
+
+/* =========================================================
+   SUCCESS STATE
+========================================================= */
+
+html[data-theme="dark"] .refill-success h3 {
+  color: #f1fbfc;
+}
+
+html[data-theme="dark"] .refill-success p {
+  color: #a7c0c8;
+}
+
+html[data-theme="dark"] .refill-success-icon {
+  background: #dff7f4;
+  color: #0f9f98;
+}
+
+html[data-theme="dark"] .refill-success button {
+  background: #17343e;
+  border-color: #416673;
+  color: #dff7f4;
+}
+
+html[data-theme="dark"]
+.refill-success button:hover {
+  background: #1d3d48;
+  border-color: #14b8b0;
+}
+
+
+/* =========================================================
+   SECURITY BAR
+========================================================= */
+
+html[data-theme="dark"] .refill-security {
+  background: #12353a;
+  border-color: #31515c;
+}
+
+html[data-theme="dark"]
+.refill-security strong {
+  color: #dff8f6;
+}
+
+html[data-theme="dark"]
+.refill-security small {
+  color: #a6bdc5;
+}
+.refill-error {
+  padding: 11px 13px;
+
+  border: 1px solid #f1c7c7;
+  border-radius: 10px;
+
+  background: #fff5f5;
+
+  color: #b94343;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+html[data-theme="dark"] .refill-error {
+  border-color: #744545;
+
+  background: #3a2528;
+
+  color: #ffb6b6;
+}
+
+.refill-submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+/* =========================================================
+   SELECTED PRESCRIPTION PREVIEW
+========================================================= */
+
+.refill-prescription-preview {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 10px;
+
+  padding: 14px;
+
+  border: 1px solid #d7e6eb;
+  border-radius: 12px;
+
+  background: #f7fbfc;
+}
+
+.refill-prescription-preview div {
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.refill-prescription-preview span {
+  color: #7894a7;
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+.refill-prescription-preview strong {
+  color: #073b4c;
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+
+/* DARK MODE */
+
+html[data-theme="dark"]
+.refill-prescription-preview {
+  border-color: #31515c;
+
+  background: #102a34;
+}
+
+html[data-theme="dark"]
+.refill-prescription-preview span {
+  color: #7ce0da;
+}
+
+html[data-theme="dark"]
+.refill-prescription-preview strong {
+  color: #f1fbfc;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+  .refill-prescription-preview {
+    grid-template-columns: 1fr;
+  }
+}
