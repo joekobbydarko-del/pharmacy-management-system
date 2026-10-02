@@ -1,0 +1,400 @@
+.orders-page {
+  width: 100%;
+  max-width: 1250px;
+  margin: 0 auto;
+  color: #073b4c;
+}
+
+.orders-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 30px;
+  margin-bottom: 26px;
+}
+
+.orders-eyebrow {
+  display: block;
+  color: #0f9f98;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.orders-page-header h1 {
+  margin: 7px 0 8px;
+  color: #073b4c;
+  font-size: 40px;
+  line-height: 1.1;
+  font-weight: 900;
+  letter-spacing: -1px;
+}
+
+.orders-page-header p {
+  max-width: 690px;
+  margin: 0;
+  color: #7894a7;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.orders-patient-card {
+  min-width: 210px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px;
+  border: 1px solid #d9e8ed;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(7, 59, 76, 0.05);
+}
+
+.orders-patient-card > span {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 43px;
+  border-radius: 50%;
+  background: #0f9f98;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.orders-patient-card div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.orders-patient-card small {
+  color: #0f9f98;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1.3px;
+}
+
+.orders-patient-card strong {
+  color: #073b4c;
+  font-size: 12px;
+}
+
+/* SUMMARY */
+
+.orders-summary-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+  gap: 15px;
+  margin-bottom: 18px;
+}
+
+.orders-summary-card {
+  min-height: 118px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid #d9e8ed;
+  border-radius: 17px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(7, 59, 76, 0.04);
+}
+
+.orders-summary-icon {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 50px;
+  border-radius: 14px;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.orders-summary-icon.blue {
+  background: #e8f2ff;
+  color: #1682d8;
+}
+
+.orders-summary-icon.orange {
+  background: #fff1dc;
+  color: #d98b20;
+}
+
+.orders-summary-icon.teal {
+  background: #def7f3;
+  color: #0f9f98;
+}
+
+.orders-summary-card span {
+  display: block;
+  color: #073b4c;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.7px;
+}
+
+.orders-summary-card strong {
+  display: block;
+  margin-top: 4px;
+  color: #073b4c;
+  font-size: 26px;
+  font-weight: 900;
+}
+
+.orders-summary-card small {
+  display: block;
+  margin-top: 4px;
+  color: #7894a7;
+  font-size: 10px;
+}
+
+/* PANEL */
+
+.orders-panel {
+  overflow: hidden;
+  border: 1px solid #d9e8ed;
+  border-radius: 17px;
+  background: #ffffff;
+  box-shadow: 0 10px 28px rgba(7, 59, 76, 0.04);
+}
+
+.orders-panel-header {
+  min-height: 74px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 18px;
+  border-bottom: 1px solid #e5eef2;
+}
+
+.orders-panel-header > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.orders-panel-icon {
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 39px;
+  border-radius: 11px;
+  background: #e1f7f4;
+  color: #0f9f98;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.orders-section-label {
+  display: block;
+  color: #0f9f98;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 1.3px;
+}
+
+.orders-panel-header h2 {
+  margin: 2px 0 0;
+  color: #073b4c;
+  font-size: 17px;
+  font-weight: 900;
+}
+
+/* SEARCH */
+
+.orders-search {
+  width: 240px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  border: 1px solid #d7e5ea;
+  border-radius: 10px;
+  background: #fbfdfe;
+  color: #0f9f98;
+}
+
+.orders-search input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #073b4c;
+  font: inherit;
+  font-size: 11px;
+}
+
+.orders-search input::placeholder {
+  color: #91a8b6;
+}
+
+.orders-panel-body {
+  min-height: 370px;
+}
+
+/* EMPTY */
+
+.orders-empty {
+  min-height: 370px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 35px;
+  text-align: center;
+}
+
+.orders-empty-icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 14px;
+  border-radius: 16px;
+  background: #e1f7f4;
+  color: #0f9f98;
+  font-size: 20px;
+}
+
+.orders-empty h3 {
+  margin: 0;
+  color: #073b4c;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.orders-empty p {
+  max-width: 470px;
+  margin: 8px 0 0;
+  color: #7894a7;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* TABLE */
+
+.orders-table-wrapper {
+  overflow-x: auto;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 780px;
+}
+
+.orders-table th {
+  padding: 13px 16px;
+  border-bottom: 1px solid #e5eef2;
+  background: #f8fbfc;
+  color: #7894a7;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.7px;
+  text-align: left;
+}
+
+.orders-table td {
+  padding: 15px 16px;
+  border-bottom: 1px solid #edf2f4;
+  color: #526f82;
+  font-size: 11px;
+}
+
+.orders-table td strong {
+  color: #073b4c;
+}
+
+.order-status {
+  display: inline-flex;
+  padding: 5px 9px;
+  border-radius: 20px;
+  background: #def7f3;
+  color: #0f9f98;
+  font-size: 9px;
+  font-weight: 800;
+}
+
+/* SECURITY */
+
+.orders-security {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-top: 17px;
+  padding: 12px 14px;
+  border: 1px solid #c8e8e6;
+  border-radius: 14px;
+  background: #f1fbfa;
+}
+
+.orders-security > span {
+  width: 38px;
+  height: 38px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 38px;
+  border-radius: 50%;
+  background: #daf5f2;
+  color: #0f9f98;
+  font-weight: 900;
+}
+
+.orders-security div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.orders-security strong {
+  color: #073b4c;
+  font-size: 11px;
+}
+
+.orders-security small {
+  color: #7894a7;
+  font-size: 9px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+  .orders-summary-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .orders-page-header {
+    flex-direction: column;
+  }
+
+  .orders-patient-card {
+    width: 100%;
+  }
+
+  .orders-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .orders-panel-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .orders-search {
+    width: 100%;
+  }
+
+  .orders-page-header h1 {
+    font-size: 34px;
+  }
+}
