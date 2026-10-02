@@ -1,0 +1,12 @@
+# Environment files
+.env
+**/.env
+
+# Python cache
+__pycache__/
+**/__pycache__/
+*.pyc
+
+# Frontend generated files
+node_modules/
+dist/
