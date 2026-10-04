@@ -1,4 +1,8 @@
-import { useState } from "react";
+import {
+  useMemo,
+  useState,
+} from "react";
+
 import {
   NavLink,
   Outlet,
@@ -9,7 +13,11 @@ import Notifications from "./Notifications";
 
 import "./PatientLayout.css";
 
-function Icon({ name, size = 20 }) {
+
+function Icon({
+  name,
+  size = 20,
+}) {
   const common = {
     width: size,
     height: size,
@@ -22,19 +30,50 @@ function Icon({ name, size = 20 }) {
     "aria-hidden": true,
   };
 
+
   const icons = {
     dashboard: (
       <>
-        <rect x="3" y="3" width="7" height="7" rx="1.5" />
-        <rect x="14" y="3" width="7" height="7" rx="1.5" />
-        <rect x="3" y="14" width="7" height="7" rx="1.5" />
-        <rect x="14" y="14" width="7" height="7" rx="1.5" />
+        <rect
+          x="3"
+          y="3"
+          width="7"
+          height="7"
+          rx="1.5"
+        />
+        <rect
+          x="14"
+          y="3"
+          width="7"
+          height="7"
+          rx="1.5"
+        />
+        <rect
+          x="3"
+          y="14"
+          width="7"
+          height="7"
+          rx="1.5"
+        />
+        <rect
+          x="14"
+          y="14"
+          width="7"
+          height="7"
+          rx="1.5"
+        />
       </>
     ),
 
     calendar: (
       <>
-        <rect x="3.5" y="5" width="17" height="15.5" rx="2.2" />
+        <rect
+          x="3.5"
+          y="5"
+          width="17"
+          height="15.5"
+          rx="2.2"
+        />
         <path d="M8 3v4M16 3v4M3.5 9.5h17" />
         <path d="M8 13h.01M12 13h.01M16 13h.01" />
       </>
@@ -51,8 +90,16 @@ function Icon({ name, size = 20 }) {
     cart: (
       <>
         <path d="M3 4h2l2.1 10.1a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.5L20.5 8H6" />
-        <circle cx="9" cy="19" r="1.2" />
-        <circle cx="17" cy="19" r="1.2" />
+        <circle
+          cx="9"
+          cy="19"
+          r="1.2"
+        />
+        <circle
+          cx="17"
+          cy="19"
+          r="1.2"
+        />
       </>
     ),
 
@@ -67,28 +114,64 @@ function Icon({ name, size = 20 }) {
 
     orders: (
       <>
-        <rect x="5" y="3.5" width="14" height="17" rx="2" />
+        <rect
+          x="5"
+          y="3.5"
+          width="14"
+          height="17"
+          rx="2"
+        />
         <path d="M8 8h8M8 12h8M8 16h5" />
       </>
     ),
 
     search: (
       <>
-        <circle cx="10.8" cy="10.8" r="6.5" />
+        <circle
+          cx="10.8"
+          cy="10.8"
+          r="6.5"
+        />
         <path d="m16 16 4.5 4.5" />
+      </>
+    ),
+
+    clock: (
+      <>
+        <circle
+          cx="12"
+          cy="12"
+          r="8.5"
+        />
+        <path d="M12 7.5V12l3 2" />
+      </>
+    ),
+
+    message: (
+      <>
+        <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" />
+        <path d="M8 9h8M8 13h5" />
       </>
     ),
 
     user: (
       <>
-        <circle cx="12" cy="7.5" r="3.5" />
+        <circle
+          cx="12"
+          cy="7.5"
+          r="3.5"
+        />
         <path d="M5 21a7 7 0 0 1 14 0" />
       </>
     ),
 
     settings: (
       <>
-        <circle cx="12" cy="12" r="3" />
+        <circle
+          cx="12"
+          cy="12"
+          r="3"
+        />
         <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2h-2.6v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1-1.8-1.8.1-.1A1.7 1.7 0 0 0 8 15a1.7 1.7 0 0 0-1.5-1H6.3v-2.6h.2A1.7 1.7 0 0 0 8 10a1.7 1.7 0 0 0-.3-1.9l-.1-.1 1.8-1.8.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5v-.2h2.6v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.8 1.8-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.2V14h-.2a1.7 1.7 0 0 0-1.5 1Z" />
       </>
     ),
@@ -115,12 +198,15 @@ function Icon({ name, size = 20 }) {
     ),
   };
 
+
   return (
     <svg {...common}>
-      {icons[name] || icons.dashboard}
+      {icons[name] ||
+        icons.dashboard}
     </svg>
   );
 }
+
 
 const navigation = [
   {
@@ -156,18 +242,158 @@ const navigation = [
   },
 ];
 
+
+const searchablePages = [
+  {
+    title: "Dashboard",
+    description:
+      "Patient portal overview",
+    path: "/patient",
+    icon: "dashboard",
+    keywords:
+      "dashboard home overview",
+  },
+
+  {
+    title: "Appointments",
+    description:
+      "Book and review appointments",
+    path:
+      "/patient/appointments",
+    icon: "calendar",
+    keywords:
+      "appointment appointments booking book schedule",
+  },
+
+  {
+    title: "Prescriptions",
+    description:
+      "View your medications",
+    path:
+      "/patient/prescriptions",
+    icon: "pill",
+    keywords:
+      "prescription prescriptions medication medicines drugs dosage",
+  },
+
+  {
+    title: "Order Medicines",
+    description:
+      "Submit medicine orders",
+    path: "/patient/orders",
+    icon: "cart",
+    keywords:
+      "medicine medicines drug drugs order buy pharmacy",
+  },
+
+  {
+    title: "Refill Requests",
+    description:
+      "Request medication refills",
+    path: "/patient/refills",
+    icon: "refresh",
+    keywords:
+      "refill refills request medication",
+  },
+
+  {
+    title: "My Orders",
+    description:
+      "View medicine order history",
+    path:
+      "/patient/order-history",
+    icon: "orders",
+    keywords:
+      "orders order history pending completed",
+  },
+
+  {
+    title: "Activity History",
+    description:
+      "View patient activity",
+    path:
+      "/patient/activity",
+    icon: "clock",
+    keywords:
+      "activity recent history events",
+  },
+
+  {
+    title: "Contact Pharmacist",
+    description:
+      "Send a message to the pharmacist",
+    path:
+      "/patient/contact-pharmacist",
+    icon: "message",
+    keywords:
+      "pharmacist contact message pharmacy help",
+  },
+
+  {
+    title: "Technical Support",
+    description:
+      "Get help using the portal",
+    path:
+      "/patient/support",
+    icon: "support",
+    keywords:
+      "support technical help problem issue",
+  },
+
+  {
+    title: "My Profile",
+    description:
+      "View patient information",
+    path:
+      "/patient/profile",
+    icon: "user",
+    keywords:
+      "profile account patient information",
+  },
+
+  {
+    title: "Account Settings",
+    description:
+      "Manage portal preferences",
+    path:
+      "/patient/settings",
+    icon: "settings",
+    keywords:
+      "settings account theme dark light preferences",
+  },
+];
+
+
 function PatientLayout() {
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
-  const [mobileOpen, setMobileOpen] =
-    useState(false);
+  const [
+    mobileOpen,
+    setMobileOpen,
+  ] = useState(false);
 
-  const [profileOpen, setProfileOpen] =
-    useState(false);
+  const [
+    profileOpen,
+    setProfileOpen,
+  ] = useState(false);
+
+  const [
+    searchQuery,
+    setSearchQuery,
+  ] = useState("");
+
+  const [
+    searchOpen,
+    setSearchOpen,
+  ] = useState(false);
+
 
   const userName =
-    localStorage.getItem("user_name") ||
-    "Patient";
+    localStorage.getItem(
+      "user_name"
+    ) || "Patient";
+
 
   const initials =
     userName
@@ -180,9 +406,85 @@ function PatientLayout() {
       )
       .join("") || "P";
 
-  const closeProfileMenu = () => {
-    setProfileOpen(false);
+
+  /* =========================================================
+     SEARCH
+  ========================================================= */
+
+  const searchResults =
+    useMemo(() => {
+      const query =
+        searchQuery
+          .trim()
+          .toLowerCase();
+
+      if (!query) {
+        return [];
+      }
+
+      return searchablePages
+        .filter((page) => {
+          const searchText =
+            `${page.title} ${page.description} ${page.keywords}`
+              .toLowerCase();
+
+          return searchText.includes(
+            query
+          );
+        })
+        .slice(0, 6);
+    }, [searchQuery]);
+
+
+  const openSearchResult = (
+    path
+  ) => {
+    setSearchQuery("");
+    setSearchOpen(false);
+
+    navigate(path);
   };
+
+
+  const handleSearchSubmit = (
+    event
+  ) => {
+    event.preventDefault();
+
+    const query =
+      searchQuery.trim();
+
+    if (!query) {
+      return;
+    }
+
+    if (
+      searchResults.length > 0
+    ) {
+      openSearchResult(
+        searchResults[0].path
+      );
+
+      return;
+    }
+
+    setSearchOpen(true);
+  };
+
+
+  /* =========================================================
+     PROFILE
+  ========================================================= */
+
+  const closeProfileMenu =
+    () => {
+      setProfileOpen(false);
+    };
+
+
+  /* =========================================================
+     LOGOUT
+  ========================================================= */
 
   const handleLogout = () => {
     localStorage.removeItem(
@@ -212,8 +514,12 @@ function PatientLayout() {
     navigate("/login");
   };
 
+
   return (
     <div className="patient-shell">
+
+      {/* MOBILE BACKDROP */}
+
       {mobileOpen && (
         <button
           type="button"
@@ -225,6 +531,11 @@ function PatientLayout() {
         />
       )}
 
+
+      {/* =====================================================
+          SIDEBAR
+      ===================================================== */}
+
       <aside
         className={`patient-sidebar ${
           mobileOpen
@@ -232,12 +543,16 @@ function PatientLayout() {
             : ""
         }`}
       >
+
         <div className="patient-sidebar__brand">
+
           <div className="patient-sidebar__logo">
+
             <img
               src="/dr-evans-logo.png"
               alt="Dr. Evans Pharmacy"
             />
+
           </div>
 
           <strong>
@@ -247,67 +562,93 @@ function PatientLayout() {
           <span>
             SMARTER HEALTH. BETTER LIVES.
           </span>
+
         </div>
 
+
         <div className="patient-sidebar__divider" />
+
 
         <span className="patient-sidebar__label">
           MAIN MENU
         </span>
 
-        <nav className="patient-sidebar__nav">
-          {navigation.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.end}
-              className={({
-                isActive,
-              }) =>
-                `patient-nav-link ${
-                  isActive
-                    ? "is-active"
-                    : ""
-                }`
-              }
-              onClick={() =>
-                setMobileOpen(false)
-              }
-            >
-              <span className="patient-nav-link__icon">
-                <Icon
-                  name={item.icon}
-                  size={19}
-                />
-              </span>
 
-              <span>
-                {item.label}
-              </span>
-            </NavLink>
-          ))}
+        <nav className="patient-sidebar__nav">
+
+          {navigation.map(
+            (item) => (
+
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                className={({
+                  isActive,
+                }) =>
+                  `patient-nav-link ${
+                    isActive
+                      ? "is-active"
+                      : ""
+                  }`
+                }
+                onClick={() =>
+                  setMobileOpen(
+                    false
+                  )
+                }
+              >
+
+                <span className="patient-nav-link__icon">
+
+                  <Icon
+                    name={
+                      item.icon
+                    }
+                    size={19}
+                  />
+
+                </span>
+
+                <span>
+                  {item.label}
+                </span>
+
+              </NavLink>
+
+            )
+          )}
+
         </nav>
 
+
         <div className="patient-sidebar__bottom">
+
           <button
             type="button"
             className="patient-support-button"
             onClick={() => {
-              setMobileOpen(false);
+              setMobileOpen(
+                false
+              );
 
               navigate(
                 "/patient/support"
               );
             }}
           >
+
             <span>
+
               <Icon
                 name="support"
                 size={18}
               />
+
             </span>
 
             <div>
+
               <strong>
                 Technical Support
               </strong>
@@ -315,30 +656,54 @@ function PatientLayout() {
               <small>
                 Need help?
               </small>
+
             </div>
+
           </button>
+
 
           <button
             type="button"
             className="patient-logout-button"
-            onClick={handleLogout}
+            onClick={
+              handleLogout
+            }
           >
+
             <span>
+
               <Icon
                 name="logout"
                 size={18}
               />
+
             </span>
 
             <strong>
               Logout
             </strong>
+
           </button>
+
         </div>
+
       </aside>
 
+
+      {/* =====================================================
+          MAIN
+      ===================================================== */}
+
       <div className="patient-main">
+
+        {/* ===================================================
+            HEADER
+        =================================================== */}
+
         <header className="patient-topbar">
+
+          {/* MOBILE MENU */}
+
           <button
             type="button"
             className="mobile-menu-button"
@@ -352,25 +717,39 @@ function PatientLayout() {
             <span />
           </button>
 
-          <div className="patient-topbar__logo">
+
+          {/* LARGE HEADER LOGO ONLY */}
+
+          <button
+            type="button"
+            className="patient-header-logo"
+            onClick={() =>
+              navigate("/patient")
+            }
+            aria-label="Go to patient dashboard"
+          >
+
             <img
               src="/dr-evans-logo.png"
               alt="Dr. Evans Pharmacy"
             />
 
-            <div>
-              <strong>
-                Dr. Evans Pharmacy
-              </strong>
+          </button>
 
-              <span>
-                Patient Portal
-              </span>
-            </div>
-          </div>
+
+          {/* =================================================
+              FUNCTIONAL SEARCH
+          ================================================= */}
 
           <div className="patient-topbar__search-wrap">
-            <div className="patient-search">
+
+            <form
+              className="patient-search"
+              onSubmit={
+                handleSearchSubmit
+              }
+            >
+
               <Icon
                 name="search"
                 size={19}
@@ -378,16 +757,147 @@ function PatientLayout() {
 
               <input
                 type="search"
-                placeholder="Search medicines, orders, or prescriptions..."
+                value={
+                  searchQuery
+                }
+                onChange={(
+                  event
+                ) => {
+                  setSearchQuery(
+                    event.target
+                      .value
+                  );
+
+                  setSearchOpen(
+                    true
+                  );
+                }}
+                onFocus={() =>
+                  setSearchOpen(
+                    true
+                  )
+                }
+                placeholder="Search appointments, prescriptions, orders, refills..."
                 aria-label="Search pharmacy portal"
               />
-            </div>
+
+              {searchQuery && (
+                <button
+                  type="button"
+                  className="patient-search-clear"
+                  onClick={() => {
+                    setSearchQuery(
+                      ""
+                    );
+
+                    setSearchOpen(
+                      false
+                    );
+                  }}
+                  aria-label="Clear search"
+                >
+                  ×
+                </button>
+              )}
+
+            </form>
+
+
+            {/* SEARCH RESULTS */}
+
+            {searchOpen &&
+              searchQuery.trim() && (
+
+              <div className="patient-search-results">
+
+                {searchResults.length >
+                0 ? (
+
+                  searchResults.map(
+                    (result) => (
+
+                      <button
+                        key={
+                          result.path
+                        }
+                        type="button"
+                        className="patient-search-result"
+                        onClick={() =>
+                          openSearchResult(
+                            result.path
+                          )
+                        }
+                      >
+
+                        <span>
+
+                          <Icon
+                            name={
+                              result.icon
+                            }
+                            size={18}
+                          />
+
+                        </span>
+
+                        <div>
+
+                          <strong>
+                            {
+                              result.title
+                            }
+                          </strong>
+
+                          <small>
+                            {
+                              result.description
+                            }
+                          </small>
+
+                        </div>
+
+                      </button>
+
+                    )
+                  )
+
+                ) : (
+
+                  <div className="patient-search-empty">
+
+                    <strong>
+                      No portal section found
+                    </strong>
+
+                    <small>
+                      Try appointments,
+                      prescriptions,
+                      refills, orders or
+                      support.
+                    </small>
+
+                  </div>
+
+                )}
+
+              </div>
+
+            )}
+
           </div>
 
+
+          {/* =================================================
+              ACTIONS
+          ================================================= */}
+
           <div className="patient-topbar__actions">
+
             <Notifications />
 
+
             <div className="topbar-menu">
+
               <button
                 type="button"
                 className="profile-trigger"
@@ -401,11 +911,13 @@ function PatientLayout() {
                   profileOpen
                 }
               >
+
                 <span className="profile-avatar">
                   {initials}
                 </span>
 
                 <span className="profile-trigger__text">
+
                   <strong>
                     {userName}
                   </strong>
@@ -413,22 +925,29 @@ function PatientLayout() {
                   <small>
                     Patient
                   </small>
+
                 </span>
 
                 <Icon
                   name="chevron"
                   size={15}
                 />
+
               </button>
 
+
               {profileOpen && (
+
                 <div className="profile-menu">
+
                   <div className="profile-menu__header">
+
                     <span className="profile-avatar profile-avatar--large">
                       {initials}
                     </span>
 
                     <div>
+
                       <strong>
                         {userName}
                       </strong>
@@ -436,13 +955,18 @@ function PatientLayout() {
                       <small>
                         Patient account
                       </small>
+
                     </div>
+
                   </div>
 
+
                   <div className="profile-menu__section">
+
                     <span>
                       ACCOUNT
                     </span>
+
 
                     <button
                       type="button"
@@ -454,12 +978,14 @@ function PatientLayout() {
                         );
                       }}
                     >
+
                       <Icon
                         name="user"
                         size={18}
                       />
 
                       <div>
+
                         <strong>
                           My Profile
                         </strong>
@@ -467,8 +993,11 @@ function PatientLayout() {
                         <small>
                           View your patient information
                         </small>
+
                       </div>
+
                     </button>
+
 
                     <button
                       type="button"
@@ -480,12 +1009,14 @@ function PatientLayout() {
                         );
                       }}
                     >
+
                       <Icon
                         name="settings"
                         size={18}
                       />
 
                       <div>
+
                         <strong>
                           Account Settings
                         </strong>
@@ -493,9 +1024,13 @@ function PatientLayout() {
                         <small>
                           Manage your account preferences
                         </small>
+
                       </div>
+
                     </button>
+
                   </div>
+
 
                   <button
                     type="button"
@@ -504,25 +1039,38 @@ function PatientLayout() {
                       handleLogout
                     }
                   >
+
                     <Icon
                       name="logout"
                       size={18}
                     />
 
                     Logout
+
                   </button>
+
                 </div>
+
               )}
+
             </div>
+
           </div>
+
         </header>
+
+
+        {/* PAGE */}
 
         <main className="patient-content">
           <Outlet />
         </main>
+
       </div>
+
     </div>
   );
 }
+
 
 export default PatientLayout;

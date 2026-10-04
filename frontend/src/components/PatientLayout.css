@@ -1,114 +1,188 @@
 :root {
   --patient-navy: #073b4c;
   --patient-navy-2: #0b4860;
+
   --patient-teal: #0f9f98;
   --patient-teal-bright: #14b8b0;
+
   --patient-bg: #eef5f7;
+
   --patient-white: #ffffff;
+
   --patient-border: #dce9ed;
-  --patient-muted: #7190a4;
-  --patient-shadow: 0 12px 32px rgba(7, 59, 76, 0.07);
+
+  --patient-muted: #5f7f91;
+
+  --patient-shadow:
+    0 12px 32px
+    rgba(7, 59, 76, 0.07);
 }
+
 
 * {
   box-sizing: border-box;
 }
 
+
+/* =========================================================
+   SHELL
+========================================================= */
+
 .patient-shell {
   min-height: 100vh;
+
   display: flex;
-  background: var(--patient-bg);
-  color: var(--patient-navy);
+
+  background:
+    var(--patient-bg);
+
+  color:
+    var(--patient-navy);
 }
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
 
 .patient-sidebar {
   position: fixed;
+
   inset: 0 auto 0 0;
+
   z-index: 100;
+
   width: 238px;
+
   display: flex;
   flex-direction: column;
-  padding: 22px 14px 15px;
-  background: linear-gradient(
-    180deg,
-    #087d7a 0%,
-    #07918b 48%,
-    #087f7c 100%
-  );
+
+  padding:
+    22px 14px 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #087d7a 0%,
+      #07918b 48%,
+      #087f7c 100%
+    );
+
   color: #ffffff;
 }
+
+
+/* BRAND */
 
 .patient-sidebar__brand {
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
+
   padding: 0 8px;
+
+  text-align: center;
 }
 
 .patient-sidebar__logo {
   width: 82px;
   height: 82px;
+
   display: grid;
   place-items: center;
+
   margin-bottom: 12px;
+
   border-radius: 17px;
+
   background: #ffffff;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
 }
 
 .patient-sidebar__logo img {
   width: 60px;
   height: 60px;
+
   object-fit: contain;
 }
 
 .patient-sidebar__brand strong {
+  color: #ffffff;
+
   font-size: 16px;
   font-weight: 900;
-  letter-spacing: -0.4px;
 }
 
 .patient-sidebar__brand span {
-  margin-top: 4px;
-  color: rgba(255, 255, 255, 0.76);
-  font-size: 8px;
+  margin-top: 5px;
+
+  color: #d9fffb;
+
+  font-size: 9px;
   font-weight: 900;
-  letter-spacing: 1.2px;
+
+  letter-spacing: 1.25px;
 }
+
+
+/* DIVIDER */
 
 .patient-sidebar__divider {
   height: 1px;
-  margin: 20px 7px 18px;
-  background: rgba(255, 255, 255, 0.18);
+
+  margin:
+    20px 7px 18px;
+
+  background:
+    rgba(255, 255, 255, 0.2);
 }
+
+
+/* LABEL */
 
 .patient-sidebar__label {
   padding: 0 10px;
-  color: rgba(255, 255, 255, 0.66);
-  font-size: 9px;
+
+  color: #c9f4f1;
+
+  font-size: 10px;
   font-weight: 900;
-  letter-spacing: 1.6px;
+
+  letter-spacing: 1.7px;
 }
+
+
+/* =========================================================
+   SIDEBAR NAVIGATION
+========================================================= */
 
 .patient-sidebar__nav {
   display: flex;
   flex-direction: column;
+
   gap: 5px;
+
   margin-top: 9px;
 }
 
 .patient-nav-link {
-  min-height: 45px;
+  min-height: 47px;
+
   display: flex;
   align-items: center;
+
   gap: 11px;
+
   padding: 7px 10px;
+
   border-radius: 12px;
-  color: rgba(255, 255, 255, 0.86);
+
+  color: #efffff;
+
   text-decoration: none;
-  font-size: 12px;
+
+  font-size: 13px;
   font-weight: 800;
+
   transition:
     background 0.18s ease,
     color 0.18s ease,
@@ -117,181 +191,566 @@
 
 .patient-nav-link:hover {
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.1);
+
+  background:
+    rgba(255, 255, 255, 0.13);
+
+  transform:
+    translateX(2px);
 }
 
 .patient-nav-link.is-active {
-  color: var(--patient-navy);
+  color: #063d4d;
+
   background: #ffffff;
-  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.08);
+
+  transform: none;
+
+  box-shadow:
+    0 7px 18px
+    rgba(0, 0, 0, 0.09);
 }
 
 .patient-nav-link__icon {
   width: 34px;
   height: 34px;
+
   display: grid;
   place-items: center;
+
   flex: 0 0 34px;
+
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.12);
+
+  background:
+    rgba(255, 255, 255, 0.14);
 }
 
-.patient-nav-link.is-active .patient-nav-link__icon {
-  color: var(--patient-teal);
+.patient-nav-link.is-active
+.patient-nav-link__icon {
+  color:
+    var(--patient-teal);
+
   background: #e3f8f6;
 }
 
+
+/* =========================================================
+   SIDEBAR BOTTOM
+========================================================= */
+
 .patient-sidebar__bottom {
   margin-top: auto;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+
+  padding-top: 14px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.22);
 }
 
-.patient-support-button,
-.patient-logout-button {
-  width: 100%;
-  border: 0;
-  cursor: pointer;
-  font: inherit;
-}
+
+/* SUPPORT */
 
 .patient-support-button {
+  width: 100%;
+
+  min-height: 58px;
+
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 11px 9px;
-  border-radius: 11px;
+
+  gap: 13px;
+
+  padding: 9px 12px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.2);
+
+  border-radius: 13px;
+
+  background:
+    rgba(255, 255, 255, 0.1);
+
   color: #ffffff;
-  background: transparent;
+
   text-align: left;
+
+  cursor: pointer;
+
+  font: inherit;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
 }
 
-.patient-support-button:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
+.patient-support-button > span {
+  width: 38px;
+  height: 38px;
 
-.patient-support-button > span,
-.patient-logout-button > span {
-  width: 34px;
-  height: 34px;
   display: grid;
   place-items: center;
-  flex: 0 0 34px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.12);
+
+  flex: 0 0 38px;
+
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.15);
 }
 
 .patient-support-button div {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+
+  gap: 3px;
 }
 
 .patient-support-button strong {
-  font-size: 11px;
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 900;
 }
 
 .patient-support-button small {
-  color: rgba(255, 255, 255, 0.62);
-  font-size: 9px;
+  color: #cbefed;
+
+  font-size: 9.5px;
 }
 
+.patient-support-button:hover {
+  background: #075563;
+
+  border-color: #147482;
+
+  transform:
+    translateY(-1px);
+}
+
+
+/* LOGOUT */
+
 .patient-logout-button {
+  width: 100%;
+
+  min-height: 54px;
+
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 9px;
-  min-height: 43px;
-  margin-top: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 11px;
+  justify-content: flex-start;
+
+  gap: 15px;
+
+  padding: 8px 12px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.2);
+
+  border-radius: 13px;
+
+  background:
+    rgba(255, 255, 255, 0.06);
+
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.04);
-  font-size: 11px;
-  font-weight: 800;
+
+  font: inherit;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.patient-logout-button > span {
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 38px;
+
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.13);
 }
 
 .patient-logout-button:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background:
+    rgba(190, 49, 55, 0.32);
+
+  border-color:
+    rgba(255, 160, 164, 0.55);
+
+  transform:
+    translateY(-1px);
 }
 
+
+/* =========================================================
+   MAIN
+========================================================= */
+
 .patient-main {
-  width: calc(100% - 238px);
+  width:
+    calc(100% - 238px);
+
   min-width: 0;
+
   margin-left: 238px;
 }
 
+
+/* =========================================================
+   HEADER
+========================================================= */
+
 .patient-topbar {
   position: sticky;
+
   top: 0;
+
   z-index: 80;
-  min-height: 78px;
-  display: flex;
+
+  height: 82px;
+
+  display: grid;
+
+  grid-template-columns:
+    90px
+    minmax(320px, 720px)
+    auto;
+
   align-items: center;
-  gap: 24px;
-  padding: 12px 28px;
-  border-bottom: 1px solid var(--patient-border);
-  background: rgba(255, 255, 255, 0.96);
-  backdrop-filter: blur(12px);
+
+  gap: 28px;
+
+  padding:
+    10px 28px;
+
+  border-bottom:
+    1px solid
+    var(--patient-border);
+
+  background:
+    rgba(255, 255, 255, 0.97);
+
+  backdrop-filter:
+    blur(12px);
 }
 
-.patient-topbar__brand {
-  display: none;
-  align-items: center;
-  gap: 9px;
+
+/* =========================================================
+   HEADER LARGE LOGO
+========================================================= */
+
+.patient-header-logo {
+  width: 68px;
+  height: 62px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    background 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
-.patient-topbar__brand img {
-  width: 36px;
-  height: 36px;
+.patient-header-logo img {
+  width: 57px;
+  height: 57px;
+
+  display: block;
+
   object-fit: contain;
 }
 
-.patient-topbar__brand div {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+.patient-header-logo:hover {
+  transform:
+    translateY(-1px);
+
+  background: #f6fcfb;
+
+  box-shadow:
+    0 7px 17px
+    rgba(7, 59, 76, 0.08);
 }
 
-.patient-topbar__brand strong {
-  color: var(--patient-navy);
-  font-size: 13px;
+
+/* =========================================================
+   SEARCH WRAPPER
+========================================================= */
+
+.patient-topbar__search-wrap {
+  position: relative;
+
+  width: 100%;
+
+  justify-self: center;
 }
 
-.patient-topbar__brand span {
-  color: var(--patient-muted);
-  font-size: 9px;
-}
+
+/* =========================================================
+   SEARCH
+========================================================= */
 
 .patient-search {
-  width: min(720px, 100%);
-  height: 42px;
+  width: 100%;
+  height: 48px;
+
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 0 auto;
-  padding: 0 14px;
-  border: 1px solid #d6e5ea;
-  border-radius: 12px;
-  background: #fbfdfe;
-  color: var(--patient-teal);
+
+  gap: 11px;
+
+  padding:
+    0 14px;
+
+  border:
+    1px solid #d1e2e7;
+
+  border-radius: 13px;
+
+  background: #f9fcfd;
+
+  color:
+    var(--patient-teal);
+
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    background 0.18s ease;
+}
+
+.patient-search:focus-within {
+  border-color:
+    #66c8c3;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(15, 159, 152, 0.1);
 }
 
 .patient-search input {
   width: 100%;
-  border: 0;
+  height: 100%;
+
+  border: 0 !important;
+
   outline: 0;
-  background: transparent;
-  color: var(--patient-navy);
+
+  background:
+    transparent !important;
+
+  color:
+    var(--patient-navy) !important;
+
   font: inherit;
+
   font-size: 12px;
+  font-weight: 600;
 }
 
-.patient-search input::placeholder {
-  color: #91a8b6;
+.patient-search
+input::placeholder {
+  color: #7896a6;
+
+  opacity: 1;
 }
+
+
+/* CLEAR BUTTON */
+
+.patient-search-clear {
+  width: 28px;
+  height: 28px;
+
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 28px;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 50%;
+
+  background: #e8f5f4;
+
+  color:
+    var(--patient-teal);
+
+  font-size: 19px;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   SEARCH RESULTS DROPDOWN
+========================================================= */
+
+.patient-search-results {
+  position: absolute;
+
+  top:
+    calc(100% + 8px);
+
+  left: 0;
+  right: 0;
+
+  z-index: 300;
+
+  overflow: hidden;
+
+  padding: 7px;
+
+  border:
+    1px solid
+    var(--patient-border);
+
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 18px 40px
+    rgba(7, 59, 76, 0.16);
+}
+
+.patient-search-result {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  padding: 10px;
+
+  border: 0;
+  border-radius: 10px;
+
+  background: transparent;
+
+  color:
+    var(--patient-navy);
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.patient-search-result:hover {
+  background: #f0faf9;
+}
+
+.patient-search-result
+> span {
+  width: 36px;
+  height: 36px;
+
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 36px;
+
+  border-radius: 10px;
+
+  background: #def6f4;
+
+  color:
+    var(--patient-teal);
+}
+
+.patient-search-result div {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 2px;
+}
+
+.patient-search-result strong {
+  color:
+    var(--patient-navy);
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.patient-search-result small {
+  color:
+    var(--patient-muted);
+
+  font-size: 9px;
+}
+
+.patient-search-empty {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+
+  padding: 15px;
+
+  text-align: center;
+}
+
+.patient-search-empty strong {
+  color:
+    var(--patient-navy);
+
+  font-size: 11px;
+}
+
+.patient-search-empty small {
+  color:
+    var(--patient-muted);
+
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   TOPBAR ACTIONS
+========================================================= */
 
 .patient-topbar__actions {
   display: flex;
   align-items: center;
+
+  justify-self: end;
+
   gap: 10px;
 }
 
@@ -299,182 +758,190 @@
   position: relative;
 }
 
+
+/* =========================================================
+   NOTIFICATION BUTTON
+========================================================= */
+
 .notification-button {
   position: relative;
-  width: 42px;
-  height: 42px;
+
+  width: 46px;
+  height: 46px;
+
   display: grid;
   place-items: center;
-  border: 1px solid #d8e7eb;
+
+  border:
+    1px solid #d8e7eb;
+
   border-radius: 50%;
+
   background: #ffffff;
-  color: var(--patient-teal);
+
+  color:
+    var(--patient-teal);
+
   cursor: pointer;
 }
 
-.notification-dot {
-  position: absolute;
-  top: 1px;
-  right: 0;
-  min-width: 15px;
-  height: 15px;
-  display: grid;
-  place-items: center;
-  padding: 0 3px;
-  border: 2px solid #ffffff;
-  border-radius: 50%;
-  background: var(--patient-teal);
-  color: #ffffff;
-  font-size: 7px;
-  font-weight: 900;
-}
+
+/* =========================================================
+   PROFILE
+========================================================= */
 
 .profile-trigger {
-  min-width: 145px;
+  min-width: 150px;
+
   display: flex;
   align-items: center;
+
   gap: 9px;
-  padding: 5px 8px 5px 5px;
-  border: 1px solid #d8e7eb;
-  border-radius: 12px;
+
+  padding:
+    5px 9px 5px 5px;
+
+  border:
+    1px solid #d8e7eb;
+
+  border-radius: 13px;
+
   background: #ffffff;
-  color: var(--patient-navy);
+
+  color:
+    var(--patient-navy);
+
   cursor: pointer;
 }
 
 .profile-avatar {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
+
   display: grid;
   place-items: center;
-  flex: 0 0 34px;
+
+  flex: 0 0 36px;
+
   border-radius: 50%;
-  background: var(--patient-teal-bright);
+
+  background:
+    var(--patient-teal-bright);
+
   color: #ffffff;
+
   font-size: 11px;
   font-weight: 900;
 }
 
 .profile-trigger__text {
   min-width: 0;
+
   flex: 1;
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 1px;
 }
 
 .profile-trigger__text strong {
   max-width: 100px;
+
   overflow: hidden;
+
+  color:
+    var(--patient-navy);
+
+  font-size: 11px;
+  font-weight: 900;
+
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 11px;
 }
 
 .profile-trigger__text small {
-  color: var(--patient-muted);
-  font-size: 8px;
+  color:
+    var(--patient-muted);
+
+  font-size: 9px;
 }
 
-.profile-trigger > svg {
-  color: #7895a5;
-}
+
+/* =========================================================
+   DROPDOWNS
+========================================================= */
 
 .notification-menu,
 .profile-menu {
   position: absolute;
-  top: calc(100% + 10px);
+
+  top:
+    calc(100% + 10px);
+
   right: 0;
+
   z-index: 200;
-  border: 1px solid var(--patient-border);
+
+  border:
+    1px solid
+    var(--patient-border);
+
   border-radius: 16px;
+
   background: #ffffff;
-  box-shadow: 0 20px 45px rgba(7, 59, 76, 0.16);
+
+  box-shadow:
+    0 20px 45px
+    rgba(7, 59, 76, 0.16);
 }
 
-.notification-menu {
-  width: 340px;
-  padding: 18px;
-}
 
-.dropdown-eyebrow {
-  color: var(--patient-teal);
-  font-size: 8px;
-  font-weight: 900;
-  letter-spacing: 1.5px;
-}
-
-.notification-menu h3 {
-  margin: 6px 0 15px;
-  color: var(--patient-navy);
-  font-size: 20px;
-}
-
-.notification-empty {
-  display: flex;
-  gap: 10px;
-  padding: 13px;
-  border-radius: 12px;
-  background: #f4fafb;
-}
-
-.notification-empty > span {
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  flex: 0 0 38px;
-  border-radius: 11px;
-  color: var(--patient-teal);
-  background: #e2f7f5;
-}
-
-.notification-empty strong {
-  display: block;
-  color: var(--patient-navy);
-  font-size: 11px;
-}
-
-.notification-empty p {
-  margin: 4px 0 0;
-  color: var(--patient-muted);
-  font-size: 10px;
-  line-height: 1.5;
-}
+/* PROFILE MENU */
 
 .profile-menu {
   width: 300px;
+
   overflow: hidden;
 }
 
 .profile-menu__header {
   display: flex;
   align-items: center;
+
   gap: 11px;
+
   padding: 17px;
-  border-bottom: 1px solid var(--patient-border);
+
+  border-bottom:
+    1px solid
+    var(--patient-border);
 }
 
 .profile-avatar--large {
   width: 43px;
   height: 43px;
+
   flex-basis: 43px;
 }
 
 .profile-menu__header div {
   display: flex;
   flex-direction: column;
+
   gap: 3px;
 }
 
 .profile-menu__header strong {
-  color: var(--patient-navy);
+  color:
+    var(--patient-navy);
+
   font-size: 13px;
 }
 
 .profile-menu__header small {
-  color: var(--patient-muted);
+  color:
+    var(--patient-muted);
+
   font-size: 9px;
 }
 
@@ -482,179 +949,458 @@
   padding: 14px 10px;
 }
 
-.profile-menu__section > span {
+.profile-menu__section
+> span {
   display: block;
-  padding: 0 8px 7px;
-  color: var(--patient-teal);
+
+  padding:
+    0 8px 7px;
+
+  color:
+    var(--patient-teal);
+
   font-size: 8px;
   font-weight: 900;
+
   letter-spacing: 1.3px;
 }
 
-.profile-menu__section button {
+.profile-menu__section
+button {
   width: 100%;
+
   display: flex;
   align-items: center;
+
   gap: 10px;
+
   padding: 10px 8px;
+
   border: 0;
   border-radius: 10px;
+
   background: transparent;
-  color: var(--patient-navy);
+
+  color:
+    var(--patient-navy);
+
   text-align: left;
+
   cursor: pointer;
 }
 
-.profile-menu__section button:hover {
+.profile-menu__section
+button:hover {
   background: #f3f9fa;
 }
 
-.profile-menu__section button > svg {
-  color: var(--patient-teal);
+.profile-menu__section
+button > svg {
+  color:
+    var(--patient-teal);
 }
 
-.profile-menu__section button div {
+.profile-menu__section
+button div {
   display: flex;
   flex-direction: column;
+
   gap: 2px;
 }
 
-.profile-menu__section strong {
+.profile-menu__section
+strong {
   font-size: 11px;
 }
 
-.profile-menu__section small {
-  color: var(--patient-muted);
+.profile-menu__section
+small {
+  color:
+    var(--patient-muted);
+
   font-size: 8px;
 }
 
 .profile-menu__logout {
   width: 100%;
+
   display: flex;
   align-items: center;
-  gap: 9px;
+
+  gap: 10px;
+
   padding: 14px 17px;
+
   border: 0;
-  border-top: 1px solid var(--patient-border);
+
+  border-top:
+    1px solid
+    var(--patient-border);
+
   background: #ffffff;
-  color: #c65c5c;
+
+  color: #c84c4c;
+
   cursor: pointer;
+
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 900;
+
   text-align: left;
 }
 
 .profile-menu__logout:hover {
-  background: #fff8f8;
+  background: #fff2f2;
 }
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
 
 .patient-content {
   width: 100%;
+
   max-width: 1600px;
+
   margin: 0 auto;
-  padding: 34px 38px 45px;
+
+  padding:
+    34px 38px 45px;
 }
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
 
 .mobile-menu-button,
 .mobile-backdrop {
   display: none;
 }
 
-@media (max-width: 1100px) {
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+html[data-theme="dark"]
+.patient-shell,
+html[data-theme="dark"]
+.patient-main {
+  background: #09232c;
+}
+
+html[data-theme="dark"]
+.patient-topbar {
+  border-bottom-color:
+    #294b57;
+
+  background:
+    rgba(15, 45, 55, 0.98);
+}
+
+html[data-theme="dark"]
+.patient-header-logo {
+  background: #ffffff;
+}
+
+html[data-theme="dark"]
+.patient-search {
+  border-color: #365864;
+
+  background: #15333d;
+}
+
+html[data-theme="dark"]
+.patient-search:focus-within {
+  border-color: #4ebeb7;
+
+  background: #173842;
+}
+
+html[data-theme="dark"]
+.patient-search input {
+  color: #edfafa !important;
+}
+
+html[data-theme="dark"]
+.patient-search
+input::placeholder {
+  color: #91acb5;
+}
+
+html[data-theme="dark"]
+.patient-search-results {
+  border-color: #31515c;
+
+  background: #122d37;
+}
+
+html[data-theme="dark"]
+.patient-search-result {
+  color: #ffffff;
+}
+
+html[data-theme="dark"]
+.patient-search-result:hover {
+  background: #1a3944;
+}
+
+html[data-theme="dark"]
+.patient-search-result strong,
+html[data-theme="dark"]
+.patient-search-empty strong {
+  color: #f1fbfc;
+}
+
+html[data-theme="dark"]
+.patient-search-result small,
+html[data-theme="dark"]
+.patient-search-empty small {
+  color: #a7c0c8;
+}
+
+html[data-theme="dark"]
+.notification-button,
+html[data-theme="dark"]
+.profile-trigger {
+  border-color: #31515c;
+
+  background: #15333d;
+
+  color: #72ded7;
+}
+
+html[data-theme="dark"]
+.profile-trigger__text strong {
+  color: #f1fbfc;
+}
+
+html[data-theme="dark"]
+.profile-trigger__text small {
+  color: #a7c0c8;
+}
+
+html[data-theme="dark"]
+.notification-menu,
+html[data-theme="dark"]
+.profile-menu {
+  border-color: #31515c;
+
+  background: #122d37;
+}
+
+html[data-theme="dark"]
+.profile-menu__header {
+  border-color: #31515c;
+}
+
+html[data-theme="dark"]
+.profile-menu__header strong,
+html[data-theme="dark"]
+.profile-menu__section button {
+  color: #f1fbfc;
+}
+
+html[data-theme="dark"]
+.profile-menu__header small,
+html[data-theme="dark"]
+.profile-menu__section small {
+  color: #a7c0c8;
+}
+
+html[data-theme="dark"]
+.profile-menu__section
+button:hover {
+  background: #17343e;
+}
+
+html[data-theme="dark"]
+.profile-menu__logout {
+  border-color: #31515c;
+
+  background: #122d37;
+
+  color: #ffaaaa;
+}
+
+html[data-theme="dark"]
+.profile-menu__logout:hover {
+  background: #492c30;
+}
+
+
+/* =========================================================
+   LAPTOP
+========================================================= */
+
+@media (
+  max-width: 1100px
+) {
   .patient-sidebar {
     width: 215px;
   }
 
   .patient-main {
-    width: calc(100% - 215px);
+    width:
+      calc(
+        100% - 215px
+      );
+
     margin-left: 215px;
   }
 
-  .patient-content {
-    padding: 28px 25px 40px;
+  .patient-topbar {
+    grid-template-columns:
+      72px
+      minmax(240px, 1fr)
+      auto;
+
+    gap: 16px;
+
+    padding:
+      10px 20px;
   }
 
-  .patient-topbar {
-    padding: 11px 20px;
+  .patient-header-logo {
+    width: 58px;
+  }
+
+  .patient-header-logo img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .patient-content {
+    padding:
+      28px 25px 40px;
   }
 }
 
-@media (max-width: 850px) {
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (
+  max-width: 850px
+) {
   .patient-sidebar {
-    transform: translateX(-100%);
-    transition: transform 0.22s ease;
-    box-shadow: 15px 0 40px rgba(7, 59, 76, 0.15);
+    transform:
+      translateX(-100%);
+
+    transition:
+      transform 0.22s ease;
   }
 
   .patient-sidebar.is-open {
-    transform: translateX(0);
+    transform:
+      translateX(0);
   }
 
   .patient-main {
     width: 100%;
+
     margin-left: 0;
   }
 
   .patient-topbar {
-    gap: 12px;
+    display: flex;
+
+    height: 74px;
+
+    gap: 10px;
   }
 
   .mobile-menu-button {
-    width: 38px;
-    height: 38px;
+    width: 40px;
+    height: 40px;
+
     display: flex;
     flex-direction: column;
     justify-content: center;
+
     gap: 5px;
+
+    flex: 0 0 40px;
+
     padding: 8px;
-    border: 1px solid var(--patient-border);
+
+    border:
+      1px solid
+      var(--patient-border);
+
     border-radius: 10px;
+
     background: #ffffff;
+
     cursor: pointer;
   }
 
-  .mobile-menu-button span {
+  .mobile-menu-button
+  span {
     width: 100%;
+
     height: 2px;
-    border-radius: 2px;
-    background: var(--patient-navy);
+
+    background:
+      var(--patient-navy);
   }
 
-  .patient-topbar__brand {
-    display: flex;
+  .patient-header-logo {
+    width: 48px;
+    height: 48px;
+
+    flex: 0 0 48px;
   }
 
-  .patient-search {
+  .patient-header-logo img {
+    width: 43px;
+    height: 43px;
+  }
+
+  .patient-topbar__search-wrap {
+    min-width: 0;
+
     flex: 1;
   }
 
-  .patient-content {
-    padding: 25px 20px 35px;
+  .patient-search {
+    height: 43px;
   }
 
   .mobile-backdrop {
     position: fixed;
+
     inset: 0;
+
     z-index: 90;
+
     display: block;
+
     border: 0;
-    background: rgba(7, 59, 76, 0.35);
-    backdrop-filter: blur(2px);
+
+    background:
+      rgba(7, 59, 76, 0.42);
   }
 }
 
-@media (max-width: 600px) {
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 600px
+) {
   .patient-topbar {
-    min-height: 68px;
-    padding: 10px 14px;
+    padding:
+      10px 12px;
   }
 
-  .patient-topbar__brand div {
+  .patient-header-logo {
     display: none;
-  }
-
-  .patient-search {
-    min-width: 0;
   }
 
   .patient-search input {
@@ -663,7 +1409,9 @@
 
   .profile-trigger {
     min-width: auto;
+
     border: 0;
+
     padding: 0;
   }
 
@@ -677,427 +1425,505 @@
     height: 38px;
   }
 
-  .notification-menu {
+  .patient-search-results {
     position: fixed;
-    top: 74px;
-    left: 12px;
-    right: 12px;
-    width: auto;
+
+    top: 70px;
+
+    left: 10px;
+    right: 10px;
   }
 
   .profile-menu {
     position: fixed;
+
     top: 74px;
     right: 12px;
-    width: min(300px, calc(100vw - 24px));
+
+    width:
+      min(
+        300px,
+        calc(
+          100vw - 24px
+        )
+      );
   }
 
   .patient-content {
-    padding: 22px 14px 30px;
+    padding:
+      22px 14px 30px;
   }
 }
-
 /* =========================================================
-   HEADER CLEANUP
+   REMOVE BROWSER'S DEFAULT SEARCH CANCEL ICON
 ========================================================= */
 
-.patient-topbar {
-  display: grid;
-  grid-template-columns:
-    minmax(190px, auto)
-    minmax(320px, 720px)
-    auto;
-  align-items: center;
-  gap: 24px;
+.patient-search input[type="search"]::-webkit-search-cancel-button,
+.patient-search input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
 }
-
-.patient-topbar__logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  min-width: 190px;
-}
-
-.patient-topbar__logo img {
-  width: 38px;
-  height: 38px;
-  object-fit: contain;
-}
-
-.patient-topbar__logo > div {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.patient-topbar__logo strong {
-  color: #073b4c;
-  font-size: 13px;
-  font-weight: 900;
-}
-
-.patient-topbar__logo span {
-  color: #7894a7;
-  font-size: 9px;
-}
-
-.patient-topbar__search-wrap {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.patient-search {
-  width: 100%;
-  max-width: 720px;
-  margin: 0;
-}
-
-.patient-topbar__actions {
-  justify-self: end;
-}
-
 /* =========================================================
-   TECH SUPPORT SIDEBAR
+   DARK MODE SIDEBAR
 ========================================================= */
 
-.patient-support-button {
-  margin-bottom: 12px;
-  padding: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 13px;
-  background: rgba(255, 255, 255, 0.1);
-  transition:
-    background 0.18s ease,
-    border-color 0.18s ease,
-    transform 0.18s ease;
-}
+html[data-theme="dark"] .patient-sidebar {
+  background:
+    linear-gradient(
+      180deg,
+      #0a2233 0%,
+      #0d2f42 50%,
+      #0b2638 100%
+    );
 
-.patient-support-button:hover {
-  background: rgba(255, 255, 255, 0.17);
-  border-color: rgba(255, 255, 255, 0.25);
-  transform: translateY(-1px);
-}
-
-.patient-support-button > span {
-  background: rgba(255, 255, 255, 0.14);
-}
-
-/* =========================================================
-   NOTIFICATION HOVER
-========================================================= */
-
-.notification-button {
-  transition:
-    background 0.18s ease,
-    color 0.18s ease,
-    border-color 0.18s ease,
-    transform 0.18s ease,
-    box-shadow 0.18s ease;
-}
-
-.notification-button:hover {
-  color: #ffffff;
-  background: #0f9f98;
-  border-color: #0f9f98;
-  transform: translateY(-1px);
   box-shadow:
-    0 8px 18px rgba(15, 159, 152, 0.2);
+    7px 0 24px
+    rgba(0, 0, 0, 0.22);
 }
 
-.notification-button:hover
-.notification-dot {
-  border-color: #0f9f98;
-  color: #0f9f98;
-  background: #ffffff;
+
+/* SIDEBAR BRAND */
+
+html[data-theme="dark"]
+.patient-sidebar__brand strong {
+  color: #f4fbff;
 }
 
-/* =========================================================
-   PROFILE HOVER
-========================================================= */
-
-.profile-trigger {
-  transition:
-    background 0.18s ease,
-    border-color 0.18s ease,
-    transform 0.18s ease,
-    box-shadow 0.18s ease;
+html[data-theme="dark"]
+.patient-sidebar__brand span {
+  color: #9fc7d4;
 }
 
-.profile-trigger:hover {
-  background: #f0fbfa;
-  border-color: #9cdad6;
-  transform: translateY(-1px);
-  box-shadow:
-    0 8px 18px rgba(15, 159, 152, 0.1);
+
+/* MAIN MENU LABEL */
+
+html[data-theme="dark"]
+.patient-sidebar__label {
+  color: #8fb8c6;
 }
 
-.profile-trigger:hover
-.profile-avatar {
-  background: #0f9f98;
-}
 
-.profile-trigger:hover
-> svg {
-  color: #0f9f98;
-}
+/* NAV LINKS */
 
-/* =========================================================
-   RESPONSIVE HEADER
-========================================================= */
-
-@media (max-width: 1100px) {
-  .patient-topbar {
-    grid-template-columns:
-      auto
-      minmax(260px, 1fr)
-      auto;
-    gap: 16px;
-  }
-
-  .patient-topbar__logo div {
-    display: none;
-  }
-
-  .patient-topbar__logo {
-    min-width: auto;
-  }
-}
-
-@media (max-width: 850px) {
-  .patient-topbar {
-    display: flex;
-  }
-
-  .patient-topbar__logo {
-    display: flex;
-  }
-
-  .patient-topbar__search-wrap {
-    flex: 1;
-  }
-}
-
-@media (max-width: 600px) {
-  .patient-topbar__logo div {
-    display: none;
-  }
-
-  .patient-topbar__logo img {
-    width: 34px;
-    height: 34px;
-  }
-
-  .patient-topbar__search-wrap {
-    min-width: 0;
-  }
-}
-
-/* =========================================================
-   SIDEBAR TEXT CLEANUP
-========================================================= */
-
+html[data-theme="dark"]
 .patient-nav-link {
-  min-height: 46px;
-  padding: 8px 11px;
+  color: #d7edf3;
+}
+
+html[data-theme="dark"]
+.patient-nav-link:hover {
+  background:
+    rgba(65, 150, 170, 0.14);
+
+  color: #ffffff;
+}
+
+
+/* ACTIVE PAGE */
+
+html[data-theme="dark"]
+.patient-nav-link.is-active {
+  background: #eefbfd;
+
+  color: #0a3545;
+
+  box-shadow:
+    0 7px 18px
+    rgba(0, 0, 0, 0.18);
+}
+
+html[data-theme="dark"]
+.patient-nav-link.is-active
+.patient-nav-link__icon {
+  background: #d9f3f1;
+
+  color: #0f9f98;
+}
+
+
+/* NAV ICONS */
+
+html[data-theme="dark"]
+.patient-nav-link__icon {
+  background:
+    rgba(120, 190, 205, 0.12);
+
+  color: #b7e2ea;
+}
+
+
+/* SIDEBAR DIVIDERS */
+
+html[data-theme="dark"]
+.patient-sidebar__divider,
+html[data-theme="dark"]
+.patient-sidebar__bottom {
+  border-color:
+    rgba(160, 210, 220, 0.16);
+}
+
+
+/* TECHNICAL SUPPORT */
+
+html[data-theme="dark"]
+.patient-support-button {
+  border-color:
+    rgba(130, 190, 205, 0.22);
+
+  background:
+    rgba(35, 95, 115, 0.35);
+}
+
+html[data-theme="dark"]
+.patient-support-button strong {
+  color: #f1fbfc;
+}
+
+html[data-theme="dark"]
+.patient-support-button small {
+  color: #9fc1cb;
+}
+
+html[data-theme="dark"]
+.patient-support-button:hover {
+  background: #123e52;
+
+  border-color: #2f7188;
+}
+
+
+/* LOGOUT */
+
+html[data-theme="dark"]
+.patient-logout-button {
+  border-color:
+    rgba(130, 190, 205, 0.18);
+
+  background:
+    rgba(20, 60, 75, 0.35);
+}
+
+html[data-theme="dark"]
+.patient-logout-button:hover {
+  background:
+    rgba(148, 40, 50, 0.38);
+
+  border-color:
+    rgba(255, 120, 130, 0.5);
+}
+/* =========================================================
+   DARK MODE NAVY SIDEBAR + HEADER
+========================================================= */
+
+html[data-theme="dark"] .patient-sidebar {
+  background:
+    linear-gradient(
+      180deg,
+      #082f49 0%,
+      #0b3f5c 52%,
+      #0a334b 100%
+    );
+
+  box-shadow:
+    8px 0 28px
+    rgba(0, 0, 0, 0.22);
+}
+
+
+/* sidebar text stays bright */
+
+html[data-theme="dark"] .patient-sidebar__brand strong,
+html[data-theme="dark"] .patient-nav-link,
+html[data-theme="dark"] .patient-support-button,
+html[data-theme="dark"] .patient-logout-button {
+  color: #f4fbff;
+}
+
+
+html[data-theme="dark"] .patient-sidebar__brand span,
+html[data-theme="dark"] .patient-sidebar__label,
+html[data-theme="dark"] .patient-support-button small {
+  color: #b9d7e4;
+}
+
+
+/* sidebar icons */
+
+html[data-theme="dark"] .patient-nav-link__icon {
+  background:
+    rgba(255, 255, 255, 0.1);
+
+  color: #dff7ff;
+}
+
+
+/* active page stays clear */
+
+html[data-theme="dark"] .patient-nav-link.is-active {
+  background: #f4fbff;
+
+  color: #073b4c;
+}
+
+
+html[data-theme="dark"]
+.patient-nav-link.is-active
+.patient-nav-link__icon {
+  background: #dff7f4;
+
+  color: #0f9f98;
+}
+
+
+/* nav hover */
+
+html[data-theme="dark"] .patient-nav-link:hover {
+  background:
+    rgba(255, 255, 255, 0.11);
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   DARK MODE HEADER
+========================================================= */
+
+html[data-theme="dark"] .patient-topbar {
+  background:
+    linear-gradient(
+      90deg,
+      #082f49 0%,
+      #0b3b56 100%
+    );
+
+  border-bottom-color: #1d536d;
+
+  box-shadow:
+    0 5px 18px
+    rgba(0, 0, 0, 0.16);
+}
+
+
+/* large logo stays visible */
+
+html[data-theme="dark"] .patient-header-logo {
+  background: #ffffff;
+
+  box-shadow:
+    0 5px 14px
+    rgba(0, 0, 0, 0.18);
+}
+
+
+/* search */
+
+html[data-theme="dark"] .patient-search {
+  background: #103f57;
+
+  border-color: #275c73;
+}
+
+
+html[data-theme="dark"] .patient-search:focus-within {
+  background: #134a63;
+
+  border-color: #3fb9b0;
+
+  box-shadow:
+    0 0 0 3px
+    rgba(63, 185, 176, 0.12);
+}
+
+
+html[data-theme="dark"] .patient-search input {
+  color: #f4fbff !important;
+}
+
+
+html[data-theme="dark"]
+.patient-search input::placeholder {
+  color: #a8c7d4;
+}
+
+
+/* custom clear button */
+
+html[data-theme="dark"] .patient-search-clear {
+  background: #dff7f4;
+
+  color: #087f79;
+}
+
+
+/* notification button */
+
+html[data-theme="dark"] .notification-button {
+  background: #103f57;
+
+  border-color: #275c73;
+
+  color: #74ddd6;
+}
+
+
+html[data-theme="dark"] .notification-button:hover {
+  background: #0f9f98;
+
+  border-color: #0f9f98;
+
+  color: #ffffff;
+}
+
+
+/* profile button */
+
+html[data-theme="dark"] .profile-trigger {
+  background: #103f57;
+
+  border-color: #275c73;
+}
+
+
+html[data-theme="dark"]
+.profile-trigger__text strong {
+  color: #f4fbff;
+}
+
+
+html[data-theme="dark"]
+.profile-trigger__text small {
+  color: #b9d2dc;
+}
+
+
+/* =========================================================
+   SUPPORT + LOGOUT IN DARK MODE
+========================================================= */
+
+html[data-theme="dark"] .patient-support-button {
+  background:
+    rgba(255, 255, 255, 0.07);
+
+  border-color:
+    rgba(255, 255, 255, 0.14);
+}
+
+
+html[data-theme="dark"]
+.patient-support-button:hover {
+  background: #0b5268;
+
+  border-color: #17768a;
+}
+
+
+html[data-theme="dark"] .patient-logout-button {
+  background:
+    rgba(255, 255, 255, 0.05);
+
+  border-color:
+    rgba(255, 255, 255, 0.13);
+}
+
+
+html[data-theme="dark"]
+.patient-logout-button:hover {
+  background:
+    rgba(181, 52, 59, 0.34);
+
+  border-color:
+    rgba(255, 145, 151, 0.55);
+}
+/* =========================================================
+   DARK MODE - MINIMAL SEARCH BAR
+   Only shows "Search" centered when empty
+========================================================= */
+
+html[data-theme="dark"] .patient-search {
+  position: relative;
+
+  justify-content: center;
+
+  padding: 0 18px;
+}
+
+
+/* hide search icon in dark mode */
+
+html[data-theme="dark"]
+.patient-search > svg {
+  display: none;
+}
+
+
+/* hide our custom X button in dark mode */
+
+html[data-theme="dark"]
+.patient-search-clear {
+  display: none;
+}
+
+
+/* make actual input fill the bar */
+
+html[data-theme="dark"]
+.patient-search input {
+  width: 100%;
+  height: 100%;
+
+  padding: 0;
+
+  text-align: center;
+
+  background: transparent !important;
+
+  color: #f4fbff !important;
+
+  caret-color: #5ee0d7;
+}
+
+
+/* hide the original long placeholder */
+
+html[data-theme="dark"]
+.patient-search input::placeholder {
+  color: transparent !important;
+
+  opacity: 0;
+}
+
+
+/* show only the word SEARCH when input is empty */
+
+html[data-theme="dark"]
+.patient-search:has(
+  input:placeholder-shown
+)::after {
+  content: "Search";
+
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  transform:
+    translate(-50%, -50%);
+
+  color: #a9c6d2;
 
   font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.1px;
+  font-weight: 600;
 
-  color: rgba(255, 255, 255, 0.92);
-
-  line-height: 1.2;
-}
-
-.patient-nav-link > span:last-child {
-  display: block;
-  flex: 1;
-}
-
-.patient-sidebar__label {
-  font-size: 9px;
-  font-weight: 900;
-  letter-spacing: 1.7px;
-
-  color: rgba(255, 255, 255, 0.68);
+  pointer-events: none;
 }
 
 
-/* =========================================================
-   TECH SUPPORT
-========================================================= */
+/* once patient types, the centered word disappears */
 
-.patient-support-button {
-  width: 100%;
-
-  display: flex;
-  align-items: center;
-  gap: 11px;
-
-  margin-bottom: 0;
-
-  padding: 10px 11px;
-
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 12px;
-
-  background: rgba(255, 255, 255, 0.09);
-
-  color: #ffffff;
-
-  text-align: left;
-
-  transition:
-    background 0.18s ease,
-    border-color 0.18s ease,
-    color 0.18s ease,
-    transform 0.18s ease;
-}
-
-.patient-support-button > span {
-  width: 34px;
-  height: 34px;
-
-  display: grid;
-  place-items: center;
-
-  flex: 0 0 34px;
-
-  border-radius: 10px;
-
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.patient-support-button div {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.patient-support-button strong {
-  font-size: 11px;
-  font-weight: 900;
-}
-
-.patient-support-button small {
-  font-size: 9px;
-
-  color: rgba(255, 255, 255, 0.65);
-}
-
-
-/* TECH SUPPORT HOVER = RED */
-
-.patient-support-button:hover {
-  background: rgba(204, 73, 73, 0.18);
-
-  border-color: rgba(255, 190, 190, 0.35);
-
-  color: #ffe7e7;
-
-  transform: translateY(-1px);
-}
-
-.patient-support-button:hover > span {
-  background: rgba(204, 73, 73, 0.22);
-}
-
-.patient-support-button:hover small {
-  color: #ffd4d4;
-}
-
-
-/* =========================================================
-   DIVIDER BETWEEN SUPPORT & LOGOUT
-========================================================= */
-
-.patient-sidebar__bottom::before {
-  content: "";
-
-  display: block;
-
-  height: 1px;
-
-  margin: 14px 4px 12px;
-
-  background: rgba(255, 255, 255, 0.18);
-}
-
-
-/* =========================================================
-   LOGOUT BUTTON
-========================================================= */
-
-.patient-logout-button {
-  width: 100%;
-
-  min-height: 44px;
-
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-
-  gap: 12px;
-
-  padding: 8px 11px;
-
-  border: 1px solid rgba(255, 255, 255, 0.18);
-
-  border-radius: 11px;
-
-  background: rgba(255, 255, 255, 0.04);
-
-  color: #ffffff;
-
-  font-size: 11px;
-  font-weight: 900;
-
-  transition:
-    background 0.18s ease,
-    border-color 0.18s ease,
-    color 0.18s ease,
-    transform 0.18s ease;
-}
-
-.patient-logout-button > span {
-  width: 34px;
-  height: 34px;
-
-  display: grid;
-  place-items: center;
-
-  flex: 0 0 34px;
-
-  margin-right: 2px;
-
-  border-radius: 10px;
-
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.patient-logout-button strong {
-  display: block;
-
-  font-size: 11px;
-  font-weight: 900;
-
-  letter-spacing: 0.1px;
-}
-
-
-/* LOGOUT HOVER = RED */
-
-.patient-logout-button:hover {
-  background: rgba(204, 73, 73, 0.2);
-
-  border-color: rgba(255, 190, 190, 0.35);
-
-  color: #ffe7e7;
-
-  transform: translateY(-1px);
-}
-
-.patient-logout-button:hover > span {
-  background: rgba(204, 73, 73, 0.25);
+html[data-theme="dark"]
+.patient-search:has(
+  input:not(:placeholder-shown)
+)::after {
+  display: none;
 }

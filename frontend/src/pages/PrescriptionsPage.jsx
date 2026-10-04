@@ -1,28 +1,56 @@
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import {
-  getUserPrescriptions,
-  createRefillRequest,
-} from "../api";
+  useNavigate,
+} from "react-router-dom";
 
 import PatientDateCard from "../components/PatientDateCard";
 import PatientIcon from "../components/PatientIcon";
 
+import {
+  getUserPrescriptions,
+} from "../api";
+
 import "./PrescriptionsPage.css";
 
-function PrescriptionsPage() {
-  const [prescriptions, setPrescriptions] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [refillMessage, setRefillMessage] = useState("");
-  const [refillLoadingId, setRefillLoadingId] =
-    useState(null);
 
-  const userId = localStorage.getItem("user_id");
+function PrescriptionsPage() {
+  const navigate = useNavigate();
+
+  const userId =
+    localStorage.getItem("user_id");
+
+  const [
+    prescriptions,
+    setPrescriptions,
+  ] = useState([]);
+
+  const [
+    loading,
+    setLoading,
+  ] = useState(true);
+
+  const [
+    error,
+    setError,
+  ] = useState("");
+
+
+  /* =========================================================
+     LOAD PRESCRIPTIONS
+  ========================================================= */
 
   useEffect(() => {
     async function loadPrescriptions() {
       if (!userId) {
+        setError(
+          "Patient information could not be found."
+        );
+
         setLoading(false);
         return;
       }
@@ -32,25 +60,19 @@ function PrescriptionsPage() {
         setError("");
 
         const data =
-          await getUserPrescriptions(userId);
+          await getUserPrescriptions(
+            userId
+          );
 
-        const results = Array.isArray(data)
-          ? data
-          : data?.prescriptions ||
-            data?.items ||
-            data?.data ||
-            [];
-
-        setPrescriptions(results);
-      } catch (err) {
-        console.error(
-          "Failed to load prescriptions:",
-          err
+        setPrescriptions(
+          Array.isArray(data)
+            ? data
+            : []
         );
-
+      } catch (err) {
         setError(
-          err?.message ||
-            "We could not retrieve your prescriptions."
+          err.message ||
+            "Unable to load prescriptions."
         );
       } finally {
         setLoading(false);
@@ -60,396 +82,522 @@ function PrescriptionsPage() {
     loadPrescriptions();
   }, [userId]);
 
-  async function handleRefill(prescription) {
-    try {
-      setRefillMessage("");
 
-      setRefillLoadingId(
-        prescription.prescription_id
-      );
+  /* =========================================================
+     COUNTS
+  ========================================================= */
 
-      await createRefillRequest(
-        userId,
-        prescription.prescription_id,
-        `Please refill ${prescription.medicine_name}.`
+  const activePrescriptions =
+    useMemo(() => {
+      return prescriptions.filter(
+        (prescription) =>
+          String(
+            prescription.status || ""
+          ).toLowerCase() ===
+          "active"
       );
+    }, [prescriptions]);
 
-      setRefillMessage(
-        `Refill request submitted for ${prescription.medicine_name}.`
-      );
-    } catch (err) {
-      setRefillMessage(
-        err?.message ||
-          "Unable to submit refill request."
-      );
-    } finally {
-      setRefillLoadingId(null);
-    }
-  }
 
-  const activeCount = prescriptions.filter(
-    (prescription) =>
-      String(prescription.status || "")
-        .toLowerCase()
-        .trim() === "active"
-  ).length;
+  const refillReady =
+    useMemo(() => {
+      return activePrescriptions.length;
+    }, [activePrescriptions]);
+
+
+  /* =========================================================
+     HELPERS
+  ========================================================= */
+
+  const getStatusClass = (
+    status
+  ) => {
+    const normalized =
+      String(
+        status || "active"
+      ).toLowerCase();
+
+    return normalized;
+  };
+
 
   return (
     <section className="prescriptions-page">
-      <div className="prescriptions-heading">
+
+      {/* =====================================================
+          HEADER
+      ===================================================== */}
+
+      <div className="prescriptions-page-header">
+
         <div>
+
           <span className="prescriptions-eyebrow">
             PATIENT MEDICATIONS
           </span>
 
-          <h1>My Prescriptions</h1>
+          <h1>
+            My Prescriptions
+          </h1>
 
           <p>
-            View your active prescriptions, dosage
-            instructions, medication details, and refill
+            View your active prescriptions,
+            dosage instructions,
+            medication details, and refill
             information.
           </p>
+
         </div>
 
         <PatientDateCard />
+
       </div>
 
+
+      {/* =====================================================
+          ERROR
+      ===================================================== */}
+
+      {error && (
+        <div className="prescriptions-error">
+
+          <PatientIcon
+            name="info"
+            size={18}
+          />
+
+          <span>
+            {error}
+          </span>
+
+        </div>
+      )}
+
+
+      {/* =====================================================
+          SUMMARY CARDS
+      ===================================================== */}
+
       <div className="prescriptions-summary-grid">
+
         <article className="prescriptions-summary-card">
+
           <span className="prescriptions-summary-icon prescriptions-summary-icon--teal">
+
             <PatientIcon
               name="pill"
               size={23}
             />
+
           </span>
 
           <div>
-            <span>TOTAL PRESCRIPTIONS</span>
-            <strong>{prescriptions.length}</strong>
-            <small>Medication records</small>
+
+            <span>
+              TOTAL PRESCRIPTIONS
+            </span>
+
+            <strong>
+              {loading
+                ? "..."
+                : prescriptions.length}
+            </strong>
+
+            <small>
+              Medication records
+            </small>
+
           </div>
+
         </article>
 
+
         <article className="prescriptions-summary-card">
+
           <span className="prescriptions-summary-icon prescriptions-summary-icon--blue">
+
             <PatientIcon
               name="check"
               size={23}
             />
+
           </span>
 
           <div>
-            <span>ACTIVE PRESCRIPTIONS</span>
-            <strong>{activeCount}</strong>
-            <small>Current medications</small>
+
+            <span>
+              ACTIVE PRESCRIPTIONS
+            </span>
+
+            <strong>
+              {loading
+                ? "..."
+                : activePrescriptions.length}
+            </strong>
+
+            <small>
+              Current medications
+            </small>
+
           </div>
+
         </article>
 
+
         <article className="prescriptions-summary-card">
+
           <span className="prescriptions-summary-icon prescriptions-summary-icon--orange">
+
             <PatientIcon
               name="refresh"
               size={23}
             />
+
           </span>
 
           <div>
-            <span>REFILL READY</span>
-            <strong>{activeCount}</strong>
+
+            <span>
+              REFILL READY
+            </span>
+
+            <strong>
+              {loading
+                ? "..."
+                : refillReady}
+            </strong>
+
             <small>
               Eligible active prescriptions
             </small>
+
           </div>
+
         </article>
+
       </div>
 
-      {refillMessage && (
-        <div className="prescription-alert">
-          <span>
-            <PatientIcon
-              name="check"
-              size={18}
-            />
-          </span>
 
-          <div>
-            <strong>
-              Prescription update
-            </strong>
-
-            <p>{refillMessage}</p>
-          </div>
-        </div>
-      )}
+      {/* =====================================================
+          PRESCRIPTION PANEL
+      ===================================================== */}
 
       <article className="prescriptions-panel">
+
         <div className="prescriptions-panel-header">
+
           <div>
+
             <span className="prescriptions-panel-icon">
+
               <PatientIcon
                 name="pill"
-                size={21}
+                size={20}
               />
+
             </span>
 
             <div>
+
               <span className="prescriptions-section-label">
                 MEDICATION RECORD
               </span>
 
-              <h2>Your Prescriptions</h2>
+              <h2>
+                Your Prescriptions
+              </h2>
+
             </div>
+
           </div>
 
-          {!loading && !error && (
-            <span className="prescription-record-count">
+          {!loading && (
+            <span className="prescriptions-count">
               {prescriptions.length}{" "}
               {prescriptions.length === 1
                 ? "Prescription"
                 : "Prescriptions"}
             </span>
           )}
+
         </div>
 
+
         <div className="prescriptions-panel-body">
-          {loading && (
-            <div className="prescription-state">
-              <div className="prescription-loading-spinner" />
+
+          {loading ? (
+
+            <div className="prescriptions-empty">
+
+              <span>
+
+                <PatientIcon
+                  name="refresh"
+                  size={28}
+                />
+
+              </span>
 
               <h3>
                 Loading prescriptions
               </h3>
 
               <p>
-                Retrieving your medication records.
+                Please wait while we load
+                your medication records.
               </p>
+
             </div>
-          )}
 
-          {!loading && error && (
-            <div className="prescription-state prescription-state--error">
-              <div className="prescription-state-icon">
+          ) : prescriptions.length ===
+            0 ? (
+
+            <div className="prescriptions-empty">
+
+              <span>
+
                 <PatientIcon
-                  name="info"
-                  size={27}
+                  name="pill"
+                  size={28}
                 />
-              </div>
 
-              <span className="prescription-empty-eyebrow">
-                MEDICATION RECORD
               </span>
 
               <h3>
-                Prescriptions unavailable
+                No prescriptions yet
               </h3>
 
-              <p>{error}</p>
+              <p>
+                Your prescribed medicines
+                will appear here once they
+                are added to your pharmacy
+                account.
+              </p>
+
             </div>
-          )}
 
-          {!loading &&
-            !error &&
-            prescriptions.length === 0 && (
-              <div className="prescription-state">
-                <div className="prescription-state-icon">
-                  <PatientIcon
-                    name="pill"
-                    size={30}
-                  />
-                </div>
+          ) : (
 
-                <span className="prescription-empty-eyebrow">
-                  MEDICATION RECORD
-                </span>
+            <div className="prescriptions-list">
 
-                <h3>
-                  No prescriptions yet
-                </h3>
+              {prescriptions.map(
+                (prescription) => (
 
-                <p>
-                  Your prescribed medicines will appear
-                  here once they are added to your
-                  pharmacy account.
-                </p>
-              </div>
-            )}
+                  <article
+                    key={
+                      prescription.prescription_id
+                    }
+                    className="prescription-card"
+                  >
 
-          {!loading &&
-            !error &&
-            prescriptions.length > 0 && (
-              <div className="prescription-grid">
-                {prescriptions.map(
-                  (prescription, index) => {
-                    const id =
-                      prescription.prescription_id ??
-                      prescription.id ??
-                      index;
+                    {/* TOP ROW */}
 
-                    const medicine =
-                      prescription.medicine_name ||
-                      prescription.medication_name ||
-                      prescription.medicine ||
-                      "Prescription Medication";
+                    <div className="prescription-card-top">
 
-                    const dosage =
-                      prescription.dosage ||
-                      prescription.dose ||
-                      "Not specified";
+                      <div className="prescription-card-main">
 
-                    const frequency =
-                      prescription.frequency ||
-                      "Not specified";
+                        <span className="prescription-card-icon">
 
-                    const instructions =
-                      prescription.instructions ||
-                      "Follow your pharmacist's instructions.";
+                          <PatientIcon
+                            name="medicine"
+                            size={22}
+                          />
 
-                    const status =
-                      prescription.status ||
-                      "Active";
+                        </span>
 
-                    const active =
-                      String(status)
-                        .toLowerCase()
-                        .trim() === "active";
 
-                    const isRefilling =
-                      refillLoadingId ===
-                      prescription.prescription_id;
+                        <div className="prescription-card-title">
 
-                    return (
-                      <article
-                        className="prescription-card"
-                        key={id}
-                      >
-                        <div className="prescription-card-header">
-                          <div className="prescription-medicine">
-                            <span className="prescription-medicine-icon">
-                              <PatientIcon
-                                name="medicine"
-                                size={21}
-                              />
-                            </span>
-
-                            <div>
-                              <span>
-                                PRESCRIPTION
-                              </span>
-
-                              <h3>
-                                {medicine}
-                              </h3>
-                            </div>
-                          </div>
-
-                          <span
-                            className={`prescription-status ${
-                              active
-                                ? "prescription-status--active"
-                                : "prescription-status--inactive"
-                            }`}
-                          >
-                            <i />
-                            {status}
-                          </span>
-                        </div>
-
-                        <div className="prescription-details-grid">
-                          <div>
-                            <span>Dosage</span>
-                            <strong>
-                              {dosage}
-                            </strong>
-                          </div>
-
-                          <div>
-                            <span>Frequency</span>
-                            <strong>
-                              {frequency}
-                            </strong>
-                          </div>
-
-                          <div>
-                            <span>
-                              Prescription ID
-                            </span>
-
-                            <strong>
-                              #{id}
-                            </strong>
-                          </div>
-                        </div>
-
-                        <div className="prescription-instructions">
                           <span>
-                            Instructions
+                            PRESCRIPTION
+                          </span>
+
+                          <h3>
+                            {
+                              prescription.medicine_name
+                            }
+                          </h3>
+
+                        </div>
+
+                      </div>
+
+
+                      <span
+                        className={`prescription-status prescription-status--${getStatusClass(
+                          prescription.status
+                        )}`}
+                      >
+                        {
+                          prescription.status ||
+                          "active"
+                        }
+                      </span>
+
+                    </div>
+
+
+                    {/* MEDICATION DETAILS */}
+
+                    <div className="prescription-details-grid">
+
+                      <div className="prescription-detail">
+
+                        <span>
+                          DOSAGE
+                        </span>
+
+                        <strong>
+                          {
+                            prescription.dosage ||
+                            "—"
+                          }
+                        </strong>
+
+                      </div>
+
+
+                      <div className="prescription-detail">
+
+                        <span>
+                          FREQUENCY
+                        </span>
+
+                        <strong>
+                          {
+                            prescription.frequency ||
+                            "—"
+                          }
+                        </strong>
+
+                      </div>
+
+
+                      <div className="prescription-detail">
+
+                        <span>
+                          PRESCRIPTION ID
+                        </span>
+
+                        <strong>
+                          #
+                          {
+                            prescription.prescription_id
+                          }
+                        </strong>
+
+                      </div>
+
+                    </div>
+
+
+                    {/* BOTTOM ROW */}
+
+                    <div className="prescription-card-bottom">
+
+                      <div className="prescription-instructions">
+
+                        <span className="prescription-instructions-icon">
+
+                          <PatientIcon
+                            name="info"
+                            size={17}
+                          />
+
+                        </span>
+
+                        <div>
+
+                          <span>
+                            INSTRUCTIONS
                           </span>
 
                           <p>
-                            {instructions}
+                            {
+                              prescription.instructions ||
+                              "No additional instructions."
+                            }
                           </p>
+
                         </div>
 
-                        <div className="prescription-card-footer">
-                          <span>
-                            Medication information is
-                            linked to your patient
-                            account.
-                          </span>
+                      </div>
 
-                          {active && (
-                            <button
-                              type="button"
-                              disabled={
-                                isRefilling
-                              }
-                              onClick={() =>
-                                handleRefill(
-                                  prescription
-                                )
-                              }
-                            >
-                              {isRefilling
-                                ? "Requesting..."
-                                : "Request Refill"}
 
-                              {!isRefilling && (
-                                <PatientIcon
-                                  name="arrow"
-                                  size={15}
-                                />
-                              )}
-                            </button>
-                          )}
-                        </div>
-                      </article>
-                    );
-                  }
-                )}
-              </div>
-            )}
+                      {String(
+                        prescription.status ||
+                          ""
+                      ).toLowerCase() ===
+                        "active" && (
+
+                        <button
+                          type="button"
+                          className="prescription-refill-button"
+                          onClick={() =>
+                            navigate(
+                              "/patient/refills"
+                            )
+                          }
+                        >
+
+                          Request Refill
+
+                          <PatientIcon
+                            name="arrow"
+                            size={15}
+                          />
+
+                        </button>
+
+                      )}
+
+                    </div>
+
+                  </article>
+
+                )
+              )}
+
+            </div>
+
+          )}
+
         </div>
+
       </article>
 
+
+      {/* =====================================================
+          SECURITY
+      ===================================================== */}
+
       <div className="prescriptions-security">
+
         <span>
+
           <PatientIcon
             name="shield"
             size={20}
           />
+
         </span>
 
         <div>
+
           <strong>
             Prescription information protected
           </strong>
 
           <small>
-            Your medication records are securely linked
-            to your patient account.
+            Your medication records are
+            securely linked to your patient
+            account.
           </small>
+
         </div>
+
       </div>
+
     </section>
   );
 }

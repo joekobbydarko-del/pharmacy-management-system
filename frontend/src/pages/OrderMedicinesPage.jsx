@@ -16,23 +16,34 @@ import {
 
 import "./OrderMedicinesPage.css";
 
+
 function OrderMedicinesPage() {
   const userId =
     localStorage.getItem("user_id");
 
-  const [search, setSearch] =
-    useState("");
+  const userName =
+    localStorage.getItem("user_name") ||
+    "Patient";
+
+  const [
+    search,
+    setSearch,
+  ] = useState("");
 
   const [
     selectedMedicine,
     setSelectedMedicine,
   ] = useState(null);
 
-  const [quantity, setQuantity] =
-    useState(1);
+  const [
+    quantity,
+    setQuantity,
+  ] = useState(1);
 
-  const [notes, setNotes] =
-    useState("");
+  const [
+    notes,
+    setNotes,
+  ] = useState("");
 
   const [
     submitting,
@@ -44,58 +55,107 @@ function OrderMedicinesPage() {
     setSubmitted,
   ] = useState(false);
 
-  const [error, setError] =
-    useState("");
+  const [
+    error,
+    setError,
+  ] = useState("");
 
-  const medicines = useMemo(
-    () => [
-      {
-        id: 1,
-        name: "Paracetamol",
-        category: "Pain Relief",
-      },
-      {
-        id: 2,
-        name: "Amoxicillin",
-        category: "Antibiotic",
-      },
-      {
-        id: 3,
-        name: "Vitamin C",
-        category: "Supplement",
-      },
-      {
-        id: 4,
-        name: "Ibuprofen",
-        category: "Pain Relief",
-      },
-    ],
-    []
-  );
+
+  /* =========================================================
+     MEDICINE CATALOGUE
+  ========================================================= */
+
+  const medicines =
+    useMemo(
+      () => [
+        {
+          id: 1,
+          name: "Paracetamol",
+          category: "Pain Relief",
+        },
+        {
+          id: 2,
+          name: "Amoxicillin",
+          category: "Antibiotic",
+        },
+        {
+          id: 3,
+          name: "Vitamin C",
+          category: "Supplement",
+        },
+        {
+          id: 4,
+          name: "Ibuprofen",
+          category: "Pain Relief",
+        },
+      ],
+      []
+    );
+
 
   const filteredMedicines =
-    medicines.filter((medicine) => {
+    useMemo(() => {
       const query =
-        search.toLowerCase();
+        search
+          .trim()
+          .toLowerCase();
 
-      return (
-        medicine.name
-          .toLowerCase()
-          .includes(query) ||
-        medicine.category
-          .toLowerCase()
-          .includes(query)
+      if (!query) {
+        return medicines;
+      }
+
+      return medicines.filter(
+        (medicine) =>
+          medicine.name
+            .toLowerCase()
+            .includes(query) ||
+          medicine.category
+            .toLowerCase()
+            .includes(query)
       );
-    });
+    }, [
+      medicines,
+      search,
+    ]);
+
+
+  /* =========================================================
+     SELECT MEDICINE
+  ========================================================= */
+
+  const handleSelectMedicine = (
+    medicine
+  ) => {
+    setSelectedMedicine(
+      medicine
+    );
+
+    setQuantity(1);
+    setError("");
+  };
+
+
+  /* =========================================================
+     ORDER SUBMISSION
+  ========================================================= */
 
   const handleSubmit =
     async (event) => {
       event.preventDefault();
 
-      if (
-        !userId ||
-        !selectedMedicine
-      ) {
+      if (!userId) {
+        setError(
+          "Patient information could not be found."
+        );
+
+        return;
+      }
+
+      if (!selectedMedicine) {
+        setError(
+          "Please select a medicine before submitting your request."
+        );
+
         return;
       }
 
@@ -117,7 +177,8 @@ function OrderMedicinesPage() {
           message:
             `Your order for ${quantity} × ${selectedMedicine.name} has been sent to the pharmacy.`,
 
-          icon: "package",
+          icon:
+            "package",
         });
 
         setSubmitted(true);
@@ -131,6 +192,11 @@ function OrderMedicinesPage() {
       }
     };
 
+
+  /* =========================================================
+     RESET
+  ========================================================= */
+
   const resetOrder = () => {
     setSelectedMedicine(null);
     setQuantity(1);
@@ -139,10 +205,18 @@ function OrderMedicinesPage() {
     setSubmitted(false);
   };
 
+
   return (
     <section className="medicine-order-page">
+
+      {/* =====================================================
+          HEADER
+      ===================================================== */}
+
       <div className="medicine-order-heading">
+
         <div>
+
           <span className="medicine-order-eyebrow">
             PATIENT MEDICINE ORDERS
           </span>
@@ -156,21 +230,33 @@ function OrderMedicinesPage() {
             and submit a pharmacy order
             from your patient account.
           </p>
+
         </div>
 
         <PatientDateCard />
+
       </div>
 
+
+      {/* =====================================================
+          SUMMARY
+      ===================================================== */}
+
       <div className="medicine-summary-grid">
+
         <article className="medicine-summary-card">
+
           <span className="medicine-summary-icon medicine-summary-icon--teal">
+
             <PatientIcon
               name="medicine"
               size={22}
             />
+
           </span>
 
           <div>
+
             <span>
               AVAILABLE MEDICINES
             </span>
@@ -182,18 +268,25 @@ function OrderMedicinesPage() {
             <small>
               Medicines currently listed
             </small>
+
           </div>
+
         </article>
 
+
         <article className="medicine-summary-card">
+
           <span className="medicine-summary-icon medicine-summary-icon--blue">
+
             <PatientIcon
               name="check"
               size={22}
             />
+
           </span>
 
           <div>
+
             <span>
               SELECTED ITEM
             </span>
@@ -205,20 +298,29 @@ function OrderMedicinesPage() {
             </strong>
 
             <small>
-              Medicine selected for order
+              {selectedMedicine
+                ? selectedMedicine.name
+                : "No medicine selected"}
             </small>
+
           </div>
+
         </article>
 
+
         <article className="medicine-summary-card">
+
           <span className="medicine-summary-icon medicine-summary-icon--orange">
+
             <PatientIcon
               name="package"
               size={22}
             />
+
           </span>
 
           <div>
+
             <span>
               ORDER QUANTITY
             </span>
@@ -232,22 +334,41 @@ function OrderMedicinesPage() {
             <small>
               Requested units
             </small>
+
           </div>
+
         </article>
+
       </div>
 
+
+      {/* =====================================================
+          MAIN GRID
+      ===================================================== */}
+
       <div className="medicine-order-grid">
+
+        {/* ===================================================
+            MEDICINE CATALOGUE
+        =================================================== */}
+
         <article className="medicine-panel">
+
           <div className="medicine-panel-header">
+
             <div className="medicine-panel-title">
+
               <span className="medicine-panel-icon">
+
                 <PatientIcon
                   name="medicine"
                   size={20}
                 />
+
               </span>
 
               <div>
+
                 <span className="medicine-section-eyebrow">
                   PHARMACY CATALOGUE
                 </span>
@@ -255,17 +376,27 @@ function OrderMedicinesPage() {
                 <h2>
                   Select Medicine
                 </h2>
+
               </div>
+
             </div>
+
           </div>
 
+
           <div className="medicine-panel-body">
+
+            {/* SEARCH */}
+
             <div className="medicine-search-box">
+
               <span>
+
                 <PatientIcon
                   name="search"
                   size={18}
                 />
+
               </span>
 
               <input
@@ -278,69 +409,190 @@ function OrderMedicinesPage() {
                 }
                 placeholder="Search available medicines..."
               />
+
             </div>
+
+
+            {/* SELECTED NOTICE */}
+
+            {selectedMedicine && (
+              <div className="medicine-selected-banner">
+
+                <span>
+
+                  <PatientIcon
+                    name="check"
+                    size={16}
+                  />
+
+                </span>
+
+                <div>
+
+                  <strong>
+                    Medicine selected
+                  </strong>
+
+                  <small>
+                    {
+                      selectedMedicine.name
+                    }{" "}
+                    is ready to be added
+                    to your order.
+                  </small>
+
+                </div>
+
+              </div>
+            )}
+
+
+            {/* MEDICINES */}
 
             <div className="medicine-list">
-              {filteredMedicines.map(
-                (medicine) => (
-                  <button
-                    key={medicine.id}
-                    type="button"
-                    className={`medicine-item ${
+
+              {filteredMedicines.length ===
+              0 ? (
+
+                <div className="medicine-empty">
+
+                  <span className="medicine-empty-icon">
+
+                    <PatientIcon
+                      name="search"
+                      size={25}
+                    />
+
+                  </span>
+
+                  <h3>
+                    No medicines found
+                  </h3>
+
+                  <p>
+                    Try another medicine
+                    name or category.
+                  </p>
+
+                </div>
+
+              ) : (
+
+                filteredMedicines.map(
+                  (medicine) => {
+                    const isSelected =
                       selectedMedicine?.id ===
-                      medicine.id
-                        ? "medicine-item--selected"
-                        : ""
-                    }`}
-                    onClick={() =>
-                      setSelectedMedicine(
-                        medicine
-                      )
-                    }
-                  >
-                    <span className="medicine-item-icon">
-                      <PatientIcon
-                        name="pill"
-                        size={19}
-                      />
-                    </span>
+                      medicine.id;
 
-                    <span className="medicine-item-info">
-                      <strong>
-                        {medicine.name}
-                      </strong>
-
-                      <small>
-                        {
-                          medicine.category
+                    return (
+                      <button
+                        key={
+                          medicine.id
                         }
-                      </small>
-                    </span>
+                        type="button"
+                        aria-pressed={
+                          isSelected
+                        }
+                        className={`medicine-item ${
+                          isSelected
+                            ? "medicine-item--selected"
+                            : ""
+                        }`}
+                        onClick={() =>
+                          handleSelectMedicine(
+                            medicine
+                          )
+                        }
+                      >
 
-                    <span className="medicine-item-action">
-                      <PatientIcon
-                        name="plus"
-                        size={16}
-                      />
-                    </span>
-                  </button>
+                        <span className="medicine-item-icon">
+
+                          <PatientIcon
+                            name="pill"
+                            size={19}
+                          />
+
+                        </span>
+
+
+                        <span className="medicine-item-info">
+
+                          <strong>
+                            {
+                              medicine.name
+                            }
+                          </strong>
+
+                          <small>
+                            {
+                              medicine.category
+                            }
+                          </small>
+
+                        </span>
+
+
+                        {isSelected ? (
+
+                          <span className="medicine-selected-badge">
+
+                            <PatientIcon
+                              name="check"
+                              size={14}
+                            />
+
+                            Selected
+
+                          </span>
+
+                        ) : (
+
+                          <span className="medicine-item-action">
+
+                            <PatientIcon
+                              name="plus"
+                              size={16}
+                            />
+
+                          </span>
+
+                        )}
+
+                      </button>
+                    );
+                  }
                 )
+
               )}
+
             </div>
+
           </div>
+
         </article>
 
+
+        {/* ===================================================
+            ORDER SUMMARY
+        =================================================== */}
+
         <article className="medicine-panel medicine-order-summary">
+
           <div className="medicine-panel-header">
+
             <div className="medicine-panel-title">
+
               <span className="medicine-panel-icon">
+
                 <PatientIcon
                   name="package"
                   size={20}
                 />
+
               </span>
 
               <div>
+
                 <span className="medicine-section-eyebrow">
                   ORDER DETAILS
                 </span>
@@ -348,18 +600,27 @@ function OrderMedicinesPage() {
                 <h2>
                   Order Summary
                 </h2>
+
               </div>
+
             </div>
+
           </div>
 
+
           <div className="medicine-panel-body">
+
             {submitted ? (
+
               <div className="medicine-success">
+
                 <div className="medicine-success-icon">
+
                   <PatientIcon
                     name="check"
                     size={28}
                   />
+
                 </div>
 
                 <h3>
@@ -375,37 +636,51 @@ function OrderMedicinesPage() {
 
                 <button
                   type="button"
-                  onClick={resetOrder}
+                  onClick={
+                    resetOrder
+                  }
                 >
                   Place Another Order
                 </button>
+
               </div>
+
             ) : (
+
               <form
                 className="medicine-order-form"
                 onSubmit={
                   handleSubmit
                 }
               >
+
+                {/* PATIENT */}
+
                 <div className="medicine-order-detail">
+
                   <span>
                     PATIENT
                   </span>
 
                   <strong>
-                    {localStorage.getItem(
-                      "user_name"
-                    ) || "Patient"}
+                    {userName}
                   </strong>
+
                 </div>
 
+
+                {/* SELECTED MEDICINE */}
+
                 <div className="medicine-order-detail">
+
                   <span>
                     SELECTED MEDICINE
                   </span>
 
                   {selectedMedicine ? (
+
                     <div className="medicine-selected-info">
+
                       <strong>
                         {
                           selectedMedicine.name
@@ -417,20 +692,30 @@ function OrderMedicinesPage() {
                           selectedMedicine.category
                         }
                       </small>
+
                     </div>
+
                   ) : (
+
                     <strong className="medicine-not-selected">
                       No medicine selected
                     </strong>
+
                   )}
+
                 </div>
 
+
+                {/* QUANTITY */}
+
                 <div className="medicine-order-field">
+
                   <label>
                     Quantity
                   </label>
 
                   <div className="medicine-quantity-control">
+
                     <button
                       type="button"
                       onClick={() =>
@@ -474,10 +759,16 @@ function OrderMedicinesPage() {
                     >
                       +
                     </button>
+
                   </div>
+
                 </div>
 
+
+                {/* NOTES */}
+
                 <div className="medicine-order-field">
+
                   <label htmlFor="medicine-notes">
                     Additional note
                   </label>
@@ -493,14 +784,21 @@ function OrderMedicinesPage() {
                     }
                     placeholder="Optional message for the pharmacy..."
                   />
+
                 </div>
 
+
+                {/* NOTICE */}
+
                 <div className="medicine-order-notice">
+
                   <span>
+
                     <PatientIcon
                       name="info"
                       size={16}
                     />
+
                   </span>
 
                   <p>
@@ -510,13 +808,20 @@ function OrderMedicinesPage() {
                     pharmacy before the
                     order is processed.
                   </p>
+
                 </div>
+
+
+                {/* ERROR */}
 
                 {error && (
                   <div className="medicine-order-error">
                     {error}
                   </div>
                 )}
+
+
+                {/* SUBMIT */}
 
                 <button
                   type="submit"
@@ -526,6 +831,7 @@ function OrderMedicinesPage() {
                     submitting
                   }
                 >
+
                   {submitting
                     ? "Submitting..."
                     : "Submit Medicine Request"}
@@ -536,22 +842,37 @@ function OrderMedicinesPage() {
                       size={16}
                     />
                   )}
+
                 </button>
+
               </form>
+
             )}
+
           </div>
+
         </article>
+
       </div>
 
+
+      {/* =====================================================
+          SECURITY
+      ===================================================== */}
+
       <div className="medicine-security">
+
         <span>
+
           <PatientIcon
             name="shield"
             size={19}
           />
+
         </span>
 
         <div>
+
           <strong>
             Secure medicine ordering
           </strong>
@@ -561,8 +882,11 @@ function OrderMedicinesPage() {
             securely linked to your
             patient account.
           </small>
+
         </div>
+
       </div>
+
     </section>
   );
 }

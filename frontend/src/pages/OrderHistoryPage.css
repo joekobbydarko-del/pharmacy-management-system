@@ -836,3 +836,303 @@ html[data-theme="dark"] .order-status--cancelled {
     margin-top: 3px;
   }
 }
+/* =========================================================
+   PROFESSIONAL MEDICINE ORDER ROWS
+========================================================= */
+
+.orders-panel-body {
+  padding: 20px;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+.order-history-item {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 18px 20px;
+
+  border: 1px solid #dce8ec;
+  border-radius: 15px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 22px rgba(7, 59, 76, 0.045);
+
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+.order-history-item:hover {
+  transform: translateY(-1px);
+
+  border-color: #b5dad7;
+
+  box-shadow:
+    0 12px 26px rgba(7, 59, 76, 0.07);
+}
+
+
+/* LEFT SIDE */
+
+.order-history-item__left {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 15px;
+}
+
+
+/* ICON */
+
+.order-history-item__icon {
+  width: 50px;
+  height: 50px;
+
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 50px;
+
+  border-radius: 14px;
+
+  background: #e1f6f4;
+
+  color: #0f9f98;
+}
+
+
+/* DETAILS */
+
+.order-history-item__details {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.order-history-item__name {
+  margin: 0;
+
+  color: #073b4c;
+
+  font-size: 15px;
+  font-weight: 900;
+
+  line-height: 1.3;
+}
+
+.order-history-item__meta {
+  margin: 0;
+
+  color: #527381;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  line-height: 1.45;
+}
+
+.order-history-item__note {
+  margin: 1px 0 0;
+
+  color: #7894a7;
+
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+
+/* STATUS */
+
+.order-status {
+  min-width: 86px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 12px;
+
+  border-radius: 999px;
+
+  font-size: 9px;
+  font-weight: 900;
+
+  letter-spacing: 0.4px;
+
+  text-transform: capitalize;
+
+  white-space: nowrap;
+
+  flex-shrink: 0;
+}
+
+.order-status--pending {
+  border: 1px solid #efd69b;
+
+  background: #fff2d9;
+
+  color: #9d6200;
+}
+
+.order-status--processing {
+  border: 1px solid #bfddf6;
+
+  background: #e4f1ff;
+
+  color: #176ea8;
+}
+
+.order-status--completed {
+  border: 1px solid #bce7d4;
+
+  background: #def7ed;
+
+  color: #087b60;
+}
+
+.order-status--cancelled {
+  border: 1px solid #f0c2c2;
+
+  background: #ffe5e5;
+
+  color: #b94343;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+html[data-theme="dark"]
+.orders-panel-body {
+  background: #122d37;
+}
+
+html[data-theme="dark"]
+.order-history-item {
+  border-color: #31515c;
+
+  background: #17343e;
+
+  box-shadow:
+    0 9px 22px rgba(0, 0, 0, 0.14);
+}
+
+html[data-theme="dark"]
+.order-history-item:hover {
+  border-color: #47717d;
+
+  background: #1a3944;
+
+  box-shadow:
+    0 12px 28px rgba(0, 0, 0, 0.2);
+}
+
+html[data-theme="dark"]
+.order-history-item__icon {
+  background: #dff7f4;
+
+  color: #0f9f98;
+}
+
+html[data-theme="dark"]
+.order-history-item__name {
+  color: #f1fbfc;
+}
+
+html[data-theme="dark"]
+.order-history-item__meta {
+  color: #c0d5db;
+}
+
+html[data-theme="dark"]
+.order-history-item__note {
+  color: #9fb7c0;
+}
+
+html[data-theme="dark"]
+.order-status--pending {
+  border-color: #735921;
+
+  background: #4c3d20;
+
+  color: #ffd27c;
+}
+
+html[data-theme="dark"]
+.order-status--processing {
+  border-color: #285a75;
+
+  background: #173d56;
+
+  color: #8ccdf5;
+}
+
+html[data-theme="dark"]
+.order-status--completed {
+  border-color: #226158;
+
+  background: #123f3c;
+
+  color: #77e0d8;
+}
+
+html[data-theme="dark"]
+.order-status--cancelled {
+  border-color: #704249;
+
+  background: #492c30;
+
+  color: #ffaaaa;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+  .orders-panel-body {
+    padding: 15px;
+  }
+
+  .order-history-item {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 12px;
+
+    padding: 15px;
+  }
+
+  .order-history-item__icon {
+    width: 44px;
+    height: 44px;
+
+    flex-basis: 44px;
+  }
+
+  .order-status {
+    margin-left: 59px;
+  }
+}

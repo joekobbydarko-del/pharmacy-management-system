@@ -108,6 +108,8 @@ function OrderHistoryPage() {
 
   return (
     <section className="orders-page">
+      {/* HEADER */}
+
       <div className="orders-page-header">
         <div>
           <span className="orders-eyebrow">
@@ -127,6 +129,8 @@ function OrderHistoryPage() {
 
         <PatientDateCard />
       </div>
+
+      {/* SUMMARY */}
 
       <div className="orders-summary-grid">
         <article className="orders-summary-card">
@@ -203,6 +207,8 @@ function OrderHistoryPage() {
         </article>
       </div>
 
+      {/* ORDER HISTORY */}
+
       <article className="orders-panel">
         <div className="orders-panel-header">
           <div>
@@ -261,8 +267,8 @@ function OrderHistoryPage() {
 
               <p>
                 Please wait while we
-                load your medicine order
-                history.
+                load your medicine
+                order history.
               </p>
             </div>
           ) : error ? (
@@ -306,30 +312,36 @@ function OrderHistoryPage() {
                     }
                     className="order-history-item"
                   >
-                    <span className="order-history-icon">
-                      <PatientIcon
-                        name="package"
-                        size={20}
-                      />
-                    </span>
+                    <div className="order-history-item__left">
+                      <span className="order-history-item__icon">
+                        <PatientIcon
+                          name="package"
+                          size={21}
+                        />
+                      </span>
 
-                    <div className="order-history-info">
-                      <strong>
-                        {
-                          order.medicine_name
-                        }
-                      </strong>
+                      <div className="order-history-item__details">
+                        <h3 className="order-history-item__name">
+                          {
+                            order.medicine_name
+                          }
+                        </h3>
 
-                      <small>
-                        Quantity:{" "}
-                        {order.quantity}
-                      </small>
+                        <p className="order-history-item__meta">
+                          Quantity:{" "}
+                          {
+                            order.quantity
+                          }
+                        </p>
 
-                      {order.notes && (
-                        <small>
-                          {order.notes}
-                        </small>
-                      )}
+                        {order.notes && (
+                          <p className="order-history-item__note">
+                            {
+                              order.notes
+                            }
+                          </p>
+                        )}
+                      </div>
                     </div>
 
                     <span
@@ -348,6 +360,8 @@ function OrderHistoryPage() {
           )}
         </div>
       </article>
+
+      {/* SECURITY */}
 
       <div className="orders-security">
         <span>

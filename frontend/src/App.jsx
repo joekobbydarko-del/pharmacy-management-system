@@ -1,21 +1,23 @@
 import {
   BrowserRouter,
-  Routes,
-  Route,
   Navigate,
+  Route,
+  Routes,
 } from "react-router-dom";
 
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 
 import PatientLayout from "./components/PatientLayout";
-import PatientDashboard from "./pages/PatientDashboard";
 
+import PatientDashboard from "./pages/PatientDashboard";
 import AppointmentsPage from "./pages/AppointmentsPage";
 import PrescriptionsPage from "./pages/PrescriptionsPage";
 import OrderMedicinesPage from "./pages/OrderMedicinesPage";
 import RefillRequestsPage from "./pages/RefillRequestsPage";
 import OrderHistoryPage from "./pages/OrderHistoryPage";
+
+import PatientActivityPage from "./pages/PatientActivityPage";
 
 import TechnicalSupportPage from "./pages/TechnicalSupportPage";
 import ContactPharmacistPage from "./pages/ContactPharmacistPage";
@@ -25,10 +27,13 @@ import PatientSettingsPage from "./pages/PatientSettingsPage";
 
 import AdminDashboard from "./pages/AdminDashboard";
 
+
 function App() {
   return (
     <BrowserRouter>
+
       <Routes>
+
         {/* AUTH */}
 
         <Route
@@ -41,69 +46,105 @@ function App() {
           element={<SignUpPage />}
         />
 
+
         {/* PATIENT PORTAL */}
 
         <Route
           path="/patient"
           element={<PatientLayout />}
         >
+
           <Route
             index
-            element={<PatientDashboard />}
+            element={
+              <PatientDashboard />
+            }
           />
 
           <Route
             path="appointments"
-            element={<AppointmentsPage />}
+            element={
+              <AppointmentsPage />
+            }
           />
 
           <Route
             path="prescriptions"
-            element={<PrescriptionsPage />}
+            element={
+              <PrescriptionsPage />
+            }
           />
 
           <Route
             path="orders"
-            element={<OrderMedicinesPage />}
+            element={
+              <OrderMedicinesPage />
+            }
           />
 
           <Route
             path="refills"
-            element={<RefillRequestsPage />}
+            element={
+              <RefillRequestsPage />
+            }
           />
 
           <Route
             path="order-history"
-            element={<OrderHistoryPage />}
+            element={
+              <OrderHistoryPage />
+            }
+          />
+
+          {/* NEW ACTIVITY HISTORY */}
+
+          <Route
+            path="activity"
+            element={
+              <PatientActivityPage />
+            }
           />
 
           <Route
             path="support"
-            element={<TechnicalSupportPage />}
+            element={
+              <TechnicalSupportPage />
+            }
           />
 
           <Route
             path="contact-pharmacist"
-            element={<ContactPharmacistPage />}
+            element={
+              <ContactPharmacistPage />
+            }
           />
 
           <Route
             path="profile"
-            element={<PatientProfilePage />}
+            element={
+              <PatientProfilePage />
+            }
           />
 
           <Route
             path="settings"
-            element={<PatientSettingsPage />}
+            element={
+              <PatientSettingsPage />
+            }
           />
+
         </Route>
+
 
         {/* ADMIN */}
 
         <Route
           path="/admin"
-          element={<AdminDashboard />}
+          element={
+            <AdminDashboard />
+          }
         />
+
 
         {/* DEFAULT */}
 
@@ -126,7 +167,9 @@ function App() {
             />
           }
         />
+
       </Routes>
+
     </BrowserRouter>
   );
 }
