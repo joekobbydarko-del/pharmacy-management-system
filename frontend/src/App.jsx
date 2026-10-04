@@ -1,14 +1,20 @@
 import {
+  useEffect,
+} from "react";
+
+import {
   BrowserRouter,
   Navigate,
   Route,
   Routes,
 } from "react-router-dom";
 
+
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 
-import PatientLayout from "./components/PatientLayout";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/ResetPasswordPage";
 
 import PatientDashboard from "./pages/PatientDashboard";
 import AppointmentsPage from "./pages/AppointmentsPage";
@@ -16,42 +22,174 @@ import PrescriptionsPage from "./pages/PrescriptionsPage";
 import OrderMedicinesPage from "./pages/OrderMedicinesPage";
 import RefillRequestsPage from "./pages/RefillRequestsPage";
 import OrderHistoryPage from "./pages/OrderHistoryPage";
-
 import PatientActivityPage from "./pages/PatientActivityPage";
-
-import TechnicalSupportPage from "./pages/TechnicalSupportPage";
 import ContactPharmacistPage from "./pages/ContactPharmacistPage";
-
 import PatientProfilePage from "./pages/PatientProfilePage";
 import PatientSettingsPage from "./pages/PatientSettingsPage";
+import TechnicalSupportPage from "./pages/TechnicalSupportPage";
 
 import AdminDashboard from "./pages/AdminDashboard";
 
+import PatientLayout from "./components/PatientLayout";
+
+import {
+  getStoredUserRole,
+  isLoggedIn,
+} from "./api";
+
+
+import "./PatientMobile.css";
+
+
+function ProtectedPatientRoute({
+  children,
+}) {
+  const loggedIn =
+    isLoggedIn();
+
+  const role =
+    String(
+      getStoredUserRole() || ""
+    ).toLowerCase();
+
+
+  if (!loggedIn) {
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    );
+  }
+
+
+  if (
+    role &&
+    role !== "patient"
+  ) {
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    );
+  }
+
+
+  return children;
+}
+
+
+function ProtectedAdminRoute({
+  children,
+}) {
+  const loggedIn =
+    isLoggedIn();
+
+  const role =
+    String(
+      getStoredUserRole() || ""
+    ).toLowerCase();
+
+
+  if (!loggedIn) {
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    );
+  }
+
+
+  if (
+    role &&
+    role !== "admin"
+  ) {
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    );
+  }
+
+
+  return children;
+}
+
 
 function App() {
+
+  useEffect(() => {
+    const savedTheme =
+      localStorage.getItem(
+        "patient_theme"
+      ) || "light";
+
+
+    document.documentElement
+      .setAttribute(
+        "data-theme",
+        savedTheme
+      );
+  }, []);
+
+
   return (
     <BrowserRouter>
 
       <Routes>
 
-        {/* AUTH */}
+        {/* ===============================================
+            PUBLIC AUTH ROUTES
+        =============================================== */}
 
         <Route
           path="/login"
-          element={<LoginPage />}
+          element={
+            <LoginPage />
+          }
         />
+
 
         <Route
           path="/signup"
-          element={<SignUpPage />}
+          element={
+            <SignUpPage />
+          }
         />
 
 
-        {/* PATIENT PORTAL */}
+        <Route
+          path="/forgot-password"
+          element={
+            <ForgotPasswordPage />
+          }
+        />
+
+
+        <Route
+          path="/reset-password"
+          element={
+            <ResetPasswordPage />
+          }
+        />
+
+
+        {/* ===============================================
+            PATIENT PORTAL
+        =============================================== */}
 
         <Route
           path="/patient"
-          element={<PatientLayout />}
+          element={
+            <ProtectedPatientRoute>
+
+              <PatientLayout />
+
+            </ProtectedPatientRoute>
+          }
         >
 
           <Route
@@ -61,12 +199,14 @@ function App() {
             }
           />
 
+
           <Route
             path="appointments"
             element={
               <AppointmentsPage />
             }
           />
+
 
           <Route
             path="prescriptions"
@@ -75,12 +215,14 @@ function App() {
             }
           />
 
+
           <Route
             path="orders"
             element={
               <OrderMedicinesPage />
             }
           />
+
 
           <Route
             path="refills"
@@ -89,6 +231,7 @@ function App() {
             }
           />
 
+
           <Route
             path="order-history"
             element={
@@ -96,7 +239,6 @@ function App() {
             }
           />
 
-          {/* NEW ACTIVITY HISTORY */}
 
           <Route
             path="activity"
@@ -105,12 +247,6 @@ function App() {
             }
           />
 
-          <Route
-            path="support"
-            element={
-              <TechnicalSupportPage />
-            }
-          />
 
           <Route
             path="contact-pharmacist"
@@ -119,12 +255,14 @@ function App() {
             }
           />
 
+
           <Route
             path="profile"
             element={
               <PatientProfilePage />
             }
           />
+
 
           <Route
             path="settings"
@@ -133,20 +271,36 @@ function App() {
             }
           />
 
+
+          <Route
+            path="support"
+            element={
+              <TechnicalSupportPage />
+            }
+          />
+
         </Route>
 
 
-        {/* ADMIN */}
+        {/* ===============================================
+            ADMIN
+        =============================================== */}
 
         <Route
           path="/admin"
           element={
-            <AdminDashboard />
+            <ProtectedAdminRoute>
+
+              <AdminDashboard />
+
+            </ProtectedAdminRoute>
           }
         />
 
 
-        {/* DEFAULT */}
+        {/* ===============================================
+            DEFAULT
+        =============================================== */}
 
         <Route
           path="/"
@@ -157,6 +311,7 @@ function App() {
             />
           }
         />
+
 
         <Route
           path="*"
@@ -173,5 +328,6 @@ function App() {
     </BrowserRouter>
   );
 }
+
 
 export default App;

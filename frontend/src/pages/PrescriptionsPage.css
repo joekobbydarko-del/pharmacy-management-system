@@ -963,3 +963,298 @@ html[data-theme="dark"]
     font-size: 34px;
   }
 }
+/* =========================================================
+   PRESCRIPTIONS — COMPACT TWO-COLUMN CARD LAYOUT
+========================================================= */
+
+/*
+   Makes prescription cards compact enough for
+   two cards to sit side-by-side on desktop.
+*/
+
+.prescriptions-list,
+.prescription-list,
+.prescriptions-grid {
+  display: grid !important;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 18px !important;
+
+  width: 100%;
+
+  align-items: stretch;
+}
+
+
+/* =========================================================
+   PRESCRIPTION CARD
+========================================================= */
+
+.prescription-card,
+.prescription-item {
+  width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  margin: 0 !important;
+
+  border-radius: 14px;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   CARD MAIN AREA
+========================================================= */
+
+.prescription-card__main,
+.prescription-item__main,
+.prescription-content {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding:
+    16px
+    16px
+    12px;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.prescription-card__header,
+.prescription-item__header {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 12px;
+}
+
+
+.prescription-card__title,
+.prescription-item__title {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+/* =========================================================
+   DETAILS GRID
+========================================================= */
+
+.prescription-details,
+.prescription-meta-grid,
+.prescription-card__details {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 10px;
+
+  margin-top: 14px;
+}
+
+
+/*
+   If there are 3 detail boxes,
+   let the last one span full width.
+*/
+
+.prescription-details > :nth-child(3),
+.prescription-meta-grid > :nth-child(3),
+.prescription-card__details > :nth-child(3) {
+  grid-column:
+    1 / -1;
+}
+
+
+/* =========================================================
+   DETAIL BOXES
+========================================================= */
+
+.prescription-detail,
+.prescription-meta-item,
+.prescription-card__detail {
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  padding:
+    10px
+    11px;
+
+  border-radius: 10px;
+}
+
+
+/* =========================================================
+   INSTRUCTIONS + BUTTON AREA
+========================================================= */
+
+.prescription-card__footer,
+.prescription-item__footer,
+.prescription-footer {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  margin-top: auto;
+
+  padding:
+    12px
+    16px
+    14px;
+}
+
+
+/* =========================================================
+   INSTRUCTIONS
+========================================================= */
+
+.prescription-instructions {
+  min-width: 0;
+
+  flex: 1;
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 9px;
+}
+
+
+.prescription-instructions > div {
+  min-width: 0;
+}
+
+
+.prescription-instructions span,
+.prescription-instructions small {
+  display: block;
+}
+
+
+.prescription-instructions p,
+.prescription-instructions small {
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================================
+   REQUEST REFILL BUTTON
+========================================================= */
+
+.prescription-refill-button,
+.prescription-request-button {
+  flex: 0 0 auto;
+
+  min-height: 40px;
+
+  padding:
+    0
+    14px;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-theme="dark"]
+.prescription-card,
+[data-theme="dark"]
+.prescription-item {
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.09
+    );
+}
+
+
+/* =========================================================
+   MEDIUM SCREEN
+========================================================= */
+
+@media (max-width: 1150px) {
+  .prescriptions-list,
+  .prescription-list,
+  .prescriptions-grid {
+    grid-template-columns:
+      1fr;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+  .prescription-details,
+  .prescription-meta-grid,
+  .prescription-card__details {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .prescription-details > :nth-child(3),
+  .prescription-meta-grid > :nth-child(3),
+  .prescription-card__details > :nth-child(3) {
+    grid-column:
+      auto;
+  }
+
+
+  .prescription-card__footer,
+  .prescription-item__footer,
+  .prescription-footer {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+
+  .prescription-refill-button,
+  .prescription-request-button {
+    width: 100%;
+  }
+}

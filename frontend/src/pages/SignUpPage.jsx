@@ -1,108 +1,200 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { signup } from "../api";
+import {
+  useMemo,
+  useState,
+} from "react";
+
+import {
+  Link,
+  useNavigate,
+} from "react-router-dom";
+
+import {
+  signup,
+} from "../api";
+
 import "./SignUpPage.css";
+
 
 function SignUpPage() {
   const navigate = useNavigate();
 
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [
+    fullName,
+    setFullName,
+  ] = useState("");
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [
+    email,
+    setEmail,
+  ] = useState("");
 
-  const passwordRequirements = {
-    length: password.length >= 8,
-    uppercase: /[A-Z]/.test(password),
-    number: /[0-9]/.test(password),
-    special: /[@#$!]/.test(password),
-  };
+  const [
+    password,
+    setPassword,
+  ] = useState("");
 
-  const passwordIsValid =
-    passwordRequirements.length &&
-    passwordRequirements.uppercase &&
-    passwordRequirements.number &&
-    passwordRequirements.special;
+  const [
+    showPassword,
+    setShowPassword,
+  ] = useState(false);
 
-  const handleSignup = async (event) => {
-    event.preventDefault();
+  const [
+    loading,
+    setLoading,
+  ] = useState(false);
 
-    setError("");
-    setSuccess("");
+  const [
+    error,
+    setError,
+  ] = useState("");
 
-    if (!fullName.trim()) {
-      setError("Please enter your full name.");
-      return;
-    }
+  const [
+    success,
+    setSuccess,
+  ] = useState("");
 
-    if (!email.trim()) {
-      setError("Please enter your email address.");
-      return;
-    }
 
-    if (!passwordIsValid) {
-      setError(
-        "Please make sure your password meets all the requirements."
-      );
-      return;
-    }
+  const passwordChecks =
+    useMemo(
+      () => ({
+        minLength:
+          password.length >= 8,
 
-    try {
-      setLoading(true);
+        hasNumber:
+          /\d/.test(password),
 
-      await signup(
-        fullName.trim(),
-        email.trim(),
-        password
-      );
+        hasUppercase:
+          /[A-Z]/.test(
+            password
+          ),
 
-      setSuccess(
-        "Your patient account has been created successfully."
-      );
+        hasSpecial:
+          /[^A-Za-z0-9]/.test(
+            password
+          ),
+      }),
+      [password]
+    );
 
-      setTimeout(() => {
-        navigate("/login");
-      }, 1200);
-    } catch (err) {
-      setError(
-        err.message ||
-          "Unable to create your account. Please try again."
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+
+  const isPasswordStrong =
+    passwordChecks.minLength &&
+    passwordChecks.hasNumber &&
+    passwordChecks.hasUppercase &&
+    passwordChecks.hasSpecial;
+
+
+  const handleSubmit =
+    async (event) => {
+      event.preventDefault();
+
+      const cleanedName =
+        fullName.trim();
+
+      const cleanedEmail =
+        email
+          .trim()
+          .toLowerCase();
+
+      if (
+        !cleanedName ||
+        !cleanedEmail ||
+        !password
+      ) {
+        setError(
+          "Please fill in all required fields."
+        );
+
+        return;
+      }
+
+      if (!isPasswordStrong) {
+        setError(
+          "Your password must meet all the password requirements."
+        );
+
+        return;
+      }
+
+      try {
+        setLoading(true);
+        setError("");
+        setSuccess("");
+
+        const data =
+          await signup(
+            cleanedName,
+            cleanedEmail,
+            password
+          );
+
+        setSuccess(
+          data?.message ||
+            "Patient account created successfully."
+        );
+
+        setFullName("");
+        setEmail("");
+        setPassword("");
+
+        window.setTimeout(
+          () => {
+            navigate(
+              "/login",
+              {
+                replace: true,
+              }
+            );
+          },
+          1200
+        );
+      } catch (err) {
+        console.error(
+          "Signup failed:",
+          err
+        );
+
+        setError(
+          err?.message ||
+            "Unable to create your account right now."
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
 
   return (
-    <div className="signup-page">
-
-      {/* =====================================================
-          LEFT BRAND PANEL
-          ===================================================== */}
+    <main className="signup-page">
 
       <section className="signup-brand-panel">
 
-        <div className="signup-brand-content">
+        <div className="signup-brand-panel__circle signup-brand-panel__circle--one" />
 
-          <div className="signup-logo-wrap">
+        <div className="signup-brand-panel__circle signup-brand-panel__circle--two" />
+
+
+        <div className="signup-brand-panel__content">
+
+          <div className="signup-logo-box">
+
             <img
               src="/dr-evans-logo.png"
               alt="Dr. Evans Pharmacy"
-              className="signup-logo"
             />
+
           </div>
 
-          <div className="signup-brand-label">
+
+          <span className="signup-brand-eyebrow">
             DR. EVANS PHARMACY
-          </div>
+          </span>
 
-          <div className="signup-slogan">
-            Smart Pharmacy, Bettering Lives.
-          </div>
+
+          <strong className="signup-brand-tagline">
+            Smarter Pharmacy, Bettering Lives.
+          </strong>
+
 
           <h1>
             Better care
@@ -110,84 +202,114 @@ function SignUpPage() {
             starts here.
           </h1>
 
-          <p className="signup-brand-description">
-            Create your secure patient account and get
-            convenient access to your pharmacy services,
-            prescriptions, medicine orders, and refill requests.
+
+          <p>
+            Create your secure patient
+            account and get convenient
+            access to your pharmacy
+            services, prescriptions,
+            medicine orders, and refill
+            requests.
           </p>
 
-          <div className="signup-benefits">
 
-            <div className="signup-benefit">
-              <span className="signup-benefit-icon">
+          <div className="signup-brand-features">
+
+            <div className="signup-brand-feature">
+
+              <span>
                 ✓
               </span>
 
               <div>
-                <strong>Manage prescriptions</strong>
-                <span>
-                  View your medications and prescription information.
-                </span>
+
+                <strong>
+                  Manage prescriptions
+                </strong>
+
+                <small>
+                  View your medications
+                  and prescription
+                  information.
+                </small>
+
               </div>
+
             </div>
 
-            <div className="signup-benefit">
-              <span className="signup-benefit-icon">
+
+            <div className="signup-brand-feature">
+
+              <span>
                 +
               </span>
 
               <div>
-                <strong>Order medicines</strong>
-                <span>
-                  Request medicines conveniently through your portal.
-                </span>
+
+                <strong>
+                  Order medicines
+                </strong>
+
+                <small>
+                  Request medicines
+                  conveniently through
+                  your portal.
+                </small>
+
               </div>
+
             </div>
 
-            <div className="signup-benefit">
-              <span className="signup-benefit-icon">
+
+            <div className="signup-brand-feature">
+
+              <span>
                 ↻
               </span>
 
               <div>
-                <strong>Request refills</strong>
-                <span>
-                  Submit refill requests without visiting the pharmacy.
-                </span>
+
+                <strong>
+                  Request refills
+                </strong>
+
+                <small>
+                  Submit refill requests
+                  without visiting the
+                  pharmacy.
+                </small>
+
               </div>
+
             </div>
 
           </div>
 
         </div>
 
+
         <div className="signup-brand-footer">
-          <span>DR. EVANS PHARMACY</span>
-          <span>Patient Care Portal</span>
+
+          <span>
+            DR. EVANS PHARMACY
+          </span>
+
+          <span>
+            Patient Care Portal
+          </span>
+
         </div>
 
       </section>
 
 
-      {/* =====================================================
-          RIGHT SIGN UP PANEL
-          ===================================================== */}
-
       <section className="signup-form-panel">
 
-        <div className="signup-form-container">
+        <div className="signup-form-card">
 
-          <div className="signup-mobile-logo">
-            <img
-              src="/dr-evans-logo.png"
-              alt="Dr. Evans Pharmacy"
-            />
-          </div>
+          <div className="signup-form-header">
 
-
-          <div className="signup-heading">
-
-            <span className="signup-eyebrow">
+            <span className="signup-form-eyebrow">
               PATIENT REGISTRATION
             </span>
 
@@ -196,61 +318,52 @@ function SignUpPage() {
             </h2>
 
             <p>
-              Join Dr. Evans Pharmacy and securely manage
-              your pharmacy services online.
+              Join Dr. Evans Pharmacy and
+              securely manage your pharmacy
+              services online.
             </p>
 
           </div>
 
 
-          {error && (
-            <div className="signup-message signup-error">
+          <form
+            className="signup-form"
+            onSubmit={handleSubmit}
+          >
 
-              <span className="signup-message-icon">
-                !
-              </span>
+            {error && (
 
-              <div>
+              <div className="signup-alert signup-alert--error">
+
                 <strong>
-                  Account could not be created
+                  Unable to create account
                 </strong>
 
-                <span>
+                <p>
                   {error}
-                </span>
+                </p>
+
               </div>
 
-            </div>
-          )}
+            )}
 
 
-          {success && (
-            <div className="signup-message signup-success">
+            {success && (
 
-              <span className="signup-message-icon">
-                ✓
-              </span>
+              <div className="signup-alert signup-alert--success">
 
-              <div>
                 <strong>
                   Account created
                 </strong>
 
-                <span>
+                <p>
                   {success}
-                </span>
+                </p>
+
               </div>
 
-            </div>
-          )}
+            )}
 
-
-          <form
-            className="signup-form"
-            onSubmit={handleSignup}
-          >
-
-            {/* FULL NAME */}
 
             <div className="signup-field">
 
@@ -258,78 +371,57 @@ function SignUpPage() {
                 Full name
               </label>
 
-              <div className="signup-input-wrapper">
-
-                <span className="signup-input-icon">
-                  Aa
-                </span>
-
-                <input
-                  id="fullName"
-                  type="text"
-                  value={fullName}
-                  onChange={(event) =>
-                    setFullName(event.target.value)
-                  }
-                  placeholder="Enter your full name"
-                  autoComplete="name"
-                  disabled={loading}
-                  required
-                />
-
-              </div>
+              <input
+                id="fullName"
+                type="text"
+                value={fullName}
+                onChange={(event) =>
+                  setFullName(
+                    event.target.value
+                  )
+                }
+                placeholder="Enter your full name"
+                autoComplete="name"
+                disabled={loading}
+              />
 
             </div>
 
 
-            {/* EMAIL */}
-
             <div className="signup-field">
 
-              <label htmlFor="signupEmail">
+              <label htmlFor="email">
                 Email address
               </label>
 
-              <div className="signup-input-wrapper">
-
-                <span className="signup-input-icon">
-                  @
-                </span>
-
-                <input
-                  id="signupEmail"
-                  type="email"
-                  value={email}
-                  onChange={(event) =>
-                    setEmail(event.target.value)
-                  }
-                  placeholder="you@example.com"
-                  autoComplete="email"
-                  disabled={loading}
-                  required
-                />
-
-              </div>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(event) =>
+                  setEmail(
+                    event.target.value
+                  )
+                }
+                placeholder="you@example.com"
+                autoComplete="email"
+                disabled={loading}
+              />
 
             </div>
 
 
-            {/* PASSWORD */}
-
             <div className="signup-field">
 
-              <label htmlFor="signupPassword">
+              <label htmlFor="password">
                 Password
               </label>
 
-              <div className="signup-input-wrapper">
 
-                <span className="signup-input-icon">
-                  •
-                </span>
+              <div className="signup-password-wrap">
 
                 <input
-                  id="signupPassword"
+                  id="password"
                   type={
                     showPassword
                       ? "text"
@@ -337,23 +429,30 @@ function SignUpPage() {
                   }
                   value={password}
                   onChange={(event) =>
-                    setPassword(event.target.value)
+                    setPassword(
+                      event.target.value
+                    )
                   }
                   placeholder="Create a secure password"
                   autoComplete="new-password"
                   disabled={loading}
-                  required
                 />
+
 
                 <button
                   type="button"
                   className="signup-password-toggle"
                   onClick={() =>
-                    setShowPassword(!showPassword)
+                    setShowPassword(
+                      (current) =>
+                        !current
+                    )
                   }
                   disabled={loading}
                 >
-                  {showPassword ? "Hide" : "Show"}
+                  {showPassword
+                    ? "Hide"
+                    : "Show"}
                 </button>
 
               </div>
@@ -361,141 +460,120 @@ function SignUpPage() {
             </div>
 
 
-            {/* PASSWORD REQUIREMENTS */}
+            <div className="signup-password-rules">
 
-            <div className="password-requirements">
-
-              <div className="requirements-heading">
+              <strong>
                 Password requirements
-              </div>
+              </strong>
 
-              <div className="requirements-grid">
 
-                <div
+              <div className="signup-password-rules__grid">
+
+                <span
                   className={
-                    passwordRequirements.length
-                      ? "requirement valid"
-                      : "requirement"
+                    passwordChecks.minLength
+                      ? "is-valid"
+                      : ""
                   }
                 >
-                  <span>
-                    {passwordRequirements.length ? "✓" : "○"}
-                  </span>
-                  At least 8 characters
-                </div>
+                  ○ At least 8 characters
+                </span>
 
-                <div
+
+                <span
                   className={
-                    passwordRequirements.uppercase
-                      ? "requirement valid"
-                      : "requirement"
+                    passwordChecks.hasUppercase
+                      ? "is-valid"
+                      : ""
                   }
                 >
-                  <span>
-                    {passwordRequirements.uppercase ? "✓" : "○"}
-                  </span>
-                  One uppercase letter
-                </div>
+                  ○ One uppercase letter
+                </span>
 
-                <div
+
+                <span
                   className={
-                    passwordRequirements.number
-                      ? "requirement valid"
-                      : "requirement"
+                    passwordChecks.hasNumber
+                      ? "is-valid"
+                      : ""
                   }
                 >
-                  <span>
-                    {passwordRequirements.number ? "✓" : "○"}
-                  </span>
-                  One number
-                </div>
+                  ○ One number
+                </span>
 
-                <div
+
+                <span
                   className={
-                    passwordRequirements.special
-                      ? "requirement valid"
-                      : "requirement"
+                    passwordChecks.hasSpecial
+                      ? "is-valid"
+                      : ""
                   }
                 >
-                  <span>
-                    {passwordRequirements.special ? "✓" : "○"}
-                  </span>
-                  One special character
-                </div>
+                  ○ One special character
+                </span>
 
               </div>
 
             </div>
 
 
-            {/* SUBMIT */}
-
             <button
               type="submit"
-              className="signup-submit"
-              disabled={loading || Boolean(success)}
+              className="signup-submit-btn"
+              disabled={loading}
             >
-              {loading ? (
-                <>
-                  <span className="signup-spinner"></span>
-                  Creating account...
-                </>
-              ) : (
-                <>
-                  Create patient account
-                  <span className="signup-arrow">
-                    →
-                  </span>
-                </>
+              {loading
+                ? "Creating account..."
+                : "Create patient account"}
+
+              {!loading && (
+                <span>
+                  →
+                </span>
               )}
             </button>
 
           </form>
 
 
-          {/* LOGIN LINK */}
-
-          <div className="signup-login-section">
+          <div className="signup-signin-link">
 
             <span>
               Already have a patient account?
             </span>
 
-            <button
-              type="button"
-              onClick={() => navigate("/login")}
-              disabled={loading}
-            >
+            <Link to="/login">
               Sign in
-            </button>
+            </Link>
 
           </div>
 
 
-          {/* SECURITY */}
+          <div className="signup-security-note">
 
-          <div className="signup-security">
-
-            <span className="signup-security-icon">
+            <span>
               ✓
             </span>
 
             <div>
+
               <strong>
                 Secure patient registration
               </strong>
 
-              <span>
-                Your account information is protected
-                and securely managed.
-              </span>
+              <p>
+                Your account information
+                is protected and securely
+                managed.
+              </p>
+
             </div>
 
           </div>
 
 
           <p className="signup-copyright">
-            © {new Date().getFullYear()} Dr. Evans Pharmacy.
+            © 2026 Dr. Evans Pharmacy.
             All rights reserved.
           </p>
 
@@ -503,8 +581,9 @@ function SignUpPage() {
 
       </section>
 
-    </div>
+    </main>
   );
 }
+
 
 export default SignUpPage;

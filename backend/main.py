@@ -39,6 +39,14 @@ from security import (
     verify_password,
 )
 
+from password_reset import (
+    router as password_reset_router,
+)
+
+from profile import (
+    router as profile_router,
+)
+
 
 # ============================================================
 # APP
@@ -51,18 +59,32 @@ app = FastAPI(
 )
 
 
+app.include_router(
+    password_reset_router
+)
+
+app.include_router(
+    profile_router
+)
+
+
 # ============================================================
 # CORS
 # ============================================================
 
 app.add_middleware(
     CORSMiddleware,
+
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
+        "http://192.168.8.142:5173",
     ],
+
     allow_credentials=True,
+
     allow_methods=["*"],
+
     allow_headers=["*"],
 )
 
@@ -97,8 +119,13 @@ def get_current_user(
     token = credentials.credentials
 
     try:
-        payload = decode_access_token(token)
-        user_id = int(payload["sub"])
+        payload = decode_access_token(
+            token
+        )
+
+        user_id = int(
+            payload["sub"]
+        )
 
     except (
         ValueError,
@@ -133,7 +160,9 @@ def get_current_user(
     if not user.is_active:
         raise HTTPException(
             status_code=403,
-            detail="This account is inactive.",
+            detail=(
+                "This account is inactive."
+            ),
         )
 
     return user
@@ -150,7 +179,10 @@ def verify_patient_access(
     if current_user.role == "admin":
         return
 
-    if current_user.id != requested_user_id:
+    if (
+        current_user.id
+        != requested_user_id
+    ):
         raise HTTPException(
             status_code=403,
             detail=(
@@ -164,43 +196,73 @@ def verify_patient_access(
 # REQUEST MODELS
 # ============================================================
 
-class MedicineOrderRequest(BaseModel):
+class MedicineOrderRequest(
+    BaseModel
+):
     user_id: int
+
     medicine_name: str
-    quantity: int = Field(gt=0)
+
+    quantity: int = Field(
+        gt=0
+    )
+
     notes: str | None = None
 
 
-class RefillRequestCreate(BaseModel):
+class RefillRequestCreate(
+    BaseModel
+):
     user_id: int
+
     prescription_id: int
+
     notes: str | None = None
 
 
-class AppointmentRequest(BaseModel):
+class AppointmentRequest(
+    BaseModel
+):
     user_id: int
+
     appointment_type: str
+
     appointment_date: str
+
     appointment_time: str
+
     note: str | None = None
 
 
-class PharmacistMessageRequest(BaseModel):
+class PharmacistMessageRequest(
+    BaseModel
+):
     user_id: int
+
     subject: str
+
     message: str
 
 
-class SupportRequestCreate(BaseModel):
+class SupportRequestCreate(
+    BaseModel
+):
     user_id: int
+
     subject: str
+
     message: str
 
 
-class NotificationCreate(BaseModel):
+class NotificationCreate(
+    BaseModel
+):
     user_id: int
+
     title: str
+
     message: str
+
     icon: str = "bell"
 
 
@@ -283,12 +345,15 @@ def root():
 @app.post("/signup")
 def signup(
     user: SignUpRequest,
-    db: Session = Depends(get_db),
+    db: Session = Depends(
+        get_db
+    ),
 ):
     existing_user = (
         db.query(User)
         .filter(
-            User.email == user.email
+            User.email
+            == user.email
         )
         .first()
     )
@@ -303,28 +368,45 @@ def signup(
         )
 
     new_user = User(
-        full_name=user.full_name,
-        email=user.email,
-        password_hash=hash_password(
-            user.password
-        ),
+        full_name=
+            user.full_name,
+
+        email=
+            user.email,
+
+        password_hash=
+            hash_password(
+                user.password
+            ),
+
         role="patient",
+
         is_active=True,
     )
 
-    db.add(new_user)
+    db.add(
+        new_user
+    )
+
     db.commit()
-    db.refresh(new_user)
+
+    db.refresh(
+        new_user
+    )
 
     return {
         "message":
             "Account created successfully",
+
         "user_id":
             new_user.id,
+
         "full_name":
             new_user.full_name,
+
         "email":
             new_user.email,
+
         "role":
             new_user.role,
     }
@@ -337,12 +419,15 @@ def signup(
 @app.post("/login")
 def login(
     user: LoginRequest,
-    db: Session = Depends(get_db),
+    db: Session = Depends(
+        get_db
+    ),
 ):
     db_user = (
         db.query(User)
         .filter(
-            User.email == user.email
+            User.email
+            == user.email
         )
         .first()
     )
@@ -350,7 +435,9 @@ def login(
     if not db_user:
         raise HTTPException(
             status_code=401,
-            detail="Invalid email or password.",
+            detail=(
+                "Invalid email or password."
+            ),
         )
 
     if not verify_password(
@@ -359,35 +446,48 @@ def login(
     ):
         raise HTTPException(
             status_code=401,
-            detail="Invalid email or password.",
+            detail=(
+                "Invalid email or password."
+            ),
         )
 
     if not db_user.is_active:
         raise HTTPException(
             status_code=403,
-            detail="This account is inactive.",
+            detail=(
+                "This account is inactive."
+            ),
         )
 
     access_token = (
         create_access_token(
-            user_id=db_user.id,
-            role=db_user.role,
+            user_id=
+                db_user.id,
+
+            role=
+                db_user.role,
         )
     )
 
     return {
         "message":
             "Login successful",
+
         "access_token":
             access_token,
+
         "token_type":
             "bearer",
+
         "user_id":
             db_user.id,
+
         "full_name":
             db_user.full_name,
+
         "email":
             db_user.email,
+
         "role":
             db_user.role,
     }
@@ -406,12 +506,16 @@ def get_me(
     return {
         "user_id":
             current_user.id,
+
         "full_name":
             current_user.full_name,
+
         "email":
             current_user.email,
+
         "role":
             current_user.role,
+
         "is_active":
             current_user.is_active,
     }
@@ -424,7 +528,11 @@ def get_me(
 @app.post("/orders")
 def create_order(
     order: MedicineOrderRequest,
-    db: Session = Depends(get_db),
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -435,53 +543,81 @@ def create_order(
     )
 
     medicine_name = (
-        order.medicine_name.strip()
+        order.medicine_name
+        .strip()
     )
 
     if not medicine_name:
         raise HTTPException(
             status_code=400,
-            detail="Medicine name is required.",
+            detail=(
+                "Medicine name is required."
+            ),
         )
 
     new_order = MedicineOrder(
-        user_id=order.user_id,
-        medicine_name=medicine_name,
-        quantity=order.quantity,
+        user_id=
+            order.user_id,
+
+        medicine_name=
+            medicine_name,
+
+        quantity=
+            order.quantity,
+
         notes=(
             order.notes.strip()
             if order.notes
             else None
         ),
+
         status="pending",
     )
 
-    db.add(new_order)
+    db.add(
+        new_order
+    )
+
     db.commit()
-    db.refresh(new_order)
+
+    db.refresh(
+        new_order
+    )
 
     return {
         "message":
             "Medicine order submitted successfully",
+
         "order_id":
             new_order.id,
+
         "user_id":
             new_order.user_id,
+
         "medicine_name":
             new_order.medicine_name,
+
         "quantity":
             new_order.quantity,
+
         "notes":
             new_order.notes,
+
         "status":
             new_order.status,
     }
 
 
-@app.get("/orders/{user_id}")
+@app.get(
+    "/orders/{user_id}"
+)
 def get_user_orders(
     user_id: int,
-    db: Session = Depends(get_db),
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -492,9 +628,12 @@ def get_user_orders(
     )
 
     orders = (
-        db.query(MedicineOrder)
+        db.query(
+            MedicineOrder
+        )
         .filter(
-            MedicineOrder.user_id == user_id
+            MedicineOrder.user_id
+            == user_id
         )
         .order_by(
             MedicineOrder.id.desc()
@@ -506,17 +645,23 @@ def get_user_orders(
         {
             "order_id":
                 order.id,
+
             "user_id":
                 order.user_id,
+
             "medicine_name":
                 order.medicine_name,
+
             "quantity":
                 order.quantity,
+
             "notes":
                 order.notes,
+
             "status":
                 order.status,
         }
+
         for order in orders
     ]
 
@@ -525,10 +670,16 @@ def get_user_orders(
 # PRESCRIPTIONS
 # ============================================================
 
-@app.get("/prescriptions/{user_id}")
+@app.get(
+    "/prescriptions/{user_id}"
+)
 def get_user_prescriptions(
     user_id: int,
-    db: Session = Depends(get_db),
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -539,9 +690,12 @@ def get_user_prescriptions(
     )
 
     prescriptions = (
-        db.query(Prescription)
+        db.query(
+            Prescription
+        )
         .filter(
-            Prescription.user_id == user_id
+            Prescription.user_id
+            == user_id
         )
         .order_by(
             Prescription.id.desc()
@@ -553,19 +707,26 @@ def get_user_prescriptions(
         {
             "prescription_id":
                 prescription.id,
+
             "user_id":
                 prescription.user_id,
+
             "medicine_name":
                 prescription.medicine_name,
+
             "dosage":
                 prescription.dosage,
+
             "frequency":
                 prescription.frequency,
+
             "instructions":
                 prescription.instructions,
+
             "status":
                 prescription.status,
         }
+
         for prescription
         in prescriptions
     ]
@@ -575,10 +736,17 @@ def get_user_prescriptions(
 # REFILL REQUESTS
 # ============================================================
 
-@app.post("/refill-requests")
+@app.post(
+    "/refill-requests"
+)
 def create_refill_request(
-    request: RefillRequestCreate,
-    db: Session = Depends(get_db),
+    request:
+        RefillRequestCreate,
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -589,10 +757,13 @@ def create_refill_request(
     )
 
     prescription = (
-        db.query(Prescription)
+        db.query(
+            Prescription
+        )
         .filter(
             Prescription.id
             == request.prescription_id,
+
             Prescription.user_id
             == request.user_id,
         )
@@ -602,11 +773,15 @@ def create_refill_request(
     if not prescription:
         raise HTTPException(
             status_code=404,
-            detail="Prescription not found.",
+            detail=(
+                "Prescription not found."
+            ),
         )
 
     if (
-        String_lower(prescription.status)
+        string_lower(
+            prescription.status
+        )
         != "active"
     ):
         raise HTTPException(
@@ -618,12 +793,16 @@ def create_refill_request(
         )
 
     existing_request = (
-        db.query(RefillRequest)
+        db.query(
+            RefillRequest
+        )
         .filter(
             RefillRequest.user_id
             == request.user_id,
+
             RefillRequest.prescription_id
             == request.prescription_id,
+
             RefillRequest.status.in_(
                 [
                     "pending",
@@ -646,42 +825,62 @@ def create_refill_request(
         )
 
     new_request = RefillRequest(
-        user_id=request.user_id,
-        prescription_id=(
-            request.prescription_id
-        ),
+        user_id=
+            request.user_id,
+
+        prescription_id=
+            request.prescription_id,
+
         notes=(
             request.notes.strip()
             if request.notes
             else None
         ),
+
         status="pending",
     )
 
-    db.add(new_request)
+    db.add(
+        new_request
+    )
+
     db.commit()
-    db.refresh(new_request)
+
+    db.refresh(
+        new_request
+    )
 
     return {
         "message":
             "Refill request submitted successfully",
+
         "request_id":
             new_request.id,
+
         "user_id":
             new_request.user_id,
+
         "prescription_id":
             new_request.prescription_id,
+
         "notes":
             new_request.notes,
+
         "status":
             new_request.status,
     }
 
 
-@app.get("/refill-requests/{user_id}")
+@app.get(
+    "/refill-requests/{user_id}"
+)
 def get_user_refill_requests(
     user_id: int,
-    db: Session = Depends(get_db),
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -692,7 +891,9 @@ def get_user_refill_requests(
     )
 
     requests = (
-        db.query(RefillRequest)
+        db.query(
+            RefillRequest
+        )
         .filter(
             RefillRequest.user_id
             == user_id
@@ -707,16 +908,22 @@ def get_user_refill_requests(
         {
             "request_id":
                 request.id,
+
             "user_id":
                 request.user_id,
+
             "prescription_id":
                 request.prescription_id,
+
             "notes":
                 request.notes,
+
             "status":
                 request.status,
         }
-        for request in requests
+
+        for request
+        in requests
     ]
 
 
@@ -724,10 +931,17 @@ def get_user_refill_requests(
 # APPOINTMENTS
 # ============================================================
 
-@app.post("/appointments")
+@app.post(
+    "/appointments"
+)
 def create_appointment(
-    appointment: AppointmentRequest,
-    db: Session = Depends(get_db),
+    appointment:
+        AppointmentRequest,
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -738,15 +952,21 @@ def create_appointment(
     )
 
     appointment_type = (
-        appointment.appointment_type.strip()
+        appointment
+        .appointment_type
+        .strip()
     )
 
     appointment_date = (
-        appointment.appointment_date.strip()
+        appointment
+        .appointment_date
+        .strip()
     )
 
     appointment_time = (
-        appointment.appointment_time.strip()
+        appointment
+        .appointment_time
+        .strip()
     )
 
     if not appointment_type:
@@ -777,46 +997,74 @@ def create_appointment(
         )
 
     new_appointment = Appointment(
-        user_id=appointment.user_id,
-        appointment_type=appointment_type,
-        appointment_date=appointment_date,
-        appointment_time=appointment_time,
+        user_id=
+            appointment.user_id,
+
+        appointment_type=
+            appointment_type,
+
+        appointment_date=
+            appointment_date,
+
+        appointment_time=
+            appointment_time,
+
         note=(
             appointment.note.strip()
             if appointment.note
             else None
         ),
+
         status="pending",
     )
 
-    db.add(new_appointment)
+    db.add(
+        new_appointment
+    )
+
     db.commit()
-    db.refresh(new_appointment)
+
+    db.refresh(
+        new_appointment
+    )
 
     return {
         "message":
             "Appointment request submitted successfully",
+
         "appointment_id":
             new_appointment.id,
+
         "user_id":
             new_appointment.user_id,
+
         "appointment_type":
             new_appointment.appointment_type,
+
         "appointment_date":
             new_appointment.appointment_date,
+
         "appointment_time":
             new_appointment.appointment_time,
+
         "note":
             new_appointment.note,
+
         "status":
             new_appointment.status,
     }
 
 
-@app.get("/appointments/{user_id}")
+@app.get(
+    "/appointments/{user_id}"
+)
 def get_user_appointments(
     user_id: int,
-    db: Session = Depends(get_db),
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -827,7 +1075,9 @@ def get_user_appointments(
     )
 
     appointments = (
-        db.query(Appointment)
+        db.query(
+            Appointment
+        )
         .filter(
             Appointment.user_id
             == user_id
@@ -842,19 +1092,26 @@ def get_user_appointments(
         {
             "appointment_id":
                 appointment.id,
+
             "user_id":
                 appointment.user_id,
+
             "appointment_type":
                 appointment.appointment_type,
+
             "appointment_date":
                 appointment.appointment_date,
+
             "appointment_time":
                 appointment.appointment_time,
+
             "note":
                 appointment.note,
+
             "status":
                 appointment.status,
         }
+
         for appointment
         in appointments
     ]
@@ -864,10 +1121,17 @@ def get_user_appointments(
 # PHARMACIST MESSAGES
 # ============================================================
 
-@app.post("/pharmacist-messages")
+@app.post(
+    "/pharmacist-messages"
+)
 def create_pharmacist_message(
-    request: PharmacistMessageRequest,
-    db: Session = Depends(get_db),
+    request:
+        PharmacistMessageRequest,
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -877,19 +1141,28 @@ def create_pharmacist_message(
         current_user,
     )
 
-    subject = request.subject.strip()
-    message = request.message.strip()
+    subject = (
+        request.subject.strip()
+    )
+
+    message = (
+        request.message.strip()
+    )
 
     if not subject:
         raise HTTPException(
             status_code=400,
-            detail="Message subject is required.",
+            detail=(
+                "Message subject is required."
+            ),
         )
 
     if not message:
         raise HTTPException(
             status_code=400,
-            detail="Message is required.",
+            detail=(
+                "Message is required."
+            ),
         )
 
     if len(message) > 1000:
@@ -901,43 +1174,72 @@ def create_pharmacist_message(
             ),
         )
 
-    new_message = PharmacistMessage(
-        user_id=request.user_id,
-        subject=subject,
-        message=message,
-        status="pending",
+    new_message = (
+        PharmacistMessage(
+            user_id=
+                request.user_id,
+
+            subject=
+                subject,
+
+            message=
+                message,
+
+            status="pending",
+        )
     )
 
-    db.add(new_message)
+    db.add(
+        new_message
+    )
+
     db.commit()
-    db.refresh(new_message)
+
+    db.refresh(
+        new_message
+    )
 
     return {
         "message_id":
             new_message.id,
+
         "user_id":
             new_message.user_id,
+
         "subject":
             new_message.subject,
+
         "message":
             new_message.message,
+
         "status":
             new_message.status,
+
         "pharmacist_response":
             new_message.pharmacist_response,
-        "created_at":
-            (
-                new_message.created_at.isoformat()
-                if new_message.created_at
-                else None
-            ),
+
+        "created_at": (
+            new_message
+            .created_at
+            .isoformat()
+
+            if new_message.created_at
+
+            else None
+        ),
     }
 
 
-@app.get("/pharmacist-messages/{user_id}")
+@app.get(
+    "/pharmacist-messages/{user_id}"
+)
 def get_user_pharmacist_messages(
     user_id: int,
-    db: Session = Depends(get_db),
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -948,7 +1250,9 @@ def get_user_pharmacist_messages(
     )
 
     messages = (
-        db.query(PharmacistMessage)
+        db.query(
+            PharmacistMessage
+        )
         .filter(
             PharmacistMessage.user_id
             == user_id
@@ -963,23 +1267,31 @@ def get_user_pharmacist_messages(
         {
             "message_id":
                 item.id,
+
             "user_id":
                 item.user_id,
+
             "subject":
                 item.subject,
+
             "message":
                 item.message,
+
             "status":
                 item.status,
+
             "pharmacist_response":
                 item.pharmacist_response,
-            "created_at":
-                (
-                    item.created_at.isoformat()
-                    if item.created_at
-                    else None
-                ),
+
+            "created_at": (
+                item.created_at.isoformat()
+
+                if item.created_at
+
+                else None
+            ),
         }
+
         for item in messages
     ]
 
@@ -988,10 +1300,17 @@ def get_user_pharmacist_messages(
 # TECHNICAL SUPPORT
 # ============================================================
 
-@app.post("/support-requests")
+@app.post(
+    "/support-requests"
+)
 def create_support_request(
-    request: SupportRequestCreate,
-    db: Session = Depends(get_db),
+    request:
+        SupportRequestCreate,
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -1001,8 +1320,13 @@ def create_support_request(
         current_user,
     )
 
-    subject = request.subject.strip()
-    message = request.message.strip()
+    subject = (
+        request.subject.strip()
+    )
+
+    message = (
+        request.message.strip()
+    )
 
     if not subject:
         raise HTTPException(
@@ -1040,43 +1364,72 @@ def create_support_request(
             ),
         )
 
-    new_request = SupportRequest(
-        user_id=request.user_id,
-        subject=subject,
-        message=message,
-        status="pending",
+    new_request = (
+        SupportRequest(
+            user_id=
+                request.user_id,
+
+            subject=
+                subject,
+
+            message=
+                message,
+
+            status="pending",
+        )
     )
 
-    db.add(new_request)
+    db.add(
+        new_request
+    )
+
     db.commit()
-    db.refresh(new_request)
+
+    db.refresh(
+        new_request
+    )
 
     return {
         "request_id":
             new_request.id,
+
         "user_id":
             new_request.user_id,
+
         "subject":
             new_request.subject,
+
         "message":
             new_request.message,
+
         "status":
             new_request.status,
+
         "support_response":
             new_request.support_response,
-        "created_at":
-            (
-                new_request.created_at.isoformat()
-                if new_request.created_at
-                else None
-            ),
+
+        "created_at": (
+            new_request
+            .created_at
+            .isoformat()
+
+            if new_request.created_at
+
+            else None
+        ),
     }
 
 
-@app.get("/support-requests/{user_id}")
+@app.get(
+    "/support-requests/{user_id}"
+)
 def get_user_support_requests(
     user_id: int,
-    db: Session = Depends(get_db),
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -1087,7 +1440,9 @@ def get_user_support_requests(
     )
 
     requests = (
-        db.query(SupportRequest)
+        db.query(
+            SupportRequest
+        )
         .filter(
             SupportRequest.user_id
             == user_id
@@ -1102,24 +1457,33 @@ def get_user_support_requests(
         {
             "request_id":
                 item.id,
+
             "user_id":
                 item.user_id,
+
             "subject":
                 item.subject,
+
             "message":
                 item.message,
+
             "status":
                 item.status,
+
             "support_response":
                 item.support_response,
-            "created_at":
-                (
-                    item.created_at.isoformat()
-                    if item.created_at
-                    else None
-                ),
+
+            "created_at": (
+                item.created_at.isoformat()
+
+                if item.created_at
+
+                else None
+            ),
         }
-        for item in requests
+
+        for item
+        in requests
     ]
 
 
@@ -1127,10 +1491,17 @@ def get_user_support_requests(
 # NOTIFICATIONS
 # ============================================================
 
-@app.post("/notifications")
+@app.post(
+    "/notifications"
+)
 def create_notification(
-    request: NotificationCreate,
-    db: Session = Depends(get_db),
+    request:
+        NotificationCreate,
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -1140,8 +1511,13 @@ def create_notification(
         current_user,
     )
 
-    title = request.title.strip()
-    message = request.message.strip()
+    title = (
+        request.title.strip()
+    )
+
+    message = (
+        request.message.strip()
+    )
 
     if not title:
         raise HTTPException(
@@ -1162,47 +1538,75 @@ def create_notification(
         )
 
     new_notification = Notification(
-        user_id=request.user_id,
-        title=title,
-        message=message,
+        user_id=
+            request.user_id,
+
+        title=
+            title,
+
+        message=
+            message,
+
         icon=(
             request.icon.strip()
             if request.icon
             else "bell"
         ),
+
         is_read=False,
     )
 
-    db.add(new_notification)
+    db.add(
+        new_notification
+    )
+
     db.commit()
-    db.refresh(new_notification)
+
+    db.refresh(
+        new_notification
+    )
 
     return {
         "id":
             new_notification.id,
+
         "user_id":
             new_notification.user_id,
+
         "title":
             new_notification.title,
+
         "message":
             new_notification.message,
+
         "icon":
             new_notification.icon,
+
         "read":
             new_notification.is_read,
-        "created_at":
-            (
-                new_notification.created_at.isoformat()
-                if new_notification.created_at
-                else None
-            ),
+
+        "created_at": (
+            new_notification
+            .created_at
+            .isoformat()
+
+            if new_notification.created_at
+
+            else None
+        ),
     }
 
 
-@app.get("/notifications/{user_id}")
+@app.get(
+    "/notifications/{user_id}"
+)
 def get_user_notifications(
     user_id: int,
-    db: Session = Depends(get_db),
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -1213,9 +1617,12 @@ def get_user_notifications(
     )
 
     notifications = (
-        db.query(Notification)
+        db.query(
+            Notification
+        )
         .filter(
-            Notification.user_id == user_id
+            Notification.user_id
+            == user_id
         )
         .order_by(
             Notification.id.desc()
@@ -1228,23 +1635,33 @@ def get_user_notifications(
         {
             "id":
                 notification.id,
+
             "user_id":
                 notification.user_id,
+
             "title":
                 notification.title,
+
             "message":
                 notification.message,
+
             "icon":
                 notification.icon,
+
             "read":
                 notification.is_read,
-            "created_at":
-                (
-                    notification.created_at.isoformat()
-                    if notification.created_at
-                    else None
-                ),
+
+            "created_at": (
+                notification
+                .created_at
+                .isoformat()
+
+                if notification.created_at
+
+                else None
+            ),
         }
+
         for notification
         in notifications
     ]
@@ -1255,13 +1672,19 @@ def get_user_notifications(
 )
 def mark_notification_read(
     notification_id: int,
-    db: Session = Depends(get_db),
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
 ):
     notification = (
-        db.query(Notification)
+        db.query(
+            Notification
+        )
         .filter(
             Notification.id
             == notification_id
@@ -1272,7 +1695,9 @@ def mark_notification_read(
     if not notification:
         raise HTTPException(
             status_code=404,
-            detail="Notification not found.",
+            detail=(
+                "Notification not found."
+            ),
         )
 
     verify_patient_access(
@@ -1283,11 +1708,15 @@ def mark_notification_read(
     notification.is_read = True
 
     db.commit()
-    db.refresh(notification)
+
+    db.refresh(
+        notification
+    )
 
     return {
         "id":
             notification.id,
+
         "read":
             notification.is_read,
     }
@@ -1298,7 +1727,11 @@ def mark_notification_read(
 )
 def mark_all_notifications_read(
     user_id: int,
-    db: Session = Depends(get_db),
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -1309,10 +1742,13 @@ def mark_all_notifications_read(
     )
 
     updated = (
-        db.query(Notification)
+        db.query(
+            Notification
+        )
         .filter(
             Notification.user_id
             == user_id,
+
             Notification.is_read
             == False,
         )
@@ -1321,6 +1757,7 @@ def mark_all_notifications_read(
                 Notification.is_read:
                     True
             },
+
             synchronize_session=False,
         )
     )
@@ -1330,15 +1767,22 @@ def mark_all_notifications_read(
     return {
         "message":
             "All notifications marked as read.",
+
         "updated":
             updated,
     }
 
 
-@app.delete("/notifications/{user_id}")
+@app.delete(
+    "/notifications/{user_id}"
+)
 def clear_user_notifications(
     user_id: int,
-    db: Session = Depends(get_db),
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -1349,9 +1793,12 @@ def clear_user_notifications(
     )
 
     deleted = (
-        db.query(Notification)
+        db.query(
+            Notification
+        )
         .filter(
-            Notification.user_id == user_id
+            Notification.user_id
+            == user_id
         )
         .delete(
             synchronize_session=False
@@ -1363,6 +1810,7 @@ def clear_user_notifications(
     return {
         "message":
             "Notifications cleared successfully.",
+
         "deleted":
             deleted,
     }
@@ -1372,10 +1820,16 @@ def clear_user_notifications(
 # LAB RESULTS
 # ============================================================
 
-@app.get("/lab-results/{user_id}")
+@app.get(
+    "/lab-results/{user_id}"
+)
 def get_user_lab_results(
     user_id: int,
-    db: Session = Depends(get_db),
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -1386,9 +1840,12 @@ def get_user_lab_results(
     )
 
     results = (
-        db.query(LabResult)
+        db.query(
+            LabResult
+        )
         .filter(
-            LabResult.user_id == user_id
+            LabResult.user_id
+            == user_id
         )
         .order_by(
             LabResult.result_date.desc(),
@@ -1401,28 +1858,41 @@ def get_user_lab_results(
         {
             "lab_result_id":
                 result.id,
+
             "user_id":
                 result.user_id,
+
             "test_name":
                 result.test_name,
+
             "result_value":
                 result.result_value,
+
             "unit":
                 result.unit,
+
             "reference_range":
                 result.reference_range,
+
             "status":
                 result.status,
+
             "notes":
                 result.notes,
-            "result_date":
-                (
-                    result.result_date.isoformat()
-                    if result.result_date
-                    else None
-                ),
+
+            "result_date": (
+                result
+                .result_date
+                .isoformat()
+
+                if result.result_date
+
+                else None
+            ),
         }
-        for result in results
+
+        for result
+        in results
     ]
 
 
@@ -1430,10 +1900,16 @@ def get_user_lab_results(
 # REMINDERS
 # ============================================================
 
-@app.get("/reminders/{user_id}")
+@app.get(
+    "/reminders/{user_id}"
+)
 def get_user_reminders(
     user_id: int,
-    db: Session = Depends(get_db),
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
@@ -1444,9 +1920,12 @@ def get_user_reminders(
     )
 
     reminders = (
-        db.query(Reminder)
+        db.query(
+            Reminder
+        )
         .filter(
-            Reminder.user_id == user_id
+            Reminder.user_id
+            == user_id
         )
         .order_by(
             Reminder.reminder_date.asc(),
@@ -1459,30 +1938,45 @@ def get_user_reminders(
         {
             "reminder_id":
                 reminder.id,
+
             "user_id":
                 reminder.user_id,
+
             "title":
                 reminder.title,
+
             "message":
                 reminder.message,
+
             "reminder_type":
                 reminder.reminder_type,
-            "reminder_date":
-                (
-                    reminder.reminder_date.isoformat()
-                    if reminder.reminder_date
-                    else None
-                ),
+
+            "reminder_date": (
+                reminder
+                .reminder_date
+                .isoformat()
+
+                if reminder.reminder_date
+
+                else None
+            ),
+
             "completed":
                 reminder.is_completed,
-            "created_at":
-                (
-                    reminder.created_at.isoformat()
-                    if reminder.created_at
-                    else None
-                ),
+
+            "created_at": (
+                reminder
+                .created_at
+                .isoformat()
+
+                if reminder.created_at
+
+                else None
+            ),
         }
-        for reminder in reminders
+
+        for reminder
+        in reminders
     ]
 
 
@@ -1491,15 +1985,22 @@ def get_user_reminders(
 )
 def mark_reminder_complete(
     reminder_id: int,
-    db: Session = Depends(get_db),
+
+    db: Session = Depends(
+        get_db
+    ),
+
     current_user: User = Depends(
         get_current_user
     ),
 ):
     reminder = (
-        db.query(Reminder)
+        db.query(
+            Reminder
+        )
         .filter(
-            Reminder.id == reminder_id
+            Reminder.id
+            == reminder_id
         )
         .first()
     )
@@ -1507,7 +2008,9 @@ def mark_reminder_complete(
     if not reminder:
         raise HTTPException(
             status_code=404,
-            detail="Reminder not found.",
+            detail=(
+                "Reminder not found."
+            ),
         )
 
     verify_patient_access(
@@ -1518,33 +2021,49 @@ def mark_reminder_complete(
     reminder.is_completed = True
 
     db.commit()
-    db.refresh(reminder)
+
+    db.refresh(
+        reminder
+    )
 
     return {
         "reminder_id":
             reminder.id,
+
         "user_id":
             reminder.user_id,
+
         "title":
             reminder.title,
+
         "message":
             reminder.message,
+
         "reminder_type":
             reminder.reminder_type,
-        "reminder_date":
-            (
-                reminder.reminder_date.isoformat()
-                if reminder.reminder_date
-                else None
-            ),
+
+        "reminder_date": (
+            reminder
+            .reminder_date
+            .isoformat()
+
+            if reminder.reminder_date
+
+            else None
+        ),
+
         "completed":
             reminder.is_completed,
-        "created_at":
-            (
-                reminder.created_at.isoformat()
-                if reminder.created_at
-                else None
-            ),
+
+        "created_at": (
+            reminder
+            .created_at
+            .isoformat()
+
+            if reminder.created_at
+
+            else None
+        ),
     }
 
 
@@ -1552,7 +2071,9 @@ def mark_reminder_complete(
 # SMALL STRING HELPER
 # ============================================================
 
-def String_lower(value):
+def string_lower(
+    value
+):
     return str(
         value or ""
     ).lower()

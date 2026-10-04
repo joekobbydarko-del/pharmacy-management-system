@@ -1,0 +1,1413 @@
+/* =========================================================
+   DR. EVANS PHARMACY
+   PATIENT RESPONSIVE MOBILE LAYOUT
+========================================================= */
+
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+.patient-mobile-brand {
+  display: none;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+
+  .patient-shell {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+
+  .patient-main {
+    width: 100% !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+  }
+
+
+  .patient-sidebar {
+    position: fixed !important;
+
+    top: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+
+    z-index: 3000 !important;
+
+    width: 280px !important;
+    max-width: 84vw !important;
+
+    transform:
+      translateX(-105%) !important;
+
+    transition:
+      transform 0.25s ease !important;
+  }
+
+
+  .patient-sidebar.is-open {
+    transform:
+      translateX(0) !important;
+  }
+
+
+  .mobile-backdrop {
+    position: fixed !important;
+
+    inset: 0 !important;
+
+    z-index: 2900 !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    background:
+      rgba(
+        1,
+        18,
+        25,
+        0.68
+      ) !important;
+  }
+
+
+  .mobile-menu-button {
+    display: flex !important;
+
+    flex-direction: column !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 4px !important;
+
+    width: 44px !important;
+    height: 44px !important;
+
+    min-width: 44px !important;
+
+    padding: 0 !important;
+
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        0.1
+      ) !important;
+
+    border-radius: 12px !important;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        0.05
+      ) !important;
+  }
+
+
+  .mobile-menu-button span {
+    display: block !important;
+
+    width: 19px !important;
+    height: 2px !important;
+
+    margin: 0 !important;
+
+    border-radius: 999px !important;
+
+    background:
+      #edfafa !important;
+  }
+
+
+  .patient-header-logo {
+    display: none !important;
+  }
+}
+
+
+/* =========================================================
+   PHONE
+========================================================= */
+
+@media (max-width: 650px) {
+
+  /* =======================================================
+     HEADER
+  ======================================================= */
+
+  .patient-topbar {
+    position: sticky !important;
+    top: 0 !important;
+
+    z-index: 2000 !important;
+
+    width: 100% !important;
+
+    min-height: 58px !important;
+
+    display: grid !important;
+
+    grid-template-columns:
+      42px
+      minmax(0, 1fr)
+      auto !important;
+
+    grid-template-areas:
+      "menu search actions" !important;
+
+    align-items: center !important;
+
+    gap: 7px !important;
+
+    padding:
+      7px
+      10px !important;
+
+    box-sizing:
+      border-box !important;
+
+    overflow:
+      visible !important;
+
+    background:
+      linear-gradient(
+        90deg,
+        #0b4050 0%,
+        #083540 100%
+      ) !important;
+
+    border-bottom:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        0.09
+      ) !important;
+  }
+
+
+  .patient-topbar
+  .mobile-menu-button {
+    grid-area: menu !important;
+
+    width: 42px !important;
+    height: 42px !important;
+
+    min-width: 42px !important;
+
+    margin: 0 !important;
+  }
+
+
+  /* =======================================================
+     GLOBAL SEARCH
+  ======================================================= */
+
+  .patient-topbar__search-wrap {
+    grid-area: search !important;
+
+    position: relative !important;
+
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+
+    z-index: 5000 !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+
+    max-width: none !important;
+
+    margin: 0 !important;
+
+    overflow: visible !important;
+  }
+
+
+  .patient-search {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    height: 42px !important;
+    min-height: 42px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 7px !important;
+
+    padding:
+      0
+      10px !important;
+
+    box-sizing:
+      border-box !important;
+
+    border:
+      1px solid
+      rgba(
+        38,
+        184,
+        184,
+        0.27
+      ) !important;
+
+    border-radius: 12px !important;
+
+    background:
+      #123e49 !important;
+  }
+
+
+  .patient-search > svg {
+    width: 17px !important;
+    height: 17px !important;
+
+    min-width: 17px !important;
+
+    flex:
+      0 0 17px !important;
+
+    color:
+      #20b2ad !important;
+  }
+
+
+  .patient-search input {
+    width: 100% !important;
+    min-width: 0 !important;
+
+    height: 38px !important;
+
+    flex:
+      1 1 auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    border: 0 !important;
+    outline: 0 !important;
+
+    background:
+      transparent !important;
+
+    color:
+      #f0fbfc !important;
+
+    font-family:
+      inherit !important;
+
+    font-size:
+      10px !important;
+
+    appearance: none;
+  }
+
+
+  .patient-search input::placeholder {
+    color:
+      #91aeb5 !important;
+
+    opacity: 1 !important;
+  }
+
+
+  .patient-search input::-webkit-search-cancel-button {
+    display: none !important;
+  }
+
+
+  .patient-search-clear {
+    width: 25px !important;
+    height: 25px !important;
+
+    min-width: 25px !important;
+
+    flex:
+      0 0 25px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 0 !important;
+
+    border: 0 !important;
+
+    border-radius: 50% !important;
+
+    background:
+      rgba(
+        255,
+        255,
+        255,
+        0.08
+      ) !important;
+
+    color:
+      #d5e9eb !important;
+
+    font-size:
+      16px !important;
+  }
+
+
+  /* =======================================================
+     SEARCH RESULTS
+  ======================================================= */
+
+  .patient-search-results {
+    position: fixed !important;
+
+    top: 64px !important;
+
+    left: 12px !important;
+    right: 12px !important;
+
+    z-index: 7500 !important;
+
+    width: auto !important;
+
+    max-width:
+      calc(
+        100vw - 24px
+      ) !important;
+
+    max-height: 205px !important;
+
+    overflow-y: auto !important;
+
+    padding: 5px !important;
+
+    box-sizing:
+      border-box !important;
+
+    border:
+      1px solid
+      rgba(
+        255,
+        255,
+        255,
+        0.1
+      ) !important;
+
+    border-radius: 12px !important;
+
+    background:
+      #103640 !important;
+
+    box-shadow:
+      0
+      15px
+      35px
+      rgba(
+        0,
+        0,
+        0,
+        0.34
+      ) !important;
+  }
+
+
+  .patient-search-result {
+    width: 100% !important;
+
+    min-height: 44px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+
+    gap: 9px !important;
+
+    padding:
+      6px
+      8px !important;
+
+    box-sizing:
+      border-box !important;
+
+    border: 0 !important;
+
+    border-radius: 9px !important;
+
+    background:
+      transparent !important;
+
+    color:
+      inherit !important;
+
+    text-align:
+      left !important;
+  }
+
+
+  .patient-search-result
+  > span {
+    width: 32px !important;
+    height: 32px !important;
+
+    min-width: 32px !important;
+
+    flex:
+      0 0 32px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius: 9px !important;
+
+    background:
+      rgba(
+        27,
+        174,
+        169,
+        0.12
+      ) !important;
+
+    color:
+      #28b9b2 !important;
+  }
+
+
+  .patient-search-result
+  > div {
+    min-width: 0 !important;
+
+    flex:
+      1 1 auto !important;
+  }
+
+
+  .patient-search-result strong {
+    display: block !important;
+
+    color:
+      #f0fbfc !important;
+
+    font-size:
+      10px !important;
+  }
+
+
+  .patient-search-result small {
+    display: block !important;
+
+    margin-top: 2px !important;
+
+    color:
+      #8faab2 !important;
+
+    font-size:
+      7px !important;
+  }
+
+
+  /* =======================================================
+     RIGHT ACTIONS
+  ======================================================= */
+
+  .patient-topbar__actions {
+    grid-area: actions !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: flex-end !important;
+
+    gap: 5px !important;
+
+    min-width:
+      max-content !important;
+
+    margin: 0 !important;
+  }
+
+
+  .patient-notifications__trigger {
+    width: 40px !important;
+    height: 40px !important;
+
+    min-width: 40px !important;
+
+    padding: 0 !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius:
+      50% !important;
+  }
+
+
+  .profile-trigger {
+    width: 40px !important;
+    height: 40px !important;
+
+    min-width: 40px !important;
+    min-height: 40px !important;
+
+    padding: 3px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    border-radius:
+      50% !important;
+  }
+
+
+  .profile-avatar {
+    width: 33px !important;
+    height: 33px !important;
+
+    min-width: 33px !important;
+
+    flex:
+      0 0 33px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    font-size:
+      9px !important;
+  }
+
+
+  .profile-trigger__text,
+  .profile-trigger > svg {
+    display: none !important;
+  }
+
+
+  /* =======================================================
+     BRAND BELOW HEADER
+  ======================================================= */
+
+  .patient-mobile-brand {
+    width: 100% !important;
+
+    min-height: 46px !important;
+
+    display: flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 8px !important;
+
+    margin: 0 !important;
+
+    padding:
+      7px
+      12px !important;
+
+    box-sizing:
+      border-box !important;
+
+    border: 0 !important;
+
+    background:
+      #0a3d49 !important;
+  }
+
+
+  .patient-mobile-brand img {
+    width: 25px !important;
+    height: 25px !important;
+
+    min-width: 25px !important;
+
+    flex:
+      0 0 25px !important;
+
+    display: block !important;
+
+    padding: 2px !important;
+
+    box-sizing:
+      border-box !important;
+
+    object-fit:
+      contain !important;
+
+    border-radius:
+      7px !important;
+
+    background:
+      #ffffff !important;
+  }
+
+
+  .patient-mobile-brand span {
+    color:
+      #ffffff !important;
+
+    font-size:
+      12px !important;
+
+    font-weight:
+      900 !important;
+
+    letter-spacing:
+      0.7px !important;
+
+    text-align:
+      center !important;
+
+    white-space:
+      nowrap !important;
+  }
+
+
+  /* =======================================================
+     PAGE CONTENT
+  ======================================================= */
+
+  .patient-content {
+    width: 100% !important;
+
+    padding:
+      15px
+      14px
+      28px !important;
+
+    box-sizing:
+      border-box !important;
+  }
+
+
+  .patient-content > * {
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    max-width: none !important;
+  }
+
+
+  .patient-content
+  .patient-date-card {
+    display:
+      none !important;
+  }
+
+
+  /* =======================================================
+     MY ORDERS SUMMARY
+  ======================================================= */
+
+  .orders-summary-grid {
+    display:
+      grid !important;
+
+    grid-template-columns:
+      1fr !important;
+
+    gap:
+      10px !important;
+
+    margin:
+      15px
+      0 !important;
+  }
+
+
+  .orders-summary-card {
+    min-width:
+      0 !important;
+
+    min-height:
+      0 !important;
+
+    height:
+      auto !important;
+
+    display:
+      flex !important;
+
+    align-items:
+      center !important;
+
+    gap:
+      12px !important;
+
+    padding:
+      13px
+      14px !important;
+
+    box-sizing:
+      border-box !important;
+  }
+
+
+  /* =======================================================
+     MY ORDERS PANEL
+     EXTRA INNER SPACING FIX
+  ======================================================= */
+
+  .orders-panel {
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    height: auto !important;
+
+    min-height: 0 !important;
+
+    overflow: hidden !important;
+  }
+
+
+  .orders-panel-header {
+    display:
+      flex !important;
+
+    flex-direction:
+      column !important;
+
+    align-items:
+      stretch !important;
+
+    gap:
+      12px !important;
+
+    padding:
+      14px
+      14px
+      16px !important;
+
+    box-sizing:
+      border-box !important;
+  }
+
+
+  .orders-panel-header
+  > div:first-child {
+    width:
+      100% !important;
+  }
+
+
+  .orders-search {
+    width:
+      calc(
+        100% - 2px
+      ) !important;
+
+    min-height:
+      44px !important;
+
+    margin:
+      0
+      1px !important;
+
+    box-sizing:
+      border-box !important;
+  }
+
+
+  .orders-search input {
+    width:
+      100% !important;
+
+    min-width:
+      0 !important;
+  }
+
+
+  .orders-panel-body {
+    padding:
+      14px !important;
+
+    box-sizing:
+      border-box !important;
+  }
+
+
+  .orders-list {
+    display:
+      flex !important;
+
+    flex-direction:
+      column !important;
+
+    gap:
+      10px !important;
+  }
+
+
+  .order-history-item {
+    width:
+      100% !important;
+
+    min-width:
+      0 !important;
+
+    height:
+      auto !important;
+
+    min-height:
+      0 !important;
+
+    display:
+      grid !important;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto !important;
+
+    align-items:
+      center !important;
+
+    gap:
+      10px !important;
+
+    padding:
+      13px
+      14px !important;
+
+    box-sizing:
+      border-box !important;
+  }
+
+
+  .order-history-item__left {
+    min-width:
+      0 !important;
+
+    display:
+      flex !important;
+
+    align-items:
+      center !important;
+
+    gap:
+      11px !important;
+  }
+
+
+  .order-history-item__icon {
+    width:
+      46px !important;
+
+    height:
+      46px !important;
+
+    min-width:
+      46px !important;
+
+    flex:
+      0 0 46px !important;
+  }
+
+
+  .order-history-item__details {
+    min-width:
+      0 !important;
+
+    flex:
+      1 1 auto !important;
+
+    text-align:
+      left !important;
+  }
+
+
+  .order-status {
+    justify-self:
+      end !important;
+
+    min-width:
+      67px !important;
+
+    margin: 0 !important;
+
+    padding:
+      7px
+      10px !important;
+
+    box-sizing:
+      border-box !important;
+
+    text-align:
+      center !important;
+  }
+
+
+  /* =======================================================
+     RECENT ACTIVITY
+     EXTRA INNER SPACING FIX
+  ======================================================= */
+
+  .activity-panel,
+  .dashboard-activity-panel,
+  .recent-activity-panel {
+    width:
+      100% !important;
+
+    min-width:
+      0 !important;
+
+    overflow:
+      hidden !important;
+
+    box-sizing:
+      border-box !important;
+  }
+
+
+  .activity-panel-body,
+  .dashboard-activity-panel__body,
+  .recent-activity-panel__body {
+    padding:
+      14px !important;
+
+    box-sizing:
+      border-box !important;
+  }
+
+
+  .activity-list,
+  .dashboard-activity-list,
+  .recent-activity-list {
+    display:
+      flex !important;
+
+    flex-direction:
+      column !important;
+
+    gap:
+      10px !important;
+
+    width:
+      100% !important;
+
+    box-sizing:
+      border-box !important;
+  }
+
+
+  .activity-item,
+  .dashboard-activity-item,
+  .recent-activity-item {
+    width:
+      100% !important;
+
+    max-width:
+      100% !important;
+
+    min-width:
+      0 !important;
+
+    margin:
+      0 !important;
+
+    box-sizing:
+      border-box !important;
+  }
+
+
+  /* =======================================================
+     APPOINTMENTS
+  ======================================================= */
+
+  .appointments-summary-grid {
+    display:
+      grid !important;
+
+    grid-template-columns:
+      1fr !important;
+
+    gap:
+      10px !important;
+  }
+
+
+  .appointments-content-grid {
+    display:
+      grid !important;
+
+    grid-template-columns:
+      1fr !important;
+
+    gap:
+      13px !important;
+  }
+
+
+  /* =======================================================
+     DASHBOARD
+  ======================================================= */
+
+  .dashboard-stats-grid {
+    display:
+      grid !important;
+
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      ) !important;
+
+    gap:
+      10px !important;
+  }
+
+
+  .dashboard-main-grid {
+    display:
+      grid !important;
+
+    grid-template-columns:
+      1fr !important;
+
+    gap:
+      13px !important;
+  }
+
+
+  .dashboard-panel {
+    min-width:
+      0 !important;
+
+    min-height:
+      0 !important;
+
+    height:
+      auto !important;
+
+    overflow:
+      hidden !important;
+  }
+
+
+  .dashboard-panel-body {
+    padding:
+      14px !important;
+
+    box-sizing:
+      border-box !important;
+  }
+
+
+  /* =======================================================
+     OTHER PATIENT PAGES
+  ======================================================= */
+
+  .prescriptions-summary-grid,
+  .medicine-summary-grid,
+  .refill-summary-grid {
+    display:
+      grid !important;
+
+    grid-template-columns:
+      1fr !important;
+
+    gap:
+      10px !important;
+  }
+
+
+  .medicine-order-grid,
+  .refill-content-grid {
+    display:
+      grid !important;
+
+    grid-template-columns:
+      1fr !important;
+
+    gap:
+      13px !important;
+  }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media (max-width: 390px) {
+
+  .patient-topbar {
+    grid-template-columns:
+      38px
+      minmax(0, 1fr)
+      auto !important;
+
+    gap:
+      5px !important;
+
+    padding-left:
+      8px !important;
+
+    padding-right:
+      8px !important;
+  }
+
+
+  .patient-topbar
+  .mobile-menu-button {
+    width:
+      38px !important;
+
+    height:
+      38px !important;
+
+    min-width:
+      38px !important;
+  }
+
+
+  .patient-search {
+    height:
+      39px !important;
+
+    min-height:
+      39px !important;
+
+    padding:
+      0
+      8px !important;
+  }
+
+
+  .patient-search input {
+    font-size:
+      9px !important;
+  }
+
+
+  .patient-notifications__trigger,
+  .profile-trigger {
+    width:
+      37px !important;
+
+    height:
+      37px !important;
+
+    min-width:
+      37px !important;
+
+    min-height:
+      37px !important;
+  }
+
+
+  .profile-avatar {
+    width:
+      31px !important;
+
+    height:
+      31px !important;
+
+    min-width:
+      31px !important;
+
+    flex-basis:
+      31px !important;
+  }
+
+
+  .patient-mobile-brand {
+    min-height:
+      43px !important;
+  }
+
+
+  .patient-mobile-brand img {
+    width:
+      23px !important;
+
+    height:
+      23px !important;
+
+    min-width:
+      23px !important;
+  }
+
+
+  .patient-mobile-brand span {
+    font-size:
+      11px !important;
+  }
+
+
+  .patient-content {
+    padding:
+      14px
+      10px
+      26px !important;
+  }
+
+
+  .orders-panel-header {
+    padding:
+      12px
+      12px
+      14px !important;
+  }
+
+
+  .orders-panel-body {
+    padding:
+      12px !important;
+  }
+
+
+  .dashboard-panel-body {
+    padding:
+      12px !important;
+  }
+
+
+  .activity-panel-body,
+  .dashboard-activity-panel__body,
+  .recent-activity-panel__body {
+    padding:
+      12px !important;
+  }
+}
+
+
+/* =========================================================
+   EXTRA SMALL PHONES
+========================================================= */
+
+@media (max-width: 350px) {
+
+  .patient-topbar {
+    grid-template-columns:
+      36px
+      minmax(0, 1fr)
+      auto !important;
+
+    gap:
+      4px !important;
+
+    padding-left:
+      6px !important;
+
+    padding-right:
+      6px !important;
+  }
+
+
+  .patient-topbar
+  .mobile-menu-button {
+    width:
+      36px !important;
+
+    height:
+      36px !important;
+
+    min-width:
+      36px !important;
+  }
+
+
+  .patient-search {
+    padding:
+      0
+      6px !important;
+  }
+
+
+  .patient-search input {
+    font-size:
+      8px !important;
+  }
+
+
+  .patient-notifications__trigger,
+  .profile-trigger {
+    width:
+      34px !important;
+
+    height:
+      34px !important;
+
+    min-width:
+      34px !important;
+
+    min-height:
+      34px !important;
+  }
+
+
+  .profile-avatar {
+    width:
+      29px !important;
+
+    height:
+      29px !important;
+
+    min-width:
+      29px !important;
+
+    flex-basis:
+      29px !important;
+
+    font-size:
+      8px !important;
+  }
+
+
+  .patient-mobile-brand span {
+    font-size:
+      10px !important;
+  }
+
+
+  .order-history-item {
+    grid-template-columns:
+      minmax(
+        0,
+        1fr
+      ) !important;
+
+    row-gap:
+      8px !important;
+  }
+
+
+  .order-status {
+    justify-self:
+      end !important;
+  }
+}

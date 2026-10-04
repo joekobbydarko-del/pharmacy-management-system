@@ -30,38 +30,13 @@ function Icon({
     "aria-hidden": true,
   };
 
-
   const icons = {
     dashboard: (
       <>
-        <rect
-          x="3"
-          y="3"
-          width="7"
-          height="7"
-          rx="1.5"
-        />
-        <rect
-          x="14"
-          y="3"
-          width="7"
-          height="7"
-          rx="1.5"
-        />
-        <rect
-          x="3"
-          y="14"
-          width="7"
-          height="7"
-          rx="1.5"
-        />
-        <rect
-          x="14"
-          y="14"
-          width="7"
-          height="7"
-          rx="1.5"
-        />
+        <rect x="3" y="3" width="7" height="7" rx="1.5" />
+        <rect x="14" y="3" width="7" height="7" rx="1.5" />
+        <rect x="3" y="14" width="7" height="7" rx="1.5" />
+        <rect x="14" y="14" width="7" height="7" rx="1.5" />
       </>
     ),
 
@@ -74,6 +49,7 @@ function Icon({
           height="15.5"
           rx="2.2"
         />
+
         <path d="M8 3v4M16 3v4M3.5 9.5h17" />
         <path d="M8 13h.01M12 13h.01M16 13h.01" />
       </>
@@ -82,7 +58,9 @@ function Icon({
     pill: (
       <>
         <path d="m7.2 16.8 9.6-9.6" />
+
         <path d="M6.3 18a4.45 4.45 0 0 1 0-6.3l5.4-5.4a4.45 4.45 0 1 1 6.3 6.3L12.6 18a4.45 4.45 0 0 1-6.3 0Z" />
+
         <path d="m9.2 9.2 5.6 5.6" />
       </>
     ),
@@ -90,16 +68,9 @@ function Icon({
     cart: (
       <>
         <path d="M3 4h2l2.1 10.1a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 1.9-1.5L20.5 8H6" />
-        <circle
-          cx="9"
-          cy="19"
-          r="1.2"
-        />
-        <circle
-          cx="17"
-          cy="19"
-          r="1.2"
-        />
+
+        <circle cx="9" cy="19" r="1.2" />
+        <circle cx="17" cy="19" r="1.2" />
       </>
     ),
 
@@ -121,6 +92,7 @@ function Icon({
           height="17"
           rx="2"
         />
+
         <path d="M8 8h8M8 12h8M8 16h5" />
       </>
     ),
@@ -132,6 +104,7 @@ function Icon({
           cy="10.8"
           r="6.5"
         />
+
         <path d="m16 16 4.5 4.5" />
       </>
     ),
@@ -143,6 +116,7 @@ function Icon({
           cy="12"
           r="8.5"
         />
+
         <path d="M12 7.5V12l3 2" />
       </>
     ),
@@ -150,6 +124,7 @@ function Icon({
     message: (
       <>
         <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" />
+
         <path d="M8 9h8M8 13h5" />
       </>
     ),
@@ -161,6 +136,7 @@ function Icon({
           cy="7.5"
           r="3.5"
         />
+
         <path d="M5 21a7 7 0 0 1 14 0" />
       </>
     ),
@@ -172,6 +148,7 @@ function Icon({
           cy="12"
           r="3"
         />
+
         <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2h-2.6v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1-1.8-1.8.1-.1A1.7 1.7 0 0 0 8 15a1.7 1.7 0 0 0-1.5-1H6.3v-2.6h.2A1.7 1.7 0 0 0 8 10a1.7 1.7 0 0 0-.3-1.9l-.1-.1 1.8-1.8.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5v-.2h2.6v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.8 1.8-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.2V14h-.2a1.7 1.7 0 0 0-1.5 1Z" />
       </>
     ),
@@ -198,11 +175,9 @@ function Icon({
     ),
   };
 
-
   return (
     <svg {...common}>
-      {icons[name] ||
-        icons.dashboard}
+      {icons[name] || icons.dashboard}
     </svg>
   );
 }
@@ -215,26 +190,31 @@ const navigation = [
     icon: "dashboard",
     end: true,
   },
+
   {
     label: "Appointments",
     to: "/patient/appointments",
     icon: "calendar",
   },
+
   {
     label: "Prescriptions",
     to: "/patient/prescriptions",
     icon: "pill",
   },
+
   {
     label: "Order Medicines",
     to: "/patient/orders",
     icon: "cart",
   },
+
   {
     label: "Refill Requests",
     to: "/patient/refills",
     icon: "refresh",
   },
+
   {
     label: "My Orders",
     to: "/patient/order-history",
@@ -251,7 +231,7 @@ const searchablePages = [
     path: "/patient",
     icon: "dashboard",
     keywords:
-      "dashboard home overview",
+      "dashboard home overview portal",
   },
 
   {
@@ -262,7 +242,7 @@ const searchablePages = [
       "/patient/appointments",
     icon: "calendar",
     keywords:
-      "appointment appointments booking book schedule",
+      "appointment appointments book booking schedule consultation visit",
   },
 
   {
@@ -273,27 +253,29 @@ const searchablePages = [
       "/patient/prescriptions",
     icon: "pill",
     keywords:
-      "prescription prescriptions medication medicines drugs dosage",
+      "prescription prescriptions medication medications medicines drugs dosage",
   },
 
   {
     title: "Order Medicines",
     description:
       "Submit medicine orders",
-    path: "/patient/orders",
+    path:
+      "/patient/orders",
     icon: "cart",
     keywords:
-      "medicine medicines drug drugs order buy pharmacy",
+      "order medicine medicines drug drugs buy purchase pharmacy",
   },
 
   {
     title: "Refill Requests",
     description:
       "Request medication refills",
-    path: "/patient/refills",
+    path:
+      "/patient/refills",
     icon: "refresh",
     keywords:
-      "refill refills request medication",
+      "refill refills request renewal medication",
   },
 
   {
@@ -304,7 +286,7 @@ const searchablePages = [
       "/patient/order-history",
     icon: "orders",
     keywords:
-      "orders order history pending completed",
+      "orders order history pending processing completed purchases",
   },
 
   {
@@ -315,7 +297,7 @@ const searchablePages = [
       "/patient/activity",
     icon: "clock",
     keywords:
-      "activity recent history events",
+      "activity history recent timeline events",
   },
 
   {
@@ -326,7 +308,7 @@ const searchablePages = [
       "/patient/contact-pharmacist",
     icon: "message",
     keywords:
-      "pharmacist contact message pharmacy help",
+      "pharmacist contact message question pharmacy chat",
   },
 
   {
@@ -337,7 +319,7 @@ const searchablePages = [
       "/patient/support",
     icon: "support",
     keywords:
-      "support technical help problem issue",
+      "support technical help problem issue assistance error",
   },
 
   {
@@ -348,18 +330,18 @@ const searchablePages = [
       "/patient/profile",
     icon: "user",
     keywords:
-      "profile account patient information",
+      "profile patient personal details name email account",
   },
 
   {
     title: "Account Settings",
     description:
-      "Manage portal preferences",
+      "Manage portal settings",
     path:
       "/patient/settings",
     icon: "settings",
     keywords:
-      "settings account theme dark light preferences",
+      "settings account theme dark light notification",
   },
 ];
 
@@ -401,14 +383,15 @@ function PatientLayout() {
       .split(/\s+/)
       .filter(Boolean)
       .slice(0, 2)
-      .map((part) =>
-        part[0]?.toUpperCase()
+      .map(
+        (part) =>
+          part[0]?.toUpperCase()
       )
       .join("") || "P";
 
 
   /* =========================================================
-     SEARCH
+     GLOBAL SEARCH
   ========================================================= */
 
   const searchResults =
@@ -422,17 +405,86 @@ function PatientLayout() {
         return [];
       }
 
-      return searchablePages
-        .filter((page) => {
-          const searchText =
-            `${page.title} ${page.description} ${page.keywords}`
-              .toLowerCase();
 
-          return searchText.includes(
-            query
-          );
-        })
-        .slice(0, 6);
+      /*
+        First priority:
+        page title starts with query.
+
+        "pre" -> Prescriptions
+        "app" -> Appointments
+        "ref" -> Refill Requests
+      */
+
+      const titleStarts =
+        searchablePages.filter(
+          (page) =>
+            page.title
+              .toLowerCase()
+              .startsWith(
+                query
+              )
+        );
+
+
+      if (
+        titleStarts.length > 0
+      ) {
+        return titleStarts.slice(
+          0,
+          4
+        );
+      }
+
+
+      /*
+        Second priority:
+        query appears anywhere in title.
+      */
+
+      const titleContains =
+        searchablePages.filter(
+          (page) =>
+            page.title
+              .toLowerCase()
+              .includes(
+                query
+              )
+        );
+
+
+      if (
+        titleContains.length > 0
+      ) {
+        return titleContains.slice(
+          0,
+          4
+        );
+      }
+
+
+      /*
+        Final fallback:
+        keywords and description.
+      */
+
+      const secondary =
+        searchablePages.filter(
+          (page) => {
+            const text =
+              `${page.description} ${page.keywords}`
+                .toLowerCase();
+
+            return text.includes(
+              query
+            );
+          }
+        );
+
+
+      return secondary.slice(
+        0,
+        4
+      );
     }, [searchQuery]);
 
 
@@ -441,6 +493,8 @@ function PatientLayout() {
   ) => {
     setSearchQuery("");
     setSearchOpen(false);
+    setProfileOpen(false);
+    setMobileOpen(false);
 
     navigate(path);
   };
@@ -451,40 +505,56 @@ function PatientLayout() {
   ) => {
     event.preventDefault();
 
-    const query =
-      searchQuery.trim();
-
-    if (!query) {
-      return;
-    }
-
     if (
       searchResults.length > 0
     ) {
       openSearchResult(
         searchResults[0].path
       );
-
-      return;
     }
-
-    setSearchOpen(true);
   };
 
 
-  /* =========================================================
-     PROFILE
-  ========================================================= */
+  const handleSearchChange = (
+    event
+  ) => {
+    const value =
+      event.target.value;
 
-  const closeProfileMenu =
+    setSearchQuery(value);
+
+    setSearchOpen(
+      Boolean(
+        value.trim()
+      )
+    );
+
+    setProfileOpen(false);
+  };
+
+
+  const handleSearchFocus =
     () => {
+      if (
+        searchQuery.trim()
+      ) {
+        setSearchOpen(true);
+      }
+
       setProfileOpen(false);
+  };
+
+
+  const handleBrandClick =
+    () => {
+      setSearchQuery("");
+      setSearchOpen(false);
+      setProfileOpen(false);
+      setMobileOpen(false);
+
+      navigate("/patient");
     };
 
-
-  /* =========================================================
-     LOGOUT
-  ========================================================= */
 
   const handleLogout = () => {
     localStorage.removeItem(
@@ -511,14 +581,17 @@ function PatientLayout() {
       "patient_notifications"
     );
 
-    navigate("/login");
+    navigate(
+      "/login",
+      {
+        replace: true,
+      }
+    );
   };
 
 
   return (
     <div className="patient-shell">
-
-      {/* MOBILE BACKDROP */}
 
       {mobileOpen && (
         <button
@@ -531,10 +604,6 @@ function PatientLayout() {
         />
       )}
 
-
-      {/* =====================================================
-          SIDEBAR
-      ===================================================== */}
 
       <aside
         className={`patient-sidebar ${
@@ -555,9 +624,11 @@ function PatientLayout() {
 
           </div>
 
+
           <strong>
             Dr. Evans Pharmacy
           </strong>
+
 
           <span>
             SMARTER HEALTH. BETTER LIVES.
@@ -592,11 +663,15 @@ function PatientLayout() {
                       : ""
                   }`
                 }
-                onClick={() =>
+                onClick={() => {
                   setMobileOpen(
                     false
-                  )
-                }
+                  );
+
+                  setSearchOpen(
+                    false
+                  );
+                }}
               >
 
                 <span className="patient-nav-link__icon">
@@ -609,6 +684,7 @@ function PatientLayout() {
                   />
 
                 </span>
+
 
                 <span>
                   {item.label}
@@ -639,13 +715,12 @@ function PatientLayout() {
           >
 
             <span>
-
               <Icon
                 name="support"
                 size={18}
               />
-
             </span>
+
 
             <div>
 
@@ -671,13 +746,12 @@ function PatientLayout() {
           >
 
             <span>
-
               <Icon
                 name="logout"
                 size={18}
               />
-
             </span>
+
 
             <strong>
               Logout
@@ -690,26 +764,22 @@ function PatientLayout() {
       </aside>
 
 
-      {/* =====================================================
-          MAIN
-      ===================================================== */}
-
       <div className="patient-main">
 
-        {/* ===================================================
-            HEADER
-        =================================================== */}
+        {/* =================================================
+            MOBILE / DESKTOP TOP HEADER
+        ================================================= */}
 
         <header className="patient-topbar">
-
-          {/* MOBILE MENU */}
 
           <button
             type="button"
             className="mobile-menu-button"
-            onClick={() =>
-              setMobileOpen(true)
-            }
+            onClick={() => {
+              setMobileOpen(true);
+              setProfileOpen(false);
+              setSearchOpen(false);
+            }}
             aria-label="Open navigation"
           >
             <span />
@@ -718,28 +788,22 @@ function PatientLayout() {
           </button>
 
 
-          {/* LARGE HEADER LOGO ONLY */}
-
           <button
             type="button"
             className="patient-header-logo"
-            onClick={() =>
-              navigate("/patient")
+            onClick={
+              handleBrandClick
             }
             aria-label="Go to patient dashboard"
           >
-
             <img
               src="/dr-evans-logo.png"
               alt="Dr. Evans Pharmacy"
             />
-
           </button>
 
 
-          {/* =================================================
-              FUNCTIONAL SEARCH
-          ================================================= */}
+          {/* SEARCH */}
 
           <div className="patient-topbar__search-wrap">
 
@@ -755,31 +819,23 @@ function PatientLayout() {
                 size={19}
               />
 
+
               <input
                 type="search"
                 value={
                   searchQuery
                 }
-                onChange={(
-                  event
-                ) => {
-                  setSearchQuery(
-                    event.target
-                      .value
-                  );
-
-                  setSearchOpen(
-                    true
-                  );
-                }}
-                onFocus={() =>
-                  setSearchOpen(
-                    true
-                  )
+                onChange={
+                  handleSearchChange
                 }
-                placeholder="Search appointments, prescriptions, orders, refills..."
-                aria-label="Search pharmacy portal"
+                onFocus={
+                  handleSearchFocus
+                }
+                placeholder="Search portal..."
+                aria-label="Search patient portal"
+                autoComplete="off"
               />
+
 
               {searchQuery && (
                 <button
@@ -803,93 +859,90 @@ function PatientLayout() {
             </form>
 
 
-            {/* SEARCH RESULTS */}
-
             {searchOpen &&
               searchQuery.trim() && (
 
-              <div className="patient-search-results">
+                <div className="patient-search-results">
 
-                {searchResults.length >
-                0 ? (
+                  {searchResults.length >
+                  0 ? (
 
-                  searchResults.map(
-                    (result) => (
+                    searchResults.map(
+                      (result) => (
 
-                      <button
-                        key={
-                          result.path
-                        }
-                        type="button"
-                        className="patient-search-result"
-                        onClick={() =>
-                          openSearchResult(
+                        <button
+                          key={
                             result.path
-                          )
-                        }
-                      >
+                          }
+                          type="button"
+                          className="patient-search-result"
+                          onMouseDown={(
+                            event
+                          ) =>
+                            event.preventDefault()
+                          }
+                          onClick={() =>
+                            openSearchResult(
+                              result.path
+                            )
+                          }
+                        >
 
-                        <span>
+                          <span>
+                            <Icon
+                              name={
+                                result.icon
+                              }
+                              size={17}
+                            />
+                          </span>
 
-                          <Icon
-                            name={
-                              result.icon
-                            }
-                            size={18}
-                          />
 
-                        </span>
+                          <div>
 
-                        <div>
+                            <strong>
+                              {
+                                result.title
+                              }
+                            </strong>
 
-                          <strong>
-                            {
-                              result.title
-                            }
-                          </strong>
+                            <small>
+                              {
+                                result.description
+                              }
+                            </small>
 
-                          <small>
-                            {
-                              result.description
-                            }
-                          </small>
+                          </div>
 
-                        </div>
+                        </button>
 
-                      </button>
-
+                      )
                     )
-                  )
 
-                ) : (
+                  ) : (
 
-                  <div className="patient-search-empty">
+                    <div className="patient-search-empty">
 
-                    <strong>
-                      No portal section found
-                    </strong>
+                      <strong>
+                        No result found
+                      </strong>
 
-                    <small>
-                      Try appointments,
-                      prescriptions,
-                      refills, orders or
-                      support.
-                    </small>
+                      <small>
+                        Try another portal section.
+                      </small>
 
-                  </div>
+                    </div>
 
-                )}
+                  )}
 
-              </div>
+                </div>
 
-            )}
+              )}
 
           </div>
 
 
-          {/* =================================================
-              ACTIONS
-          ================================================= */}
+          {/* ACTIONS */}
 
           <div className="patient-topbar__actions">
 
@@ -901,12 +954,16 @@ function PatientLayout() {
               <button
                 type="button"
                 className="profile-trigger"
-                onClick={() =>
+                onClick={() => {
                   setProfileOpen(
                     (current) =>
                       !current
-                  )
-                }
+                  );
+
+                  setSearchOpen(
+                    false
+                  );
+                }}
                 aria-expanded={
                   profileOpen
                 }
@@ -915,6 +972,7 @@ function PatientLayout() {
                 <span className="profile-avatar">
                   {initials}
                 </span>
+
 
                 <span className="profile-trigger__text">
 
@@ -927,6 +985,7 @@ function PatientLayout() {
                   </small>
 
                 </span>
+
 
                 <Icon
                   name="chevron"
@@ -945,6 +1004,7 @@ function PatientLayout() {
                     <span className="profile-avatar profile-avatar--large">
                       {initials}
                     </span>
+
 
                     <div>
 
@@ -971,7 +1031,9 @@ function PatientLayout() {
                     <button
                       type="button"
                       onClick={() => {
-                        closeProfileMenu();
+                        setProfileOpen(
+                          false
+                        );
 
                         navigate(
                           "/patient/profile"
@@ -983,6 +1045,7 @@ function PatientLayout() {
                         name="user"
                         size={18}
                       />
+
 
                       <div>
 
@@ -1002,7 +1065,9 @@ function PatientLayout() {
                     <button
                       type="button"
                       onClick={() => {
-                        closeProfileMenu();
+                        setProfileOpen(
+                          false
+                        );
 
                         navigate(
                           "/patient/settings"
@@ -1014,6 +1079,7 @@ function PatientLayout() {
                         name="settings"
                         size={18}
                       />
+
 
                       <div>
 
@@ -1058,6 +1124,34 @@ function PatientLayout() {
           </div>
 
         </header>
+
+
+        {/* =================================================
+            MOBILE BRAND
+            IMPORTANT:
+            THIS IS OUTSIDE THE HEADER.
+        ================================================= */}
+
+        <button
+          type="button"
+          className="patient-mobile-brand"
+          onClick={
+            handleBrandClick
+          }
+          aria-label="Go to patient dashboard"
+        >
+
+          <img
+            src="/dr-evans-logo.png"
+            alt=""
+          />
+
+
+          <span>
+            DR. EVANS PHARMACY
+          </span>
+
+        </button>
 
 
         {/* PAGE */}

@@ -1280,3 +1280,556 @@ html[data-theme="dark"]
     font-size: 34px;
   }
 }
+/* =========================================================
+   ORDER MEDICINES — FINAL CARD ARRANGEMENT
+========================================================= */
+
+.medicine-order-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.35fr)
+    minmax(320px, 0.85fr);
+
+  gap: 22px;
+
+  align-items: start;
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   MAIN PANELS
+========================================================= */
+
+.medicine-panel {
+  width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  border-radius: 16px;
+
+  overflow: hidden;
+}
+
+
+.medicine-panel-body {
+  padding:
+    20px
+    20px
+    22px !important;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   MEDICINE CATALOGUE GRID
+========================================================= */
+
+.medicine-list {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 12px;
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   MEDICINE ITEM
+========================================================= */
+
+.medicine-item {
+  min-width: 0;
+
+  width: 100%;
+
+  min-height: 72px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding:
+    13px
+    14px;
+
+  border-radius: 12px;
+}
+
+
+.medicine-item-info {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.medicine-item-info strong {
+  display: block;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.medicine-item-info small {
+  display: block;
+
+  margin-top: 3px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   SELECTED BANNER
+========================================================= */
+
+.medicine-selected-banner {
+  margin-bottom: 16px;
+
+  border-radius: 12px;
+}
+
+
+/* =========================================================
+   SEARCH BOX
+========================================================= */
+
+.medicine-search-box {
+  margin-bottom: 16px;
+
+  border-radius: 12px;
+}
+
+
+/* =========================================================
+   ORDER SUMMARY
+========================================================= */
+
+.medicine-order-summary {
+  position: sticky;
+
+  top: 110px;
+}
+
+
+.medicine-order-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+
+.medicine-order-detail,
+.medicine-order-field,
+.medicine-order-notice {
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-theme="dark"]
+.medicine-item {
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+  .medicine-order-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .medicine-order-summary {
+    position: static;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+  .medicine-list {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .medicine-panel-body {
+    padding:
+      15px
+      15px
+      17px !important;
+  }
+}
+/* =========================================================
+   ORDER MEDICINES — EQUAL MAIN CARD LAYOUT
+========================================================= */
+
+.medicine-order-page
+.medicine-order-grid {
+  width: 100% !important;
+
+  display: grid !important;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    ) !important;
+
+  gap: 22px !important;
+
+  align-items: stretch !important;
+}
+
+
+/* =========================================================
+   FORCE BOTH MAIN PANELS TO SAME HEIGHT
+========================================================= */
+
+.medicine-order-page
+.medicine-order-grid
+> .medicine-panel {
+  width: 100% !important;
+
+  min-width: 0 !important;
+
+  height: 100% !important;
+
+  min-height: 540px !important;
+
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  align-self: stretch !important;
+
+  box-sizing: border-box !important;
+
+  border-radius: 16px;
+
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   PANEL BODY FILLS CARD
+========================================================= */
+
+.medicine-order-page
+.medicine-order-grid
+> .medicine-panel
+> .medicine-panel-body {
+  width: 100% !important;
+
+  flex: 1 1 auto !important;
+
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  box-sizing: border-box !important;
+
+  padding:
+    20px
+    20px
+    22px !important;
+}
+
+
+/* =========================================================
+   MEDICINE CATALOGUE
+========================================================= */
+
+.medicine-order-page
+.medicine-list {
+  width: 100%;
+
+  display: grid !important;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 12px !important;
+
+  align-content: start;
+}
+
+
+/* =========================================================
+   MEDICINE CARDS
+========================================================= */
+
+.medicine-order-page
+.medicine-item {
+  width: 100%;
+
+  min-width: 0;
+
+  min-height: 78px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding:
+    13px
+    14px;
+
+  border-radius: 13px;
+}
+
+
+.medicine-order-page
+.medicine-item-info {
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.medicine-order-page
+.medicine-item-info strong {
+  display: block;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.medicine-order-page
+.medicine-item-info small {
+  display: block;
+
+  margin-top: 3px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   SEARCH / SELECTED BANNER
+========================================================= */
+
+.medicine-order-page
+.medicine-search-box {
+  margin-bottom: 16px;
+}
+
+
+.medicine-order-page
+.medicine-selected-banner {
+  margin-bottom: 16px;
+}
+
+
+/* =========================================================
+   ORDER SUMMARY FORM
+========================================================= */
+
+.medicine-order-page
+.medicine-order-form {
+  width: 100%;
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+
+/* =========================================================
+   ORDER DETAIL BOXES
+========================================================= */
+
+.medicine-order-page
+.medicine-order-detail,
+
+.medicine-order-page
+.medicine-order-field,
+
+.medicine-order-page
+.medicine-order-notice {
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   NOTES AREA
+========================================================= */
+
+.medicine-order-page
+.medicine-order-field textarea {
+  width: 100%;
+
+  min-height: 120px;
+
+  box-sizing: border-box;
+
+  resize: vertical;
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON AT BOTTOM
+========================================================= */
+
+.medicine-order-page
+.medicine-submit-button {
+  width: 100%;
+
+  margin-top: auto !important;
+}
+
+
+/* =========================================================
+   REMOVE OLD STICKY BEHAVIOR
+========================================================= */
+
+.medicine-order-page
+.medicine-order-summary {
+  position: static !important;
+
+  top: auto !important;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-theme="dark"]
+.medicine-order-page
+.medicine-item {
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.09
+    );
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1100px) {
+  .medicine-order-page
+  .medicine-order-grid {
+    grid-template-columns:
+      1fr !important;
+  }
+
+
+  .medicine-order-page
+  .medicine-order-grid
+  > .medicine-panel {
+    min-height: 500px !important;
+  }
+
+
+  .medicine-order-page
+  .medicine-list {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+  .medicine-order-page
+  .medicine-list {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .medicine-order-page
+  .medicine-order-grid
+  > .medicine-panel {
+    min-height: auto !important;
+  }
+
+
+  .medicine-order-page
+  .medicine-panel-body {
+    padding:
+      15px
+      15px
+      17px !important;
+  }
+}

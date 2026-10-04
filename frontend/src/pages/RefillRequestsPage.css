@@ -719,3 +719,1833 @@ html[data-theme="dark"]
     grid-template-columns: 1fr;
   }
 }
+/* =========================================================
+   REFILL REMINDERS — PROFESSIONAL CARD DESIGN
+========================================================= */
+
+.refill-panel .refill-reminder-list {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 14px;
+}
+
+
+/* =========================================================
+   REMINDER CARD
+========================================================= */
+
+.refill-panel .refill-reminder-item {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  display: grid;
+
+  grid-template-columns:
+    46px
+    minmax(0, 1fr);
+
+  gap: 14px;
+
+  padding: 18px;
+
+  border: 1px solid #dce9ec;
+
+  border-radius: 14px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 8px 24px
+    rgba(
+      23,
+      60,
+      71,
+      0.04
+    );
+}
+
+
+/* =========================================================
+   ICON
+========================================================= */
+
+.refill-panel .refill-reminder-item__icon {
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 12px;
+
+  background: #fff3e4;
+
+  color: #e58b2f;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.refill-panel .refill-reminder-item__content {
+  min-width: 0;
+}
+
+
+.refill-panel .refill-reminder-item__label {
+  display: block;
+
+  margin: 1px 0 8px;
+
+  color: #e58b2f;
+
+  font-size: 9px;
+  font-weight: 900;
+
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+}
+
+
+.refill-panel .refill-reminder-item__content h3 {
+  margin: 0;
+
+  color: #073b4c;
+
+  font-size: 16px;
+  font-weight: 900;
+
+  line-height: 1.3;
+}
+
+
+.refill-panel .refill-reminder-item__content p {
+  margin: 10px 0 0;
+
+  color: #607f8c;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+
+.refill-panel .refill-reminder-item__content small {
+  display: block;
+
+  margin-top: 13px;
+
+  color: #8ba1ad;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   MARK COMPLETE BUTTON
+========================================================= */
+
+.refill-panel .refill-reminder-complete {
+  grid-column: 1 / -1;
+
+  width: 100%;
+
+  min-height: 42px;
+
+  margin-top: 2px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding: 0 14px;
+
+  appearance: none;
+  -webkit-appearance: none;
+
+  border: 1px solid #b9ddd8;
+
+  border-radius: 10px;
+
+  outline: none;
+
+  background: #eff9f8;
+
+  color: #0f8f89;
+
+  font-family: inherit;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow: none;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+
+.refill-panel
+.refill-reminder-complete:hover:not(:disabled) {
+  border-color: #0f9f98;
+
+  background: #0f9f98;
+
+  color: #ffffff;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 18px
+    rgba(
+      15,
+      159,
+      152,
+      0.15
+    );
+}
+
+
+.refill-panel
+.refill-reminder-complete:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+
+.refill-panel
+.refill-reminder-complete:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-theme="dark"]
+.refill-panel
+.refill-reminder-item {
+  border-color:
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  background: #123844;
+
+  box-shadow: none;
+}
+
+
+[data-theme="dark"]
+.refill-panel
+.refill-reminder-item__icon {
+  background:
+    rgba(
+      229,
+      139,
+      47,
+      0.15
+    );
+
+  color: #f0a34d;
+}
+
+
+[data-theme="dark"]
+.refill-panel
+.refill-reminder-item__content h3 {
+  color: #edf9fa;
+}
+
+
+[data-theme="dark"]
+.refill-panel
+.refill-reminder-item__content p {
+  color: #9ab1ba;
+}
+
+
+[data-theme="dark"]
+.refill-panel
+.refill-reminder-item__content small {
+  color: #829ca6;
+}
+
+
+[data-theme="dark"]
+.refill-panel
+.refill-reminder-complete {
+  border-color:
+    rgba(
+      15,
+      159,
+      152,
+      0.35
+    );
+
+  background:
+    rgba(
+      15,
+      159,
+      152,
+      0.1
+    );
+
+  color: #67d5cf;
+}
+
+
+[data-theme="dark"]
+.refill-panel
+.refill-reminder-complete:hover:not(:disabled) {
+  border-color: #0f9f98;
+
+  background: #0f9f98;
+
+  color: #ffffff;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 620px) {
+  .refill-panel
+  .refill-reminder-item {
+    grid-template-columns:
+      42px
+      minmax(0, 1fr);
+
+    padding: 15px;
+  }
+
+
+  .refill-panel
+  .refill-reminder-item__icon {
+    width: 42px;
+    height: 42px;
+  }
+
+
+  .refill-panel
+  .refill-reminder-item__content h3 {
+    font-size: 14px;
+  }
+}
+/* =========================================================
+   REFILL REQUESTS — FINAL CARD ARRANGEMENT
+========================================================= */
+
+.refill-content-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.25fr)
+    minmax(340px, 0.75fr);
+
+  gap: 22px;
+
+  align-items: start;
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   MAIN PANELS
+========================================================= */
+
+.refill-panel {
+  width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  border-radius: 16px;
+
+  overflow: hidden;
+}
+
+
+.refill-panel-body {
+  padding:
+    20px
+    20px
+    22px !important;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   REFILL FORM
+========================================================= */
+
+.refill-form {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+
+  width: 100%;
+}
+
+
+.refill-field {
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+
+.refill-field select,
+.refill-field textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PRESCRIPTION PREVIEW
+========================================================= */
+
+.refill-prescription-preview {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 10px;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 12px;
+
+  border-radius: 12px;
+}
+
+
+.refill-prescription-preview > div {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   REMINDER PANEL
+========================================================= */
+
+.refill-reminder-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+
+  width: 100%;
+}
+
+
+.refill-reminder-item {
+  width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  display: grid;
+
+  grid-template-columns:
+    42px
+    minmax(0, 1fr);
+
+  gap: 12px;
+
+  padding: 14px;
+
+  border-radius: 12px;
+}
+
+
+.refill-reminder-item__content {
+  min-width: 0;
+}
+
+
+.refill-reminder-complete {
+  grid-column:
+    1 / -1;
+
+  width: 100%;
+
+  margin-top: 2px;
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
+
+.refill-summary-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 18px;
+}
+
+
+.refill-summary-card {
+  min-width: 0;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-theme="dark"]
+.refill-reminder-item {
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+  .refill-content-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .refill-summary-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+  .refill-summary-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .refill-prescription-preview {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .refill-panel-body {
+    padding:
+      15px
+      15px
+      17px !important;
+  }
+}
+/* =========================================================
+   REFILL REQUESTS — FINAL BALANCED LAYOUT
+========================================================= */
+
+.refill-content-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 22px;
+
+  align-items: start;
+}
+
+
+/* =========================================================
+   MAIN PANELS
+========================================================= */
+
+.refill-panel {
+  width: 100%;
+
+  min-width: 0;
+
+  height: auto !important;
+
+  min-height: 0 !important;
+
+  box-sizing: border-box;
+
+  align-self: start;
+
+  overflow: hidden;
+
+  border-radius: 16px;
+}
+
+
+.refill-panel-body {
+  width: 100%;
+
+  min-height: 0 !important;
+
+  height: auto !important;
+
+  box-sizing: border-box;
+
+  padding:
+    20px
+    20px
+    22px !important;
+}
+
+
+/* =========================================================
+   REQUEST FORM
+========================================================= */
+
+.refill-form {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+
+.refill-field {
+  width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+}
+
+
+.refill-field select,
+.refill-field textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   PRESCRIPTION PREVIEW
+========================================================= */
+
+.refill-prescription-preview {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 10px;
+
+  box-sizing: border-box;
+
+  padding: 12px;
+
+  border-radius: 12px;
+}
+
+
+.refill-prescription-preview > div {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   REMINDER AREA
+========================================================= */
+
+.refill-reminder-list {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+
+.refill-reminder-item {
+  width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  margin: 0;
+
+  padding: 15px;
+
+  border-radius: 13px;
+}
+
+
+/* =========================================================
+   COMPACT EMPTY REMINDER STATE
+========================================================= */
+
+.refill-panel-body
+.refill-empty.smaller {
+  min-height: 230px !important;
+
+  height: auto !important;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    32px
+    24px;
+
+  text-align: center;
+}
+
+
+.refill-panel-body
+.refill-empty.smaller
+.refill-empty-icon {
+  margin-bottom: 14px;
+}
+
+
+.refill-panel-body
+.refill-empty.smaller h3 {
+  margin:
+    0
+    0
+    7px;
+}
+
+
+.refill-panel-body
+.refill-empty.smaller p {
+  max-width: 310px;
+
+  margin: 0;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   GENERAL EMPTY / SUCCESS STATES
+========================================================= */
+
+.refill-empty,
+.refill-success {
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
+
+.refill-summary-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 18px;
+}
+
+
+.refill-summary-card {
+  width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   REMINDER COMPLETE BUTTON
+========================================================= */
+
+.refill-reminder-complete {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  margin-top: 12px;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-theme="dark"]
+.refill-reminder-item {
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.09
+    );
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+  .refill-content-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .refill-summary-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+
+  .refill-panel-body
+  .refill-empty.smaller {
+    min-height: 190px !important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+  .refill-summary-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .refill-prescription-preview {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .refill-panel-body {
+    padding:
+      15px
+      15px
+      17px !important;
+  }
+
+
+  .refill-panel-body
+  .refill-empty.smaller {
+    min-height: 170px !important;
+
+    padding:
+      25px
+      16px;
+  }
+}
+/* =========================================================
+   REFILL REQUESTS — EQUAL TALL CARD LAYOUT
+========================================================= */
+
+.refill-content-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 22px;
+
+  align-items: stretch;
+}
+
+
+/* =========================================================
+   BOTH MAIN CARDS SAME HEIGHT
+========================================================= */
+
+.refill-panel {
+  width: 100%;
+
+  min-width: 0;
+
+  min-height: 470px;
+
+  height: 100%;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border-radius: 16px;
+}
+
+
+/* =========================================================
+   PANEL BODY FILLS AVAILABLE HEIGHT
+========================================================= */
+
+.refill-panel-body {
+  width: 100%;
+
+  min-height: 0;
+
+  flex: 1;
+
+  box-sizing: border-box;
+
+  padding:
+    20px
+    20px
+    22px !important;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+/* =========================================================
+   REQUEST FORM FILLS LEFT PANEL
+========================================================= */
+
+.refill-form {
+  width: 100%;
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+
+.refill-field {
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+
+.refill-field select,
+.refill-field textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+
+.refill-field textarea {
+  min-height: 140px;
+
+  resize: vertical;
+}
+
+
+/* =========================================================
+   KEEP SUBMIT BUTTON AT BOTTOM
+========================================================= */
+
+.refill-submit-button {
+  margin-top: auto;
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   PRESCRIPTION PREVIEW
+========================================================= */
+
+.refill-prescription-preview {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 10px;
+
+  box-sizing: border-box;
+
+  padding: 12px;
+
+  border-radius: 12px;
+}
+
+
+.refill-prescription-preview > div {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   REMINDER PANEL FILLS RIGHT CARD
+========================================================= */
+
+.refill-reminder-list {
+  width: 100%;
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+
+/* =========================================================
+   REMINDER ITEMS
+========================================================= */
+
+.refill-reminder-item {
+  width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  padding: 15px;
+
+  border-radius: 13px;
+}
+
+
+/* =========================================================
+   EMPTY REMINDER STATE — CENTER INSIDE TALL CARD
+========================================================= */
+
+.refill-panel-body
+.refill-empty.smaller {
+  width: 100%;
+
+  flex: 1;
+
+  min-height: 320px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding:
+    32px
+    24px;
+
+  text-align: center;
+}
+
+
+.refill-panel-body
+.refill-empty.smaller
+.refill-empty-icon {
+  margin-bottom: 14px;
+}
+
+
+.refill-panel-body
+.refill-empty.smaller h3 {
+  margin:
+    0
+    0
+    8px;
+}
+
+
+.refill-panel-body
+.refill-empty.smaller p {
+  max-width: 300px;
+
+  margin: 0;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   GENERAL EMPTY / SUCCESS STATES
+========================================================= */
+
+.refill-empty,
+.refill-success {
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
+
+.refill-summary-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 18px;
+}
+
+
+.refill-summary-card {
+  width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-theme="dark"]
+.refill-reminder-item {
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.09
+    );
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+  .refill-content-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .refill-panel {
+    min-height: auto;
+  }
+
+
+  .refill-panel-body
+  .refill-empty.smaller {
+    min-height: 220px;
+  }
+
+
+  .refill-summary-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+  .refill-summary-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .refill-prescription-preview {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .refill-panel-body {
+    padding:
+      15px
+      15px
+      17px !important;
+  }
+
+
+  .refill-panel-body
+  .refill-empty.smaller {
+    min-height: 180px;
+
+    padding:
+      24px
+      16px;
+  }
+}
+/* =========================================================
+   REFILL REQUESTS — EQUAL TALL CARD LAYOUT
+========================================================= */
+
+.refill-content-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 22px;
+
+  align-items: stretch;
+}
+
+
+/* =========================================================
+   BOTH MAIN CARDS SAME HEIGHT
+========================================================= */
+
+.refill-panel {
+  width: 100%;
+
+  min-width: 0;
+
+  min-height: 470px;
+
+  height: 100%;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border-radius: 16px;
+}
+
+
+/* =========================================================
+   PANEL BODY FILLS AVAILABLE HEIGHT
+========================================================= */
+
+.refill-panel-body {
+  width: 100%;
+
+  min-height: 0;
+
+  flex: 1;
+
+  box-sizing: border-box;
+
+  padding:
+    20px
+    20px
+    22px !important;
+
+  display: flex;
+
+  flex-direction: column;
+}
+
+
+/* =========================================================
+   REQUEST FORM FILLS LEFT PANEL
+========================================================= */
+
+.refill-form {
+  width: 100%;
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 16px;
+}
+
+
+.refill-field {
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+
+.refill-field select,
+.refill-field textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+
+.refill-field textarea {
+  min-height: 140px;
+
+  resize: vertical;
+}
+
+
+/* =========================================================
+   KEEP SUBMIT BUTTON AT BOTTOM
+========================================================= */
+
+.refill-submit-button {
+  margin-top: auto;
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   PRESCRIPTION PREVIEW
+========================================================= */
+
+.refill-prescription-preview {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 10px;
+
+  box-sizing: border-box;
+
+  padding: 12px;
+
+  border-radius: 12px;
+}
+
+
+.refill-prescription-preview > div {
+  min-width: 0;
+}
+
+
+/* =========================================================
+   REMINDER PANEL FILLS RIGHT CARD
+========================================================= */
+
+.refill-reminder-list {
+  width: 100%;
+
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+
+/* =========================================================
+   REMINDER ITEMS
+========================================================= */
+
+.refill-reminder-item {
+  width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+
+  padding: 15px;
+
+  border-radius: 13px;
+}
+
+
+/* =========================================================
+   EMPTY REMINDER STATE — CENTER INSIDE TALL CARD
+========================================================= */
+
+.refill-panel-body
+.refill-empty.smaller {
+  width: 100%;
+
+  flex: 1;
+
+  min-height: 320px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding:
+    32px
+    24px;
+
+  text-align: center;
+}
+
+
+.refill-panel-body
+.refill-empty.smaller
+.refill-empty-icon {
+  margin-bottom: 14px;
+}
+
+
+.refill-panel-body
+.refill-empty.smaller h3 {
+  margin:
+    0
+    0
+    8px;
+}
+
+
+.refill-panel-body
+.refill-empty.smaller p {
+  max-width: 300px;
+
+  margin: 0;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   GENERAL EMPTY / SUCCESS STATES
+========================================================= */
+
+.refill-empty,
+.refill-success {
+  width: 100%;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
+
+.refill-summary-grid {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 18px;
+}
+
+
+.refill-summary-card {
+  width: 100%;
+
+  min-width: 0;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   DARK MODE
+========================================================= */
+
+[data-theme="dark"]
+.refill-reminder-item {
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.09
+    );
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+  .refill-content-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .refill-panel {
+    min-height: auto;
+  }
+
+
+  .refill-panel-body
+  .refill-empty.smaller {
+    min-height: 220px;
+  }
+
+
+  .refill-summary-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+  .refill-summary-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .refill-prescription-preview {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .refill-panel-body {
+    padding:
+      15px
+      15px
+      17px !important;
+  }
+
+
+  .refill-panel-body
+  .refill-empty.smaller {
+    min-height: 180px;
+
+    padding:
+      24px
+      16px;
+  }
+}
+/* =========================================================
+   REFILL REQUESTS — FORCE BOTH MAIN CARDS SAME HEIGHT
+========================================================= */
+
+.refill-page .refill-content-grid {
+  display: grid !important;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    ) !important;
+
+  gap: 22px !important;
+
+  align-items: stretch !important;
+
+  width: 100% !important;
+}
+
+
+/* FORCE BOTH PANELS TO USE THE SAME ROW HEIGHT */
+
+.refill-page
+.refill-content-grid
+> .refill-panel {
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  align-self: stretch !important;
+
+  width: 100% !important;
+
+  height: 100% !important;
+
+  min-height: 500px !important;
+
+  box-sizing: border-box !important;
+}
+
+
+/* PANEL BODY FILLS THE REST OF THE CARD */
+
+.refill-page
+.refill-content-grid
+> .refill-panel
+> .refill-panel-body {
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  flex: 1 1 auto !important;
+
+  width: 100% !important;
+
+  height: auto !important;
+
+  min-height: 0 !important;
+
+  box-sizing: border-box !important;
+
+  padding:
+    20px
+    20px
+    22px !important;
+}
+
+
+/* =========================================================
+   LEFT REQUEST FORM
+========================================================= */
+
+.refill-page .refill-form {
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  flex: 1 !important;
+
+  width: 100% !important;
+
+  gap: 16px;
+}
+
+
+.refill-page
+.refill-submit-button {
+  width: 100%;
+
+  margin-top: auto !important;
+}
+
+
+/* =========================================================
+   RIGHT REMINDER EMPTY STATE
+========================================================= */
+
+.refill-page
+.refill-panel-body
+> .refill-empty.smaller {
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  align-items: center !important;
+
+  justify-content: center !important;
+
+  flex: 1 1 auto !important;
+
+  width: 100% !important;
+
+  height: 100% !important;
+
+  min-height: 0 !important;
+
+  margin: 0 !important;
+
+  box-sizing: border-box !important;
+
+  padding:
+    30px
+    20px !important;
+
+  text-align: center;
+}
+
+
+/* =========================================================
+   REMINDER LIST WHEN REMINDERS EXIST
+========================================================= */
+
+.refill-page
+.refill-reminder-list {
+  display: flex !important;
+
+  flex-direction: column !important;
+
+  flex: 1 !important;
+
+  width: 100% !important;
+
+  gap: 12px;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 1050px) {
+  .refill-page
+  .refill-content-grid {
+    grid-template-columns:
+      1fr !important;
+  }
+
+
+  .refill-page
+  .refill-content-grid
+  > .refill-panel {
+    height: auto !important;
+
+    min-height: 430px !important;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+  .refill-page
+  .refill-content-grid
+  > .refill-panel {
+    min-height: 380px !important;
+  }
+
+
+  .refill-page
+  .refill-content-grid
+  > .refill-panel
+  > .refill-panel-body {
+    padding:
+      15px
+      15px
+      17px !important;
+  }
+}

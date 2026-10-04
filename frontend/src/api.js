@@ -1,75 +1,291 @@
 const API_BASE_URL =
-  "http://127.0.0.1:8000";
+  `http://${window.location.hostname}:8000`;
 
+
+/* =========================================================
+   STORAGE HELPERS
+========================================================= */
+
+export function getStoredToken() {
+  return (
+    localStorage.getItem(
+      "access_token"
+    ) || ""
+  );
+}
+
+
+export function getStoredUserId() {
+  const value =
+    localStorage.getItem(
+      "user_id"
+    );
+
+  if (!value) {
+    return null;
+  }
+
+  const parsed =
+    Number(value);
+
+  return Number.isNaN(parsed)
+    ? null
+    : parsed;
+}
+
+
+export function getStoredUserRole() {
+  return (
+    localStorage.getItem(
+      "user_role"
+    ) || ""
+  );
+}
+
+
+export function getStoredUserName() {
+  return (
+    localStorage.getItem(
+      "user_name"
+    ) || ""
+  );
+}
+
+
+export function getStoredUserEmail() {
+  return (
+    localStorage.getItem(
+      "user_email"
+    ) || ""
+  );
+}
+
+
+export function isLoggedIn() {
+  return Boolean(
+    getStoredToken()
+  );
+}
+
+
+export function clearAuthStorage() {
+  localStorage.removeItem(
+    "access_token"
+  );
+
+  localStorage.removeItem(
+    "user_id"
+  );
+
+  localStorage.removeItem(
+    "user_role"
+  );
+
+  localStorage.removeItem(
+    "user_name"
+  );
+
+  localStorage.removeItem(
+    "user_email"
+  );
+
+  localStorage.removeItem(
+    "token"
+  );
+
+  localStorage.removeItem(
+    "role"
+  );
+}
+
+
+/* =========================================================
+   CORE API REQUEST
+========================================================= */
 
 async function apiRequest(
   endpoint,
   options = {}
 ) {
   const token =
-    localStorage.getItem(
-      "access_token"
-    );
+    getStoredToken();
 
   const headers = {
-    "Content-Type":
-      "application/json",
-
     ...(options.headers || {}),
   };
 
+  const hasBody =
+    options.body !== undefined &&
+    options.body !== null;
+
+  const isFormData =
+    typeof FormData !==
+      "undefined" &&
+    options.body instanceof FormData;
+
+  if (
+    hasBody &&
+    !isFormData &&
+    !headers["Content-Type"]
+  ) {
+    headers["Content-Type"] =
+      "application/json";
+  }
 
   if (token) {
     headers.Authorization =
       `Bearer ${token}`;
   }
 
+  let response;
 
-  const response =
-    await fetch(
-      `${API_BASE_URL}${endpoint}`,
-      {
-        ...options,
-        headers,
-      }
-    );
-
-
-  const data =
-    await response
-      .json()
-      .catch(() => null);
-
-
-  if (!response.ok) {
-    const message =
-      data?.detail ||
-      data?.message ||
-      (
-        "Something went wrong. " +
-        "Please try again."
+  try {
+    response =
+      await fetch(
+        `${API_BASE_URL}${endpoint}`,
+        {
+          ...options,
+          headers,
+        }
       );
-
-
+  } catch (error) {
     throw new Error(
-      Array.isArray(message)
-        ? message
-            .map(
-              (item) =>
-                item.msg
-            )
-            .join(", ")
-        : message
+      "Unable to connect to Dr. Evans Pharmacy.",
+      {
+        cause: error,
+      }
     );
   }
 
+
+  /* =======================================================
+     READ RESPONSE
+  ======================================================= */
+
+  let data;
+
+  const contentType =
+    response.headers.get(
+      "content-type"
+    ) || "";
+
+  try {
+    if (
+      contentType.includes(
+        "application/json"
+      )
+    ) {
+      data =
+        await response.json();
+    } else {
+      const responseText =
+        await response.text();
+
+      data =
+        responseText || null;
+    }
+  } catch {
+    data = null;
+  }
+
+
+  /* =======================================================
+     PUBLIC AUTH ROUTES
+  ======================================================= */
+
+  const publicAuthEndpoints = [
+    "/login",
+    "/signup",
+    "/forgot-password",
+    "/reset-password",
+  ];
+
+  const isPublicAuthRequest =
+    publicAuthEndpoints.some(
+      (path) =>
+        endpoint.startsWith(
+          path
+        )
+    );
+
+
+  /* =======================================================
+     SESSION EXPIRED
+  ======================================================= */
+
+  if (
+    response.status === 401 &&
+    !isPublicAuthRequest
+  ) {
+    clearAuthStorage();
+
+    if (
+      window.location.pathname !==
+      "/login"
+    ) {
+      window.location.href =
+        "/login";
+    }
+
+    throw new Error(
+      "Your session has expired. Please sign in again."
+    );
+  }
+
+
+  /* =======================================================
+     API ERRORS
+  ======================================================= */
+
+  if (!response.ok) {
+    let message =
+      "Something went wrong.";
+
+    if (
+      typeof data?.detail ===
+      "string"
+    ) {
+      message =
+        data.detail;
+    } else if (
+      Array.isArray(
+        data?.detail
+      )
+    ) {
+      message =
+        data.detail
+          .map(
+            (item) =>
+              item?.msg
+          )
+          .filter(Boolean)
+          .join(", ");
+    } else if (
+      typeof data?.message ===
+      "string"
+    ) {
+      message =
+        data.message;
+    } else if (
+      typeof data ===
+        "string" &&
+      data
+    ) {
+      message =
+        data;
+    }
+
+    throw new Error(
+      message
+    );
+  }
 
   return data;
 }
 
 
 /* =========================================================
-   AUTHENTICATION
+   AUTH
 ========================================================= */
 
 export async function signup(
@@ -83,8 +299,11 @@ export async function signup(
       method: "POST",
 
       body: JSON.stringify({
-        full_name: fullName,
+        full_name:
+          fullName,
+
         email,
+
         password,
       }),
     }
@@ -109,89 +328,133 @@ export async function login(
       }
     );
 
+  const token =
+    data?.access_token ||
+    data?.token;
 
-  if (data.access_token) {
+  if (token) {
     localStorage.setItem(
       "access_token",
-      data.access_token
+      token
     );
   }
 
+  const userId =
+    data?.user_id ??
+    data?.id;
 
-  if (data.user_id) {
+  if (
+    userId !== undefined &&
+    userId !== null
+  ) {
     localStorage.setItem(
       "user_id",
-      String(data.user_id)
+      String(userId)
     );
   }
 
+  const role =
+    data?.role ||
+    "patient";
 
-  if (data.role) {
-    localStorage.setItem(
-      "user_role",
-      data.role
-    );
-  }
+  localStorage.setItem(
+    "user_role",
+    String(role)
+  );
 
+  const userName =
+    data?.full_name ||
+    data?.user_name ||
+    data?.name;
 
-  if (data.full_name) {
+  if (userName) {
     localStorage.setItem(
       "user_name",
-      data.full_name
+      userName
     );
   }
 
-
-  if (data.email) {
+  if (data?.email) {
     localStorage.setItem(
       "user_email",
       data.email
     );
   }
 
-
   return data;
 }
 
 
 export function logout() {
-  localStorage.removeItem(
-    "access_token"
-  );
+  clearAuthStorage();
+}
 
-  localStorage.removeItem(
-    "user_id"
-  );
 
-  localStorage.removeItem(
-    "user_role"
-  );
+/* =========================================================
+   CURRENT USER / PROFILE
+========================================================= */
 
-  localStorage.removeItem(
-    "user_name"
-  );
-
-  localStorage.removeItem(
-    "user_email"
+export async function getMe() {
+  return apiRequest(
+    "/me"
   );
 }
 
 
-export function isLoggedIn() {
-  return Boolean(
-    localStorage.getItem(
-      "access_token"
-    )
+export async function updateMe(
+  fullName
+) {
+  return apiRequest(
+    "/me",
+    {
+      method: "PATCH",
+
+      body: JSON.stringify({
+        full_name:
+          fullName,
+      }),
+    }
   );
 }
 
 
 /* =========================================================
-   CURRENT USER
+   PASSWORD RESET
 ========================================================= */
 
-export async function getMe() {
-  return apiRequest("/me");
+export async function forgotPassword(
+  email
+) {
+  return apiRequest(
+    "/forgot-password",
+    {
+      method: "POST",
+
+      body: JSON.stringify({
+        email,
+      }),
+    }
+  );
+}
+
+
+export async function resetPassword(
+  token,
+  newPassword
+) {
+  return apiRequest(
+    "/reset-password",
+    {
+      method: "POST",
+
+      body: JSON.stringify({
+        token,
+
+        new_password:
+          newPassword,
+      }),
+    }
+  );
 }
 
 
@@ -367,6 +630,8 @@ export async function getUserPharmacistMessages(
     `/pharmacist-messages/${userId}`
   );
 }
+
+
 /* =========================================================
    TECHNICAL SUPPORT
 ========================================================= */
@@ -401,6 +666,8 @@ export async function getUserSupportRequests(
     `/support-requests/${userId}`
   );
 }
+
+
 /* =========================================================
    NOTIFICATIONS
 ========================================================= */
@@ -424,7 +691,8 @@ export async function createNotification(
 
         message,
 
-        icon,
+        icon:
+          icon || "bell",
       }),
     }
   );
@@ -474,6 +742,8 @@ export async function clearUserNotifications(
     }
   );
 }
+
+
 /* =========================================================
    LAB RESULTS
 ========================================================= */
@@ -485,38 +755,8 @@ export async function getUserLabResults(
     `/lab-results/${userId}`
   );
 }
-/* =========================================================
-   STORAGE HELPERS
-========================================================= */
 
-export function getStoredUser() {
-  return {
-    userId:
-      localStorage.getItem(
-        "user_id"
-      ),
 
-    name:
-      localStorage.getItem(
-        "user_name"
-      ),
-
-    email:
-      localStorage.getItem(
-        "user_email"
-      ),
-
-    role:
-      localStorage.getItem(
-        "user_role"
-      ),
-
-    token:
-      localStorage.getItem(
-        "access_token"
-      ),
-  };
-}
 /* =========================================================
    REMINDERS
 ========================================================= */

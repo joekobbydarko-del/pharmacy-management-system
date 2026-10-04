@@ -24,15 +24,18 @@ function PrescriptionsPage() {
   const userId =
     localStorage.getItem("user_id");
 
+
   const [
     prescriptions,
     setPrescriptions,
   ] = useState([]);
 
+
   const [
     loading,
     setLoading,
   ] = useState(true);
+
 
   const [
     error,
@@ -45,41 +48,69 @@ function PrescriptionsPage() {
   ========================================================= */
 
   useEffect(() => {
+    let cancelled = false;
+
+
     async function loadPrescriptions() {
       if (!userId) {
-        setError(
-          "Patient information could not be found."
-        );
+        if (!cancelled) {
+          setError(
+            "Patient information could not be found."
+          );
 
-        setLoading(false);
+          setLoading(false);
+        }
+
         return;
       }
+
 
       try {
         setLoading(true);
         setError("");
+
 
         const data =
           await getUserPrescriptions(
             userId
           );
 
+
+        if (cancelled) {
+          return;
+        }
+
+
         setPrescriptions(
           Array.isArray(data)
             ? data
             : []
         );
-      } catch (err) {
-        setError(
-          err.message ||
-            "Unable to load prescriptions."
-        );
-      } finally {
-        setLoading(false);
+      }
+
+      catch (err) {
+        if (!cancelled) {
+          setError(
+            err.message ||
+              "Unable to load prescriptions."
+          );
+        }
+      }
+
+      finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
       }
     }
 
+
     loadPrescriptions();
+
+
+    return () => {
+      cancelled = true;
+    };
   }, [userId]);
 
 
@@ -112,12 +143,28 @@ function PrescriptionsPage() {
   const getStatusClass = (
     status
   ) => {
-    const normalized =
-      String(
-        status || "active"
-      ).toLowerCase();
+    return String(
+      status || "active"
+    ).toLowerCase();
+  };
 
-    return normalized;
+
+  /* =========================================================
+     REQUEST REFILL
+  ========================================================= */
+
+  const handleRequestRefill = (
+    prescription
+  ) => {
+    navigate(
+      "/patient/refills",
+      {
+        state: {
+          prescriptionId:
+            prescription.prescription_id,
+        },
+      }
+    );
   };
 
 
@@ -136,9 +183,11 @@ function PrescriptionsPage() {
             PATIENT MEDICATIONS
           </span>
 
+
           <h1>
             My Prescriptions
           </h1>
+
 
           <p>
             View your active prescriptions,
@@ -148,6 +197,7 @@ function PrescriptionsPage() {
           </p>
 
         </div>
+
 
         <PatientDateCard />
 
@@ -159,6 +209,7 @@ function PrescriptionsPage() {
       ===================================================== */}
 
       {error && (
+
         <div className="prescriptions-error">
 
           <PatientIcon
@@ -166,11 +217,13 @@ function PrescriptionsPage() {
             size={18}
           />
 
+
           <span>
             {error}
           </span>
 
         </div>
+
       )}
 
 
@@ -191,17 +244,20 @@ function PrescriptionsPage() {
 
           </span>
 
+
           <div>
 
             <span>
               TOTAL PRESCRIPTIONS
             </span>
 
+
             <strong>
               {loading
                 ? "..."
                 : prescriptions.length}
             </strong>
+
 
             <small>
               Medication records
@@ -223,17 +279,20 @@ function PrescriptionsPage() {
 
           </span>
 
+
           <div>
 
             <span>
               ACTIVE PRESCRIPTIONS
             </span>
 
+
             <strong>
               {loading
                 ? "..."
                 : activePrescriptions.length}
             </strong>
+
 
             <small>
               Current medications
@@ -255,17 +314,20 @@ function PrescriptionsPage() {
 
           </span>
 
+
           <div>
 
             <span>
               REFILL READY
             </span>
 
+
             <strong>
               {loading
                 ? "..."
                 : refillReady}
             </strong>
+
 
             <small>
               Eligible active prescriptions
@@ -297,11 +359,13 @@ function PrescriptionsPage() {
 
             </span>
 
+
             <div>
 
               <span className="prescriptions-section-label">
                 MEDICATION RECORD
               </span>
+
 
               <h2>
                 Your Prescriptions
@@ -311,13 +375,19 @@ function PrescriptionsPage() {
 
           </div>
 
+
           {!loading && (
+
             <span className="prescriptions-count">
+
               {prescriptions.length}{" "}
+
               {prescriptions.length === 1
                 ? "Prescription"
                 : "Prescriptions"}
+
             </span>
+
           )}
 
         </div>
@@ -338,9 +408,11 @@ function PrescriptionsPage() {
 
               </span>
 
+
               <h3>
                 Loading prescriptions
               </h3>
+
 
               <p>
                 Please wait while we load
@@ -349,8 +421,7 @@ function PrescriptionsPage() {
 
             </div>
 
-          ) : prescriptions.length ===
-            0 ? (
+          ) : prescriptions.length === 0 ? (
 
             <div className="prescriptions-empty">
 
@@ -363,9 +434,11 @@ function PrescriptionsPage() {
 
               </span>
 
+
               <h3>
                 No prescriptions yet
               </h3>
+
 
               <p>
                 Your prescribed medicines
@@ -412,6 +485,7 @@ function PrescriptionsPage() {
                             PRESCRIPTION
                           </span>
 
+
                           <h3>
                             {
                               prescription.medicine_name
@@ -447,6 +521,7 @@ function PrescriptionsPage() {
                           DOSAGE
                         </span>
 
+
                         <strong>
                           {
                             prescription.dosage ||
@@ -463,6 +538,7 @@ function PrescriptionsPage() {
                           FREQUENCY
                         </span>
 
+
                         <strong>
                           {
                             prescription.frequency ||
@@ -478,6 +554,7 @@ function PrescriptionsPage() {
                         <span>
                           PRESCRIPTION ID
                         </span>
+
 
                         <strong>
                           #
@@ -506,11 +583,13 @@ function PrescriptionsPage() {
 
                         </span>
 
+
                         <div>
 
                           <span>
                             INSTRUCTIONS
                           </span>
+
 
                           <p>
                             {
@@ -526,7 +605,7 @@ function PrescriptionsPage() {
 
                       {String(
                         prescription.status ||
-                          ""
+                        ""
                       ).toLowerCase() ===
                         "active" && (
 
@@ -534,13 +613,14 @@ function PrescriptionsPage() {
                           type="button"
                           className="prescription-refill-button"
                           onClick={() =>
-                            navigate(
-                              "/patient/refills"
+                            handleRequestRefill(
+                              prescription
                             )
                           }
                         >
 
                           Request Refill
+
 
                           <PatientIcon
                             name="arrow"
@@ -582,11 +662,13 @@ function PrescriptionsPage() {
 
         </span>
 
+
         <div>
 
           <strong>
             Prescription information protected
           </strong>
+
 
           <small>
             Your medication records are
@@ -601,5 +683,6 @@ function PrescriptionsPage() {
     </section>
   );
 }
+
 
 export default PrescriptionsPage;
