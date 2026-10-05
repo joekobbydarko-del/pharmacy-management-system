@@ -1,8 +1,11 @@
 import {
   useEffect,
-  useMemo,
   useState,
 } from "react";
+
+import {
+  useNavigate,
+} from "react-router-dom";
 
 import {
   getAdminDashboard,
@@ -12,6 +15,10 @@ import "./AdminDashboard.css";
 
 
 function AdminDashboard() {
+  const navigate =
+    useNavigate();
+
+
   const [
     dashboard,
     setDashboard,
@@ -28,6 +35,10 @@ function AdminDashboard() {
   ] = useState("");
 
 
+  /* =========================================================
+     LOAD DASHBOARD
+  ========================================================= */
+
   useEffect(() => {
     let active = true;
 
@@ -40,13 +51,14 @@ function AdminDashboard() {
         const data =
           await getAdminDashboard();
 
-
         if (active) {
           setDashboard(
             data
           );
         }
-      } catch (err) {
+      }
+
+      catch (err) {
         console.error(
           "Unable to load admin dashboard:",
           err
@@ -55,10 +67,12 @@ function AdminDashboard() {
         if (active) {
           setError(
             err?.message ||
-              "Unable to load the administrator dashboard."
+            "Unable to load the administrator dashboard."
           );
         }
-      } finally {
+      }
+
+      finally {
         if (active) {
           setLoading(false);
         }
@@ -75,128 +89,138 @@ function AdminDashboard() {
   }, []);
 
 
-  const metrics =
-    dashboard?.metrics || {};
+  /* =========================================================
+     DASHBOARD DATA
+  ========================================================= */
 
+  const metrics =
+    dashboard?.metrics ?? {};
 
   const recentOrders =
-    dashboard?.recent_orders || [];
+    dashboard?.recent_orders ?? [];
 
 
-  const stats =
-    useMemo(
-      () => [
-        {
-          label:
-            "TOTAL PATIENTS",
+  /*
+   * This array is intentionally calculated directly.
+   *
+   * There is no need for useMemo here because this is a
+   * very small amount of work, and avoiding useMemo also
+   * prevents unstable object dependency warnings.
+   */
+  const stats = [
+    {
+      label:
+        "TOTAL PATIENTS",
 
-          value:
-            metrics.total_patients ??
-            0,
+      value:
+        metrics.total_patients ??
+        0,
 
-          note:
-            "Registered patient accounts",
+      note:
+        "Registered patient accounts",
 
-          type:
-            "purple",
+      type:
+        "purple",
 
-          icon:
-            "👥",
-        },
+      icon:
+        "👥",
+    },
 
-        {
-          label:
-            "TOTAL ORDERS",
+    {
+      label:
+        "TOTAL ORDERS",
 
-          value:
-            metrics.total_orders ??
-            0,
+      value:
+        metrics.total_orders ??
+        0,
 
-          note:
-            "Medicine orders received",
+      note:
+        "Medicine orders received",
 
-          type:
-            "orange",
+      type:
+        "orange",
 
-          icon:
-            "📦",
-        },
+      icon:
+        "📦",
+    },
 
-        {
-          label:
-            "PENDING ORDERS",
+    {
+      label:
+        "PENDING ORDERS",
 
-          value:
-            metrics.pending_orders ??
-            0,
+      value:
+        metrics.pending_orders ??
+        0,
 
-          note:
-            "Awaiting pharmacy action",
+      note:
+        "Awaiting pharmacy action",
 
-          type:
-            "blue",
+      type:
+        "blue",
 
-          icon:
-            "⌛",
-        },
+      icon:
+        "⌛",
+    },
 
-        {
-          label:
-            "PENDING REFILLS",
+    {
+      label:
+        "PENDING REFILLS",
 
-          value:
-            metrics.pending_refills ??
-            0,
+      value:
+        metrics.pending_refills ??
+        0,
 
-          note:
-            "Awaiting review",
+      note:
+        "Awaiting review",
 
-          type:
-            "teal",
+      type:
+        "teal",
 
-          icon:
-            "↻",
-        },
+      icon:
+        "↻",
+    },
 
-        {
-          label:
-            "PENDING APPOINTMENTS",
+    {
+      label:
+        "PENDING APPOINTMENTS",
 
-          value:
-            metrics.pending_appointments ??
-            0,
+      value:
+        metrics.pending_appointments ??
+        0,
 
-          note:
-            "Appointment requests",
+      note:
+        "Appointment requests",
 
-          type:
-            "red",
+      type:
+        "red",
 
-          icon:
-            "!",
-        },
+      icon:
+        "!",
+    },
 
-        {
-          label:
-            "ACTIVE PRESCRIPTIONS",
+    {
+      label:
+        "ACTIVE PRESCRIPTIONS",
 
-          value:
-            metrics.active_prescriptions ??
-            0,
+      value:
+        metrics.active_prescriptions ??
+        0,
 
-          note:
-            "Current active prescriptions",
+      note:
+        "Current active prescriptions",
 
-          type:
-            "green",
+      type:
+        "green",
 
-          icon:
-            "Rx",
-        },
-      ],
-      [metrics]
-    );
+      icon:
+        "Rx",
+    },
+  ];
 
+
+  /* =========================================================
+     LOADING
+  ========================================================= */
 
   if (loading) {
     return (
@@ -220,6 +244,10 @@ function AdminDashboard() {
     );
   }
 
+
+  /* =========================================================
+     ERROR
+  ========================================================= */
 
   if (error) {
     return (
@@ -251,12 +279,17 @@ function AdminDashboard() {
   }
 
 
+  /* =========================================================
+     DASHBOARD
+  ========================================================= */
+
   return (
     <section className="admin-dashboard">
 
-      {/* ===================================================
+
+      {/* =====================================================
           HEADING
-      =================================================== */}
+      ===================================================== */}
 
       <div className="admin-dashboard__heading">
 
@@ -271,10 +304,9 @@ function AdminDashboard() {
           </h1>
 
           <p>
-            Monitor patients, medicine
-            orders, refill requests,
-            prescriptions and pharmacy
-            operations from one place.
+            Monitor patients, medicine orders,
+            refill requests, prescriptions and
+            pharmacy operations from one place.
           </p>
 
         </div>
@@ -290,7 +322,8 @@ function AdminDashboard() {
             {
               dashboard
                 ?.administrator
-                ?.full_name ||
+                ?.full_name
+              ||
               "Administrator"
             }
           </strong>
@@ -300,59 +333,60 @@ function AdminDashboard() {
       </div>
 
 
-      {/* ===================================================
+      {/* =====================================================
           LIVE DATABASE STATS
-      =================================================== */}
+      ===================================================== */}
 
       <div className="admin-stats-grid">
 
-        {stats.map(
-          (stat) => (
-
-            <article
-              key={
-                stat.label
-              }
-              className="admin-stat-card"
-            >
-
-              <span
-                className={`admin-stat-icon ${stat.type}`}
+        {
+          stats.map(
+            (
+              stat
+            ) => (
+              <article
+                key={
+                  stat.label
+                }
+                className="admin-stat-card"
               >
-                {stat.icon}
-              </span>
 
-
-              <div>
-
-                <span className="admin-stat-label">
-                  {stat.label}
+                <span
+                  className={
+                    `admin-stat-icon ${stat.type}`
+                  }
+                >
+                  {stat.icon}
                 </span>
 
-                <strong>
-                  {stat.value}
-                </strong>
 
-                <small>
-                  {stat.note}
-                </small>
+                <div>
 
-              </div>
+                  <span className="admin-stat-label">
+                    {stat.label}
+                  </span>
 
-            </article>
+                  <strong>
+                    {stat.value}
+                  </strong>
 
+                  <small>
+                    {stat.note}
+                  </small>
+
+                </div>
+
+              </article>
+            )
           )
-        )}
+        }
 
       </div>
 
 
-      {/* ===================================================
-          FUTURE OPERATIONS MODULES
-
-          These stay visible, but we do NOT fake database
-          figures before those modules exist.
-      =================================================== */}
+      {/* =====================================================
+          OPERATIONS OVERVIEW
+      ===================================================== */}
 
       <div className="admin-dashboard-grid">
 
@@ -367,10 +401,22 @@ function AdminDashboard() {
               </span>
 
               <h2>
-                Monthly Sales Trend
+                Pharmacy Sales
               </h2>
 
             </div>
+
+
+            <button
+              type="button"
+              onClick={() =>
+                navigate(
+                  "/admin/sales"
+                )
+              }
+            >
+              View Sales
+            </button>
 
           </div>
 
@@ -382,14 +428,25 @@ function AdminDashboard() {
             </span>
 
             <strong>
-              Sales analytics will appear here
+              Sales analytics are available
             </strong>
 
             <p>
-              This section will become
-              live when we build the POS
-              and Sales modules.
+              Review pharmacy revenue,
+              transactions and medicine
+              performance in the Sales module.
             </p>
+
+            <button
+              type="button"
+              onClick={() =>
+                navigate(
+                  "/admin/sales"
+                )
+              }
+            >
+              Open Sales
+            </button>
 
           </div>
 
@@ -412,6 +469,18 @@ function AdminDashboard() {
 
             </div>
 
+
+            <button
+              type="button"
+              onClick={() =>
+                navigate(
+                  "/admin/reports"
+                )
+              }
+            >
+              Reports
+            </button>
+
           </div>
 
 
@@ -422,14 +491,25 @@ function AdminDashboard() {
             </span>
 
             <strong>
-              Medicine sales data is not connected yet
+              Medicine performance reporting
             </strong>
 
             <p>
-              Rankings will be calculated
-              from real POS and sales
-              transactions.
+              View rankings calculated
+              from real POS sales and
+              transaction records.
             </p>
+
+            <button
+              type="button"
+              onClick={() =>
+                navigate(
+                  "/admin/reports"
+                )
+              }
+            >
+              View Reports
+            </button>
 
           </div>
 
@@ -438,11 +518,12 @@ function AdminDashboard() {
       </div>
 
 
-      {/* ===================================================
+      {/* =====================================================
           OPERATIONS
-      =================================================== */}
+      ===================================================== */}
 
       <div className="admin-dashboard-grid admin-dashboard-grid--bottom">
+
 
         {/* INVENTORY */}
 
@@ -465,6 +546,11 @@ function AdminDashboard() {
 
             <button
               type="button"
+              onClick={() =>
+                navigate(
+                  "/admin/inventory"
+                )
+              }
             >
               Inventory
             </button>
@@ -479,16 +565,33 @@ function AdminDashboard() {
             </span>
 
             <strong>
-              Inventory module pending
+              {
+                metrics.inventory_items !==
+                undefined
+                  ? `${metrics.inventory_items} medicines tracked`
+                  : "Inventory monitoring"
+              }
             </strong>
 
             <p>
-              Real stock quantities,
-              low-stock alerts and
-              reorder levels will appear
-              here after Inventory is
-              connected.
+              {
+                metrics.low_stock_items !==
+                undefined
+                  ? `${metrics.low_stock_items} medicines currently require low-stock attention.`
+                  : "Monitor medicine stock quantities, reorder levels and availability."
+              }
             </p>
+
+            <button
+              type="button"
+              onClick={() =>
+                navigate(
+                  "/admin/inventory"
+                )
+              }
+            >
+              Manage Inventory
+            </button>
 
           </div>
 
@@ -516,8 +619,13 @@ function AdminDashboard() {
 
             <button
               type="button"
+              onClick={() =>
+                navigate(
+                  "/admin"
+                )
+              }
             >
-              View All
+              Recent
             </button>
 
           </div>
@@ -525,87 +633,101 @@ function AdminDashboard() {
 
           <div className="admin-orders-list">
 
-            {recentOrders.length >
-            0 ? (
+            {
+              recentOrders.length >
+              0
+                ? (
+                  recentOrders.map(
+                    (
+                      order
+                    ) => {
+                      const orderStatus =
+                        String(
+                          order.status ||
+                          "pending"
+                        )
+                          .trim()
+                          .toLowerCase();
 
-              recentOrders.map(
-                (order) => (
+                      const statusClass =
+                        orderStatus
+                          .replace(
+                            /\s+/g,
+                            "-"
+                          );
 
-                  <div
-                    key={
-                      order.order_id
+                      return (
+                        <div
+                          key={
+                            order.order_id
+                          }
+                          className="admin-order-item"
+                        >
+
+                          <div>
+
+                            <strong>
+                              #
+                              {
+                                order.order_id
+                              }
+                              {" "}
+                              {
+                                order.medicine_name
+                              }
+                            </strong>
+
+                            <small>
+                              {
+                                order.patient_name
+                              }
+
+                              {" • Qty: "}
+
+                              {
+                                order.quantity
+                              }
+                            </small>
+
+                          </div>
+
+
+                          <strong className="admin-order-patient-id">
+                            Patient #
+                            {
+                              order.patient_id
+                            }
+                          </strong>
+
+
+                          <span
+                            className={
+                              `admin-order-status ${statusClass}`
+                            }
+                          >
+                            {orderStatus}
+                          </span>
+
+                        </div>
+                      );
                     }
-                    className="admin-order-item"
-                  >
+                  )
+                )
+                : (
+                  <div className="admin-empty-orders">
 
-                    <div>
-
-                      <strong>
-                        #
-                        {
-                          order.order_id
-                        }
-                        {" "}
-                        {
-                          order.medicine_name
-                        }
-                      </strong>
-
-                      <small>
-                        {
-                          order.patient_name
-                        }
-                        {" • Qty: "}
-                        {
-                          order.quantity
-                        }
-                      </small>
-
-                    </div>
-
-
-                    <strong className="admin-order-patient-id">
-                      Patient #
-                      {
-                        order.patient_id
-                      }
+                    <strong>
+                      No medicine orders yet
                     </strong>
 
-
-                    <span
-                      className={`admin-order-status ${
-                        order.status ||
-                        "pending"
-                      }`}
-                    >
-                      {
-                        order.status ||
-                        "pending"
-                      }
-                    </span>
+                    <p>
+                      Patient orders will appear
+                      here when they are submitted.
+                    </p>
 
                   </div>
-
                 )
-              )
-
-            ) : (
-
-              <div className="admin-empty-orders">
-
-                <strong>
-                  No medicine orders yet
-                </strong>
-
-                <p>
-                  Patient orders will
-                  appear here when they
-                  are submitted.
-                </p>
-
-              </div>
-
-            )}
+            }
 
           </div>
 
@@ -614,9 +736,9 @@ function AdminDashboard() {
       </div>
 
 
-      {/* ===================================================
+      {/* =====================================================
           LIVE SYSTEM SNAPSHOT
-      =================================================== */}
+      ===================================================== */}
 
       <article className="admin-system-panel">
 
@@ -703,9 +825,9 @@ function AdminDashboard() {
       </article>
 
 
-      {/* ===================================================
+      {/* =====================================================
           QUICK ACTIONS
-      =================================================== */}
+      ===================================================== */}
 
       <article className="admin-quick-panel">
 
@@ -726,7 +848,13 @@ function AdminDashboard() {
 
           <button
             type="button"
+            onClick={() =>
+              navigate(
+                "/admin/pos"
+              )
+            }
           >
+
             <strong>
               Open POS
             </strong>
@@ -734,12 +862,19 @@ function AdminDashboard() {
             <small>
               Start a pharmacy sale
             </small>
+
           </button>
 
 
           <button
             type="button"
+            onClick={() =>
+              navigate(
+                "/admin/inventory"
+              )
+            }
           >
+
             <strong>
               Inventory
             </strong>
@@ -747,12 +882,19 @@ function AdminDashboard() {
             <small>
               Manage medicine stock
             </small>
+
           </button>
 
 
           <button
             type="button"
+            onClick={() =>
+              navigate(
+                "/admin/patients"
+              )
+            }
           >
+
             <strong>
               Patient Records
             </strong>
@@ -760,12 +902,19 @@ function AdminDashboard() {
             <small>
               View registered patients
             </small>
+
           </button>
 
 
           <button
             type="button"
+            onClick={() =>
+              navigate(
+                "/admin/reports"
+              )
+            }
           >
+
             <strong>
               Reports
             </strong>
@@ -773,6 +922,7 @@ function AdminDashboard() {
             <small>
               Review pharmacy analytics
             </small>
+
           </button>
 
         </div>
