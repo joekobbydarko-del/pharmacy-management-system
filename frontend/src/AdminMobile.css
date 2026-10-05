@@ -1,0 +1,1075 @@
+/* =========================================================
+   DR. EVANS PHARMACY
+   ADMIN MOBILE / TABLET RESPONSIVE SYSTEM
+========================================================= */
+
+
+/* =========================================================
+   TABLET + MOBILE
+========================================================= */
+
+@media (max-width: 900px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
+  }
+
+  body {
+    margin: 0;
+    background: #f5f8fa;
+  }
+
+  .admin-shell {
+    width: 100%;
+    min-height: 100vh;
+    display: block;
+  }
+
+
+  /* =======================================================
+     SIDEBAR DRAWER
+  ======================================================= */
+
+  .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3000;
+
+    width: 282px;
+    max-width: 82vw;
+    height: 100dvh;
+
+    padding: 18px 14px;
+
+    transform: translateX(-105%);
+
+    transition:
+      transform 0.25s ease;
+
+    box-shadow:
+      18px 0 45px
+      rgba(15, 23, 42, 0.22);
+
+    overflow-y: auto;
+  }
+
+  .admin-sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  .admin-backdrop {
+    position: fixed;
+    inset: 0;
+
+    z-index: 2990;
+
+    border: 0;
+
+    background:
+      rgba(15, 23, 42, 0.48);
+
+    backdrop-filter:
+      blur(2px);
+  }
+
+
+  /* =======================================================
+     BRAND
+  ======================================================= */
+
+  .admin-brand {
+    width: 100%;
+    padding: 10px 8px 16px;
+  }
+
+  .admin-brand__logo {
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+  }
+
+  .admin-brand strong {
+    font-size: 14px;
+  }
+
+  .admin-brand small {
+    font-size: 9px;
+    letter-spacing: 1.4px;
+  }
+
+  .admin-sidebar__divider {
+    margin: 4px 4px 18px;
+  }
+
+  .admin-sidebar__label {
+    padding: 0 10px;
+    margin-bottom: 8px;
+
+    font-size: 9px;
+    letter-spacing: 1.5px;
+  }
+
+  .admin-sidebar__nav {
+    display: grid;
+    gap: 5px;
+  }
+
+  .admin-nav-item {
+    min-height: 46px;
+
+    padding: 0 12px;
+
+    border-radius: 10px;
+
+    font-size: 13px;
+  }
+
+  .admin-nav-item__icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .admin-sidebar__bottom {
+    margin-top: 20px;
+  }
+
+  .admin-logout {
+    min-height: 46px;
+    border-radius: 10px;
+  }
+
+
+  /* =======================================================
+     MAIN AREA
+  ======================================================= */
+
+  .admin-main {
+    width: 100%;
+    min-width: 0;
+    margin-left: 0;
+  }
+
+
+  /* =======================================================
+     MOBILE TOPBAR
+  ======================================================= */
+
+  .admin-topbar {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    width: 100%;
+    height: 68px;
+
+    padding: 0 14px;
+
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 10px;
+
+    background:
+      rgba(255, 255, 255, 0.96);
+
+    border-bottom:
+      1px solid #e5e7eb;
+
+    backdrop-filter:
+      blur(12px);
+  }
+
+  .admin-mobile-menu {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background: transparent;
+
+    cursor: pointer;
+  }
+
+  .admin-mobile-menu span {
+    width: 19px;
+    height: 2px;
+
+    border-radius: 999px;
+
+    background: #0f172a;
+  }
+
+  .admin-topbar__search {
+    display: none;
+  }
+
+  .admin-topbar__actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .admin-icon-button {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 10px;
+  }
+
+  .admin-profile-trigger {
+    min-width: 0;
+    padding: 4px;
+  }
+
+  .admin-profile-avatar {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+
+    font-size: 11px;
+  }
+
+  .admin-profile-text {
+    display: none;
+  }
+
+  .admin-profile-menu {
+    top: calc(100% + 10px);
+    right: 0;
+
+    width: 220px;
+  }
+
+  .admin-notification-dot {
+    top: 2px;
+    right: 2px;
+  }
+
+
+  /* =======================================================
+     CONTENT
+  ======================================================= */
+
+  .admin-content {
+    width: 100%;
+    min-width: 0;
+
+    padding: 0;
+
+    overflow-x: hidden;
+  }
+
+
+  /* =======================================================
+     SHARED ADMIN PAGE WIDTH
+  ======================================================= */
+
+  .admin-dashboard,
+  .admin-inventory-page,
+  .admin-pos-page,
+  .admin-sales-page,
+  .admin-purchases-page,
+  .admin-suppliers-page,
+  .admin-reports-page,
+  .admin-alerts-page,
+  .admin-settings-page,
+  .admin-patients-page {
+    width: 100%;
+
+    padding:
+      24px 16px
+      36px !important;
+
+    box-sizing: border-box;
+  }
+
+
+  /* =======================================================
+     PAGE HEADERS
+  ======================================================= */
+
+  .admin-sales-header,
+  .admin-purchases-header,
+  .admin-suppliers-header,
+  .admin-reports-header,
+  .admin-alerts-header,
+  .admin-settings-header {
+    margin-bottom: 18px;
+  }
+
+  .admin-sales-eyebrow,
+  .admin-purchases-eyebrow,
+  .admin-suppliers-eyebrow,
+  .admin-reports-eyebrow,
+  .admin-alerts-eyebrow,
+  .admin-settings-eyebrow {
+    margin-bottom: 5px;
+
+    font-size: 10px;
+    letter-spacing: 1.1px;
+  }
+
+  .admin-sales-header h1,
+  .admin-purchases-header h1,
+  .admin-suppliers-header h1,
+  .admin-reports-header h1,
+  .admin-alerts-header h1,
+  .admin-settings-header h1 {
+    font-size: 25px;
+    line-height: 1.15;
+  }
+
+  .admin-sales-subtitle,
+  .admin-purchases-subtitle,
+  .admin-suppliers-subtitle,
+  .admin-reports-header p:last-child,
+  .admin-alerts-header p:last-child,
+  .admin-settings-header p:last-child {
+    margin-top: 6px;
+
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+
+  /* =======================================================
+     CARD STYLE
+  ======================================================= */
+
+  .admin-sales-stat-card,
+  .admin-sales-card,
+  .admin-purchases-card,
+  .admin-suppliers-stat,
+  .admin-suppliers-card,
+  .admin-report-stat,
+  .admin-reports-card,
+  .admin-alert-stat,
+  .admin-alerts-card,
+  .admin-settings-card {
+    border-radius: 14px;
+
+    box-shadow:
+      0 4px 15px
+      rgba(15, 23, 42, 0.04);
+  }
+
+
+  /* =======================================================
+     POS
+  ======================================================= */
+
+  .admin-pos-page {
+    padding-bottom: 110px !important;
+  }
+
+  .admin-pos-header {
+    display: block;
+    margin-bottom: 18px;
+  }
+
+  .admin-pos-header h1 {
+    font-size: 25px;
+  }
+
+  .admin-pos-grid {
+    display: block;
+  }
+
+  .admin-pos-products {
+    padding: 14px;
+    margin-bottom: 18px;
+  }
+
+  .admin-pos-section-header {
+    display: block;
+  }
+
+  .admin-pos-section-header input {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  .admin-pos-product-list {
+    gap: 8px;
+  }
+
+  .admin-pos-product-card {
+    padding: 13px 12px;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+
+    gap: 10px;
+
+    border-radius: 12px;
+  }
+
+  .admin-pos-product-card strong {
+    font-size: 14px;
+  }
+
+  .admin-pos-product-meta {
+    align-items: flex-end;
+  }
+
+  .admin-pos-cart {
+    position: static;
+
+    padding: 14px;
+
+    margin-bottom: 18px;
+  }
+
+  .admin-pos-customer-fields {
+    gap: 8px;
+  }
+
+  .admin-pos-customer-fields input,
+  .admin-pos-customer-fields select,
+  .admin-pos-summary input {
+    min-height: 44px;
+  }
+
+  .admin-pos-checkout-button {
+    min-height: 46px;
+
+    font-size: 14px;
+  }
+
+  .admin-pos-recent-sales {
+    padding: 14px;
+  }
+
+
+  /* =======================================================
+     INVENTORY
+  ======================================================= */
+
+  .admin-inventory-page {
+    padding-bottom: 40px !important;
+  }
+
+  .admin-inventory-page
+  .admin-inventory-header {
+    display: block;
+  }
+
+  .admin-inventory-page
+  .admin-inventory-stats {
+    display: grid;
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap: 10px;
+  }
+
+  .admin-inventory-page
+  .admin-inventory-stat {
+    min-height: 92px;
+    padding: 14px;
+  }
+
+  .admin-inventory-page
+  .admin-inventory-actions {
+    width: 100%;
+  }
+
+  .admin-inventory-page button {
+    min-height: 42px;
+  }
+
+  .admin-inventory-table-wrap {
+    overflow-x: auto;
+
+    border-radius: 12px;
+  }
+
+
+  /* =======================================================
+     SALES
+  ======================================================= */
+
+  .admin-sales-stats {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap: 10px;
+  }
+
+  .admin-sales-stat-card {
+    padding: 14px;
+  }
+
+  .admin-sales-stat-card strong {
+    font-size: 20px;
+  }
+
+  .admin-sales-overview-grid {
+    display: block;
+  }
+
+  .admin-sales-overview-grid
+  > .admin-sales-card {
+    margin-bottom: 14px;
+  }
+
+  .admin-sales-chart {
+    height: 200px;
+    gap: 6px;
+  }
+
+  .admin-sales-bar-track {
+    height: 135px;
+    max-width: 30px;
+  }
+
+  .admin-sales-bar-value {
+    font-size: 9px;
+  }
+
+  .admin-sales-product-row {
+    grid-template-columns:
+      28px minmax(0, 1fr) auto;
+
+    padding: 10px;
+  }
+
+  .admin-sales-card-header {
+    display: block;
+  }
+
+  .admin-sales-card-header input {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+
+  /* =======================================================
+     PURCHASES
+  ======================================================= */
+
+  .admin-purchases-grid {
+    display: block;
+  }
+
+  .admin-purchases-grid
+  > .admin-purchases-card {
+    margin-bottom: 14px;
+  }
+
+  .admin-purchases-form {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-purchases-item-builder {
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+
+    padding: 12px;
+  }
+
+  .admin-purchases-form input,
+  .admin-purchases-form select,
+  .admin-purchases-item-builder input,
+  .admin-purchases-item-builder select {
+    min-height: 44px;
+  }
+
+  .admin-purchases-add-button,
+  .admin-purchases-submit-button {
+    width: 100%;
+    min-height: 46px;
+  }
+
+  .admin-purchases-cart-row {
+    align-items: flex-start;
+  }
+
+  .admin-purchases-stock-row {
+    padding: 12px;
+  }
+
+
+  /* =======================================================
+     SUPPLIERS
+  ======================================================= */
+
+  .admin-suppliers-stats {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+
+    gap: 10px;
+  }
+
+  .admin-suppliers-stat {
+    padding: 14px;
+  }
+
+  .admin-suppliers-stat strong {
+    font-size: 22px;
+  }
+
+  .admin-suppliers-grid {
+    display: block;
+  }
+
+  .admin-suppliers-grid
+  > .admin-suppliers-card {
+    margin-bottom: 14px;
+  }
+
+  .admin-suppliers-form input,
+  .admin-suppliers-form textarea {
+    min-height: 44px;
+  }
+
+  .admin-suppliers-form button {
+    min-height: 46px;
+  }
+
+  .admin-suppliers-list-header {
+    display: block;
+  }
+
+  .admin-suppliers-list-header input {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+
+  /* =======================================================
+     REPORTS
+  ======================================================= */
+
+  .admin-reports-stats {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap: 10px;
+  }
+
+  .admin-report-stat {
+    padding: 14px;
+  }
+
+  .admin-report-stat strong {
+    font-size: 18px;
+  }
+
+  .admin-reports-grid {
+    display: block;
+  }
+
+  .admin-reports-grid
+  > .admin-reports-card {
+    margin-bottom: 14px;
+  }
+
+  .admin-report-list-row {
+    padding: 11px;
+
+    gap: 8px;
+  }
+
+
+  /* =======================================================
+     ALERTS
+  ======================================================= */
+
+  .admin-alerts-stats {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+
+    gap: 10px;
+  }
+
+  .admin-alert-stat {
+    padding: 14px;
+  }
+
+  .admin-alert-stat strong {
+    font-size: 22px;
+  }
+
+  .admin-alert-item {
+    grid-template-columns:
+      36px minmax(0, 1fr);
+
+    align-items: start;
+
+    padding: 12px;
+  }
+
+  .admin-alert-badge {
+    grid-column: 2;
+
+    justify-self: start;
+  }
+
+  .admin-alert-icon {
+    width: 34px;
+    height: 34px;
+  }
+
+
+  /* =======================================================
+     SETTINGS
+  ======================================================= */
+
+  .admin-settings-grid {
+    display: block;
+  }
+
+  .admin-settings-grid
+  > .admin-settings-card {
+    margin-bottom: 14px;
+  }
+
+  .admin-settings-card {
+    padding: 15px;
+  }
+
+  .admin-settings-form input,
+  .admin-settings-option select {
+    min-height: 44px;
+  }
+
+  .admin-settings-form button {
+    min-height: 46px;
+  }
+
+  .admin-settings-info-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .admin-settings-option {
+    gap: 12px;
+  }
+
+
+  /* =======================================================
+     TABLES
+  ======================================================= */
+
+  .admin-sales-table-wrap,
+  .admin-purchases-table-wrap,
+  .admin-suppliers-table-wrap,
+  .admin-reports-table-wrap {
+    width: 100%;
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling:
+      touch;
+  }
+
+  .admin-sales-table,
+  .admin-purchases-table,
+  .admin-suppliers-table,
+  .admin-reports-table {
+    font-size: 12px;
+  }
+
+  .admin-sales-table th,
+  .admin-sales-table td,
+  .admin-purchases-table th,
+  .admin-purchases-table td,
+  .admin-suppliers-table th,
+  .admin-suppliers-table td,
+  .admin-reports-table th,
+  .admin-reports-table td {
+    padding: 10px 11px;
+
+    white-space: nowrap;
+  }
+}
+
+
+/* =========================================================
+   PHONE
+========================================================= */
+
+@media (max-width: 600px) {
+  .admin-topbar {
+    height: 64px;
+
+    padding: 0 12px;
+  }
+
+  .admin-content {
+    padding: 0;
+  }
+
+  .admin-dashboard,
+  .admin-inventory-page,
+  .admin-pos-page,
+  .admin-sales-page,
+  .admin-purchases-page,
+  .admin-suppliers-page,
+  .admin-reports-page,
+  .admin-alerts-page,
+  .admin-settings-page,
+  .admin-patients-page {
+    padding:
+      20px 14px
+      32px !important;
+  }
+
+
+  /* =======================================================
+     MOBILE PAGE HEADERS
+  ======================================================= */
+
+  .admin-sales-header h1,
+  .admin-purchases-header h1,
+  .admin-suppliers-header h1,
+  .admin-reports-header h1,
+  .admin-alerts-header h1,
+  .admin-settings-header h1 {
+    font-size: 23px;
+  }
+
+
+  /* =======================================================
+     SALES
+  ======================================================= */
+
+  .admin-sales-stats {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+  .admin-sales-stat-card {
+    min-height: 100px;
+  }
+
+  .admin-sales-stat-card:nth-child(5) {
+    grid-column: 1 / -1;
+  }
+
+
+  /* =======================================================
+     SUPPLIER COUNTERS
+  ======================================================= */
+
+  .admin-suppliers-stats {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+  }
+
+  .admin-suppliers-stat span {
+    font-size: 11px;
+  }
+
+
+  /* =======================================================
+     REPORT CARDS
+  ======================================================= */
+
+  .admin-reports-stats {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+
+  /* =======================================================
+     ALERT COUNTERS
+  ======================================================= */
+
+  .admin-alerts-stats {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+  }
+
+  .admin-alert-stat span {
+    font-size: 11px;
+  }
+
+
+  /* =======================================================
+     POS PRODUCTS
+  ======================================================= */
+
+  .admin-pos-product-card {
+    display: grid;
+    grid-template-columns:
+      minmax(0, 1fr) auto;
+  }
+
+
+  /* =======================================================
+     CART ROWS
+  ======================================================= */
+
+  .admin-pos-cart-item,
+  .admin-purchases-cart-row {
+    border-radius: 10px;
+  }
+
+
+  /* =======================================================
+     SETTINGS
+  ======================================================= */
+
+  .admin-settings-option {
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .admin-settings-option select {
+    width: 112px;
+  }
+
+
+  /* =======================================================
+     TOUCH TARGETS
+  ======================================================= */
+
+  button,
+  input,
+  select {
+    font-size: 16px;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 390px) {
+  .admin-dashboard,
+  .admin-inventory-page,
+  .admin-pos-page,
+  .admin-sales-page,
+  .admin-purchases-page,
+  .admin-suppliers-page,
+  .admin-reports-page,
+  .admin-alerts-page,
+  .admin-settings-page,
+  .admin-patients-page {
+    padding:
+      18px 12px
+      28px !important;
+  }
+
+  .admin-sales-stats,
+  .admin-reports-stats {
+    gap: 8px;
+  }
+
+  .admin-sales-stat-card,
+  .admin-report-stat,
+  .admin-alert-stat,
+  .admin-suppliers-stat {
+    padding: 12px;
+  }
+
+  .admin-sales-stat-card strong,
+  .admin-report-stat strong {
+    font-size: 17px;
+  }
+
+  .admin-alert-stat strong,
+  .admin-suppliers-stat strong {
+    font-size: 20px;
+  }
+}
+
+
+/* =========================================================
+   ADMIN DARK THEME
+========================================================= */
+
+[data-admin-theme="dark"] body {
+  background: #07111f;
+}
+
+[data-admin-theme="dark"] .admin-main,
+[data-admin-theme="dark"] .admin-content {
+  background: #07111f;
+}
+
+[data-admin-theme="dark"] .admin-topbar {
+  background:
+    rgba(15, 23, 42, 0.96);
+
+  border-color: #243244;
+}
+
+[data-admin-theme="dark"]
+.admin-mobile-menu span {
+  background: #f8fafc;
+}
+
+[data-admin-theme="dark"]
+.admin-icon-button {
+  color: #f8fafc;
+}
+
+[data-admin-theme="dark"]
+.admin-sales-stat-card,
+[data-admin-theme="dark"]
+.admin-sales-card,
+[data-admin-theme="dark"]
+.admin-purchases-card,
+[data-admin-theme="dark"]
+.admin-suppliers-stat,
+[data-admin-theme="dark"]
+.admin-suppliers-card,
+[data-admin-theme="dark"]
+.admin-report-stat,
+[data-admin-theme="dark"]
+.admin-reports-card,
+[data-admin-theme="dark"]
+.admin-alert-stat,
+[data-admin-theme="dark"]
+.admin-alerts-card {
+  background: #0f172a;
+
+  border-color: #263449;
+
+  color: #f8fafc;
+}

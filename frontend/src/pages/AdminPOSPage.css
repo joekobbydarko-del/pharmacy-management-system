@@ -1,0 +1,373 @@
+.admin-pos-page {
+  padding: 40px 28px 28px;
+}
+
+.admin-pos-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.admin-pos-eyebrow {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #0f766e;
+}
+
+.admin-pos-header h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.admin-pos-subtitle {
+  margin: 8px 0 0;
+  color: #64748b;
+}
+
+.admin-pos-message {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.admin-pos-message.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.admin-pos-message.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.admin-pos-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(340px, 0.8fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.admin-pos-products,
+.admin-pos-cart,
+.admin-pos-recent-sales {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.admin-pos-products {
+  padding: 18px;
+}
+
+.admin-pos-cart {
+  padding: 18px;
+  position: sticky;
+  top: 88px;
+}
+
+.admin-pos-section-header,
+.admin-pos-cart-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.admin-pos-section-header h2,
+.admin-pos-cart-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.admin-pos-section-header span,
+.admin-pos-cart-header span {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.admin-pos-section-header input {
+  width: min(100%, 280px);
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0f172a;
+  outline: none;
+}
+
+.admin-pos-section-header input:focus {
+  border-color: #0f766e;
+}
+
+.admin-pos-product-list {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-pos-product-card {
+  width: 100%;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.admin-pos-product-card:hover {
+  border-color: #0f766e;
+  background: #f8fffd;
+}
+
+.admin-pos-product-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.admin-pos-product-card > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-pos-product-card strong {
+  color: #0f172a;
+}
+
+.admin-pos-product-card span {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.admin-pos-product-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.admin-pos-customer-fields {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.admin-pos-customer-fields input,
+.admin-pos-customer-fields select,
+.admin-pos-summary input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0f172a;
+  outline: none;
+}
+
+.admin-pos-customer-fields input:focus,
+.admin-pos-customer-fields select:focus,
+.admin-pos-summary input:focus {
+  border-color: #0f766e;
+}
+
+.admin-pos-cart-items {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.admin-pos-cart-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.admin-pos-cart-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.admin-pos-cart-item-main strong {
+  color: #0f172a;
+}
+
+.admin-pos-cart-item-main span {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.admin-pos-quantity {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-pos-quantity button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: #f8fafc;
+  cursor: pointer;
+}
+
+.admin-pos-cart-item-total {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-pos-cart-item-total button {
+  border: 0;
+  background: transparent;
+  color: #dc2626;
+  cursor: pointer;
+}
+
+.admin-pos-summary {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 16px;
+  display: grid;
+  gap: 14px;
+}
+
+.admin-pos-summary > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-pos-summary span {
+  color: #64748b;
+}
+
+.admin-pos-summary strong {
+  color: #0f172a;
+}
+
+.admin-pos-summary label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  color: #475569;
+}
+
+.admin-pos-checkout-button {
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #0f766e;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-pos-checkout-button:hover {
+  background: #115e59;
+}
+
+.admin-pos-checkout-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-pos-recent-sales {
+  margin-top: 20px;
+  padding: 18px;
+}
+
+.admin-pos-sales-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-pos-sales-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 680px;
+}
+
+.admin-pos-sales-table th,
+.admin-pos-sales-table td {
+  padding: 13px 14px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.admin-pos-sales-table th {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #475569;
+  background: #f8fafc;
+}
+
+.admin-pos-sales-table td {
+  color: #0f172a;
+  font-size: 14px;
+}
+
+.admin-pos-empty {
+  padding: 22px;
+  text-align: center;
+  color: #64748b;
+}
+
+.admin-pos-loading {
+  padding: 30px;
+  color: #64748b;
+}
+
+@media (max-width: 1050px) {
+  .admin-pos-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-pos-cart {
+    position: static;
+  }
+}
+
+@media (max-width: 760px) {
+  .admin-pos-page {
+    padding: 24px 18px 18px;
+  }
+
+  .admin-pos-section-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .admin-pos-section-header input {
+    width: 100%;
+  }
+
+  .admin-pos-product-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-pos-product-meta {
+    align-items: flex-start;
+  }
+}

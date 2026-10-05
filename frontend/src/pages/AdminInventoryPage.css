@@ -1,0 +1,246 @@
+.admin-inventory-page {
+  padding: 40px 28px 28px;
+}
+
+.admin-inventory-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.admin-inventory-eyebrow {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #0f766e;
+}
+
+.admin-inventory-header h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  color: #0f172a !important;
+}
+
+.admin-inventory-subtitle {
+  margin: 8px 0 0;
+  color: #64748b;
+}
+
+.admin-inventory-sync-button {
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 16px;
+  background: #0f766e;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-inventory-sync-button:hover {
+  background: #115e59;
+}
+
+.admin-inventory-sync-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.admin-inventory-error {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #fee2e2;
+  color: #991b1b;
+  font-weight: 600;
+}
+
+.admin-inventory-stats {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.admin-inventory-stat-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.admin-inventory-stat-card span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.admin-inventory-stat-card strong {
+  font-size: 26px;
+  color: #0f172a;
+}
+
+.admin-inventory-stat-card.warning {
+  border-color: #fde68a;
+}
+
+.admin-inventory-stat-card.danger {
+  border-color: #fecaca;
+}
+
+.admin-inventory-toolbar {
+  margin-bottom: 16px;
+}
+
+.admin-inventory-toolbar input {
+  width: min(100%, 360px);
+  padding: 11px 13px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 14px;
+  outline: none;
+}
+
+.admin-inventory-toolbar input::placeholder {
+  color: #94a3b8;
+}
+
+.admin-inventory-toolbar input:focus {
+  border-color: #0f766e;
+}
+
+.admin-inventory-table-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.admin-inventory-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+.admin-inventory-table th,
+.admin-inventory-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 14px;
+}
+
+.admin-inventory-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-inventory-table td {
+  color: #0f172a;
+}
+
+.admin-inventory-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.admin-inventory-drug {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-inventory-drug strong {
+  color: #0f172a;
+}
+
+.admin-inventory-drug span {
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+.admin-inventory-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.admin-inventory-status.healthy {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.admin-inventory-status.low {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.admin-inventory-status.out {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.admin-inventory-empty {
+  text-align: center !important;
+  color: #64748b;
+  padding: 28px !important;
+}
+
+.admin-inventory-loading {
+  padding: 30px;
+  color: #64748b;
+}
+
+@media (max-width: 1100px) {
+  .admin-inventory-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .admin-inventory-page {
+    padding: 24px 18px 18px;
+  }
+
+  .admin-inventory-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-inventory-sync-button {
+    width: 100%;
+  }
+
+  .admin-inventory-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .admin-inventory-toolbar input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-inventory-stats {
+    grid-template-columns: 1fr;
+  }
+}

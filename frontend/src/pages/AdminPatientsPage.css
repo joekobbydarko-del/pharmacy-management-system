@@ -1,0 +1,717 @@
+.admin-patients-page {
+  width: 100%;
+
+  max-width: 1500px;
+
+  margin: 0 auto;
+}
+
+
+.admin-patients-heading {
+  margin-bottom: 20px;
+}
+
+
+.admin-patients-heading span {
+  color: #0f766e;
+
+  font-size: 8px;
+
+  font-weight: 900;
+
+  letter-spacing: 1.4px;
+}
+
+
+.admin-patients-heading h1 {
+  margin:
+    6px
+    0
+    6px;
+
+  color: #15313a;
+
+  font-size: 28px;
+}
+
+
+.admin-patients-heading p {
+  margin: 0;
+
+  color: #74888e;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+.admin-patient-stats {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 12px;
+
+  margin-bottom: 14px;
+}
+
+
+.admin-patient-stats article {
+  padding: 16px;
+
+  border:
+    1px solid
+    #e3ecee;
+
+  border-radius: 14px;
+
+  background: #ffffff;
+}
+
+
+.admin-patient-stats span {
+  display: block;
+
+  color: #7d9197;
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.8px;
+}
+
+
+.admin-patient-stats strong {
+  display: block;
+
+  margin-top: 7px;
+
+  color: #163740;
+
+  font-size: 22px;
+}
+
+
+.admin-patient-stats small {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #87999e;
+
+  font-size: 7px;
+}
+
+
+/* =========================================================
+   PANEL
+========================================================= */
+
+.admin-patients-panel {
+  overflow: hidden;
+
+  border:
+    1px solid
+    #e3ecee;
+
+  border-radius: 15px;
+
+  background: #ffffff;
+}
+
+
+.admin-patients-panel__header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 15px;
+
+  padding: 15px;
+
+  border-bottom:
+    1px solid
+    #edf2f3;
+}
+
+
+.admin-patients-panel__header
+span {
+  color: #0f766e;
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+
+.admin-patients-panel__header
+h2 {
+  margin:
+    4px
+    0
+    0;
+
+  font-size: 13px;
+
+  color: #183740;
+}
+
+
+.admin-patient-search {
+  width: 280px;
+
+  min-height: 41px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding:
+    0
+    11px;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid
+    #dfe9eb;
+
+  border-radius: 10px;
+
+  background: #f8fbfb;
+
+  color: #0f766e;
+}
+
+
+.admin-patient-search input {
+  width: 100%;
+
+  border: 0;
+
+  outline: 0;
+
+  background: transparent;
+
+  font-family: inherit;
+
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.admin-patient-table-wrap {
+  overflow-x: auto;
+}
+
+
+.admin-patient-table {
+  width: 100%;
+
+  border-collapse: collapse;
+}
+
+
+.admin-patient-table th {
+  padding:
+    11px
+    14px;
+
+  background: #f7fafb;
+
+  color: #84969c;
+
+  font-size: 7px;
+
+  text-align: left;
+
+  letter-spacing: 0.7px;
+}
+
+
+.admin-patient-table td {
+  padding:
+    12px
+    14px;
+
+  border-top:
+    1px solid
+    #edf2f3;
+
+  color: #4d666d;
+
+  font-size: 8px;
+}
+
+
+.admin-patient-person {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+}
+
+
+.admin-patient-person > span {
+  width: 34px;
+
+  height: 34px;
+
+  flex:
+    0 0 34px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: #e6f6f4;
+
+  color: #0f766e;
+
+  font-size: 10px;
+
+  font-weight: 900;
+}
+
+
+.admin-patient-person strong {
+  color: #24434b;
+
+  font-size: 9px;
+}
+
+
+.admin-patient-status {
+  display: inline-flex;
+
+  padding:
+    5px
+    8px;
+
+  border-radius: 999px;
+
+  font-size: 7px;
+
+  font-weight: 900;
+}
+
+
+.admin-patient-status.active {
+  background: #e8f7ed;
+
+  color: #208347;
+}
+
+
+.admin-patient-status.inactive {
+  background: #feeeee;
+
+  color: #c84949;
+}
+
+
+.admin-patient-actions {
+  display: flex;
+
+  gap: 6px;
+}
+
+
+.admin-patient-actions button {
+  padding:
+    7px
+    9px;
+
+  border:
+    1px solid
+    #dce7e9;
+
+  border-radius: 8px;
+
+  background: #f8fbfb;
+
+  color: #365860;
+
+  font-family: inherit;
+
+  font-size: 7px;
+
+  font-weight: 800;
+
+  cursor: pointer;
+}
+
+
+.admin-patient-actions
+button.danger {
+  color: #c34848;
+}
+
+
+.admin-patient-actions
+button.success {
+  color: #208347;
+}
+
+
+.admin-patient-actions
+button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   EMPTY / ERROR
+========================================================= */
+
+.admin-patient-empty,
+.admin-patients-state {
+  min-height: 260px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 24px;
+
+  text-align: center;
+
+  color: #789096;
+}
+
+
+.admin-patient-empty strong,
+.admin-patients-state strong {
+  color: #29464e;
+
+  font-size: 11px;
+}
+
+
+.admin-patient-empty p,
+.admin-patients-state p {
+  font-size: 8px;
+}
+
+
+.admin-patients-state button {
+  margin-top: 8px;
+
+  padding:
+    8px
+    12px;
+
+  border: 0;
+
+  border-radius: 8px;
+
+  background: #0f766e;
+
+  color: #ffffff;
+
+  font-size: 8px;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.admin-patient-modal-backdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 4000;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  padding: 18px;
+
+  background:
+    rgba(
+      5,
+      32,
+      40,
+      0.62
+    );
+}
+
+
+.admin-patient-modal {
+  width: min(
+    560px,
+    100%
+  );
+
+  overflow: hidden;
+
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0
+    24px
+    60px
+    rgba(
+      0,
+      0,
+      0,
+      0.22
+    );
+}
+
+
+.admin-patient-modal__header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding: 17px;
+
+  border-bottom:
+    1px solid
+    #e8eff0;
+}
+
+
+.admin-patient-modal__header span {
+  color: #0f766e;
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  letter-spacing: 1px;
+}
+
+
+.admin-patient-modal__header h2 {
+  margin:
+    4px
+    0
+    0;
+
+  font-size: 16px;
+
+  color: #173740;
+}
+
+
+.admin-patient-modal__header
+button {
+  width: 34px;
+
+  height: 34px;
+
+  border: 0;
+
+  border-radius: 9px;
+
+  background: #f0f5f6;
+
+  color: #48656c;
+
+  font-size: 20px;
+
+  cursor: pointer;
+}
+
+
+.admin-patient-modal__body {
+  padding: 17px;
+}
+
+
+.admin-patient-detail-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 10px;
+}
+
+
+.admin-patient-detail-grid
+> div {
+  padding: 12px;
+
+  border:
+    1px solid
+    #e4edef;
+
+  border-radius: 10px;
+
+  background: #f8fbfb;
+}
+
+
+.admin-patient-detail-grid
+.wide {
+  grid-column:
+    1 / -1;
+}
+
+
+.admin-patient-detail-grid span {
+  display: block;
+
+  color: #85979c;
+
+  font-size: 7px;
+}
+
+
+.admin-patient-detail-grid strong {
+  display: block;
+
+  margin-top: 5px;
+
+  color: #29464e;
+
+  font-size: 9px;
+
+  overflow-wrap: anywhere;
+}
+
+
+.admin-patient-modal__body h3 {
+  margin:
+    18px
+    0
+    10px;
+
+  color: #26464e;
+
+  font-size: 11px;
+}
+
+
+.admin-patient-activity-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+
+  gap: 8px;
+}
+
+
+.admin-patient-activity-grid
+> div {
+  padding: 11px;
+
+  border:
+    1px solid
+    #e4edef;
+
+  border-radius: 10px;
+
+  text-align: center;
+}
+
+
+.admin-patient-activity-grid span {
+  color: #81959a;
+
+  font-size: 7px;
+}
+
+
+.admin-patient-activity-grid strong {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #0f766e;
+
+  font-size: 16px;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (
+  max-width: 650px
+) {
+
+  .admin-patient-stats {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .admin-patients-panel__header {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+
+  .admin-patient-search {
+    width: 100%;
+  }
+
+
+  .admin-patient-table {
+    min-width: 700px;
+  }
+
+
+  .admin-patient-activity-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+}

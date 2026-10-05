@@ -780,3 +780,250 @@ export async function markReminderComplete(
     }
   );
 }
+
+/* =========================================================
+   ADMIN DASHBOARD
+========================================================= */
+
+export async function getAdminDashboard() {
+  return apiRequest(
+    "/admin/dashboard"
+  );
+}
+/* =========================================================
+   ADMIN PATIENTS
+========================================================= */
+
+export async function getAdminPatients() {
+  return apiRequest(
+    "/admin/patients"
+  );
+}
+
+
+export async function getAdminPatient(
+  patientId
+) {
+  return apiRequest(
+    `/admin/patients/${patientId}`
+  );
+}
+
+
+export async function updateAdminPatientStatus(
+  patientId,
+  isActive
+) {
+  return apiRequest(
+    `/admin/patients/${patientId}/status`,
+    {
+      method: "PATCH",
+
+      body: JSON.stringify({
+        is_active:
+          Boolean(isActive),
+      }),
+    }
+  );
+}
+/* =========================================================
+   ADMIN INVENTORY
+========================================================= */
+
+export async function getAdminInventory() {
+  return apiRequest(
+    "/admin/inventory"
+  );
+}
+
+
+export async function syncAdminInventory() {
+  return apiRequest(
+    "/admin/inventory/sync",
+    {
+      method: "POST",
+    }
+  );
+}
+/* =========================================================
+   ADMIN POS
+========================================================= */
+
+export async function getAdminPOSProducts() {
+  return apiRequest(
+    "/admin/pos/products"
+  );
+}
+
+
+export async function checkoutAdminPOS(
+  payload
+) {
+  return apiRequest(
+    "/admin/pos/checkout",
+    {
+      method: "POST",
+      body: JSON.stringify(
+        payload
+      ),
+    }
+  );
+}
+
+
+export async function getAdminPOSSales() {
+  return apiRequest(
+    "/admin/pos/sales"
+  );
+}
+/* =========================================================
+   ADMIN SALES
+========================================================= */
+
+export async function getAdminSalesSummary() {
+  return apiRequest(
+    "/admin/sales/summary"
+  );
+}
+
+
+export async function getAdminSalesTransactions() {
+  return apiRequest(
+    "/admin/sales/transactions"
+  );
+}
+
+
+export async function getAdminTopProducts() {
+  return apiRequest(
+    "/admin/sales/top-products"
+  );
+}
+
+
+export async function getAdminDailySales() {
+  return apiRequest(
+    "/admin/sales/daily"
+  );
+}
+/* =========================================================
+   ADMIN PURCHASES
+========================================================= */
+
+export async function getAdminPurchaseDrugs() {
+  return apiRequest(
+    "/admin/purchases/drugs"
+  );
+}
+
+
+export async function getAdminPurchases() {
+  return apiRequest(
+    "/admin/purchases"
+  );
+}
+
+
+export async function createAdminPurchase(
+  payload
+) {
+  return apiRequest(
+    "/admin/purchases",
+    {
+      method: "POST",
+      body: JSON.stringify(
+        payload
+      ),
+    }
+  );
+}
+/* =========================================================
+   ADMIN SUPPLIERS
+========================================================= */
+
+export async function getAdminSuppliers() {
+  return apiRequest(
+    "/admin/suppliers"
+  );
+}
+
+
+export async function createAdminSupplier(
+  payload
+) {
+  return apiRequest(
+    "/admin/suppliers",
+    {
+      method: "POST",
+      body: JSON.stringify(
+        payload
+      ),
+    }
+  );
+}
+
+
+export async function updateAdminSupplierStatus(
+  supplierId,
+  isActive
+) {
+  return apiRequest(
+    `/admin/suppliers/${supplierId}/status`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({
+        is_active:
+          Boolean(
+            isActive
+          ),
+      }),
+    }
+  );
+}
+
+/* =========================================================
+   ADMIN REPORTS
+========================================================= */
+
+export async function getAdminReportsOverview() {
+  return apiRequest(
+    "/admin/reports/overview"
+  );
+}
+
+
+export async function getAdminReportsSales() {
+  return apiRequest(
+    "/admin/reports/sales"
+  );
+}
+
+
+export async function getAdminReportsPurchases() {
+  return apiRequest(
+    "/admin/reports/purchases"
+  );
+}
+
+
+export async function getAdminReportsInventory() {
+  return apiRequest(
+    "/admin/reports/inventory"
+  );
+}
+
+
+export async function getAdminReportsTopProducts() {
+  return apiRequest(
+    "/admin/reports/top-products"
+  );
+}
+/* =========================================================
+   ADMIN ALERTS
+========================================================= */
+
+export async function getAdminAlerts() {
+  return apiRequest(
+    "/admin/alerts"
+  );
+}

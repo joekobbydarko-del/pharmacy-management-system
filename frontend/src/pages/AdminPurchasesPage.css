@@ -1,0 +1,340 @@
+.admin-purchases-page {
+  padding: 40px 28px 28px;
+}
+
+.admin-purchases-header {
+  margin-bottom: 22px;
+}
+
+.admin-purchases-eyebrow {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #0f766e;
+}
+
+.admin-purchases-header h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.admin-purchases-subtitle {
+  margin: 8px 0 0;
+  color: #64748b;
+}
+
+.admin-purchases-message {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.admin-purchases-message.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.admin-purchases-message.success {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.admin-purchases-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.admin-purchases-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+}
+
+.admin-purchases-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.admin-purchases-card-header h2 {
+  margin: 0;
+  font-size: 18px;
+  color: #0f172a;
+}
+
+.admin-purchases-card-header span {
+  display: block;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.admin-purchases-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.admin-purchases-form label,
+.admin-purchases-item-builder label {
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  color: #475569;
+}
+
+.admin-purchases-form input,
+.admin-purchases-form select,
+.admin-purchases-item-builder input,
+.admin-purchases-item-builder select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0f172a;
+  outline: none;
+}
+
+.admin-purchases-form input:focus,
+.admin-purchases-form select:focus,
+.admin-purchases-item-builder input:focus,
+.admin-purchases-item-builder select:focus {
+  border-color: #0f766e;
+}
+
+.admin-purchases-item-builder {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) 120px 140px auto;
+  gap: 10px;
+  align-items: end;
+  padding: 14px;
+  margin-bottom: 16px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.admin-purchases-add-button {
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 14px;
+  background: #0f766e;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-purchases-add-button:hover {
+  background: #115e59;
+}
+
+.admin-purchases-cart {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.admin-purchases-cart-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.admin-purchases-cart-row > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-purchases-cart-row > div:last-child {
+  align-items: flex-end;
+}
+
+.admin-purchases-cart-row strong {
+  color: #0f172a;
+}
+
+.admin-purchases-cart-row span {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.admin-purchases-cart-row button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #dc2626;
+  cursor: pointer;
+}
+
+.admin-purchases-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-top: 1px solid #e2e8f0;
+}
+
+.admin-purchases-total span {
+  color: #64748b;
+}
+
+.admin-purchases-total strong {
+  font-size: 20px;
+  color: #0f172a;
+}
+
+.admin-purchases-submit-button {
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: #0f766e;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-purchases-submit-button:hover {
+  background: #115e59;
+}
+
+.admin-purchases-submit-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-purchases-stock-list {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-purchases-stock-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.admin-purchases-stock-row > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.admin-purchases-stock-row > div:last-child {
+  align-items: flex-end;
+}
+
+.admin-purchases-stock-row strong {
+  color: #0f172a;
+}
+
+.admin-purchases-stock-row span {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.admin-purchases-history {
+  margin-bottom: 20px;
+}
+
+.admin-purchases-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-purchases-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1000px;
+}
+
+.admin-purchases-table th,
+.admin-purchases-table td {
+  padding: 13px 14px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 14px;
+}
+
+.admin-purchases-table th {
+  background: #f8fafc;
+  color: #475569;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.admin-purchases-table td {
+  color: #0f172a;
+}
+
+.admin-purchases-empty {
+  padding: 22px !important;
+  text-align: center !important;
+  color: #64748b;
+}
+
+.admin-purchases-loading {
+  padding: 30px;
+  color: #64748b;
+}
+
+@media (max-width: 1100px) {
+  .admin-purchases-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-purchases-form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-purchases-item-builder {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .admin-purchases-page {
+    padding: 24px 18px 18px;
+  }
+
+  .admin-purchases-form {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-purchases-item-builder {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-purchases-cart-row,
+  .admin-purchases-stock-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-purchases-cart-row > div:last-child,
+  .admin-purchases-stock-row > div:last-child {
+    align-items: flex-start;
+  }
+}

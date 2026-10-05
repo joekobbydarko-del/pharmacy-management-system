@@ -10,11 +10,19 @@ import {
 } from "react-router-dom";
 
 
+/* =========================================================
+   AUTH PAGES
+========================================================= */
+
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
+
+
+/* =========================================================
+   PATIENT PAGES
+========================================================= */
 
 import PatientDashboard from "./pages/PatientDashboard";
 import AppointmentsPage from "./pages/AppointmentsPage";
@@ -28,9 +36,34 @@ import PatientProfilePage from "./pages/PatientProfilePage";
 import PatientSettingsPage from "./pages/PatientSettingsPage";
 import TechnicalSupportPage from "./pages/TechnicalSupportPage";
 
+
+/* =========================================================
+   ADMIN PAGES
+========================================================= */
+
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminPatientsPage from "./pages/AdminPatientsPage";
+import AdminInventoryPage from "./pages/AdminInventoryPage";
+import AdminPOSPage from "./pages/AdminPOSPage";
+import AdminSalesPage from "./pages/AdminSalesPage";
+import AdminPurchasesPage from "./pages/AdminPurchasesPage";
+import AdminSuppliersPage from "./pages/AdminSuppliersPage";
+import AdminReportsPage from "./pages/AdminReportsPage";
+import AdminAlertsPage from "./pages/AdminAlertsPage";
+import AdminSettingsPage from "./pages/AdminSettingsPage";
+
+
+/* =========================================================
+   LAYOUTS
+========================================================= */
 
 import PatientLayout from "./components/PatientLayout";
+import AdminLayout from "./components/AdminLayout";
+
+
+/* =========================================================
+   API HELPERS
+========================================================= */
 
 import {
   getStoredUserRole,
@@ -38,8 +71,17 @@ import {
 } from "./api";
 
 
-import "./PatientMobile.css";
+/* =========================================================
+   MOBILE STYLES
+========================================================= */
 
+import "./PatientMobile.css";
+import "./AdminMobile.css";
+
+
+/* =========================================================
+   PATIENT ROUTE PROTECTION
+========================================================= */
 
 function ProtectedPatientRoute({
   children,
@@ -50,8 +92,9 @@ function ProtectedPatientRoute({
   const role =
     String(
       getStoredUserRole() || ""
-    ).toLowerCase();
-
+    )
+      .trim()
+      .toLowerCase();
 
   if (!loggedIn) {
     return (
@@ -62,9 +105,7 @@ function ProtectedPatientRoute({
     );
   }
 
-
   if (
-    role &&
     role !== "patient"
   ) {
     return (
@@ -75,10 +116,13 @@ function ProtectedPatientRoute({
     );
   }
 
-
   return children;
 }
 
+
+/* =========================================================
+   ADMIN ROUTE PROTECTION
+========================================================= */
 
 function ProtectedAdminRoute({
   children,
@@ -89,8 +133,9 @@ function ProtectedAdminRoute({
   const role =
     String(
       getStoredUserRole() || ""
-    ).toLowerCase();
-
+    )
+      .trim()
+      .toLowerCase();
 
   if (!loggedIn) {
     return (
@@ -101,9 +146,7 @@ function ProtectedAdminRoute({
     );
   }
 
-
   if (
-    role &&
     role !== "admin"
   ) {
     return (
@@ -114,24 +157,36 @@ function ProtectedAdminRoute({
     );
   }
 
-
   return children;
 }
 
 
-function App() {
+/* =========================================================
+   APP
+========================================================= */
 
+function App() {
   useEffect(() => {
-    const savedTheme =
+    const patientTheme =
       localStorage.getItem(
         "patient_theme"
       ) || "light";
 
+    const adminTheme =
+      localStorage.getItem(
+        "admin_theme"
+      ) || "light";
 
     document.documentElement
       .setAttribute(
         "data-theme",
-        savedTheme
+        patientTheme
+      );
+
+    document.documentElement
+      .setAttribute(
+        "data-admin-theme",
+        adminTheme
       );
   }, []);
 
@@ -141,9 +196,9 @@ function App() {
 
       <Routes>
 
-        {/* ===============================================
+        {/* =================================================
             PUBLIC AUTH ROUTES
-        =============================================== */}
+        ================================================= */}
 
         <Route
           path="/login"
@@ -152,7 +207,6 @@ function App() {
           }
         />
 
-
         <Route
           path="/signup"
           element={
@@ -160,14 +214,12 @@ function App() {
           }
         />
 
-
         <Route
           path="/forgot-password"
           element={
             <ForgotPasswordPage />
           }
         />
-
 
         <Route
           path="/reset-password"
@@ -177,9 +229,9 @@ function App() {
         />
 
 
-        {/* ===============================================
+        {/* =================================================
             PATIENT PORTAL
-        =============================================== */}
+        ================================================= */}
 
         <Route
           path="/patient"
@@ -199,14 +251,12 @@ function App() {
             }
           />
 
-
           <Route
             path="appointments"
             element={
               <AppointmentsPage />
             }
           />
-
 
           <Route
             path="prescriptions"
@@ -215,14 +265,12 @@ function App() {
             }
           />
 
-
           <Route
             path="orders"
             element={
               <OrderMedicinesPage />
             }
           />
-
 
           <Route
             path="refills"
@@ -231,14 +279,12 @@ function App() {
             }
           />
 
-
           <Route
             path="order-history"
             element={
               <OrderHistoryPage />
             }
           />
-
 
           <Route
             path="activity"
@@ -247,14 +293,12 @@ function App() {
             }
           />
 
-
           <Route
             path="contact-pharmacist"
             element={
               <ContactPharmacistPage />
             }
           />
-
 
           <Route
             path="profile"
@@ -263,14 +307,12 @@ function App() {
             }
           />
 
-
           <Route
             path="settings"
             element={
               <PatientSettingsPage />
             }
           />
-
 
           <Route
             path="support"
@@ -282,25 +324,97 @@ function App() {
         </Route>
 
 
-        {/* ===============================================
-            ADMIN
-        =============================================== */}
+        {/* =================================================
+            ADMIN PORTAL
+        ================================================= */}
 
         <Route
           path="/admin"
           element={
             <ProtectedAdminRoute>
 
-              <AdminDashboard />
+              <AdminLayout />
 
             </ProtectedAdminRoute>
           }
-        />
+        >
+
+          <Route
+            index
+            element={
+              <AdminDashboard />
+            }
+          />
+
+          <Route
+            path="pos"
+            element={
+              <AdminPOSPage />
+            }
+          />
+
+          <Route
+            path="inventory"
+            element={
+              <AdminInventoryPage />
+            }
+          />
+
+          <Route
+            path="sales"
+            element={
+              <AdminSalesPage />
+            }
+          />
+
+          <Route
+            path="purchases"
+            element={
+              <AdminPurchasesPage />
+            }
+          />
+
+          <Route
+            path="suppliers"
+            element={
+              <AdminSuppliersPage />
+            }
+          />
+
+          <Route
+            path="patients"
+            element={
+              <AdminPatientsPage />
+            }
+          />
+
+          <Route
+            path="reports"
+            element={
+              <AdminReportsPage />
+            }
+          />
+
+          <Route
+            path="alerts"
+            element={
+              <AdminAlertsPage />
+            }
+          />
+
+          <Route
+            path="settings"
+            element={
+              <AdminSettingsPage />
+            }
+          />
+
+        </Route>
 
 
-        {/* ===============================================
-            DEFAULT
-        =============================================== */}
+        {/* =================================================
+            DEFAULT ROUTES
+        ================================================= */}
 
         <Route
           path="/"
@@ -311,7 +425,6 @@ function App() {
             />
           }
         />
-
 
         <Route
           path="*"
