@@ -1,0 +1,3288 @@
+/* =========================================================
+   DR. EVANS PHARMACY
+   TECHNICAL SUPPORT
+
+   COMPLETE CLEAN REWRITE
+
+   LIGHT MODE:
+   - WHITE FORM FIELDS
+   - DARK TEXT
+
+   DARK MODE:
+   - DARK TEAL FORM FIELDS
+   - WHITE TEXT
+
+   DESKTOP:
+   - 80% → 150%
+   - NO OLD WIDTH HACKS
+   ========================================================= */
+
+
+/* =========================================================
+   ROOT VARIABLES
+   ========================================================= */
+
+.admin-support-page {
+  --support-card: #ffffff;
+  --support-soft: #f7fbfc;
+  --support-soft-2: #edf6f8;
+
+  --support-border: #d8e7ea;
+  --support-border-soft: #e6eff1;
+
+  --support-heading: #0f2f46;
+  --support-text: #365664;
+  --support-muted: #6f8893;
+
+  --support-teal: #18aaa5;
+  --support-teal-soft: #e1f8f6;
+
+  --support-blue: #4c8fd0;
+  --support-blue-soft: #eaf3fc;
+
+  --support-orange: #d88924;
+  --support-orange-soft: #fff2df;
+
+  --support-green: #3b9472;
+  --support-green-soft: #e8f5ef;
+
+  --support-red: #c95050;
+  --support-red-soft: #ffeded;
+
+  --support-violet: #7767c7;
+  --support-violet-soft: #f0eefb;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
+  margin: 0;
+
+  padding:
+    10px
+    14px
+    24px;
+
+  box-sizing: border-box;
+
+  overflow-x: hidden;
+
+  color:
+    var(--support-text);
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+
+.admin-support-page *,
+.admin-support-page *::before,
+.admin-support-page *::after {
+  box-sizing: border-box;
+}
+
+
+.admin-support-page::-webkit-scrollbar,
+.admin-support-ticket-list::-webkit-scrollbar,
+.admin-support-field textarea::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+
+  display: none;
+}
+
+
+.admin-support-page
+> .admin-page-intro {
+  margin-bottom: 17px;
+}
+
+
+/* =========================================================
+   DARK VARIABLES
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-page {
+  --support-card: #0d4653;
+  --support-soft: #0a3d49;
+  --support-soft-2: #104b57;
+
+  --support-border: #1d5a67;
+  --support-border-soft: #28525e;
+
+  --support-heading: #f4fbfc;
+  --support-text: #d8e8eb;
+  --support-muted: #a3bdc4;
+
+  --support-teal: #5de0d9;
+
+  --support-teal-soft:
+    rgba(37, 212, 212, 0.13);
+
+  --support-blue: #93c7ef;
+
+  --support-blue-soft:
+    rgba(76, 143, 208, 0.15);
+
+  --support-orange: #f3bb68;
+
+  --support-orange-soft:
+    rgba(216, 137, 36, 0.16);
+
+  --support-green: #8de0ba;
+
+  --support-green-soft:
+    rgba(64, 167, 125, 0.14);
+
+  --support-red: #ff9c9c;
+
+  --support-red-soft:
+    rgba(201, 80, 80, 0.15);
+
+  --support-violet: #b7acf0;
+
+  --support-violet-soft:
+    rgba(119, 103, 199, 0.16);
+}
+
+
+/* =========================================================
+   KPI GRID
+   ========================================================= */
+
+.admin-support-stats {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 14px;
+
+  margin-bottom: 16px;
+}
+
+
+/* =========================================================
+   KPI CARD
+   ========================================================= */
+
+.admin-support-stat {
+  --stat-accent:
+    var(--support-teal);
+
+  --stat-soft:
+    var(--support-teal-soft);
+
+  position: relative;
+
+  min-width: 0;
+  min-height: 132px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 17px;
+
+  padding:
+    20px
+    21px;
+
+  overflow: hidden;
+
+  isolation: isolate;
+
+  border:
+    1px solid
+    var(--support-border);
+
+  border-radius: 17px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0
+    9px
+    26px
+    rgba(15, 47, 70, 0.045);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+/* =========================================================
+   KPI TOP ACCENT
+   ========================================================= */
+
+.admin-support-stat::before {
+  content: "";
+
+  position: absolute;
+
+  z-index: 1;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--stat-accent) 0%,
+      color-mix(
+        in srgb,
+        var(--stat-accent) 45%,
+        transparent
+      ) 58%,
+      transparent 100%
+    );
+
+  pointer-events: none;
+}
+
+
+.admin-support-stat
+> .admin-support-stat-accent {
+  position: absolute;
+
+  z-index: 1;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  flex: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--stat-accent) 0%,
+      color-mix(
+        in srgb,
+        var(--stat-accent) 45%,
+        transparent
+      ) 58%,
+      transparent 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   KPI GLOW
+   ========================================================= */
+
+.admin-support-stat::after {
+  content: "";
+
+  position: absolute;
+
+  z-index: 0;
+
+  right: -48px;
+  bottom: -63px;
+
+  width: 150px;
+  height: 150px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      color-mix(
+        in srgb,
+        var(--stat-accent) 16%,
+        transparent
+      ) 0%,
+      transparent 72%
+    );
+
+  opacity: 0;
+
+  transform:
+    scale(0.86);
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* =========================================================
+   KPI COLORS
+   ========================================================= */
+
+.admin-support-stats
+.admin-support-stat:nth-child(1),
+.admin-support-stat--teal {
+  --stat-accent:
+    var(--support-teal);
+
+  --stat-soft:
+    var(--support-teal-soft);
+}
+
+
+.admin-support-stats
+.admin-support-stat:nth-child(2),
+.admin-support-stat--orange {
+  --stat-accent:
+    var(--support-orange);
+
+  --stat-soft:
+    var(--support-orange-soft);
+}
+
+
+.admin-support-stats
+.admin-support-stat:nth-child(3),
+.admin-support-stat--green {
+  --stat-accent:
+    var(--support-green);
+
+  --stat-soft:
+    var(--support-green-soft);
+}
+
+
+/* =========================================================
+   KPI ICON
+   ========================================================= */
+
+.admin-support-stat-icon {
+  position: relative;
+
+  z-index: 2;
+
+  width: 56px;
+  height: 56px;
+
+  flex:
+    0
+    0
+    56px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--stat-accent) 14%,
+      transparent
+    );
+
+  border-radius: 15px;
+
+  background:
+    var(--stat-soft);
+
+  color:
+    var(--stat-accent);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.admin-support-stat-icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+
+/* =========================================================
+   KPI COPY
+   ========================================================= */
+
+.admin-support-stat-copy {
+  position: relative;
+
+  z-index: 2;
+
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.admin-support-stat-copy
+> span {
+  display: block;
+
+  color:
+    #607c88 !important;
+
+  -webkit-text-fill-color:
+    #607c88 !important;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  letter-spacing: 0.75px;
+
+  line-height: 1.2;
+
+  text-transform: uppercase;
+
+  transition:
+    color 0.2s ease;
+}
+
+
+.admin-support-stat-copy
+strong {
+  display: block;
+
+  margin-top: 5px;
+
+  color:
+    #0f2f46 !important;
+
+  -webkit-text-fill-color:
+    #0f2f46 !important;
+
+  font-size: 35px;
+  font-weight: 900;
+
+  line-height: 1;
+}
+
+
+.admin-support-stat-copy
+small {
+  display: block;
+
+  margin-top: 8px;
+
+  color:
+    #708994 !important;
+
+  -webkit-text-fill-color:
+    #708994 !important;
+
+  font-size: 13px;
+  font-weight: 650;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   KPI HOVER
+   ========================================================= */
+
+.admin-support-stat:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--stat-accent) 48%,
+      #dce8eb
+    );
+
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(
+        in srgb,
+        var(--stat-soft) 60%,
+        #ffffff
+      ) 0%,
+      color-mix(
+        in srgb,
+        var(--stat-soft) 22%,
+        #ffffff
+      ) 58%,
+      #ffffff 100%
+    );
+
+  box-shadow:
+    0
+    16px
+    34px
+    color-mix(
+      in srgb,
+      var(--stat-accent) 11%,
+      rgba(15, 47, 70, 0.04)
+    );
+}
+
+
+.admin-support-stat:hover::after {
+  opacity: 1;
+
+  transform:
+    scale(1);
+}
+
+
+.admin-support-stat:hover
+.admin-support-stat-icon {
+  transform:
+    translateY(-1px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--stat-accent) 34%,
+      transparent
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--stat-soft) 90%,
+      #ffffff
+    );
+
+  color:
+    var(--stat-accent);
+}
+
+
+.admin-support-stat:hover
+.admin-support-stat-copy
+> span {
+  color:
+    var(--stat-accent) !important;
+
+  -webkit-text-fill-color:
+    var(--stat-accent) !important;
+}
+
+
+/* =========================================================
+   DARK KPI
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-stat {
+  border-color:
+    #263a50 !important;
+
+  background:
+    linear-gradient(
+      145deg,
+      #101a2f 0%,
+      #0f192d 100%
+    ) !important;
+
+  box-shadow:
+    0
+    9px
+    28px
+    rgba(0, 0, 0, 0.14) !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-support-stat-copy
+> span {
+  color:
+    #a5bdc8 !important;
+
+  -webkit-text-fill-color:
+    #a5bdc8 !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-support-stat-copy
+strong {
+  color:
+    #ffffff !important;
+
+  -webkit-text-fill-color:
+    #ffffff !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-support-stat-copy
+small {
+  color:
+    #a8bdc7 !important;
+
+  -webkit-text-fill-color:
+    #a8bdc7 !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-support-stat-icon {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--stat-accent) 22%,
+      #263a50
+    ) !important;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--stat-accent) 11%,
+      #17253a
+    ) !important;
+
+  color:
+    color-mix(
+      in srgb,
+      var(--stat-accent) 70%,
+      #ffffff
+    ) !important;
+}
+
+
+/* =========================================================
+   DARK KPI HOVER
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-stat:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--stat-accent) 56%,
+      #2a4258
+    ) !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(
+        in srgb,
+        var(--stat-accent) 20%,
+        #112036
+      ) 0%,
+      color-mix(
+        in srgb,
+        var(--stat-accent) 10%,
+        #101b30
+      ) 58%,
+      #101a2f 100%
+    ) !important;
+}
+
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
+
+.admin-support-message {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom: 14px;
+
+  padding:
+    13px
+    15px;
+
+  border-radius: 13px;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+
+.admin-support-message--error {
+  border:
+    1px solid
+    rgba(201, 80, 80, 0.23);
+
+  background:
+    var(--support-red-soft);
+
+  color:
+    var(--support-red);
+}
+
+
+.admin-support-message--success {
+  border:
+    1px solid
+    rgba(59, 148, 114, 0.22);
+
+  background:
+    var(--support-green-soft);
+
+  color:
+    var(--support-green);
+}
+
+
+/* =========================================================
+   MAIN SUPPORT LAYOUT
+   ========================================================= */
+
+.admin-support-layout {
+  width: 100%;
+
+  min-width: 0;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 0.92fr)
+    minmax(0, 1.08fr);
+
+  gap: 16px;
+
+  align-items: stretch;
+}
+
+
+/* =========================================================
+   SUPPORT CARDS
+   ========================================================= */
+
+.admin-support-card {
+  --card-accent:
+    var(--support-teal);
+
+  --card-soft:
+    var(--support-teal-soft);
+
+  width: 100%;
+
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    var(--support-border);
+
+  border-radius: 17px;
+
+  background:
+    var(--support-card);
+
+  box-shadow:
+    0
+    9px
+    26px
+    rgba(15, 47, 70, 0.045);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.admin-support-card--form {
+  --card-accent:
+    var(--support-blue);
+
+  --card-soft:
+    var(--support-blue-soft);
+}
+
+
+.admin-support-card--history {
+  --card-accent:
+    var(--support-orange);
+
+  --card-soft:
+    var(--support-orange-soft);
+}
+
+
+.admin-support-card:hover {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--card-accent) 52%,
+      var(--support-border)
+    );
+
+  box-shadow:
+    0
+    15px
+    36px
+    color-mix(
+      in srgb,
+      var(--card-accent) 10%,
+      transparent
+    );
+}
+
+
+/* =========================================================
+   CARD HEADER
+   ========================================================= */
+
+.admin-support-card__heading {
+  position: relative;
+
+  min-height: 96px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  padding:
+    17px
+    18px;
+
+  border-bottom:
+    1px solid
+    var(--support-border-soft);
+
+  background:
+    linear-gradient(
+      110deg,
+      var(--card-soft) 0%,
+      rgba(255, 255, 255, 0.97) 50%,
+      #ffffff 100%
+    );
+}
+
+
+.admin-support-card__heading::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--card-accent),
+      color-mix(
+        in srgb,
+        var(--card-accent) 48%,
+        transparent
+      ),
+      transparent
+    );
+}
+
+
+.admin-support-card__heading::after {
+  content: "";
+
+  position: absolute;
+
+  top: -65px;
+  left: -35px;
+
+  width: 165px;
+  height: 140px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      color-mix(
+        in srgb,
+        var(--card-accent) 10%,
+        transparent
+      ),
+      transparent 72%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   CARD HEADING MAIN
+   ========================================================= */
+
+.admin-support-card__heading-main {
+  position: relative;
+
+  z-index: 2;
+
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+}
+
+
+.admin-support-card__icon {
+  width: 50px;
+  height: 50px;
+
+  flex:
+    0
+    0
+    50px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--card-accent) 22%,
+      transparent
+    );
+
+  border-radius: 14px;
+
+  background:
+    var(--card-soft);
+
+  color:
+    var(--card-accent);
+}
+
+
+.admin-support-card__heading-main
+> div:last-child {
+  min-width: 0;
+}
+
+
+.admin-support-card__heading
+small {
+  display: block;
+
+  color:
+    var(--card-accent) !important;
+
+  -webkit-text-fill-color:
+    var(--card-accent) !important;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+}
+
+
+.admin-support-card__heading
+h2 {
+  margin:
+    4px
+    0
+    0;
+
+  color:
+    var(--support-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--support-heading) !important;
+
+  font-size:
+    clamp(
+      22px,
+      1.7vw,
+      27px
+    );
+
+  font-weight: 900;
+
+  line-height: 1.15;
+}
+
+
+.admin-support-card__heading
+p {
+  margin:
+    5px
+    0
+    0;
+
+  color:
+    var(--support-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--support-muted) !important;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   CARD BADGE
+   ========================================================= */
+
+.admin-support-card__badge {
+  position: relative;
+
+  z-index: 2;
+
+  min-height: 40px;
+
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding:
+    0
+    12px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--card-accent) 30%,
+      var(--support-border)
+    );
+
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.9);
+
+  color:
+    var(--card-accent) !important;
+
+  -webkit-text-fill-color:
+    var(--card-accent) !important;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.admin-support-form {
+  flex: 1;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+
+  padding: 18px;
+
+  background:
+    #ffffff;
+}
+
+
+.admin-support-form__row {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      minmax(0, 1fr)
+    );
+
+  gap: 12px;
+}
+
+
+.admin-support-form
+label {
+  min-width: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.admin-support-form
+label
+> span {
+  color:
+    var(--support-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--support-muted) !important;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  letter-spacing: 0.55px;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   LIGHT MODE FIELD WRAPPER
+   THIS IS THE ONLY LIGHT FIELD BACKGROUND
+   ========================================================= */
+
+.admin-support-page
+.admin-support-field {
+  width: 100%;
+
+  min-width: 0;
+  min-height: 50px;
+
+  display: grid;
+
+  grid-template-columns:
+    auto
+    minmax(0, 1fr);
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding:
+    0
+    12px;
+
+  overflow: hidden;
+
+  border:
+    1.5px solid
+    #d3e3e7 !important;
+
+  border-radius:
+    12px;
+
+  background:
+    #ffffff !important;
+
+  background-color:
+    #ffffff !important;
+
+  background-image:
+    none !important;
+
+  color:
+    var(--support-blue);
+
+  color-scheme:
+    light !important;
+
+  box-shadow:
+    none;
+
+  transition:
+    border-color 0.16s ease,
+    box-shadow 0.16s ease;
+}
+
+
+.admin-support-page
+.admin-support-field
+> svg {
+  position: relative;
+
+  z-index: 2;
+
+  color:
+    var(--support-blue);
+}
+
+
+/* =========================================================
+   LIGHT MODE FOCUS
+   ========================================================= */
+
+.admin-support-page
+.admin-support-field:focus-within {
+  border-color:
+    var(--support-blue) !important;
+
+  background:
+    #ffffff !important;
+
+  background-color:
+    #ffffff !important;
+
+  box-shadow:
+    0
+    0
+    0
+    4px
+    rgba(76, 143, 208, 0.09) !important;
+}
+
+
+/* =========================================================
+   LIGHT MODE
+   INPUT / SELECT / TEXTAREA
+
+   IMPORTANT:
+   WHITE IS FORCED HERE.
+   NO TEAL / GREEN FILL CAN LEAK INTO LIGHT MODE.
+   ========================================================= */
+
+.admin-support-page
+.admin-support-field
+input,
+
+.admin-support-page
+.admin-support-field
+select,
+
+.admin-support-page
+.admin-support-field
+textarea {
+  position: relative;
+
+  z-index: 1;
+
+  width: 100%;
+
+  min-width: 0;
+
+  box-sizing:
+    border-box;
+
+  border:
+    0 !important;
+
+  outline:
+    0 !important;
+
+  border-radius:
+    0 !important;
+
+  background:
+    #ffffff !important;
+
+  background-color:
+    #ffffff !important;
+
+  background-image:
+    none !important;
+
+  color:
+    #123846 !important;
+
+  -webkit-text-fill-color:
+    #123846 !important;
+
+  caret-color:
+    var(--support-blue) !important;
+
+  box-shadow:
+    none !important;
+
+  font-family:
+    inherit;
+
+  font-size:
+    14px;
+
+  font-weight:
+    800;
+
+  opacity:
+    1 !important;
+
+  color-scheme:
+    light !important;
+}
+
+
+/* =========================================================
+   INPUT
+   ========================================================= */
+
+.admin-support-page
+.admin-support-field
+input {
+  height:
+    48px;
+
+  padding:
+    0
+    6px;
+
+  line-height:
+    48px;
+
+  text-align:
+    center;
+}
+
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.admin-support-page
+.admin-support-field
+select {
+  height:
+    48px;
+
+  padding:
+    0
+    6px;
+
+  line-height:
+    48px;
+
+  appearance:
+    none;
+
+  -webkit-appearance:
+    none;
+
+  text-align:
+    center;
+
+  text-align-last:
+    center;
+
+  cursor:
+    pointer;
+}
+
+
+.admin-support-page
+.admin-support-field
+select option {
+  background:
+    #ffffff !important;
+
+  background-color:
+    #ffffff !important;
+
+  color:
+    #123846 !important;
+
+  -webkit-text-fill-color:
+    #123846 !important;
+}
+
+
+/* =========================================================
+   TEXTAREA WRAPPER
+   ========================================================= */
+
+.admin-support-page
+.admin-support-field--textarea {
+  min-height:
+    165px;
+
+  align-items:
+    flex-start;
+
+  padding-top:
+    12px;
+
+  background:
+    #ffffff !important;
+
+  background-color:
+    #ffffff !important;
+}
+
+
+.admin-support-page
+.admin-support-field--textarea
+> svg {
+  margin-top:
+    4px;
+}
+
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+.admin-support-page
+.admin-support-field
+textarea {
+  min-height:
+    145px;
+
+  padding:
+    4px
+    6px
+    12px;
+
+  resize:
+    vertical;
+
+  line-height:
+    1.55;
+
+  text-align:
+    left;
+
+  scrollbar-width:
+    none;
+}
+
+
+/* =========================================================
+   PLACEHOLDERS
+   ========================================================= */
+
+.admin-support-page
+.admin-support-field
+input::placeholder {
+  color:
+    #718995 !important;
+
+  -webkit-text-fill-color:
+    #718995 !important;
+
+  opacity:
+    1 !important;
+
+  text-align:
+    center;
+}
+
+
+.admin-support-page
+.admin-support-field
+textarea::placeholder {
+  color:
+    #718995 !important;
+
+  -webkit-text-fill-color:
+    #718995 !important;
+
+  opacity:
+    1 !important;
+}
+
+
+/* =========================================================
+   LIGHT MODE AUTOFILL
+   ========================================================= */
+
+.admin-support-page
+.admin-support-field
+input:-webkit-autofill,
+
+.admin-support-page
+.admin-support-field
+input:-webkit-autofill:hover,
+
+.admin-support-page
+.admin-support-field
+input:-webkit-autofill:focus {
+  -webkit-box-shadow:
+    0
+    0
+    0
+    1000px
+    #ffffff
+    inset !important;
+
+  box-shadow:
+    0
+    0
+    0
+    1000px
+    #ffffff
+    inset !important;
+
+  -webkit-text-fill-color:
+    #123846 !important;
+
+  caret-color:
+    var(--support-blue) !important;
+}
+
+
+/* =========================================================
+   DESCRIPTION COUNTER
+   ========================================================= */
+
+.admin-support-counter {
+  align-self:
+    flex-end;
+
+  color:
+    var(--support-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--support-muted) !important;
+
+  font-size:
+    10px;
+
+  font-weight:
+    700;
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+   ========================================================= */
+
+.admin-support-submit {
+  width:
+    100%;
+
+  min-height:
+    50px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    8px;
+
+  margin-top:
+    auto;
+
+  border:
+    1px solid
+    #3c80c0;
+
+  border-radius:
+    12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #4c8fd0,
+      #2975b9
+    );
+
+  color:
+    #ffffff;
+
+  font-family:
+    inherit;
+
+  font-size:
+    13px;
+
+  font-weight:
+    900;
+
+  cursor:
+    pointer;
+
+  box-shadow:
+    0
+    7px
+    18px
+    rgba(76, 143, 208, 0.18);
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+
+.admin-support-submit:hover:not(:disabled) {
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0
+    11px
+    24px
+    rgba(76, 143, 208, 0.24);
+}
+
+
+.admin-support-submit:disabled {
+  opacity:
+    0.55;
+
+  cursor:
+    not-allowed;
+
+  transform:
+    none;
+}
+
+
+/* =========================================================
+   TICKET LIST
+   ========================================================= */
+
+.admin-support-ticket-list {
+  flex:
+    1;
+
+  max-height:
+    650px;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  gap:
+    11px;
+
+  padding:
+    13px;
+
+  overflow-x:
+    hidden;
+
+  overflow-y:
+    auto;
+
+  scrollbar-width:
+    none;
+
+  background:
+    var(--support-card);
+}
+
+
+/* =========================================================
+   TICKET
+   ========================================================= */
+
+.admin-support-ticket {
+  position:
+    relative;
+
+  min-width:
+    0;
+
+  padding:
+    17px
+    17px
+    15px
+    20px;
+
+  overflow:
+    hidden;
+
+  border:
+    1px solid
+    var(--support-border-soft);
+
+  border-radius:
+    14px;
+
+  background:
+    var(--support-soft);
+
+  box-shadow:
+    0
+    6px
+    18px
+    rgba(15, 47, 70, 0.035);
+
+  transition:
+    transform 0.17s ease,
+    border-color 0.17s ease,
+    background 0.17s ease,
+    box-shadow 0.17s ease;
+}
+
+
+.admin-support-ticket:hover {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--support-orange) 38%,
+      var(--support-border)
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--support-orange-soft) 54%,
+      var(--support-card)
+    );
+
+  box-shadow:
+    0
+    11px
+    27px
+    rgba(216, 137, 36, 0.08);
+}
+
+
+.admin-support-ticket__accent {
+  position:
+    absolute;
+
+  top:
+    0;
+
+  left:
+    0;
+
+  width:
+    4px;
+
+  height:
+    100%;
+
+  background:
+    var(--support-orange);
+}
+
+
+/* =========================================================
+   TICKET TOP
+   ========================================================= */
+
+.admin-support-ticket__top {
+  display:
+    flex;
+
+  align-items:
+    flex-start;
+
+  justify-content:
+    space-between;
+
+  gap:
+    14px;
+}
+
+
+.admin-support-ticket__title {
+  min-width:
+    0;
+}
+
+
+.admin-support-ticket__title
+small {
+  display:
+    block;
+
+  color:
+    var(--support-orange) !important;
+
+  -webkit-text-fill-color:
+    var(--support-orange) !important;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.8px;
+
+  text-transform:
+    uppercase;
+}
+
+
+.admin-support-ticket__title
+strong {
+  display:
+    block;
+
+  margin-top:
+    5px;
+
+  color:
+    var(--support-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--support-heading) !important;
+
+  font-size:
+    15px;
+
+  font-weight:
+    900;
+
+  line-height:
+    1.35;
+
+  overflow-wrap:
+    anywhere;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.admin-support-status {
+  flex:
+    0
+    0
+    auto;
+
+  min-width:
+    80px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    7px
+    10px;
+
+  border-radius:
+    999px;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  white-space:
+    nowrap;
+}
+
+
+.admin-support-status--pending,
+.admin-support-status--open {
+  border:
+    1px solid
+    rgba(216, 137, 36, 0.24);
+
+  background:
+    var(--support-orange-soft);
+
+  color:
+    var(--support-orange) !important;
+
+  -webkit-text-fill-color:
+    var(--support-orange) !important;
+}
+
+
+.admin-support-status--in-progress {
+  border:
+    1px solid
+    rgba(76, 143, 208, 0.24);
+
+  background:
+    var(--support-blue-soft);
+
+  color:
+    var(--support-blue) !important;
+
+  -webkit-text-fill-color:
+    var(--support-blue) !important;
+}
+
+
+.admin-support-status--resolved {
+  border:
+    1px solid
+    rgba(59, 148, 114, 0.24);
+
+  background:
+    var(--support-green-soft);
+
+  color:
+    var(--support-green) !important;
+
+  -webkit-text-fill-color:
+    var(--support-green) !important;
+}
+
+
+/* =========================================================
+   TICKET META
+   ========================================================= */
+
+.admin-support-ticket__meta {
+  display:
+    flex;
+
+  flex-wrap:
+    wrap;
+
+  gap:
+    7px;
+
+  margin-top:
+    11px;
+}
+
+
+.admin-support-ticket__meta
+span {
+  min-height:
+    25px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  padding:
+    4px
+    9px;
+
+  border-radius:
+    999px;
+
+  font-size:
+    10px;
+
+  font-weight:
+    850;
+}
+
+
+/* =========================================================
+   CATEGORY
+   ========================================================= */
+
+.admin-support-ticket__category {
+  border:
+    1px solid
+    rgba(216, 137, 36, 0.22);
+
+  background:
+    var(--support-orange-soft);
+
+  color:
+    var(--support-orange) !important;
+
+  -webkit-text-fill-color:
+    var(--support-orange) !important;
+}
+
+
+/* =========================================================
+   PRIORITY
+   ========================================================= */
+
+.admin-support-ticket__priority {
+  border:
+    1px solid
+    var(--support-border);
+
+  background:
+    var(--support-card);
+
+  color:
+    var(--support-text) !important;
+
+  -webkit-text-fill-color:
+    var(--support-text) !important;
+}
+
+
+.admin-support-ticket__priority--high,
+.admin-support-ticket__priority--urgent {
+  border-color:
+    rgba(201, 80, 80, 0.22);
+
+  background:
+    var(--support-red-soft);
+
+  color:
+    var(--support-red) !important;
+
+  -webkit-text-fill-color:
+    var(--support-red) !important;
+}
+
+
+.admin-support-ticket__priority--low {
+  border-color:
+    rgba(59, 148, 114, 0.22);
+
+  background:
+    var(--support-green-soft);
+
+  color:
+    var(--support-green) !important;
+
+  -webkit-text-fill-color:
+    var(--support-green) !important;
+}
+
+
+/* =========================================================
+   DATE
+   ========================================================= */
+
+.admin-support-ticket__date {
+  border:
+    1px solid
+    var(--support-border);
+
+  background:
+    var(--support-card);
+
+  color:
+    var(--support-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--support-muted) !important;
+}
+
+
+/* =========================================================
+   PROBLEM DESCRIPTION
+   ========================================================= */
+
+.admin-support-ticket-description-box {
+  margin-top:
+    13px;
+
+  padding:
+    13px
+    14px;
+
+  border:
+    1px solid
+    var(--support-border-soft);
+
+  border-radius:
+    12px;
+
+  background:
+    var(--support-card);
+}
+
+
+.admin-support-ticket-description-label {
+  display:
+    block;
+
+  margin-bottom:
+    6px;
+
+  color:
+    var(--support-orange) !important;
+
+  -webkit-text-fill-color:
+    var(--support-orange) !important;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.9px;
+
+  text-transform:
+    uppercase;
+}
+
+
+.admin-support-ticket-description-box
+p {
+  margin:
+    0;
+
+  color:
+    var(--support-text) !important;
+
+  -webkit-text-fill-color:
+    var(--support-text) !important;
+
+  font-size:
+    12px;
+
+  font-weight:
+    650;
+
+  line-height:
+    1.6;
+
+  overflow-wrap:
+    anywhere;
+}
+
+
+/* =========================================================
+   SUPPORT RESPONSE
+   ========================================================= */
+
+.admin-support-response {
+  margin-top:
+    12px;
+
+  padding:
+    12px
+    13px;
+
+  border:
+    1px solid
+    rgba(59, 148, 114, 0.22);
+
+  border-left:
+    4px solid
+    var(--support-green);
+
+  border-radius:
+    11px;
+
+  background:
+    var(--support-green-soft);
+}
+
+
+.admin-support-response__heading {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    7px;
+
+  color:
+    var(--support-green);
+}
+
+
+.admin-support-response__heading
+strong {
+  color:
+    var(--support-green) !important;
+
+  -webkit-text-fill-color:
+    var(--support-green) !important;
+
+  font-size:
+    11px;
+
+  font-weight:
+    900;
+}
+
+
+.admin-support-response
+p {
+  margin:
+    7px
+    0
+    0;
+
+  color:
+    var(--support-text) !important;
+
+  -webkit-text-fill-color:
+    var(--support-text) !important;
+
+  font-size:
+    12px;
+
+  font-weight:
+    650;
+
+  line-height:
+    1.55;
+}
+
+
+/* =========================================================
+   AWAITING RESPONSE
+   ========================================================= */
+
+.admin-support-awaiting-text {
+  margin-top:
+    12px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    7px;
+
+  color:
+    var(--support-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--support-muted) !important;
+
+  font-size:
+    11px;
+
+  font-weight:
+    700;
+}
+
+
+.admin-support-awaiting-text
+svg {
+  color:
+    var(--support-orange);
+}
+
+
+/* =========================================================
+   EMPTY
+   ========================================================= */
+
+.admin-support-empty {
+  min-height:
+    280px;
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    8px;
+
+  padding:
+    22px;
+
+  text-align:
+    center;
+}
+
+
+.admin-support-empty-icon {
+  width:
+    54px;
+
+  height:
+    54px;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    15px;
+
+  background:
+    var(--support-orange-soft);
+
+  color:
+    var(--support-orange);
+}
+
+
+.admin-support-empty
+strong {
+  color:
+    var(--support-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--support-heading) !important;
+
+  font-size:
+    15px;
+
+  font-weight:
+    900;
+}
+
+
+.admin-support-empty
+p {
+  margin:
+    0;
+
+  color:
+    var(--support-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--support-muted) !important;
+
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+}
+
+
+/* =========================================================
+   DARK SUPPORT CARD SURFACES
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-card {
+  border-color:
+    #347263 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #184d42 0%,
+      #123f38 100%
+    ) !important;
+
+  box-shadow:
+    0
+    10px
+    30px
+    rgba(0, 0, 0, 0.18) !important;
+}
+
+
+/* =========================================================
+   DARK CARD HEADERS
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-card__heading {
+  border-bottom-color:
+    #36776a !important;
+
+  background:
+    linear-gradient(
+      110deg,
+      color-mix(
+        in srgb,
+        var(--card-accent) 14%,
+        #1b5a4d
+      ) 0%,
+      #174c43 58%,
+      #14443d 100%
+    ) !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-support-card__heading
+h2 {
+  color:
+    #f4fbfc !important;
+
+  -webkit-text-fill-color:
+    #f4fbfc !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-support-card__heading
+p {
+  color:
+    #b2c9c4 !important;
+
+  -webkit-text-fill-color:
+    #b2c9c4 !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-support-card__icon {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--card-accent) 30%,
+      #367269
+    ) !important;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--card-accent) 13%,
+      #103c37
+    ) !important;
+
+  color:
+    var(--card-accent) !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-support-card__badge {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--card-accent) 34%,
+      #367269
+    ) !important;
+
+  background:
+    #103c37 !important;
+
+  color:
+    var(--card-accent) !important;
+
+  -webkit-text-fill-color:
+    var(--card-accent) !important;
+}
+
+
+/* =========================================================
+   DARK FORM AREA
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-form {
+  background:
+    transparent !important;
+}
+
+
+/* =========================================================
+   DARK FIELD WRAPPER
+
+   THIS BLOCK COMES AFTER LIGHT MODE ON PURPOSE.
+   DARK MODE IS THE ONLY PLACE THE TEAL FILL EXISTS.
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-page
+.admin-support-field {
+  border-color:
+    #39766c !important;
+
+  background:
+    #103c37 !important;
+
+  background-color:
+    #103c37 !important;
+
+  background-image:
+    none !important;
+
+  color:
+    var(--support-blue) !important;
+
+  color-scheme:
+    dark !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-support-page
+.admin-support-field:focus-within {
+  border-color:
+    var(--support-blue) !important;
+
+  background:
+    #103c37 !important;
+
+  background-color:
+    #103c37 !important;
+
+  box-shadow:
+    0
+    0
+    0
+    4px
+    rgba(147, 199, 239, 0.09) !important;
+}
+
+
+/* =========================================================
+   DARK INPUT / SELECT / TEXTAREA
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-page
+.admin-support-field
+input,
+
+[data-admin-theme="dark"]
+.admin-support-page
+.admin-support-field
+select,
+
+[data-admin-theme="dark"]
+.admin-support-page
+.admin-support-field
+textarea {
+  border:
+    0 !important;
+
+  outline:
+    0 !important;
+
+  border-radius:
+    0 !important;
+
+  background:
+    #103c37 !important;
+
+  background-color:
+    #103c37 !important;
+
+  background-image:
+    none !important;
+
+  color:
+    #ffffff !important;
+
+  -webkit-text-fill-color:
+    #ffffff !important;
+
+  caret-color:
+    #93c7ef !important;
+
+  box-shadow:
+    none !important;
+
+  opacity:
+    1 !important;
+
+  color-scheme:
+    dark !important;
+}
+
+
+/* =========================================================
+   DARK TEXTAREA WRAPPER
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-page
+.admin-support-field--textarea {
+  background:
+    #103c37 !important;
+
+  background-color:
+    #103c37 !important;
+}
+
+
+/* =========================================================
+   DARK PLACEHOLDERS
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-page
+.admin-support-field
+input::placeholder,
+
+[data-admin-theme="dark"]
+.admin-support-page
+.admin-support-field
+textarea::placeholder {
+  color:
+    #a9c1c7 !important;
+
+  -webkit-text-fill-color:
+    #a9c1c7 !important;
+
+  opacity:
+    1 !important;
+}
+
+
+/* =========================================================
+   DARK SELECT OPTIONS
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-page
+.admin-support-field
+select option {
+  background:
+    #103c37 !important;
+
+  background-color:
+    #103c37 !important;
+
+  color:
+    #ffffff !important;
+
+  -webkit-text-fill-color:
+    #ffffff !important;
+}
+
+
+/* =========================================================
+   DARK AUTOFILL
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-page
+.admin-support-field
+input:-webkit-autofill,
+
+[data-admin-theme="dark"]
+.admin-support-page
+.admin-support-field
+input:-webkit-autofill:hover,
+
+[data-admin-theme="dark"]
+.admin-support-page
+.admin-support-field
+input:-webkit-autofill:focus {
+  -webkit-box-shadow:
+    0
+    0
+    0
+    1000px
+    #103c37
+    inset !important;
+
+  box-shadow:
+    0
+    0
+    0
+    1000px
+    #103c37
+    inset !important;
+
+  -webkit-text-fill-color:
+    #ffffff !important;
+
+  caret-color:
+    #93c7ef !important;
+}
+
+
+/* =========================================================
+   DARK TICKET LIST
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-ticket-list {
+  background:
+    transparent !important;
+}
+
+
+/* =========================================================
+   DARK TICKETS
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-ticket {
+  border-color:
+    #39766c !important;
+
+  background:
+    #195249 !important;
+
+  box-shadow:
+    0
+    6px
+    18px
+    rgba(0, 0, 0, 0.1);
+}
+
+
+[data-admin-theme="dark"]
+.admin-support-ticket:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--support-orange) 32%,
+      #39766c
+    ) !important;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--support-orange) 7%,
+      #205d52
+    ) !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-support-ticket__title
+strong {
+  color:
+    #f4fbfc !important;
+
+  -webkit-text-fill-color:
+    #f4fbfc !important;
+}
+
+
+/* =========================================================
+   DARK META
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-ticket__priority,
+[data-admin-theme="dark"]
+.admin-support-ticket__date {
+  border-color:
+    #39766c;
+
+  background:
+    #103c37;
+}
+
+
+[data-admin-theme="dark"]
+.admin-support-ticket__priority {
+  color:
+    #d8e8eb !important;
+
+  -webkit-text-fill-color:
+    #d8e8eb !important;
+}
+
+
+/* =========================================================
+   DARK DESCRIPTION
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-ticket-description-box {
+  border-color:
+    #39766c !important;
+
+  background:
+    #103c37 !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-support-ticket-description-box
+p {
+  color:
+    #d8e8eb !important;
+
+  -webkit-text-fill-color:
+    #d8e8eb !important;
+}
+
+
+/* =========================================================
+   DARK RESPONSE
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-support-response {
+  border-color:
+    rgba(141, 224, 186, 0.2);
+
+  border-left-color:
+    var(--support-green);
+
+  background:
+    rgba(64, 167, 125, 0.11);
+}
+
+
+[data-admin-theme="dark"]
+.admin-support-response
+p {
+  color:
+    #d8e8eb !important;
+
+  -webkit-text-fill-color:
+    #d8e8eb !important;
+}
+
+
+/* =========================================================
+   125% → 150% DESKTOP
+   ========================================================= */
+
+@media (max-width: 1180px) {
+
+  .admin-support-page {
+    width:
+      100% !important;
+
+    max-width:
+      100% !important;
+
+    min-width:
+      0 !important;
+
+    margin:
+      0 !important;
+
+    padding:
+      10px
+      10px
+      20px !important;
+
+    overflow-x:
+      hidden !important;
+  }
+
+
+  .admin-support-stats {
+    gap:
+      10px;
+  }
+
+
+  .admin-support-stat {
+    min-height:
+      118px;
+
+    gap:
+      13px;
+
+    padding:
+      16px
+      15px;
+  }
+
+
+  .admin-support-stat-icon {
+    width:
+      50px;
+
+    height:
+      50px;
+
+    flex-basis:
+      50px;
+  }
+
+
+  .admin-support-stat-copy
+  > span {
+    font-size:
+      10px;
+  }
+
+
+  .admin-support-stat-copy
+  strong {
+    font-size:
+      30px;
+  }
+
+
+  .admin-support-stat-copy
+  small {
+    font-size:
+      11px;
+  }
+
+
+  .admin-support-layout {
+    grid-template-columns:
+      minmax(0, 0.9fr)
+      minmax(0, 1.1fr);
+
+    gap:
+      12px;
+  }
+
+
+  .admin-support-card__heading {
+    min-height:
+      88px;
+
+    padding:
+      14px
+      15px;
+  }
+
+
+  .admin-support-card__icon {
+    width:
+      46px;
+
+    height:
+      46px;
+
+    flex-basis:
+      46px;
+  }
+
+
+  .admin-support-card__heading
+  h2 {
+    font-size:
+      21px;
+  }
+
+
+  .admin-support-card__heading
+  p {
+    font-size:
+      10px;
+  }
+
+
+  .admin-support-form {
+    gap:
+      12px;
+
+    padding:
+      14px;
+  }
+
+
+  .admin-support-page
+  .admin-support-field {
+    min-height:
+      46px;
+  }
+
+
+  .admin-support-page
+  .admin-support-field
+  input,
+
+  .admin-support-page
+  .admin-support-field
+  select {
+    height:
+      44px;
+
+    line-height:
+      44px;
+
+    font-size:
+      12px;
+  }
+
+
+  .admin-support-ticket {
+    padding:
+      14px
+      14px
+      13px
+      17px;
+  }
+
+
+  .admin-support-ticket__title
+  strong {
+    font-size:
+      13px;
+  }
+
+}
+
+
+/* =========================================================
+   EXTRA COMPACT DESKTOP
+   ========================================================= */
+
+@media (
+  min-width: 761px
+)
+and
+(
+  max-width: 1000px
+) {
+
+  .admin-support-layout {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .admin-support-ticket-list {
+    max-height:
+      none;
+  }
+
+
+  .admin-support-stats {
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0, 1fr)
+      );
+
+    gap:
+      8px;
+  }
+
+
+  .admin-support-stat {
+    min-height:
+      108px;
+
+    gap:
+      9px;
+
+    padding:
+      13px
+      10px;
+  }
+
+
+  .admin-support-stat-icon {
+    width:
+      44px;
+
+    height:
+      44px;
+
+    flex-basis:
+      44px;
+  }
+
+
+  .admin-support-stat-copy
+  > span {
+    font-size:
+      8px;
+  }
+
+
+  .admin-support-stat-copy
+  strong {
+    font-size:
+      24px;
+  }
+
+
+  .admin-support-stat-copy
+  small {
+    font-size:
+      9px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .admin-support-page {
+    width:
+      100% !important;
+
+    max-width:
+      100% !important;
+
+    margin:
+      0 !important;
+
+    padding:
+      8px
+      8px
+      18px !important;
+  }
+
+
+  .admin-support-page
+  > .admin-page-intro {
+    margin-bottom:
+      14px;
+  }
+
+
+  .admin-support-stats {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .admin-support-stat {
+    min-height:
+      112px;
+
+    gap:
+      14px;
+
+    padding:
+      17px
+      18px;
+  }
+
+
+  .admin-support-stat-icon {
+    width:
+      50px;
+
+    height:
+      50px;
+
+    flex-basis:
+      50px;
+  }
+
+
+  .admin-support-stat-copy
+  strong {
+    font-size:
+      30px;
+  }
+
+
+  .admin-support-layout {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .admin-support-form__row {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .admin-support-card__heading {
+    min-height:
+      92px;
+
+    align-items:
+      flex-start;
+
+    flex-direction:
+      column;
+
+    padding:
+      17px
+      15px;
+  }
+
+
+  .admin-support-card__heading
+  h2 {
+    font-size:
+      21px;
+  }
+
+
+  .admin-support-card__badge {
+    align-self:
+      flex-start;
+  }
+
+
+  .admin-support-ticket-list {
+    max-height:
+      none;
+  }
+
+
+  .admin-support-ticket__top {
+    gap:
+      10px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL PHONE
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+  .admin-support-card__icon {
+    width:
+      46px;
+
+    height:
+      46px;
+
+    flex-basis:
+      46px;
+  }
+
+
+  .admin-support-ticket__top {
+    flex-direction:
+      column;
+  }
+
+
+  .admin-support-status {
+    align-self:
+      flex-start;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+
+  .admin-support-stat,
+  .admin-support-card,
+  .admin-support-ticket,
+  .admin-support-submit {
+    transition:
+      none;
+  }
+
+}

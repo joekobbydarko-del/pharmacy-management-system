@@ -1,340 +1,3315 @@
+/* =========================================================
+   DR. EVANS PHARMACY
+   ADMIN PURCHASES
+   PREMIUM OWN-COLOR CARD SYSTEM
+   ========================================================= */
+
 .admin-purchases-page {
-  padding: 40px 28px 28px;
+  --purchase-card: #ffffff;
+  --purchase-soft: #f7fbfc;
+  --purchase-soft-2: #edf6f8;
+
+  --purchase-border: #d8e7ea;
+  --purchase-border-soft: #e6eff1;
+
+  --purchase-heading: #0f2f46;
+  --purchase-text: #365664;
+  --purchase-muted: #6f8893;
+
+  --purchase-teal: #18aaa5;
+  --purchase-teal-soft: #e1f8f6;
+
+  --purchase-blue: #4c8fd0;
+  --purchase-blue-soft: #eaf3fc;
+
+  --purchase-green: #3b9472;
+  --purchase-green-soft: #e8f5ef;
+
+  --purchase-amber: #d88924;
+  --purchase-amber-soft: #fff2df;
+
+  --purchase-red: #ce5a5a;
+  --purchase-red-soft: #fceded;
+
+  width: calc(100% + 44px);
+  max-width: none;
+  min-width: 0;
+
+  margin:
+    -26px
+    -22px
+    0;
+
+  padding:
+    10px
+    14px
+    24px;
+
+  box-sizing: border-box;
+
+  color: var(--purchase-text);
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.admin-purchases-header {
-  margin-bottom: 22px;
+.admin-purchases-page::-webkit-scrollbar,
+.admin-purchases-stock-list::-webkit-scrollbar,
+.admin-purchases-table-wrap::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 
-.admin-purchases-eyebrow {
-  margin: 0 0 6px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: #0f766e;
+.admin-purchases-page > .admin-page-intro {
+  margin-bottom: 17px;
 }
 
-.admin-purchases-header h1 {
-  margin: 0;
-  font-size: 30px;
-  font-weight: 800;
-  color: #0f172a;
+
+/* =========================================================
+   DARK VARIABLES
+   ========================================================= */
+
+[data-admin-theme="dark"] .admin-purchases-page {
+  --purchase-card: #0d4653;
+  --purchase-soft: #0a3d49;
+  --purchase-soft-2: #104b57;
+
+  --purchase-border: #1d5a67;
+  --purchase-border-soft: #28525e;
+
+  --purchase-heading: #f4fbfc;
+  --purchase-text: #d8e8eb;
+  --purchase-muted: #a3bdc4;
+
+  --purchase-teal: #5de0d9;
+  --purchase-teal-soft:
+    rgba(37, 212, 212, 0.13);
+
+  --purchase-blue: #93c7ef;
+  --purchase-blue-soft:
+    rgba(76, 143, 208, 0.15);
+
+  --purchase-green: #8de0ba;
+  --purchase-green-soft:
+    rgba(64, 167, 125, 0.14);
+
+  --purchase-amber: #f2bd6c;
+  --purchase-amber-soft:
+    rgba(216, 137, 36, 0.15);
+
+  --purchase-red: #ff9a9a;
+  --purchase-red-soft:
+    rgba(206, 90, 90, 0.16);
 }
 
-.admin-purchases-subtitle {
-  margin: 8px 0 0;
-  color: #64748b;
-}
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
 
 .admin-purchases-message {
-  margin-bottom: 18px;
-  padding: 12px 14px;
-  border-radius: 10px;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom: 14px;
+
+  padding:
+    13px
+    15px;
+
+  border-radius: 13px;
+
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .admin-purchases-message.error {
-  background: #fee2e2;
-  color: #991b1b;
+  border:
+    1px solid
+    rgba(206, 90, 90, 0.22);
+
+  background: var(--purchase-red-soft);
+
+  color: var(--purchase-red);
 }
 
 .admin-purchases-message.success {
-  background: #dcfce7;
-  color: #166534;
+  border:
+    1px solid
+    rgba(59, 148, 114, 0.2);
+
+  background: var(--purchase-green-soft);
+
+  color: var(--purchase-green);
 }
+
+
+/* =========================================================
+   MAIN GRID
+   ========================================================= */
 
 .admin-purchases-grid {
+  width: 100%;
+
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
-  gap: 20px;
-  margin-bottom: 20px;
-}
 
-.admin-purchases-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 18px;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
-}
+  grid-template-columns:
+    minmax(0, 1.08fr)
+    minmax(410px, 0.92fr);
 
-.admin-purchases-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: stretch;
+
   gap: 14px;
+
   margin-bottom: 16px;
 }
 
-.admin-purchases-card-header h2 {
-  margin: 0;
-  font-size: 18px;
-  color: #0f172a;
+
+/* =========================================================
+   SHARED CARD
+   ========================================================= */
+
+.admin-purchases-card {
+  --card-accent: var(--purchase-teal);
+  --card-soft: var(--purchase-teal-soft);
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    var(--purchase-border);
+
+  border-radius: 17px;
+
+  background: var(--purchase-card);
+
+  box-shadow:
+    0 9px 26px
+    rgba(15, 47, 70, 0.045);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
-.admin-purchases-card-header span {
-  display: block;
-  margin-top: 4px;
-  font-size: 12px;
-  color: #94a3b8;
+
+/* =========================================================
+   RECEIVE MEDICINES = TEAL
+   ========================================================= */
+
+.admin-purchases-entry-card {
+  --card-accent: var(--purchase-teal);
+  --card-soft: var(--purchase-teal-soft);
 }
+
+
+/* =========================================================
+   CURRENT STOCK = BLUE
+   ========================================================= */
+
+.admin-purchases-stock-card {
+  --card-accent: var(--purchase-blue);
+  --card-soft: var(--purchase-blue-soft);
+
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* =========================================================
+   PURCHASE RECORDS = RED
+   ========================================================= */
+
+.admin-purchases-history {
+  --card-accent: var(--purchase-red);
+  --card-soft: var(--purchase-red-soft);
+
+  width: 100%;
+}
+
+
+/* =========================================================
+   CARD HOVER
+   ========================================================= */
+
+.admin-purchases-card:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--card-accent) 50%,
+      var(--purchase-border)
+    );
+
+  box-shadow:
+    0 15px 35px
+    color-mix(
+      in srgb,
+      var(--card-accent) 10%,
+      transparent
+    );
+}
+
+
+/* =========================================================
+   PREMIUM CARD HEADERS
+   ========================================================= */
+
+.admin-purchases-card-header,
+.admin-purchases-history-header {
+  position: relative;
+
+  min-height: 94px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 14px;
+
+  padding:
+    18px
+    19px
+    16px;
+
+  box-sizing: border-box;
+
+  border-bottom:
+    1px solid
+    var(--purchase-border-soft);
+
+  background:
+    linear-gradient(
+      110deg,
+      var(--card-soft) 0%,
+      rgba(255, 255, 255, 0.97) 50%,
+      #ffffff 100%
+    ) !important;
+}
+
+.admin-purchases-card-header::before,
+.admin-purchases-history-header::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--card-accent),
+      color-mix(
+        in srgb,
+        var(--card-accent) 48%,
+        transparent
+      ),
+      transparent
+    );
+}
+
+.admin-purchases-card-header::after,
+.admin-purchases-history-header::after {
+  content: "";
+
+  position: absolute;
+
+  top: -65px;
+  left: -30px;
+
+  width: 165px;
+  height: 140px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      color-mix(
+        in srgb,
+        var(--card-accent) 10%,
+        transparent
+      ),
+      transparent 72%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   HEADER HEADING
+   ========================================================= */
+
+.admin-purchases-card-heading {
+  position: relative;
+
+  z-index: 2;
+
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+}
+
+.admin-purchases-card-icon {
+  width: 50px;
+  height: 50px;
+
+  flex: 0 0 50px;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--card-accent) 20%,
+      transparent
+    );
+
+  border-radius: 14px;
+
+  background: var(--card-soft);
+
+  color: var(--card-accent);
+}
+
+.admin-purchases-card-heading > div:last-child {
+  min-width: 0;
+}
+
+.admin-purchases-card-eyebrow {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color:
+    var(--card-accent) !important;
+
+  -webkit-text-fill-color:
+    var(--card-accent) !important;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  letter-spacing: 1px;
+
+  text-transform: uppercase;
+}
+
+.admin-purchases-card-heading h2 {
+  margin: 0;
+
+  color:
+    var(--purchase-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-heading) !important;
+
+  font-size:
+    clamp(
+      22px,
+      1.7vw,
+      27px
+    );
+
+  font-weight: 900;
+
+  line-height: 1.15;
+}
+
+.admin-purchases-card-heading p {
+  margin:
+    5px
+    0
+    0;
+
+  color:
+    var(--purchase-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-muted) !important;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   HEADER CHIPS
+   ========================================================= */
+
+.admin-purchases-unit-chip,
+.admin-purchases-history-count {
+  position: relative;
+
+  z-index: 2;
+
+  min-height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding:
+    0
+    12px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--card-accent) 30%,
+      var(--purchase-border)
+    );
+
+  border-radius: 999px;
+
+  background:
+    rgba(255, 255, 255, 0.9);
+
+  color: var(--card-accent);
+
+  font-size: 11px;
+  font-weight: 900;
+
+  white-space: nowrap;
+}
+
+.admin-purchases-unit-chip svg,
+.admin-purchases-history-count svg {
+  color: var(--card-accent);
+}
+
+.admin-purchases-stock-count {
+  position: relative;
+
+  z-index: 2;
+
+  width: 44px;
+  height: 44px;
+
+  display: grid;
+  place-items: center;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--card-accent) 30%,
+      var(--purchase-border)
+    );
+
+  border-radius: 12px;
+
+  background:
+    rgba(255, 255, 255, 0.9);
+
+  color: var(--card-accent);
+
+  font-size: 18px;
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
 
 .admin-purchases-form {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 18px;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 11px;
+
+  padding:
+    15px
+    16px
+    9px;
 }
 
 .admin-purchases-form label,
 .admin-purchases-item-builder label {
+  min-width: 0;
+
   display: grid;
-  gap: 6px;
-  font-size: 13px;
-  color: #475569;
+
+  gap: 7px;
 }
 
-.admin-purchases-form input,
-.admin-purchases-form select,
-.admin-purchases-item-builder input,
-.admin-purchases-item-builder select {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #0f172a;
-  outline: none;
+.admin-purchases-form label > span,
+.admin-purchases-item-builder label > span {
+  color:
+    var(--purchase-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-muted) !important;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  letter-spacing: 0.65px;
+
+  text-transform: uppercase;
 }
 
-.admin-purchases-form input:focus,
-.admin-purchases-form select:focus,
-.admin-purchases-item-builder input:focus,
-.admin-purchases-item-builder select:focus {
-  border-color: #0f766e;
+
+/* =========================================================
+   INPUT WRAPPERS
+   LIGHT MODE IS EXPLICITLY WHITE
+   ========================================================= */
+
+.admin-purchases-page
+.admin-purchases-input-wrap {
+  min-height: 49px;
+
+  display: grid;
+
+  grid-template-columns:
+    auto
+    minmax(0, 1fr);
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding:
+    0
+    12px;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+
+  border:
+    1.5px solid
+    #cfdee2 !important;
+
+  border-radius: 12px;
+
+  background:
+    #ffffff !important;
+
+  background-image:
+    none !important;
+
+  color:
+    var(--purchase-teal);
+
+  box-shadow:
+    none !important;
+
+  color-scheme:
+    light !important;
+}
+
+.admin-purchases-page
+.admin-purchases-input-wrap svg {
+  color:
+    var(--purchase-teal) !important;
+}
+
+.admin-purchases-page
+.admin-purchases-input-wrap:focus-within {
+  border-color:
+    var(--purchase-teal) !important;
+
+  background:
+    #ffffff !important;
+
+  box-shadow:
+    0 0 0 4px
+    rgba(
+      24,
+      170,
+      165,
+      0.09
+    ) !important;
+}
+
+
+/* =========================================================
+   ACTUAL INPUT / SELECT FIX
+   THIS REMOVES THE DARK GREEN FILLS
+   ========================================================= */
+
+.admin-purchases-page
+.admin-purchases-input-wrap
+input,
+
+.admin-purchases-page
+.admin-purchases-input-wrap
+select {
+  width: 100% !important;
+  min-width: 0 !important;
+
+  height: 47px !important;
+
+  margin: 0 !important;
+
+  padding:
+    0
+    7px !important;
+
+  border:
+    0 !important;
+
+  outline:
+    0 !important;
+
+  border-radius:
+    0 !important;
+
+  appearance:
+    none !important;
+
+  -webkit-appearance:
+    none !important;
+
+  background:
+    #ffffff !important;
+
+  background-color:
+    #ffffff !important;
+
+  background-image:
+    none !important;
+
+  color:
+    #123846 !important;
+
+  -webkit-text-fill-color:
+    #123846 !important;
+
+  caret-color:
+    var(--purchase-teal) !important;
+
+  box-shadow:
+    none !important;
+
+  font-family:
+    inherit !important;
+
+  font-size:
+    14px !important;
+
+  font-weight:
+    800 !important;
+
+  color-scheme:
+    light !important;
+
+  opacity:
+    1 !important;
+}
+
+
+/* =========================================================
+   LIGHT MODE PLACEHOLDERS
+   ========================================================= */
+
+.admin-purchases-page
+.admin-purchases-input-wrap
+input::placeholder {
+  color:
+    #718995 !important;
+
+  -webkit-text-fill-color:
+    #718995 !important;
+
+  opacity:
+    1 !important;
+}
+
+
+/* =========================================================
+   LIGHT MODE SELECT OPTIONS
+   ========================================================= */
+
+.admin-purchases-page
+.admin-purchases-input-wrap
+select option {
+  background:
+    #ffffff !important;
+
+  background-color:
+    #ffffff !important;
+
+  color:
+    #123846 !important;
+
+  -webkit-text-fill-color:
+    #123846 !important;
+}
+
+
+/* =========================================================
+   CHROME / EDGE AUTOFILL FIX
+   ========================================================= */
+
+.admin-purchases-page
+.admin-purchases-input-wrap
+input:-webkit-autofill,
+
+.admin-purchases-page
+.admin-purchases-input-wrap
+input:-webkit-autofill:hover,
+
+.admin-purchases-page
+.admin-purchases-input-wrap
+input:-webkit-autofill:focus,
+
+.admin-purchases-page
+.admin-purchases-input-wrap
+input:-webkit-autofill:active {
+  -webkit-box-shadow:
+    0 0 0 1000px
+    #ffffff
+    inset !important;
+
+  box-shadow:
+    0 0 0 1000px
+    #ffffff
+    inset !important;
+
+  -webkit-text-fill-color:
+    #123846 !important;
+
+  caret-color:
+    var(--purchase-teal) !important;
+
+  transition:
+    background-color
+    9999s
+    ease-in-out
+    0s;
+}
+
+
+/* =========================================================
+   REMOVE NUMBER FIELD DARK UI
+   ========================================================= */
+
+.admin-purchases-page
+.admin-purchases-input-wrap
+input[type="number"] {
+  background:
+    #ffffff !important;
+
+  color:
+    #123846 !important;
+
+  -webkit-text-fill-color:
+    #123846 !important;
+
+  color-scheme:
+    light !important;
+}
+
+
+/* =========================================================
+   BUILDER
+   ========================================================= */
+
+.admin-purchases-builder {
+  margin:
+    5px
+    16px
+    11px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    var(--purchase-border-soft);
+
+  border-radius: 14px;
+
+  background:
+    var(--purchase-soft);
+}
+
+.admin-purchases-builder-heading {
+  padding:
+    13px
+    13px
+    4px;
+}
+
+.admin-purchases-builder-heading strong {
+  display: block;
+
+  margin: 0;
+
+  color:
+    var(--purchase-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-heading) !important;
+
+  font-size: 16px;
+  font-weight: 900;
+
+  line-height: 1.2;
 }
 
 .admin-purchases-item-builder {
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) 120px 140px auto;
-  gap: 10px;
+
+  grid-template-columns:
+    minmax(0, 1.45fr)
+    minmax(100px, 0.45fr)
+    minmax(120px, 0.55fr)
+    auto;
+
   align-items: end;
-  padding: 14px;
-  margin-bottom: 16px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
+
+  gap: 9px;
+
+  padding:
+    10px
+    12px
+    13px;
 }
 
+
+/* =========================================================
+   ADD BUTTON
+   ========================================================= */
+
 .admin-purchases-add-button {
-  border: 0;
-  border-radius: 10px;
-  padding: 11px 14px;
-  background: #0f766e;
+  min-height: 49px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  padding:
+    0
+    15px;
+
+  border:
+    1px solid
+    #0c9893;
+
+  border-radius: 11px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #18bfc0,
+      #0c928d
+    );
+
   color: #ffffff;
-  font-weight: 700;
+
+  font-family: inherit;
+
+  font-size: 12px;
+  font-weight: 900;
+
   cursor: pointer;
+
+  white-space: nowrap;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .admin-purchases-add-button:hover {
-  background: #115e59;
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 8px 20px
+    rgba(
+      24,
+      191,
+      192,
+      0.18
+    );
 }
 
+
+/* =========================================================
+   CART
+   ========================================================= */
+
 .admin-purchases-cart {
+  min-height: 126px;
+
   display: grid;
-  gap: 10px;
-  margin-bottom: 16px;
+
+  gap: 8px;
+
+  padding:
+    4px
+    16px
+    11px;
+}
+
+.admin-purchases-cart-empty {
+  min-height: 120px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 7px;
+
+  text-align: center;
+}
+
+.admin-purchases-empty-icon {
+  width: 47px;
+  height: 47px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 13px;
+
+  background:
+    var(--card-soft);
+
+  color:
+    var(--card-accent);
+}
+
+.admin-purchases-cart-empty strong {
+  color:
+    var(--purchase-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-heading) !important;
+
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.admin-purchases-cart-empty span {
+  max-width: 310px;
+
+  color:
+    var(--purchase-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-muted) !important;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  line-height: 1.45;
 }
 
 .admin-purchases-cart-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding: 12px 14px;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+
+  gap: 14px;
+
+  padding:
+    11px
+    12px;
+
+  border:
+    1px solid
+    var(--purchase-border-soft);
+
+  border-radius: 12px;
+
+  background:
+    var(--purchase-soft);
+
+  transition:
+    border-color 0.18s ease,
+    background 0.18s ease;
 }
 
-.admin-purchases-cart-row > div {
+.admin-purchases-cart-row:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-teal) 36%,
+      var(--purchase-border)
+    );
+
+  background:
+    var(--purchase-teal-soft);
+}
+
+.admin-purchases-cart-main {
+  min-width: 0;
+
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+
+  gap: 10px;
 }
 
-.admin-purchases-cart-row > div:last-child {
-  align-items: flex-end;
+.admin-purchases-cart-icon {
+  width: 36px;
+  height: 36px;
+
+  flex:
+    0 0 36px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 10px;
+
+  background:
+    var(--purchase-card);
+
+  color:
+    var(--purchase-teal);
 }
 
-.admin-purchases-cart-row strong {
-  color: #0f172a;
+.admin-purchases-cart-main strong {
+  display: block;
+
+  color:
+    var(--purchase-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-heading) !important;
+
+  font-size: 13px;
+  font-weight: 900;
 }
 
-.admin-purchases-cart-row span {
-  font-size: 12px;
-  color: #64748b;
+.admin-purchases-cart-main span {
+  display: block;
+
+  margin-top: 3px;
+
+  color:
+    var(--purchase-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-muted) !important;
+
+  font-size: 11px;
+  font-weight: 700;
 }
 
-.admin-purchases-cart-row button {
-  border: 0;
+.admin-purchases-cart-total {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.admin-purchases-cart-total strong {
+  color:
+    var(--purchase-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-heading) !important;
+
+  font-size: 13px;
+  font-weight: 900;
+
+  white-space: nowrap;
+}
+
+.admin-purchases-cart-total button {
+  width: 32px;
+  height: 32px;
+
+  display: grid;
+  place-items: center;
+
   padding: 0;
-  background: transparent;
-  color: #dc2626;
+
+  border:
+    1px solid
+    rgba(206, 90, 90, 0.18);
+
+  border-radius: 9px;
+
+  background:
+    var(--purchase-red-soft);
+
+  color:
+    var(--purchase-red);
+
   cursor: pointer;
 }
+
+
+/* =========================================================
+   PURCHASE TOTAL
+   ========================================================= */
 
 .admin-purchases-total {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 0;
-  border-top: 1px solid #e2e8f0;
+
+  gap: 12px;
+
+  margin:
+    0
+    16px;
+
+  padding:
+    13px
+    0;
+
+  border-top:
+    1px dashed
+    var(--purchase-border);
 }
 
 .admin-purchases-total span {
-  color: #64748b;
+  display: block;
+
+  color:
+    var(--purchase-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-muted) !important;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  text-transform: uppercase;
+}
+
+.admin-purchases-total small {
+  display: block;
+
+  margin-top: 4px;
+
+  color:
+    var(--purchase-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-muted) !important;
+
+  font-size: 10px;
+  font-weight: 700;
 }
 
 .admin-purchases-total strong {
-  font-size: 20px;
-  color: #0f172a;
+  color:
+    var(--purchase-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-heading) !important;
+
+  font-size:
+    clamp(
+      24px,
+      1.8vw,
+      31px
+    );
+
+  font-weight: 900;
 }
+
+
+/* =========================================================
+   RECORD PURCHASE BUTTON
+   ========================================================= */
 
 .admin-purchases-submit-button {
-  width: 100%;
-  border: 0;
-  border-radius: 10px;
-  padding: 12px 14px;
-  background: #0f766e;
-  color: #ffffff;
-  font-weight: 700;
+  width:
+    calc(
+      100% - 32px
+    );
+
+  min-height: 49px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  margin:
+    0
+    16px
+    16px;
+
+  border:
+    1px solid
+    #0c9893;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #18bfc0,
+      #0c928d
+    );
+
+  color:
+    #ffffff;
+
+  font-family: inherit;
+
+  font-size: 13px;
+  font-weight: 900;
+
   cursor: pointer;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
-.admin-purchases-submit-button:hover {
-  background: #115e59;
+.admin-purchases-submit-button:hover:not(:disabled) {
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0 9px 22px
+    rgba(
+      24,
+      191,
+      192,
+      0.2
+    );
 }
 
 .admin-purchases-submit-button:disabled {
-  opacity: 0.6;
+  opacity: 0.48;
+
   cursor: not-allowed;
 }
 
+
+/* =========================================================
+   CURRENT STOCK
+   ========================================================= */
+
 .admin-purchases-stock-list {
+  flex: 1;
+
   display: grid;
-  gap: 10px;
+
+  align-content: start;
+
+  gap: 8px;
+
+  padding: 11px;
+
+  overflow-y: auto;
+
+  scrollbar-width: none;
 }
 
 .admin-purchases-stock-row {
+  min-width: 0;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  padding: 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+
+  gap: 11px;
+
+  padding:
+    12px
+    13px;
+
+  border:
+    1px solid
+    var(--purchase-border-soft);
+
+  border-radius: 12px;
+
+  background:
+    var(--purchase-soft);
+
+  transition:
+    transform 0.16s ease,
+    border-color 0.16s ease,
+    background 0.16s ease;
 }
 
-.admin-purchases-stock-row > div {
+.admin-purchases-stock-row:hover {
+  transform:
+    translateY(-1px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-blue) 42%,
+      var(--purchase-border)
+    );
+
+  background:
+    var(--purchase-blue-soft);
+}
+
+.admin-purchases-stock-main {
+  min-width: 0;
+
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+
+  gap: 10px;
 }
 
-.admin-purchases-stock-row > div:last-child {
-  align-items: flex-end;
+.admin-purchases-stock-icon {
+  width: 37px;
+  height: 37px;
+
+  flex: 0 0 37px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 10px;
+
+  background:
+    var(--purchase-blue-soft);
+
+  color:
+    var(--purchase-blue);
 }
 
-.admin-purchases-stock-row strong {
-  color: #0f172a;
+.admin-purchases-stock-main strong {
+  display: block;
+
+  overflow: hidden;
+
+  color:
+    var(--purchase-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-heading) !important;
+
+  font-size: 13px;
+  font-weight: 900;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.admin-purchases-stock-row span {
-  font-size: 12px;
-  color: #64748b;
+.admin-purchases-stock-main span {
+  display: block;
+
+  margin-top: 3px;
+
+  color:
+    var(--purchase-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-muted) !important;
+
+  font-size: 10px;
+  font-weight: 700;
 }
+
+.admin-purchases-stock-value {
+  text-align: right;
+}
+
+.admin-purchases-stock-value strong {
+  display: block;
+
+  color:
+    var(--purchase-blue) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-blue) !important;
+
+  font-size: 21px;
+  font-weight: 900;
+}
+
+.admin-purchases-stock-value span {
+  display: block;
+
+  margin-top: 3px;
+
+  color:
+    var(--purchase-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-muted) !important;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   PURCHASE RECORDS
+   RED IDENTITY
+   ========================================================= */
 
 .admin-purchases-history {
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
+.admin-purchases-history-header
+.admin-purchases-card-icon {
+  background:
+    var(--purchase-red-soft);
+
+  color:
+    var(--purchase-red);
+}
+
+.admin-purchases-history-header
+.admin-purchases-card-eyebrow {
+  color:
+    var(--purchase-red) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-red) !important;
+}
+
+.admin-purchases-history-count {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-red) 32%,
+      var(--purchase-border)
+    );
+
+  color:
+    var(--purchase-red);
+}
+
+.admin-purchases-history-count svg {
+  color:
+    var(--purchase-red);
+}
+
+
+/* =========================================================
+   HISTORY TABLE
+   ========================================================= */
+
 .admin-purchases-table-wrap {
+  width: 100%;
+
+  padding:
+    8px
+    12px
+    14px;
+
+  box-sizing: border-box;
+
   overflow-x: auto;
+
+  scrollbar-width: none;
+
+  -webkit-overflow-scrolling:
+    touch;
 }
 
 .admin-purchases-table {
   width: 100%;
-  border-collapse: collapse;
-  min-width: 1000px;
-}
 
-.admin-purchases-table th,
-.admin-purchases-table td {
-  padding: 13px 14px;
-  text-align: left;
-  border-bottom: 1px solid #e2e8f0;
-  font-size: 14px;
+  min-width: 1100px;
+
+  border-collapse: separate;
+
+  border-spacing:
+    0
+    8px;
 }
 
 .admin-purchases-table th {
-  background: #f8fafc;
-  color: #475569;
-  font-size: 12px;
+  padding:
+    10px
+    11px;
+
+  color:
+    var(--purchase-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-muted) !important;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  letter-spacing: 0.7px;
+
+  text-align: left;
+
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+
+  white-space: nowrap;
 }
 
 .admin-purchases-table td {
-  color: #0f172a;
+  padding:
+    13px
+    11px;
+
+  border-top:
+    1px solid
+    var(--purchase-border-soft);
+
+  border-bottom:
+    1px solid
+    var(--purchase-border-soft);
+
+  background:
+    var(--purchase-soft);
+
+  color:
+    var(--purchase-text) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-text) !important;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  vertical-align: middle;
+
+  white-space: nowrap;
+
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease;
 }
 
-.admin-purchases-empty {
-  padding: 22px !important;
-  text-align: center !important;
-  color: #64748b;
+.admin-purchases-table tbody tr {
+  transition:
+    transform 0.16s ease;
 }
+
+.admin-purchases-table tbody tr:hover {
+  transform:
+    translateY(-1px);
+}
+
+.admin-purchases-table
+tbody
+tr:hover
+td {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-red) 24%,
+      var(--purchase-border)
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--purchase-red-soft) 58%,
+      var(--purchase-card)
+    );
+}
+
+.admin-purchases-table td:first-child {
+  border-left:
+    1px solid
+    var(--purchase-border-soft);
+
+  border-radius:
+    12px
+    0
+    0
+    12px;
+}
+
+.admin-purchases-table td:last-child {
+  border-right:
+    1px solid
+    var(--purchase-border-soft);
+
+  border-radius:
+    0
+    12px
+    12px
+    0;
+}
+
+
+/* =========================================================
+   PURCHASE RECORD CONTENT
+   ========================================================= */
+
+.admin-purchases-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 31px;
+
+  padding:
+    0
+    10px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--purchase-red) 28%,
+      var(--purchase-border)
+    );
+
+  border-radius: 8px;
+
+  background:
+    var(--purchase-card);
+
+  color:
+    var(--purchase-red) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-red) !important;
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.admin-purchases-supplier-cell {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+}
+
+.admin-purchases-supplier-cell > span {
+  width: 31px;
+  height: 31px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 9px;
+
+  background:
+    var(--purchase-red-soft);
+
+  color:
+    var(--purchase-red);
+}
+
+.admin-purchases-supplier-cell strong {
+  color:
+    var(--purchase-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-heading) !important;
+
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.admin-purchases-money {
+  color:
+    var(--purchase-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-heading) !important;
+
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   PAYMENT / STATUS
+   ========================================================= */
+
+.admin-purchases-payment,
+.admin-purchases-status {
+  min-width: 82px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 5px;
+
+  padding:
+    7px
+    10px;
+
+  border-radius: 999px;
+
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.admin-purchases-payment.paid,
+.admin-purchases-status {
+  border:
+    1px solid
+    rgba(59, 148, 114, 0.2);
+
+  background:
+    var(--purchase-green-soft);
+
+  color:
+    var(--purchase-green) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-green) !important;
+}
+
+.admin-purchases-payment.pending {
+  border:
+    1px solid
+    rgba(216, 137, 36, 0.23);
+
+  background:
+    var(--purchase-amber-soft);
+
+  color:
+    var(--purchase-amber) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-amber) !important;
+}
+
+.admin-purchases-date {
+  color:
+    var(--purchase-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-muted) !important;
+}
+
+.admin-purchases-empty-cell {
+  padding: 0 !important;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
 
 .admin-purchases-loading {
-  padding: 30px;
-  color: #64748b;
+  min-height: 450px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 9px;
+
+  color:
+    var(--purchase-muted);
 }
 
-@media (max-width: 1100px) {
+.admin-purchases-loading-icon {
+  width: 60px;
+  height: 60px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 17px;
+
+  background:
+    var(--purchase-teal-soft);
+
+  color:
+    var(--purchase-teal);
+}
+
+.admin-purchases-loading strong {
+  color:
+    var(--purchase-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-heading) !important;
+
+  font-size: 17px;
+  font-weight: 900;
+}
+
+.admin-purchases-loading span {
+  color:
+    var(--purchase-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-muted) !important;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   DARK CARD HEADERS
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-card-header,
+
+[data-admin-theme="dark"]
+.admin-purchases-history-header {
+  border-bottom-color:
+    var(--purchase-border);
+
+  background:
+    linear-gradient(
+      110deg,
+      color-mix(
+        in srgb,
+        var(--card-accent) 15%,
+        #0d4653
+      ) 0%,
+      #0d4653 58%,
+      #0d4653 100%
+    ) !important;
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-card-heading
+h2 {
+  color:
+    #f4fbfc !important;
+
+  -webkit-text-fill-color:
+    #f4fbfc !important;
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-card-heading
+p {
+  color:
+    #a3bdc4 !important;
+
+  -webkit-text-fill-color:
+    #a3bdc4 !important;
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-card-icon {
+  background:
+    color-mix(
+      in srgb,
+      var(--card-accent) 15%,
+      #083a46
+    );
+
+  color:
+    var(--card-accent);
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-unit-chip,
+
+[data-admin-theme="dark"]
+.admin-purchases-history-count,
+
+[data-admin-theme="dark"]
+.admin-purchases-stock-count {
+  background:
+    #0a3d49;
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--card-accent) 35%,
+      #28525e
+    );
+
+  color:
+    var(--card-accent);
+}
+
+
+/* =========================================================
+   DARK INPUT WRAPPER
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-page
+.admin-purchases-input-wrap {
+  background:
+    #0a3d49 !important;
+
+  background-color:
+    #0a3d49 !important;
+
+  border-color:
+    #28525e !important;
+
+  color-scheme:
+    dark !important;
+}
+
+
+/* =========================================================
+   DARK INPUTS / SELECTS
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-page
+.admin-purchases-input-wrap
+input,
+
+[data-admin-theme="dark"]
+.admin-purchases-page
+.admin-purchases-input-wrap
+select {
+  background:
+    #0a3d49 !important;
+
+  background-color:
+    #0a3d49 !important;
+
+  background-image:
+    none !important;
+
+  color:
+    #ffffff !important;
+
+  -webkit-text-fill-color:
+    #ffffff !important;
+
+  caret-color:
+    var(--purchase-teal) !important;
+
+  box-shadow:
+    none !important;
+
+  color-scheme:
+    dark !important;
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-page
+.admin-purchases-input-wrap
+input::placeholder {
+  color:
+    #a3bdc4 !important;
+
+  -webkit-text-fill-color:
+    #a3bdc4 !important;
+
+  opacity:
+    1 !important;
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-page
+.admin-purchases-input-wrap
+select option {
+  background:
+    #0a3d49 !important;
+
+  background-color:
+    #0a3d49 !important;
+
+  color:
+    #ffffff !important;
+
+  -webkit-text-fill-color:
+    #ffffff !important;
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-page
+.admin-purchases-input-wrap
+input[type="number"] {
+  background:
+    #0a3d49 !important;
+
+  color:
+    #ffffff !important;
+
+  -webkit-text-fill-color:
+    #ffffff !important;
+
+  color-scheme:
+    dark !important;
+}
+
+
+/* =========================================================
+   DARK AUTOFILL
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-page
+.admin-purchases-input-wrap
+input:-webkit-autofill,
+
+[data-admin-theme="dark"]
+.admin-purchases-page
+.admin-purchases-input-wrap
+input:-webkit-autofill:hover,
+
+[data-admin-theme="dark"]
+.admin-purchases-page
+.admin-purchases-input-wrap
+input:-webkit-autofill:focus,
+
+[data-admin-theme="dark"]
+.admin-purchases-page
+.admin-purchases-input-wrap
+input:-webkit-autofill:active {
+  -webkit-box-shadow:
+    0 0 0 1000px
+    #0a3d49
+    inset !important;
+
+  box-shadow:
+    0 0 0 1000px
+    #0a3d49
+    inset !important;
+
+  -webkit-text-fill-color:
+    #ffffff !important;
+
+  caret-color:
+    var(--purchase-teal) !important;
+}
+
+
+/* =========================================================
+   DARK BODY
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-card {
+  border-color:
+    var(--purchase-border);
+
+  background:
+    var(--purchase-card);
+
+  box-shadow:
+    0 9px 28px
+    rgba(0, 0, 0, 0.13);
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-builder,
+
+[data-admin-theme="dark"]
+.admin-purchases-cart-row,
+
+[data-admin-theme="dark"]
+.admin-purchases-stock-row {
+  border-color:
+    var(--purchase-border-soft);
+
+  background:
+    var(--purchase-soft);
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-cart-row:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-teal) 42%,
+      #28525e
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--purchase-teal) 8%,
+      #104b57
+    );
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-stock-row:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-blue) 48%,
+      #28525e
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--purchase-blue) 9%,
+      #104b57
+    );
+}
+
+
+/* =========================================================
+   DARK PURCHASE RECORDS
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-table th {
+  color:
+    #a3bdc4 !important;
+
+  -webkit-text-fill-color:
+    #a3bdc4 !important;
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-table td {
+  border-color:
+    #28525e;
+
+  background:
+    #0a3d49;
+
+  color:
+    #d8e8eb !important;
+
+  -webkit-text-fill-color:
+    #d8e8eb !important;
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-table
+tbody
+tr:hover
+td {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-red) 28%,
+      #28525e
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--purchase-red) 8%,
+      #104b57
+    );
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-number {
+  border-color:
+    rgba(255, 154, 154, 0.26);
+
+  background:
+    #0d4653;
+
+  color:
+    var(--purchase-red) !important;
+
+  -webkit-text-fill-color:
+    var(--purchase-red) !important;
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-supplier-cell
+> span {
+  background:
+    rgba(206, 90, 90, 0.16);
+
+  color:
+    var(--purchase-red);
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-supplier-cell
+strong,
+
+[data-admin-theme="dark"]
+.admin-purchases-money,
+
+[data-admin-theme="dark"]
+.admin-purchases-cart-main
+strong {
+  color:
+    #f4fbfc !important;
+
+  -webkit-text-fill-color:
+    #f4fbfc !important;
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-payment.paid,
+
+[data-admin-theme="dark"]
+.admin-purchases-status {
+  border-color:
+    rgba(141, 224, 186, 0.24);
+
+  background:
+    rgba(64, 167, 125, 0.14);
+
+  color:
+    #8de0ba !important;
+
+  -webkit-text-fill-color:
+    #8de0ba !important;
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-payment.pending {
+  border-color:
+    rgba(242, 189, 108, 0.25);
+
+  background:
+    rgba(216, 137, 36, 0.15);
+
+  color:
+    #f2bd6c !important;
+
+  -webkit-text-fill-color:
+    #f2bd6c !important;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1150px) {
   .admin-purchases-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .admin-purchases-form {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:
+      minmax(0, 1.1fr)
+      minmax(350px, 0.9fr);
   }
 
   .admin-purchases-item-builder {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:
+      minmax(0, 1fr)
+      100px
+      120px
+      auto;
   }
 }
 
-@media (max-width: 760px) {
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 950px) {
   .admin-purchases-page {
-    padding: 24px 18px 18px;
+    width:
+      calc(100% + 24px);
+
+    margin:
+      -14px
+      -12px
+      0;
+
+    padding:
+      10px
+      12px
+      20px;
+  }
+
+  .admin-purchases-grid {
+    grid-template-columns:
+      1fr;
   }
 
   .admin-purchases-form {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
   }
 
   .admin-purchases-item-builder {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      1fr
+      1fr;
+  }
+
+  .admin-purchases-add-button {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 720px) {
+  .admin-purchases-page {
+    width:
+      calc(100% + 16px);
+
+    margin:
+      -8px
+      -8px
+      0;
+
+    padding:
+      8px
+      8px
+      18px;
+  }
+
+  .admin-purchases-page
+  > .admin-page-intro {
+    margin-bottom:
+      14px;
+  }
+
+  .admin-purchases-form {
+    grid-template-columns:
+      1fr;
+  }
+
+  .admin-purchases-item-builder {
+    grid-template-columns:
+      1fr;
+  }
+
+  .admin-purchases-card-header,
+  .admin-purchases-history-header {
+    min-height:
+      90px;
+
+    padding:
+      17px
+      15px
+      15px;
+  }
+
+  .admin-purchases-card-icon {
+    width:
+      46px;
+
+    height:
+      46px;
+
+    flex-basis:
+      46px;
+  }
+
+  .admin-purchases-card-heading
+  h2 {
+    font-size:
+      21px;
   }
 
   .admin-purchases-cart-row,
   .admin-purchases-stock-row {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items:
+      flex-start;
+  }
+}
+
+
+/* =========================================================
+   SMALL PHONE
+   ========================================================= */
+
+@media (max-width: 520px) {
+  .admin-purchases-card-header,
+  .admin-purchases-history-header {
+    flex-direction:
+      column;
+
+    align-items:
+      flex-start;
   }
 
-  .admin-purchases-cart-row > div:last-child,
-  .admin-purchases-stock-row > div:last-child {
-    align-items: flex-start;
+  .admin-purchases-unit-chip,
+  .admin-purchases-history-count {
+    min-height:
+      38px;
   }
+
+  .admin-purchases-cart-row {
+    flex-direction:
+      column;
+  }
+
+  .admin-purchases-cart-total {
+    width: 100%;
+
+    justify-content:
+      space-between;
+  }
+
+  .admin-purchases-stock-row {
+    align-items:
+      center;
+  }
+}
+/* =========================================================
+   DARK MODE
+   TOP PURCHASE CARDS — PROFESSIONAL SURFACE SEPARATION
+   ========================================================= */
+
+
+/* =========================================================
+   RECEIVE MEDICINES
+   SUBTLE TEAL-TINTED DARK BODY
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-entry-card {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-teal) 18%,
+      #28525e
+    );
+
+  background:
+    linear-gradient(
+      180deg,
+
+      color-mix(
+        in srgb,
+        var(--purchase-teal) 7%,
+        #101a2f
+      ) 0%,
+
+      color-mix(
+        in srgb,
+        var(--purchase-teal) 4%,
+        #101a2f
+      ) 100%
+    );
+
+  box-shadow:
+    0
+    10px
+    30px
+    rgba(0, 0, 0, 0.16);
+}
+
+
+/* =========================================================
+   CURRENT STOCK
+   SUBTLE BLUE-TINTED DARK BODY
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-stock-card {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-blue) 18%,
+      #28525e
+    );
+
+  background:
+    linear-gradient(
+      180deg,
+
+      color-mix(
+        in srgb,
+        var(--purchase-blue) 7%,
+        #101a2f
+      ) 0%,
+
+      color-mix(
+        in srgb,
+        var(--purchase-blue) 4%,
+        #101a2f
+      ) 100%
+    );
+
+  box-shadow:
+    0
+    10px
+    30px
+    rgba(0, 0, 0, 0.16);
+}
+
+
+/* =========================================================
+   RECEIVE MEDICINES HOVER
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-entry-card:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-teal) 38%,
+      #28525e
+    );
+
+  box-shadow:
+    0
+    14px
+    34px
+    rgba(0, 0, 0, 0.2);
+}
+
+
+/* =========================================================
+   CURRENT STOCK HOVER
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-stock-card:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-blue) 38%,
+      #28525e
+    );
+
+  box-shadow:
+    0
+    14px
+    34px
+    rgba(0, 0, 0, 0.2);
+}
+
+
+/* =========================================================
+   RECEIVE MEDICINES INNER BUILDER
+
+   KEEP IT DISTINCT FROM THE NEW CARD SURFACE
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-entry-card
+.admin-purchases-builder {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-teal) 15%,
+      #28525e
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--purchase-teal) 6%,
+      #0a3d49
+    );
+}
+
+
+/* =========================================================
+   CURRENT STOCK ROWS
+
+   KEEP EACH MEDICINE ROW CLEAR INSIDE THE CARD
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-stock-card
+.admin-purchases-stock-row {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-blue) 13%,
+      #28525e
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--purchase-blue) 5%,
+      #0a3d49
+    );
+}
+
+
+/* =========================================================
+   CURRENT STOCK ROW HOVER
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-stock-card
+.admin-purchases-stock-row:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-blue) 48%,
+      #28525e
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--purchase-blue) 10%,
+      #104b57
+    );
+}
+
+
+/* =========================================================
+   RECEIVE MEDICINES CART ROWS
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-entry-card
+.admin-purchases-cart-row {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-teal) 13%,
+      #28525e
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--purchase-teal) 5%,
+      #0a3d49
+    );
+}
+
+
+/* =========================================================
+   RECEIVE MEDICINES CART ROW HOVER
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-entry-card
+.admin-purchases-cart-row:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-teal) 42%,
+      #28525e
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--purchase-teal) 9%,
+      #104b57
+    );
+}
+/* =========================================================
+   DARK MODE
+   TOP PURCHASE CARDS — SOFT GREEN SURFACE
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-entry-card,
+[data-admin-theme="dark"]
+.admin-purchases-stock-card {
+  border-color:
+    #2a6670 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #123f46 0%,
+      #0f3941 100%
+    ) !important;
+
+  box-shadow:
+    0 10px 30px
+    rgba(0, 0, 0, 0.16);
+}
+
+
+/* =========================================================
+   KEEP THE HEADERS RICHER THAN THE BODY
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-entry-card
+.admin-purchases-card-header,
+[data-admin-theme="dark"]
+.admin-purchases-stock-card
+.admin-purchases-card-header {
+  background:
+    linear-gradient(
+      110deg,
+      #14545b 0%,
+      #10474f 58%,
+      #0f4249 100%
+    ) !important;
+
+  border-bottom-color:
+    #2c6871 !important;
+}
+
+
+/* =========================================================
+   RECEIVE MEDICINES INNER AREA
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-entry-card
+.admin-purchases-builder {
+  border-color:
+    #2c6670 !important;
+
+  background:
+    #124a52 !important;
+}
+
+
+/* =========================================================
+   CURRENT STOCK ROWS
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-stock-card
+.admin-purchases-stock-row {
+  border-color:
+    #2d6872 !important;
+
+  background:
+    #114a52 !important;
+}
+
+
+/* =========================================================
+   STOCK ROW HOVER
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-stock-card
+.admin-purchases-stock-row:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-blue) 48%,
+      #2d6872
+    ) !important;
+
+  background:
+    #165660 !important;
+}
+
+
+/* =========================================================
+   RECEIVE MEDICINES CART ROWS
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-entry-card
+.admin-purchases-cart-row {
+  border-color:
+    #2d6872 !important;
+
+  background:
+    #114a52 !important;
+}
+
+
+/* =========================================================
+   RECEIVE MEDICINES CART HOVER
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-entry-card
+.admin-purchases-cart-row:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-teal) 45%,
+      #2d6872
+    ) !important;
+
+  background:
+    #165660 !important;
+}
+
+
+/* =========================================================
+   INPUT AREAS INSIDE RECEIVE MEDICINES
+   KEEP THEM DARKER THAN CARD BODY
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-entry-card
+.admin-purchases-input-wrap {
+  background:
+    #0d3a42 !important;
+
+  background-color:
+    #0d3a42 !important;
+
+  border-color:
+    #2b626c !important;
+}
+
+[data-admin-theme="dark"]
+.admin-purchases-entry-card
+.admin-purchases-input-wrap
+input,
+[data-admin-theme="dark"]
+.admin-purchases-entry-card
+.admin-purchases-input-wrap
+select {
+  background:
+    #0d3a42 !important;
+
+  background-color:
+    #0d3a42 !important;
+}
+/* =========================================================
+   DARK MODE
+   PURCHASE RECORDS — SOFT GREEN SURFACE
+   KEEP RED IDENTITY
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-history {
+  border-color:
+    #2a6670 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #123f46 0%,
+      #0f3941 100%
+    ) !important;
+
+  box-shadow:
+    0 10px 30px
+    rgba(0, 0, 0, 0.16);
+}
+
+
+/* =========================================================
+   PURCHASE RECORDS HEADER
+   KEEP RED ACCENT BUT MATCH NEW DARK SURFACE
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-history
+.admin-purchases-history-header {
+  background:
+    linear-gradient(
+      110deg,
+      color-mix(
+        in srgb,
+        var(--purchase-red) 12%,
+        #14545b
+      ) 0%,
+      #10474f 58%,
+      #0f4249 100%
+    ) !important;
+
+  border-bottom-color:
+    #2c6871 !important;
+}
+
+
+/* =========================================================
+   PURCHASE RECORDS TABLE ROWS
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-history
+.admin-purchases-table td {
+  border-color:
+    #2d6872 !important;
+
+  background:
+    #114a52 !important;
+}
+
+
+/* =========================================================
+   PURCHASE RECORDS ROW HOVER
+   KEEP RED IDENTITY
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-history
+.admin-purchases-table
+tbody
+tr:hover
+td {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-red) 36%,
+      #2d6872
+    ) !important;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--purchase-red) 7%,
+      #165660
+    ) !important;
+}
+
+
+/* =========================================================
+   RECORD NUMBER BADGE
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-history
+.admin-purchases-number {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--purchase-red) 30%,
+      #2d6872
+    ) !important;
+
+  background:
+    #0d3a42 !important;
+}
+
+
+/* =========================================================
+   SUPPLIER ICON
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-purchases-history
+.admin-purchases-supplier-cell
+> span {
+  background:
+    color-mix(
+      in srgb,
+      var(--purchase-red) 14%,
+      #114a52
+    ) !important;
+
+  color:
+    var(--purchase-red);
+}
+/* =========================================================
+   PURCHASE RECORDS
+   150% ZOOM — FIT FULL TABLE ON SCREEN
+   NO HORIZONTAL SCROLLBAR
+   KEEP RED IDENTITY
+   ========================================================= */
+
+@media (max-width: 950px) {
+
+  /* =====================================================
+     PURCHASE RECORDS CARD
+     ===================================================== */
+
+  .admin-purchases-history {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-width: 0 !important;
+
+    box-sizing: border-box !important;
+
+    overflow: hidden !important;
+  }
+
+
+  /* =====================================================
+     TABLE WRAPPER
+     ===================================================== */
+
+  .admin-purchases-table-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+
+    min-width: 0 !important;
+
+    overflow-x: hidden !important;
+
+    padding:
+      8px
+      8px
+      12px !important;
+
+    box-sizing: border-box !important;
+
+    scrollbar-width: none !important;
+
+    -ms-overflow-style: none !important;
+  }
+
+
+  .admin-purchases-table-wrap::-webkit-scrollbar {
+    display: none !important;
+
+    width: 0 !important;
+    height: 0 !important;
+  }
+
+
+  /* =====================================================
+     TABLE
+     REMOVE OLD 1100PX MINIMUM
+     ===================================================== */
+
+  .admin-purchases-table {
+    width: 100% !important;
+
+    min-width: 0 !important;
+    max-width: 100% !important;
+
+    table-layout: fixed !important;
+
+    border-spacing:
+      0
+      7px !important;
+
+    box-sizing: border-box !important;
+  }
+
+
+  /* =====================================================
+     COLUMN WIDTHS
+     ===================================================== */
+
+  .admin-purchases-table th:nth-child(1) {
+    width: 13% !important;
+  }
+
+  .admin-purchases-table th:nth-child(2) {
+    width: 20% !important;
+  }
+
+  .admin-purchases-table th:nth-child(3) {
+    width: 14% !important;
+  }
+
+  .admin-purchases-table th:nth-child(4) {
+    width: 14% !important;
+  }
+
+  .admin-purchases-table th:nth-child(5) {
+    width: 13% !important;
+  }
+
+  .admin-purchases-table th:nth-child(6) {
+    width: 13% !important;
+  }
+
+  .admin-purchases-table th:nth-child(7) {
+    width: 13% !important;
+  }
+
+
+  /* =====================================================
+     TABLE HEADERS
+     ===================================================== */
+
+  .admin-purchases-table th {
+    min-width: 0 !important;
+
+    padding:
+      9px
+      5px !important;
+
+    box-sizing: border-box !important;
+
+    font-size:
+      9px !important;
+
+    letter-spacing:
+      0.4px !important;
+
+    line-height:
+      1.15 !important;
+
+    white-space:
+      normal !important;
+
+    overflow:
+      hidden !important;
+  }
+
+
+  /* =====================================================
+     TABLE CELLS
+     ===================================================== */
+
+  .admin-purchases-table td {
+    min-width: 0 !important;
+
+    padding:
+      11px
+      5px !important;
+
+    box-sizing: border-box !important;
+
+    font-size:
+      10px !important;
+
+    line-height:
+      1.2 !important;
+
+    white-space:
+      normal !important;
+
+    overflow:
+      hidden !important;
+  }
+
+
+  /* =====================================================
+     PURCHASE NUMBER
+     ===================================================== */
+
+  .admin-purchases-number {
+    width: 100% !important;
+
+    min-width: 0 !important;
+
+    padding:
+      0
+      4px !important;
+
+    box-sizing: border-box !important;
+
+    font-size:
+      8px !important;
+
+    white-space:
+      nowrap !important;
+
+    overflow:
+      hidden !important;
+
+    text-overflow:
+      ellipsis !important;
+  }
+
+
+  /* =====================================================
+     SUPPLIER
+     ===================================================== */
+
+  .admin-purchases-supplier-cell {
+    min-width: 0 !important;
+
+    gap:
+      5px !important;
+  }
+
+
+  .admin-purchases-supplier-cell
+  > span {
+    width:
+      27px !important;
+
+    height:
+      27px !important;
+
+    flex:
+      0 0
+      27px !important;
+
+    border-radius:
+      8px !important;
+  }
+
+
+  .admin-purchases-supplier-cell
+  strong {
+    min-width: 0 !important;
+
+    overflow:
+      hidden !important;
+
+    text-overflow:
+      ellipsis !important;
+
+    white-space:
+      nowrap !important;
+
+    font-size:
+      9px !important;
+  }
+
+
+  /* =====================================================
+     MONEY
+     ===================================================== */
+
+  .admin-purchases-money {
+    font-size:
+      9px !important;
+
+    white-space:
+      nowrap !important;
+  }
+
+
+  /* =====================================================
+     PAYMENT + STATUS
+     REMOVE OLD 82PX MINIMUM
+     ===================================================== */
+
+  .admin-purchases-payment,
+  .admin-purchases-status {
+    width:
+      100% !important;
+
+    min-width:
+      0 !important;
+
+    max-width:
+      100% !important;
+
+    padding:
+      6px
+      4px !important;
+
+    box-sizing:
+      border-box !important;
+
+    gap:
+      3px !important;
+
+    font-size:
+      8px !important;
+
+    white-space:
+      nowrap !important;
+
+    overflow:
+      hidden !important;
+
+    text-overflow:
+      ellipsis !important;
+  }
+
+
+  /* =====================================================
+     DATE
+     ===================================================== */
+
+  .admin-purchases-date {
+    font-size:
+      9px !important;
+
+    line-height:
+      1.15 !important;
+
+    white-space:
+      normal !important;
+  }
+
 }

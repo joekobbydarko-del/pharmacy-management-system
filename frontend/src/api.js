@@ -552,7 +552,7 @@ export async function getUserRefillRequests(
 
 
 /* =========================================================
-   APPOINTMENTS
+   PATIENT APPOINTMENTS
 ========================================================= */
 
 export async function createAppointment(
@@ -781,6 +781,7 @@ export async function markReminderComplete(
   );
 }
 
+
 /* =========================================================
    ADMIN DASHBOARD
 ========================================================= */
@@ -790,6 +791,77 @@ export async function getAdminDashboard() {
     "/admin/dashboard"
   );
 }
+
+
+/* =========================================================
+   ADMIN APPOINTMENTS
+========================================================= */
+
+export async function getAdminAppointments() {
+  return apiRequest(
+    "/admin/appointments"
+  );
+}
+
+
+export async function approveAdminAppointment(
+  appointmentId
+) {
+  return apiRequest(
+    `/admin/appointments/${appointmentId}/approve`,
+    {
+      method: "PATCH",
+    }
+  );
+}
+
+
+export async function rejectAdminAppointment(
+  appointmentId
+) {
+  return apiRequest(
+    `/admin/appointments/${appointmentId}/reject`,
+    {
+      method: "PATCH",
+    }
+  );
+}
+
+
+export async function rescheduleAdminAppointment(
+  appointmentId,
+  appointmentDate,
+  appointmentTime
+) {
+  return apiRequest(
+    `/admin/appointments/${appointmentId}/reschedule`,
+    {
+      method: "PATCH",
+
+      body: JSON.stringify({
+        appointment_date:
+          appointmentDate,
+
+        appointment_time:
+          appointmentTime,
+      }),
+    }
+  );
+}
+
+
+export async function completeAdminAppointment(
+  appointmentId
+) {
+  return apiRequest(
+    `/admin/appointments/${appointmentId}/complete`,
+    {
+      method: "PATCH",
+    }
+  );
+}
+
+
 /* =========================================================
    ADMIN PATIENTS
 ========================================================= */
@@ -826,6 +898,8 @@ export async function updateAdminPatientStatus(
     }
   );
 }
+
+
 /* =========================================================
    ADMIN INVENTORY
 ========================================================= */
@@ -845,6 +919,8 @@ export async function syncAdminInventory() {
     }
   );
 }
+
+
 /* =========================================================
    ADMIN POS
 ========================================================= */
@@ -863,6 +939,7 @@ export async function checkoutAdminPOS(
     "/admin/pos/checkout",
     {
       method: "POST",
+
       body: JSON.stringify(
         payload
       ),
@@ -876,6 +953,8 @@ export async function getAdminPOSSales() {
     "/admin/pos/sales"
   );
 }
+
+
 /* =========================================================
    ADMIN SALES
 ========================================================= */
@@ -906,6 +985,8 @@ export async function getAdminDailySales() {
     "/admin/sales/daily"
   );
 }
+
+
 /* =========================================================
    ADMIN PURCHASES
 ========================================================= */
@@ -931,12 +1012,15 @@ export async function createAdminPurchase(
     "/admin/purchases",
     {
       method: "POST",
+
       body: JSON.stringify(
         payload
       ),
     }
   );
 }
+
+
 /* =========================================================
    ADMIN SUPPLIERS
 ========================================================= */
@@ -955,6 +1039,7 @@ export async function createAdminSupplier(
     "/admin/suppliers",
     {
       method: "POST",
+
       body: JSON.stringify(
         payload
       ),
@@ -971,6 +1056,7 @@ export async function updateAdminSupplierStatus(
     `/admin/suppliers/${supplierId}/status`,
     {
       method: "PATCH",
+
       body: JSON.stringify({
         is_active:
           Boolean(
@@ -980,6 +1066,7 @@ export async function updateAdminSupplierStatus(
     }
   );
 }
+
 
 /* =========================================================
    ADMIN REPORTS
@@ -1018,6 +1105,8 @@ export async function getAdminReportsTopProducts() {
     "/admin/reports/top-products"
   );
 }
+
+
 /* =========================================================
    ADMIN ALERTS
 ========================================================= */

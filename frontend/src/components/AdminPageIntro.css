@@ -1,0 +1,584 @@
+/* =========================================================
+   DR. EVANS PHARMACY
+   SHARED ADMIN PAGE INTRO
+   ========================================================= */
+
+.admin-page-intro {
+  --intro-accent: #18bfc0;
+  --intro-accent-deep: #078f8a;
+  --intro-soft: #e5f9f8;
+
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
+
+  padding:
+    23px
+    25px;
+
+  border:
+    1px solid
+    #d8e8eb;
+
+  border-radius:
+    20px;
+
+  background:
+    linear-gradient(
+      110deg,
+      var(--intro-soft) 0%,
+      #f7fcfd 47%,
+      #ffffff 100%
+    );
+
+  box-shadow:
+    0 10px 28px
+    rgba(
+      15,
+      47,
+      70,
+      0.055
+    );
+}
+
+
+/* =========================================================
+   ACCENT VARIANTS
+   ========================================================= */
+
+.admin-page-intro--teal {
+  --intro-accent: #18bfc0;
+  --intro-accent-deep: #078f8a;
+  --intro-soft: #e3f9f8;
+}
+
+
+.admin-page-intro--blue {
+  --intro-accent: #4c8fd0;
+  --intro-accent-deep: #3979b3;
+  --intro-soft: #eaf3fc;
+}
+
+
+.admin-page-intro--green {
+  --intro-accent: #48a57c;
+  --intro-accent-deep: #368361;
+  --intro-soft: #e9f6ef;
+}
+
+
+.admin-page-intro--violet {
+  --intro-accent: #7767c7;
+  --intro-accent-deep: #6252b3;
+  --intro-soft: #f0eefb;
+}
+
+
+.admin-page-intro--amber {
+  --intro-accent: #dc962e;
+  --intro-accent-deep: #bb7615;
+  --intro-soft: #fff4e4;
+}
+
+
+.admin-page-intro--rose {
+  --intro-accent: #d36972;
+  --intro-accent-deep: #b6535c;
+  --intro-soft: #fbecef;
+}
+
+
+/* =========================================================
+   DECORATIVE BACKGROUND
+   ========================================================= */
+
+.admin-page-intro::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--intro-accent) 0%,
+      color-mix(
+        in srgb,
+        var(--intro-accent) 60%,
+        transparent
+      ) 42%,
+      transparent 100%
+    );
+}
+
+
+.admin-page-intro__decor {
+  position: absolute;
+
+  pointer-events: none;
+
+  border-radius: 50%;
+}
+
+
+.admin-page-intro__decor--one {
+  width: 260px;
+  height: 260px;
+
+  top: -165px;
+  right: 250px;
+
+  background:
+    radial-gradient(
+      circle,
+      color-mix(
+        in srgb,
+        var(--intro-accent) 12%,
+        transparent
+      ),
+      transparent 70%
+    );
+}
+
+
+.admin-page-intro__decor--two {
+  width: 210px;
+  height: 210px;
+
+  left: -105px;
+  bottom: -145px;
+
+  background:
+    radial-gradient(
+      circle,
+      color-mix(
+        in srgb,
+        var(--intro-accent) 9%,
+        transparent
+      ),
+      transparent 72%
+    );
+}
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.admin-page-intro__content {
+  position: relative;
+
+  z-index: 2;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 28px;
+}
+
+
+.admin-page-intro__copy {
+  flex: 1;
+
+  min-width: 0;
+}
+
+
+/* =========================================================
+   EYEBROW
+   ========================================================= */
+
+.admin-page-intro__eyebrow {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color:
+    var(--intro-accent-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--intro-accent-deep) !important;
+
+  font-size: 13px;
+
+  font-weight: 900;
+
+  letter-spacing: 1.7px;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.admin-page-intro__title {
+  margin: 0;
+
+  color: #0f2f46 !important;
+
+  -webkit-text-fill-color:
+    #0f2f46 !important;
+
+  font-size:
+    clamp(
+      42px,
+      3.6vw,
+      56px
+    );
+
+  font-weight: 900;
+
+  line-height: 1;
+
+  letter-spacing: -1.35px;
+}
+
+
+/* =========================================================
+   SUBTITLE
+   ========================================================= */
+
+.admin-page-intro__subtitle {
+  max-width: 760px;
+
+  margin:
+    10px
+    0
+    0;
+
+  color:
+    var(--intro-accent-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--intro-accent-deep) !important;
+
+  font-size: 17px;
+
+  font-weight: 750;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   DATE / TIME AREA
+   ========================================================= */
+
+.admin-page-intro__time {
+  flex-shrink: 0;
+}
+
+
+.admin-page-intro__time
+.admin-live-date-time {
+  min-width: 300px;
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--intro-accent) 25%,
+      #d8e7ea
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
+
+  box-shadow:
+    0 8px 22px
+    rgba(
+      15,
+      47,
+      70,
+      0.055
+    );
+
+  backdrop-filter:
+    blur(10px);
+
+  -webkit-backdrop-filter:
+    blur(10px);
+}
+
+
+.admin-page-intro__time
+.admin-live-date-time__icon {
+  background:
+    color-mix(
+      in srgb,
+      var(--intro-accent) 14%,
+      white
+    );
+
+  color:
+    var(--intro-accent-deep);
+}
+
+
+.admin-page-intro__time
+.admin-live-date-time__copy
+strong {
+  color: #0f2f46 !important;
+
+  -webkit-text-fill-color:
+    #0f2f46 !important;
+}
+
+
+.admin-page-intro__time
+.admin-live-date-time__copy
+> span {
+  color:
+    var(--intro-accent-deep) !important;
+
+  -webkit-text-fill-color:
+    var(--intro-accent-deep) !important;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-page-intro {
+  border-color: #1d5a67;
+
+  background:
+    linear-gradient(
+      110deg,
+      color-mix(
+        in srgb,
+        var(--intro-accent) 12%,
+        #0d4653
+      ) 0%,
+      #0b3d49 54%,
+      #0d4653 100%
+    );
+
+  box-shadow:
+    0 10px 28px
+    rgba(
+      0,
+      0,
+      0,
+      0.14
+    );
+}
+
+
+[data-admin-theme="dark"]
+.admin-page-intro__title {
+  color: #f4fbfc !important;
+
+  -webkit-text-fill-color:
+    #f4fbfc !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-page-intro__eyebrow,
+
+[data-admin-theme="dark"]
+.admin-page-intro__subtitle {
+  color:
+    color-mix(
+      in srgb,
+      var(--intro-accent) 72%,
+      white
+    ) !important;
+
+  -webkit-text-fill-color:
+    color-mix(
+      in srgb,
+      var(--intro-accent) 72%,
+      white
+    ) !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-page-intro__time
+.admin-live-date-time {
+  border-color:
+    #295d69;
+
+  background:
+    rgba(
+      10,
+      61,
+      73,
+      0.92
+    );
+}
+
+
+[data-admin-theme="dark"]
+.admin-page-intro__time
+.admin-live-date-time__icon {
+  background:
+    color-mix(
+      in srgb,
+      var(--intro-accent) 14%,
+      #083944
+    );
+
+  color:
+    color-mix(
+      in srgb,
+      var(--intro-accent) 74%,
+      white
+    );
+}
+
+
+[data-admin-theme="dark"]
+.admin-page-intro__time
+.admin-live-date-time__copy
+strong {
+  color: #f4fbfc !important;
+
+  -webkit-text-fill-color:
+    #f4fbfc !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-page-intro__time
+.admin-live-date-time__copy
+> span {
+  color:
+    color-mix(
+      in srgb,
+      var(--intro-accent) 76%,
+      white
+    ) !important;
+
+  -webkit-text-fill-color:
+    color-mix(
+      in srgb,
+      var(--intro-accent) 76%,
+      white
+    ) !important;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .admin-page-intro {
+    padding:
+      21px
+      22px;
+  }
+
+
+  .admin-page-intro__content {
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 18px;
+  }
+
+
+  .admin-page-intro__time {
+    width: 100%;
+  }
+
+
+  .admin-page-intro__time
+  .admin-live-date-time {
+    width: 100%;
+
+    min-width: 0;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .admin-page-intro {
+    padding:
+      19px
+      17px;
+
+    border-radius:
+      17px;
+  }
+
+
+  .admin-page-intro__eyebrow {
+    font-size:
+      11px;
+
+    letter-spacing:
+      1.35px;
+  }
+
+
+  .admin-page-intro__title {
+    font-size:
+      38px;
+  }
+
+
+  .admin-page-intro__subtitle {
+    font-size:
+      15px;
+  }
+
+
+  .admin-page-intro__decor--one {
+    right:
+      -70px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL PHONE
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+  .admin-page-intro__title {
+    font-size:
+      34px;
+  }
+
+
+  .admin-page-intro__subtitle {
+    font-size:
+      14px;
+  }
+
+}

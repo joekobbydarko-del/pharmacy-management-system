@@ -1,280 +1,3892 @@
+/* =========================================================
+   DR. EVANS PHARMACY
+   ADMIN SUPPLIERS
+
+   COMPLETE REWRITTEN STYLESHEET
+
+   DESKTOP GOAL:
+   80% → 150% ZOOM
+
+   - CLEAN KPI CARDS
+   - ADD SUPPLIER
+   - SUPPLIER DIRECTORY
+   - DARK MODE
+   - STRONG GREEN DARK SURFACES
+   - DIRECTORY TABLE FITS DESKTOP
+   - NO DESKTOP HORIZONTAL SCROLLBAR
+   - MOBILE SCROLL ONLY WHEN NECESSARY
+   ========================================================= */
+
+
+/* =========================================================
+   ROOT VARIABLES
+   ========================================================= */
+
 .admin-suppliers-page {
-  padding: 40px 28px 28px;
-}
+  --sup-card: #ffffff;
+  --sup-soft: #f7fbfc;
+  --sup-soft-2: #edf6f8;
 
-.admin-suppliers-header {
-  margin-bottom: 22px;
-}
+  --sup-border: #d8e7ea;
+  --sup-border-soft: #e6eff1;
 
-.admin-suppliers-eyebrow {
-  margin: 0 0 6px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: #0f766e;
-}
+  --sup-heading: #0f2f46;
+  --sup-text: #365664;
+  --sup-muted: #6f8893;
 
-.admin-suppliers-header h1 {
+  --sup-teal: #18aaa5;
+  --sup-teal-soft: #e1f8f6;
+
+  --sup-green: #3b9472;
+  --sup-green-soft: #e8f5ef;
+
+  --sup-red: #c95050;
+  --sup-red-soft: #ffeded;
+
+  --sup-orange: #d88924;
+  --sup-orange-soft: #fff2df;
+
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
   margin: 0;
-  font-size: 30px;
-  font-weight: 800;
-  color: #0f172a;
+
+  padding:
+    10px
+    14px
+    24px;
+
+  box-sizing: border-box;
+
+  overflow-x: hidden;
+
+  color:
+    var(--sup-text);
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
-.admin-suppliers-subtitle {
-  margin: 8px 0 0;
-  color: #64748b;
+
+.admin-suppliers-page *,
+.admin-suppliers-page *::before,
+.admin-suppliers-page *::after {
+  box-sizing: border-box;
 }
+
+
+.admin-suppliers-page::-webkit-scrollbar,
+.admin-suppliers-table-wrap::-webkit-scrollbar,
+.admin-suppliers-textarea-wrap textarea::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+
+  display: none;
+}
+
+
+.admin-suppliers-page
+> .admin-page-intro {
+  margin-bottom:
+    17px;
+}
+
+
+/* =========================================================
+   DARK VARIABLES
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-suppliers-page {
+  --sup-card: #0d4653;
+  --sup-soft: #0a3d49;
+  --sup-soft-2: #104b57;
+
+  --sup-border: #1d5a67;
+  --sup-border-soft: #28525e;
+
+  --sup-heading: #f4fbfc;
+  --sup-text: #d8e8eb;
+  --sup-muted: #a3bdc4;
+
+  --sup-teal: #5de0d9;
+  --sup-teal-soft:
+    rgba(37, 212, 212, 0.13);
+
+  --sup-green: #8de0ba;
+  --sup-green-soft:
+    rgba(64, 167, 125, 0.14);
+
+  --sup-red: #ff9c9c;
+  --sup-red-soft:
+    rgba(201, 80, 80, 0.15);
+
+  --sup-orange: #f3bb68;
+  --sup-orange-soft:
+    rgba(216, 137, 36, 0.16);
+}
+
+
+/* =========================================================
+   MESSAGES
+   ========================================================= */
 
 .admin-suppliers-message {
-  margin-bottom: 18px;
-  padding: 12px 14px;
-  border-radius: 10px;
-  font-weight: 600;
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  margin-bottom:
+    14px;
+
+  padding:
+    13px
+    15px;
+
+  border-radius:
+    13px;
+
+  font-size:
+    13px;
+
+  font-weight:
+    800;
 }
+
 
 .admin-suppliers-message.error {
-  background: #fee2e2;
-  color: #991b1b;
+  border:
+    1px solid
+    rgba(201, 80, 80, 0.2);
+
+  background:
+    var(--sup-red-soft);
+
+  color:
+    var(--sup-red);
 }
+
 
 .admin-suppliers-message.success {
-  background: #dcfce7;
-  color: #166534;
+  border:
+    1px solid
+    rgba(59, 148, 114, 0.2);
+
+  background:
+    var(--sup-green-soft);
+
+  color:
+    var(--sup-green);
 }
+
+
+/* =========================================================
+   KPI GRID
+   ========================================================= */
 
 .admin-suppliers-stats {
+  width: 100%;
+
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
-  margin-bottom: 20px;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap:
+    14px;
+
+  margin-bottom:
+    16px;
 }
+
+
+/* =========================================================
+   KPI CARD
+   DASHBOARD CARD LOGIC
+   ========================================================= */
 
 .admin-suppliers-stat {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 18px;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  --stat-accent:
+    var(--sup-teal);
+
+  --stat-soft:
+    var(--sup-teal-soft);
+
+  position: relative;
+
+  min-width: 0;
+  min-height: 132px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap:
+    17px;
+
+  padding:
+    20px
+    21px;
+
+  overflow: hidden;
+
+  isolation: isolate;
+
+  border:
+    1px solid
+    var(--sup-border);
+
+  border-radius:
+    17px;
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    0
+    9px
+    26px
+    rgba(15, 47, 70, 0.045);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.admin-suppliers-stat span {
+
+/* =========================================================
+   KPI TOP ACCENT
+   ========================================================= */
+
+.admin-suppliers-stat::before {
+  content: "";
+
+  position: absolute;
+
+  z-index: 1;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--stat-accent) 0%,
+      color-mix(
+        in srgb,
+        var(--stat-accent) 45%,
+        transparent
+      ) 58%,
+      transparent 100%
+    );
+
+  pointer-events: none;
+}
+
+
+.admin-suppliers-stat
+> .admin-suppliers-stat-accent {
+  position: absolute;
+
+  z-index: 1;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  flex: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--stat-accent) 0%,
+      color-mix(
+        in srgb,
+        var(--stat-accent) 45%,
+        transparent
+      ) 58%,
+      transparent 100%
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   KPI GLOW
+   ========================================================= */
+
+.admin-suppliers-stat::after {
+  content: "";
+
+  position: absolute;
+
+  z-index: 0;
+
+  right: -48px;
+  bottom: -63px;
+
+  width:
+    150px;
+
+  height:
+    150px;
+
+  border-radius:
+    50%;
+
+  background:
+    radial-gradient(
+      circle,
+      color-mix(
+        in srgb,
+        var(--stat-accent) 16%,
+        transparent
+      ) 0%,
+      transparent 72%
+    );
+
+  opacity: 0;
+
+  transform:
+    scale(0.86);
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* =========================================================
+   KPI COLORS
+   ========================================================= */
+
+.admin-suppliers-stat--teal {
+  --stat-accent:
+    var(--sup-teal);
+
+  --stat-soft:
+    var(--sup-teal-soft);
+}
+
+
+.admin-suppliers-stat--green {
+  --stat-accent:
+    var(--sup-green);
+
+  --stat-soft:
+    var(--sup-green-soft);
+}
+
+
+.admin-suppliers-stat--red {
+  --stat-accent:
+    var(--sup-red);
+
+  --stat-soft:
+    var(--sup-red-soft);
+}
+
+
+/* =========================================================
+   KPI ICON
+   ========================================================= */
+
+.admin-suppliers-stat-icon {
+  position: relative;
+
+  z-index: 2;
+
+  width:
+    56px;
+
+  height:
+    56px;
+
+  flex:
+    0
+    0
+    56px;
+
+  display: grid;
+
+  place-items: center;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--stat-accent) 14%,
+      transparent
+    );
+
+  border-radius:
+    15px;
+
+  background:
+    var(--stat-soft);
+
+  color:
+    var(--stat-accent);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.admin-suppliers-stat-icon svg {
+  width:
+    21px;
+
+  height:
+    21px;
+}
+
+
+/* =========================================================
+   KPI COPY
+   ========================================================= */
+
+.admin-suppliers-stat-copy {
+  position: relative;
+
+  z-index: 2;
+
+  min-width: 0;
+
+  flex: 1;
+}
+
+
+.admin-suppliers-stat-copy
+> span {
   display: block;
-  margin-bottom: 8px;
-  font-size: 13px;
-  color: #64748b;
+
+  color:
+    #607c88 !important;
+
+  -webkit-text-fill-color:
+    #607c88 !important;
+
+  font-size:
+    12px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.75px;
+
+  line-height:
+    1.2;
+
+  text-transform:
+    uppercase;
+
+  transition:
+    color 0.2s ease;
 }
 
-.admin-suppliers-stat strong {
-  font-size: 26px;
-  color: #0f172a;
+
+.admin-suppliers-stat-copy
+strong {
+  display: block;
+
+  margin-top:
+    5px;
+
+  color:
+    #0f2f46 !important;
+
+  -webkit-text-fill-color:
+    #0f2f46 !important;
+
+  font-size:
+    35px;
+
+  font-weight:
+    900;
+
+  line-height:
+    1;
 }
+
+
+.admin-suppliers-stat-copy
+small {
+  display: block;
+
+  margin-top:
+    8px;
+
+  color:
+    #708994 !important;
+
+  -webkit-text-fill-color:
+    #708994 !important;
+
+  font-size:
+    13px;
+
+  font-weight:
+    650;
+
+  line-height:
+    1.4;
+}
+
+
+/* =========================================================
+   KPI HOVER
+   ========================================================= */
+
+.admin-suppliers-stat:hover {
+  transform:
+    translateY(-3px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--stat-accent) 48%,
+      #dce8eb
+    );
+
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(
+        in srgb,
+        var(--stat-soft) 60%,
+        #ffffff
+      ) 0%,
+      color-mix(
+        in srgb,
+        var(--stat-soft) 22%,
+        #ffffff
+      ) 58%,
+      #ffffff 100%
+    );
+
+  box-shadow:
+    0
+    16px
+    34px
+    color-mix(
+      in srgb,
+      var(--stat-accent) 11%,
+      rgba(15, 47, 70, 0.04)
+    );
+}
+
+
+.admin-suppliers-stat:hover::after {
+  opacity:
+    1;
+
+  transform:
+    scale(1);
+}
+
+
+.admin-suppliers-stat:hover
+.admin-suppliers-stat-icon {
+  transform:
+    translateY(-1px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--stat-accent) 34%,
+      transparent
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--stat-soft) 90%,
+      #ffffff
+    );
+
+  color:
+    var(--stat-accent);
+
+  box-shadow:
+    0
+    8px
+    20px
+    color-mix(
+      in srgb,
+      var(--stat-accent) 12%,
+      transparent
+    );
+}
+
+
+.admin-suppliers-stat:hover
+.admin-suppliers-stat-copy
+> span {
+  color:
+    var(--stat-accent) !important;
+
+  -webkit-text-fill-color:
+    var(--stat-accent) !important;
+}
+
+
+/* =========================================================
+   DARK KPI
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-suppliers-stat {
+  border-color:
+    #263a50;
+
+  background:
+    linear-gradient(
+      145deg,
+      #101a2f 0%,
+      #0f192d 100%
+    );
+
+  box-shadow:
+    0
+    9px
+    28px
+    rgba(0, 0, 0, 0.14);
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-stat-copy
+> span {
+  color:
+    #a5bdc8 !important;
+
+  -webkit-text-fill-color:
+    #a5bdc8 !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-stat-copy
+strong {
+  color:
+    #ffffff !important;
+
+  -webkit-text-fill-color:
+    #ffffff !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-stat-copy
+small {
+  color:
+    #a8bdc7 !important;
+
+  -webkit-text-fill-color:
+    #a8bdc7 !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-stat-icon {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--stat-accent) 22%,
+      #263a50
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--stat-accent) 11%,
+      #17253a
+    );
+
+  color:
+    color-mix(
+      in srgb,
+      var(--stat-accent) 70%,
+      #ffffff
+    );
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-stat:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--stat-accent) 56%,
+      #2a4258
+    );
+
+  background:
+    linear-gradient(
+      135deg,
+      color-mix(
+        in srgb,
+        var(--stat-accent) 20%,
+        #112036
+      ) 0%,
+      color-mix(
+        in srgb,
+        var(--stat-accent) 10%,
+        #101b30
+      ) 58%,
+      #101a2f 100%
+    );
+}
+
+
+/* =========================================================
+   MAIN GRID
+   ========================================================= */
 
 .admin-suppliers-grid {
+  width: 100%;
+
+  min-width: 0;
+
   display: grid;
-  grid-template-columns: minmax(320px, 0.75fr) minmax(0, 1.25fr);
-  gap: 20px;
+
+  grid-template-columns:
+    minmax(350px, 0.72fr)
+    minmax(0, 1.28fr);
+
+  align-items:
+    stretch;
+
+  gap:
+    14px;
 }
+
+
+/* =========================================================
+   SHARED CARD
+   ========================================================= */
 
 .admin-suppliers-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 18px;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+  --card-accent:
+    var(--sup-teal);
+
+  --card-soft:
+    var(--sup-teal-soft);
+
+  width: 100%;
+
+  min-width: 0;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    var(--sup-border);
+
+  border-radius:
+    17px;
+
+  background:
+    var(--sup-card);
+
+  box-shadow:
+    0
+    9px
+    26px
+    rgba(15, 47, 70, 0.045);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-.admin-suppliers-card h2 {
-  margin: 0 0 16px;
-  font-size: 18px;
-  color: #0f172a;
+
+.admin-suppliers-form-card {
+  --card-accent:
+    var(--sup-teal);
+
+  --card-soft:
+    var(--sup-teal-soft);
 }
+
+
+.admin-suppliers-list-card {
+  --card-accent:
+    var(--sup-orange);
+
+  --card-soft:
+    var(--sup-orange-soft);
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  min-width: 0;
+}
+
+
+.admin-suppliers-card:hover {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--card-accent) 52%,
+      var(--sup-border)
+    );
+
+  box-shadow:
+    0
+    15px
+    35px
+    color-mix(
+      in srgb,
+      var(--card-accent) 10%,
+      transparent
+    );
+}
+
+
+/* =========================================================
+   ADD SUPPLIER HEADER
+   ========================================================= */
+
+.admin-suppliers-card-header {
+  position: relative;
+
+  min-height:
+    92px;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  padding:
+    17px
+    18px;
+
+  border-bottom:
+    1px solid
+    var(--sup-border-soft);
+
+  background:
+    linear-gradient(
+      110deg,
+      var(--card-soft),
+      rgba(255, 255, 255, 0.97) 50%,
+      #ffffff
+    );
+}
+
+
+.admin-suppliers-card-header::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--card-accent),
+      color-mix(
+        in srgb,
+        var(--card-accent) 45%,
+        transparent
+      ),
+      transparent
+    );
+}
+
+
+/* =========================================================
+   DIRECTORY HEADER
+   ========================================================= */
+
+.admin-suppliers-list-header {
+  position: relative;
+
+  min-height:
+    94px;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(220px, 1fr)
+    minmax(260px, 420px)
+    auto;
+
+  grid-template-areas:
+    "title search count";
+
+  align-items:
+    center;
+
+  gap:
+    16px;
+
+  padding:
+    17px
+    18px;
+
+  border-bottom:
+    1px solid
+    var(--sup-border-soft);
+
+  background:
+    linear-gradient(
+      110deg,
+      var(--sup-orange-soft) 0%,
+      rgba(255, 255, 255, 0.97) 50%,
+      #ffffff 100%
+    );
+}
+
+
+.admin-suppliers-list-header::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 4px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--sup-orange),
+      color-mix(
+        in srgb,
+        var(--sup-orange) 48%,
+        transparent
+      ),
+      transparent
+    );
+}
+
+
+.admin-suppliers-list-header::after {
+  content: "";
+
+  position: absolute;
+
+  top:
+    -65px;
+
+  left:
+    -35px;
+
+  width:
+    165px;
+
+  height:
+    140px;
+
+  border-radius:
+    50%;
+
+  background:
+    radial-gradient(
+      circle,
+      color-mix(
+        in srgb,
+        var(--sup-orange) 10%,
+        transparent
+      ),
+      transparent 72%
+    );
+
+  pointer-events:
+    none;
+}
+
+
+/* =========================================================
+   HEADER COPY
+   ========================================================= */
+
+.admin-suppliers-card-header-copy {
+  position: relative;
+
+  z-index: 2;
+
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap:
+    12px;
+}
+
+
+.admin-suppliers-list-header
+.admin-suppliers-card-header-copy {
+  grid-area:
+    title;
+}
+
+
+.admin-suppliers-card-icon {
+  width:
+    49px;
+
+  height:
+    49px;
+
+  flex:
+    0
+    0
+    49px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--card-accent) 20%,
+      transparent
+    );
+
+  border-radius:
+    14px;
+
+  background:
+    var(--card-soft);
+
+  color:
+    var(--card-accent);
+}
+
+
+.admin-suppliers-list-card
+.admin-suppliers-card-icon {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--sup-orange) 22%,
+      transparent
+    );
+
+  background:
+    var(--sup-orange-soft);
+
+  color:
+    var(--sup-orange);
+}
+
+
+.admin-suppliers-card-header-copy
+> div:last-child {
+  min-width: 0;
+}
+
+
+.admin-suppliers-card-header-copy
+span {
+  display: block;
+
+  margin-bottom:
+    4px;
+
+  color:
+    var(--card-accent) !important;
+
+  -webkit-text-fill-color:
+    var(--card-accent) !important;
+
+  font-size:
+    11px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    1px;
+
+  text-transform:
+    uppercase;
+}
+
+
+.admin-suppliers-list-card
+.admin-suppliers-card-header-copy
+span {
+  color:
+    var(--sup-orange) !important;
+
+  -webkit-text-fill-color:
+    var(--sup-orange) !important;
+}
+
+
+.admin-suppliers-card-header-copy
+h2 {
+  margin: 0;
+
+  color:
+    var(--sup-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--sup-heading) !important;
+
+  font-size:
+    clamp(
+      22px,
+      1.65vw,
+      27px
+    );
+
+  font-weight:
+    900;
+
+  line-height:
+    1.08;
+}
+
+
+.admin-suppliers-card-header-copy
+p {
+  max-width:
+    34ch;
+
+  margin:
+    5px
+    0
+    0;
+
+  color:
+    var(--sup-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--sup-muted) !important;
+
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.4;
+}
+
+
+/* =========================================================
+   ADD SUPPLIER FORM
+   ========================================================= */
 
 .admin-suppliers-form {
   display: grid;
-  gap: 12px;
+
+  gap:
+    11px;
+
+  padding:
+    14px
+    15px
+    15px;
 }
 
-.admin-suppliers-form label {
+
+.admin-suppliers-form
+label {
+  min-width: 0;
+
   display: grid;
-  gap: 6px;
-  font-size: 13px;
-  color: #475569;
+
+  gap:
+    7px;
 }
 
-.admin-suppliers-form input,
-.admin-suppliers-form textarea,
-.admin-suppliers-list-header input {
+
+.admin-suppliers-form
+label
+> span {
+  color:
+    var(--sup-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--sup-muted) !important;
+
+  font-size:
+    11px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.55px;
+
+  text-transform:
+    uppercase;
+}
+
+
+/* =========================================================
+   FORM INPUT WRAPPER
+   ========================================================= */
+
+.admin-suppliers-page
+.admin-suppliers-input-wrap {
+  min-height:
+    48px;
+
+  display: grid;
+
+  grid-template-columns:
+    auto
+    minmax(0, 1fr);
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  padding:
+    0
+    11px;
+
+  overflow:
+    hidden;
+
+  border:
+    1.5px solid
+    #d6e5e8 !important;
+
+  border-radius:
+    12px;
+
+  background:
+    #ffffff !important;
+
+  color:
+    var(--sup-teal);
+
+  color-scheme:
+    light !important;
+}
+
+
+.admin-suppliers-input-wrap
+svg {
+  color:
+    var(--sup-teal);
+}
+
+
+.admin-suppliers-page
+.admin-suppliers-input-wrap:focus-within {
+  border-color:
+    var(--sup-teal) !important;
+
+  box-shadow:
+    0
+    0
+    0
+    4px
+    rgba(24, 170, 165, 0.08) !important;
+}
+
+
+/* =========================================================
+   FORM INPUT / TEXTAREA
+   ========================================================= */
+
+.admin-suppliers-page
+.admin-suppliers-input-wrap
+input,
+
+.admin-suppliers-page
+.admin-suppliers-input-wrap
+textarea {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #0f172a;
-  outline: none;
+
+  min-width: 0;
+
+  border:
+    0 !important;
+
+  outline:
+    0 !important;
+
+  background:
+    #ffffff !important;
+
+  background-color:
+    #ffffff !important;
+
+  color:
+    #123846 !important;
+
+  -webkit-text-fill-color:
+    #123846 !important;
+
+  caret-color:
+    var(--sup-teal);
+
+  box-shadow:
+    none !important;
+
+  font-family:
+    inherit;
+
+  font-size:
+    14px;
+
+  font-weight:
+    800;
+
+  color-scheme:
+    light !important;
 }
 
-.admin-suppliers-form textarea {
-  min-height: 90px;
-  resize: vertical;
+
+.admin-suppliers-input-wrap
+input {
+  height:
+    46px;
+
+  text-align:
+    center;
 }
 
-.admin-suppliers-form input:focus,
-.admin-suppliers-form textarea:focus,
-.admin-suppliers-list-header input:focus {
-  border-color: #0f766e;
+
+.admin-suppliers-textarea-wrap {
+  min-height:
+    108px;
+
+  align-items:
+    stretch;
 }
 
-.admin-suppliers-form button {
-  margin-top: 4px;
-  border: 0;
-  border-radius: 10px;
-  padding: 12px 14px;
-  background: #0f766e;
-  color: #ffffff;
-  font-weight: 700;
-  cursor: pointer;
+
+.admin-suppliers-input-wrap
+textarea {
+  min-height:
+    100px;
+
+  max-height:
+    150px;
+
+  padding:
+    14px
+    10px;
+
+  resize:
+    vertical;
+
+  text-align:
+    center;
+
+  scrollbar-width:
+    none;
 }
 
-.admin-suppliers-form button:hover {
-  background: #115e59;
+
+.admin-suppliers-textarea-wrap
+svg {
+  align-self:
+    flex-start;
+
+  margin-top:
+    15px;
 }
 
-.admin-suppliers-form button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+
+.admin-suppliers-input-wrap
+input::placeholder,
+
+.admin-suppliers-input-wrap
+textarea::placeholder {
+  color:
+    #6f858d !important;
+
+  -webkit-text-fill-color:
+    #6f858d !important;
+
+  opacity:
+    1 !important;
+
+  text-align:
+    center;
+
+  font-weight:
+    700;
 }
 
-.admin-suppliers-list-header {
+
+.admin-suppliers-textarea-wrap
+textarea:placeholder-shown {
+  padding-top:
+    37px;
+}
+
+
+/* =========================================================
+   FORM AUTOFILL
+   ========================================================= */
+
+.admin-suppliers-input-wrap
+input:-webkit-autofill,
+
+.admin-suppliers-input-wrap
+input:-webkit-autofill:hover,
+
+.admin-suppliers-input-wrap
+input:-webkit-autofill:focus {
+  -webkit-box-shadow:
+    0
+    0
+    0
+    1000px
+    #ffffff
+    inset !important;
+
+  box-shadow:
+    0
+    0
+    0
+    1000px
+    #ffffff
+    inset !important;
+
+  -webkit-text-fill-color:
+    #123846 !important;
+}
+
+
+/* =========================================================
+   ADD SUPPLIER BUTTON
+   ========================================================= */
+
+.admin-suppliers-submit-button {
+  width: 100%;
+
+  min-height:
+    49px;
+
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  margin-bottom: 16px;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    8px;
+
+  margin-top:
+    3px;
+
+  border:
+    1px solid
+    #0c9893;
+
+  border-radius:
+    12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #18bfc0,
+      #0c928d
+    );
+
+  color:
+    #ffffff;
+
+  font-family:
+    inherit;
+
+  font-size:
+    13px;
+
+  font-weight:
+    900;
+
+  cursor:
+    pointer;
+
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
-.admin-suppliers-list-header h2 {
-  margin: 0;
+
+.admin-suppliers-submit-button:hover:not(:disabled) {
+  transform:
+    translateY(-1px);
+
+  box-shadow:
+    0
+    9px
+    22px
+    rgba(24, 191, 192, 0.19);
 }
 
-.admin-suppliers-list-header span {
-  display: block;
-  margin-top: 4px;
-  font-size: 12px;
-  color: #94a3b8;
+
+.admin-suppliers-submit-button:disabled {
+  opacity:
+    0.5;
+
+  cursor:
+    not-allowed;
 }
 
-.admin-suppliers-list-header input {
-  width: min(100%, 260px);
+
+/* =========================================================
+   DIRECTORY SEARCH
+   ========================================================= */
+
+.admin-suppliers-search {
+  grid-area:
+    search;
+
+  position: relative;
+
+  z-index: 2;
+
+  width: 100%;
+
+  min-width: 0;
+
+  min-height:
+    47px;
+
+  display: grid;
+
+  grid-template-columns:
+    auto
+    minmax(0, 1fr)
+    auto;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  padding:
+    0
+    11px;
+
+  overflow:
+    hidden;
+
+  border:
+    1.5px solid
+    color-mix(
+      in srgb,
+      var(--sup-orange) 25%,
+      var(--sup-border)
+    ) !important;
+
+  border-radius:
+    12px;
+
+  background:
+    #ffffff !important;
+
+  color:
+    var(--sup-orange);
+
+  color-scheme:
+    light !important;
 }
+
+
+.admin-suppliers-search svg {
+  color:
+    var(--sup-orange);
+}
+
+
+.admin-suppliers-search:focus-within {
+  border-color:
+    var(--sup-orange) !important;
+
+  box-shadow:
+    0
+    0
+    0
+    4px
+    rgba(216, 137, 36, 0.09) !important;
+}
+
+
+.admin-suppliers-search
+input[type="search"] {
+  width: 100%;
+
+  min-width: 0;
+
+  height:
+    45px;
+
+  padding: 0;
+
+  border:
+    0 !important;
+
+  outline:
+    0 !important;
+
+  appearance:
+    none;
+
+  -webkit-appearance:
+    none;
+
+  background:
+    #ffffff !important;
+
+  background-color:
+    #ffffff !important;
+
+  background-image:
+    none !important;
+
+  color:
+    #123846 !important;
+
+  -webkit-text-fill-color:
+    #123846 !important;
+
+  caret-color:
+    var(--sup-orange);
+
+  box-shadow:
+    none !important;
+
+  font-family:
+    inherit;
+
+  font-size:
+    13px;
+
+  font-weight:
+    800;
+
+  text-align:
+    center;
+
+  color-scheme:
+    light !important;
+}
+
+
+.admin-suppliers-search
+input::placeholder {
+  color:
+    #718995 !important;
+
+  -webkit-text-fill-color:
+    #718995 !important;
+
+  opacity:
+    1 !important;
+
+  text-align:
+    center;
+}
+
+
+.admin-suppliers-search
+input[type="search"]::-webkit-search-cancel-button,
+
+.admin-suppliers-search
+input[type="search"]::-webkit-search-decoration {
+  display:
+    none;
+
+  -webkit-appearance:
+    none;
+}
+
+
+.admin-suppliers-search
+button {
+  width:
+    30px;
+
+  height:
+    30px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  padding: 0;
+
+  border:
+    0;
+
+  border-radius:
+    8px;
+
+  background:
+    var(--sup-orange-soft);
+
+  color:
+    var(--sup-orange);
+
+  font-size:
+    18px;
+
+  font-weight:
+    900;
+
+  cursor:
+    pointer;
+}
+
+
+/* =========================================================
+   DIRECTORY COUNT
+   ========================================================= */
+
+.admin-suppliers-count {
+  grid-area:
+    count;
+
+  position: relative;
+
+  z-index: 2;
+
+  min-height:
+    41px;
+
+  display: inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    6px;
+
+  padding:
+    0
+    11px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--sup-orange) 30%,
+      var(--sup-border)
+    );
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(255, 255, 255, 0.9);
+
+  color:
+    var(--sup-orange);
+
+  font-size:
+    11px;
+
+  font-weight:
+    900;
+
+  white-space:
+    nowrap;
+
+  justify-self:
+    end;
+}
+
+
+.admin-suppliers-count
+svg {
+  color:
+    var(--sup-orange);
+}
+
+
+/* =========================================================
+   SUPPLIER TABLE WRAPPER
+   ========================================================= */
 
 .admin-suppliers-table-wrap {
-  overflow-x: auto;
+  width: 100%;
+
+  max-width: 100%;
+
+  min-width: 0;
+
+  padding:
+    8px
+    10px
+    14px;
+
+  overflow-x:
+    hidden;
+
+  overflow-y:
+    hidden;
+
+  scrollbar-width:
+    none;
 }
+
+
+/* =========================================================
+   SUPPLIER TABLE
+   ========================================================= */
 
 .admin-suppliers-table {
-  width: 100%;
-  border-collapse: collapse;
-  min-width: 850px;
+  width:
+    100%;
+
+  max-width:
+    100%;
+
+  min-width:
+    0;
+
+  table-layout:
+    fixed;
+
+  border-collapse:
+    separate;
+
+  border-spacing:
+    0
+    8px;
 }
 
-.admin-suppliers-table th,
-.admin-suppliers-table td {
-  padding: 13px 14px;
-  text-align: left;
-  border-bottom: 1px solid #e2e8f0;
-  font-size: 14px;
+
+/* =========================================================
+   DIRECTORY COLUMN WIDTHS
+
+   1 Supplier
+   2 Contact
+   3 Phone
+   4 Email
+   5 Status
+   6 Action
+   ========================================================= */
+
+.admin-suppliers-table
+th:nth-child(1) {
+  width:
+    25%;
 }
 
-.admin-suppliers-table th {
-  background: #f8fafc;
-  color: #475569;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+
+.admin-suppliers-table
+th:nth-child(2) {
+  width:
+    16%;
 }
 
-.admin-suppliers-table td {
-  color: #0f172a;
+
+.admin-suppliers-table
+th:nth-child(3) {
+  width:
+    14%;
 }
 
-.admin-suppliers-table td:first-child {
+
+.admin-suppliers-table
+th:nth-child(4) {
+  width:
+    23%;
+}
+
+
+.admin-suppliers-table
+th:nth-child(5) {
+  width:
+    11%;
+}
+
+
+.admin-suppliers-table
+th:nth-child(6) {
+  width:
+    11%;
+}
+
+
+/* =========================================================
+   TABLE HEADER
+   ========================================================= */
+
+.admin-suppliers-table
+th {
+  min-width: 0;
+
+  padding:
+    10px
+    8px;
+
+  overflow:
+    hidden;
+
+  color:
+    var(--sup-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--sup-muted) !important;
+
+  font-size:
+    10px;
+
+  font-weight:
+    900;
+
+  letter-spacing:
+    0.55px;
+
+  line-height:
+    1.2;
+
+  text-align:
+    left;
+
+  text-transform:
+    uppercase;
+
+  white-space:
+    normal;
+}
+
+
+/* =========================================================
+   TABLE CELLS
+   ========================================================= */
+
+.admin-suppliers-table
+td {
+  min-width: 0;
+
+  padding:
+    12px
+    8px;
+
+  overflow:
+    hidden;
+
+  border-top:
+    1px solid
+    var(--sup-border-soft);
+
+  border-bottom:
+    1px solid
+    var(--sup-border-soft);
+
+  background:
+    var(--sup-soft);
+
+  color:
+    var(--sup-text) !important;
+
+  -webkit-text-fill-color:
+    var(--sup-text) !important;
+
+  font-size:
+    11px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.3;
+
+  vertical-align:
+    middle;
+
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease;
+}
+
+
+.admin-suppliers-table
+td:first-child {
+  border-left:
+    1px solid
+    var(--sup-border-soft);
+
+  border-radius:
+    12px
+    0
+    0
+    12px;
+}
+
+
+.admin-suppliers-table
+td:last-child {
+  border-right:
+    1px solid
+    var(--sup-border-soft);
+
+  border-radius:
+    0
+    12px
+    12px
+    0;
+
+  text-align:
+    center;
+}
+
+
+/* =========================================================
+   TABLE ROW HOVER
+   ========================================================= */
+
+.admin-suppliers-table
+tbody
+tr {
+  transition:
+    transform 0.16s ease;
+}
+
+
+.admin-suppliers-table
+tbody
+tr:hover {
+  transform:
+    translateY(-1px);
+}
+
+
+.admin-suppliers-table
+tbody
+tr:hover
+td {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--sup-orange) 24%,
+      var(--sup-border)
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--sup-orange-soft) 58%,
+      var(--sup-card)
+    );
+}
+
+
+/* =========================================================
+   SUPPLIER CELL
+   ========================================================= */
+
+.admin-suppliers-supplier-cell {
+  min-width: 0;
+
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
 }
 
-.admin-suppliers-table td:first-child small {
-  color: #94a3b8;
+
+.admin-suppliers-supplier-cell
+> div {
+  min-width:
+    0;
 }
+
+
+.admin-suppliers-row-icon {
+  width:
+    34px;
+
+  height:
+    34px;
+
+  flex:
+    0
+    0
+    34px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    10px;
+
+  background:
+    var(--sup-orange-soft);
+
+  color:
+    var(--sup-orange);
+}
+
+
+.admin-suppliers-supplier-cell
+strong {
+  display:
+    block;
+
+  max-width:
+    100%;
+
+  overflow:
+    hidden;
+
+  color:
+    var(--sup-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--sup-heading) !important;
+
+  font-size:
+    12px;
+
+  font-weight:
+    900;
+
+  line-height:
+    1.2;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+
+.admin-suppliers-supplier-cell
+small {
+  display:
+    block;
+
+  max-width:
+    100%;
+
+  margin-top:
+    3px;
+
+  overflow:
+    hidden;
+
+  color:
+    var(--sup-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--sup-muted) !important;
+
+  font-size:
+    9px;
+
+  font-weight:
+    700;
+
+  line-height:
+    1.2;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+
+/* =========================================================
+   CONTACT
+   ========================================================= */
+
+.admin-suppliers-contact-cell {
+  min-width: 0;
+
+  display: flex;
+
+  align-items:
+    center;
+
+  gap:
+    5px;
+
+  overflow:
+    hidden;
+
+  color:
+    var(--sup-text) !important;
+
+  -webkit-text-fill-color:
+    var(--sup-text) !important;
+
+  line-height:
+    1.25;
+}
+
+
+.admin-suppliers-contact-cell
+svg {
+  flex:
+    0
+    0
+    auto;
+
+  color:
+    var(--sup-orange);
+}
+
+
+.admin-suppliers-contact-cell
+span,
+.admin-suppliers-contact-cell
+strong {
+  min-width:
+    0;
+
+  overflow:
+    hidden;
+
+  text-overflow:
+    ellipsis;
+
+  white-space:
+    nowrap;
+}
+
+
+/* =========================================================
+   PHONE COLUMN
+   ========================================================= */
+
+.admin-suppliers-table
+td:nth-child(3) {
+  font-size:
+    10px;
+
+  white-space:
+    nowrap;
+
+  text-overflow:
+    ellipsis;
+}
+
+
+/* =========================================================
+   EMAIL COLUMN
+   ========================================================= */
+
+.admin-suppliers-table
+td:nth-child(4) {
+  min-width:
+    0;
+
+  font-size:
+    10px;
+
+  line-height:
+    1.2;
+
+  white-space:
+    normal;
+
+  overflow-wrap:
+    anywhere;
+
+  word-break:
+    normal;
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
 
 .supplier-status {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 5px 9px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
+  width: 100%;
+
+  max-width:
+    100%;
+
+  min-width:
+    0;
+
+  min-height:
+    32px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    4px;
+
+  padding:
+    5px
+    5px;
+
+  overflow:
+    hidden;
+
+  border-radius:
+    999px;
+
+  font-size:
+    9px;
+
+  font-weight:
+    900;
+
+  white-space:
+    nowrap;
+
+  text-overflow:
+    ellipsis;
 }
+
 
 .supplier-status.active {
-  background: #dcfce7;
-  color: #166534;
+  border:
+    1px solid
+    #b9dfcf;
+
+  background:
+    #ffffff;
+
+  color:
+    #208347 !important;
+
+  -webkit-text-fill-color:
+    #208347 !important;
 }
+
 
 .supplier-status.inactive {
-  background: #fee2e2;
-  color: #991b1b;
+  border:
+    1px solid
+    #efc5c5;
+
+  background:
+    #ffffff;
+
+  color:
+    var(--sup-red) !important;
+
+  -webkit-text-fill-color:
+    var(--sup-red) !important;
 }
+
+
+/* =========================================================
+   STATUS ACTION BUTTON
+   ========================================================= */
 
 .supplier-status-button {
-  border: 0;
-  border-radius: 8px;
-  padding: 8px 10px;
-  background: #f1f5f9;
-  color: #0f172a;
-  font-weight: 600;
-  cursor: pointer;
+  width: 100%;
+
+  min-width:
+    0;
+
+  min-height:
+    34px;
+
+  display:
+    inline-flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    4px;
+
+  padding:
+    0
+    5px;
+
+  overflow:
+    hidden;
+
+  border-radius:
+    9px;
+
+  font-family:
+    inherit;
+
+  font-size:
+    9px;
+
+  font-weight:
+    900;
+
+  white-space:
+    nowrap;
+
+  text-overflow:
+    ellipsis;
+
+  cursor:
+    pointer;
 }
 
-.supplier-status-button:hover {
-  background: #e2e8f0;
+
+.supplier-status-button.deactivate {
+  border:
+    1px solid
+    rgba(201, 80, 80, 0.24);
+
+  background:
+    var(--sup-red-soft);
+
+  color:
+    var(--sup-red);
 }
+
+
+.supplier-status-button.reactivate {
+  border:
+    1px solid
+    #b9dfcf;
+
+  background:
+    #ffffff;
+
+  color:
+    #208347;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.admin-suppliers-empty-cell {
+  padding:
+    0 !important;
+}
+
 
 .admin-suppliers-empty {
-  padding: 24px !important;
-  text-align: center !important;
-  color: #64748b;
+  min-height:
+    210px;
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    8px;
+
+  text-align:
+    center;
 }
+
+
+.admin-suppliers-empty-icon {
+  width:
+    52px;
+
+  height:
+    52px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    14px;
+
+  background:
+    var(--sup-orange-soft);
+
+  color:
+    var(--sup-orange);
+}
+
+
+.admin-suppliers-empty
+strong {
+  color:
+    var(--sup-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--sup-heading) !important;
+
+  font-size:
+    15px;
+
+  font-weight:
+    900;
+}
+
+
+.admin-suppliers-empty
+span {
+  color:
+    var(--sup-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--sup-muted) !important;
+
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
 
 .admin-suppliers-loading {
-  padding: 30px;
-  color: #64748b;
+  min-height:
+    450px;
+
+  display: flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    8px;
 }
 
-@media (max-width: 1100px) {
+
+.admin-suppliers-loading-icon {
+  width:
+    58px;
+
+  height:
+    58px;
+
+  display: grid;
+
+  place-items:
+    center;
+
+  border-radius:
+    17px;
+
+  background:
+    var(--sup-teal-soft);
+
+  color:
+    var(--sup-teal);
+}
+
+
+.admin-suppliers-loading
+strong {
+  color:
+    var(--sup-heading) !important;
+
+  -webkit-text-fill-color:
+    var(--sup-heading) !important;
+
+  font-size:
+    17px;
+
+  font-weight:
+    900;
+}
+
+
+.admin-suppliers-loading
+span {
+  color:
+    var(--sup-muted) !important;
+
+  -webkit-text-fill-color:
+    var(--sup-muted) !important;
+
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+}
+
+
+/* =========================================================
+   DARK MODE
+   STRONG GREEN CARD SURFACE
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-suppliers-card {
+  border-color:
+    #347263 !important;
+
+  background:
+    linear-gradient(
+      180deg,
+      #184d42 0%,
+      #123f38 100%
+    ) !important;
+
+  box-shadow:
+    0
+    10px
+    30px
+    rgba(0, 0, 0, 0.18) !important;
+}
+
+
+/* =========================================================
+   DARK ADD SUPPLIER HEADER
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-suppliers-form-card
+.admin-suppliers-card-header {
+  border-bottom-color:
+    #36776a !important;
+
+  background:
+    linear-gradient(
+      110deg,
+      color-mix(
+        in srgb,
+        var(--sup-teal) 13%,
+        #1b5a4d
+      ) 0%,
+      #174c43 58%,
+      #14443d 100%
+    ) !important;
+}
+
+
+/* =========================================================
+   DARK DIRECTORY HEADER
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-suppliers-list-header {
+  border-bottom-color:
+    #36776a !important;
+
+  background:
+    linear-gradient(
+      110deg,
+      color-mix(
+        in srgb,
+        var(--sup-orange) 13%,
+        #1b5a4d
+      ) 0%,
+      #174c43 58%,
+      #14443d 100%
+    ) !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-card-header-copy
+h2 {
+  color:
+    #f4fbfc !important;
+
+  -webkit-text-fill-color:
+    #f4fbfc !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-card-header-copy
+p {
+  color:
+    #b8ccca !important;
+
+  -webkit-text-fill-color:
+    #b8ccca !important;
+}
+
+
+/* =========================================================
+   DARK FORM ICON
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-suppliers-form-card
+.admin-suppliers-card-icon {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--sup-teal) 27%,
+      #36776a
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--sup-teal) 13%,
+      #103c37
+    );
+
+  color:
+    var(--sup-teal);
+}
+
+
+/* =========================================================
+   DARK DIRECTORY ICON
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-suppliers-list-card
+.admin-suppliers-card-icon {
+  border-color:
+    rgba(243, 187, 104, 0.28);
+
+  background:
+    rgba(216, 137, 36, 0.15);
+
+  color:
+    var(--sup-orange);
+}
+
+
+/* =========================================================
+   DARK FORM INPUTS
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-suppliers-page
+.admin-suppliers-input-wrap {
+  border-color:
+    #367269 !important;
+
+  background:
+    #103c37 !important;
+
+  color-scheme:
+    dark !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-page
+.admin-suppliers-input-wrap
+input,
+
+[data-admin-theme="dark"]
+.admin-suppliers-page
+.admin-suppliers-input-wrap
+textarea {
+  background:
+    #103c37 !important;
+
+  background-color:
+    #103c37 !important;
+
+  color:
+    #ffffff !important;
+
+  -webkit-text-fill-color:
+    #ffffff !important;
+
+  color-scheme:
+    dark !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-input-wrap
+input::placeholder,
+
+[data-admin-theme="dark"]
+.admin-suppliers-input-wrap
+textarea::placeholder {
+  color:
+    #b6cbd0 !important;
+
+  -webkit-text-fill-color:
+    #b6cbd0 !important;
+}
+
+
+/* =========================================================
+   DARK AUTOFILL
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-suppliers-input-wrap
+input:-webkit-autofill,
+
+[data-admin-theme="dark"]
+.admin-suppliers-input-wrap
+input:-webkit-autofill:hover,
+
+[data-admin-theme="dark"]
+.admin-suppliers-input-wrap
+input:-webkit-autofill:focus {
+  -webkit-box-shadow:
+    0
+    0
+    0
+    1000px
+    #103c37
+    inset !important;
+
+  box-shadow:
+    0
+    0
+    0
+    1000px
+    #103c37
+    inset !important;
+
+  -webkit-text-fill-color:
+    #ffffff !important;
+}
+
+
+/* =========================================================
+   DARK DIRECTORY SEARCH
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-suppliers-search {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--sup-orange) 34%,
+      #367269
+    ) !important;
+
+  background:
+    #103c37 !important;
+
+  color-scheme:
+    dark !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-search
+input[type="search"] {
+  background:
+    #103c37 !important;
+
+  background-color:
+    #103c37 !important;
+
+  color:
+    #ffffff !important;
+
+  -webkit-text-fill-color:
+    #ffffff !important;
+
+  color-scheme:
+    dark !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-search
+input::placeholder {
+  color:
+    #aec3c0 !important;
+
+  -webkit-text-fill-color:
+    #aec3c0 !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-search
+button {
+  border:
+    1px solid
+    rgba(243, 187, 104, 0.18);
+
+  background:
+    rgba(216, 137, 36, 0.12);
+
+  color:
+    var(--sup-orange);
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-count {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--sup-orange) 30%,
+      #367269
+    );
+
+  background:
+    #103c37;
+
+  color:
+    var(--sup-orange);
+}
+
+
+/* =========================================================
+   DARK DIRECTORY TABLE
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-suppliers-table
+th {
+  color:
+    #b7c9c6 !important;
+
+  -webkit-text-fill-color:
+    #b7c9c6 !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-table
+td {
+  border-color:
+    #39766c;
+
+  background:
+    #195249;
+
+  color:
+    #dcebea !important;
+
+  -webkit-text-fill-color:
+    #dcebea !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-table
+tbody
+tr:hover
+td {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--sup-orange) 38%,
+      #39766c
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--sup-orange) 7%,
+      #205d52
+    );
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-table
+td:first-child {
+  border-left-color:
+    #39766c;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-table
+td:last-child {
+  border-right-color:
+    #39766c;
+}
+
+
+/* =========================================================
+   DARK SUPPLIER COPY
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-suppliers-supplier-cell
+strong {
+  color:
+    #f4fbfc !important;
+
+  -webkit-text-fill-color:
+    #f4fbfc !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-supplier-cell
+small {
+  color:
+    #b5cac7 !important;
+
+  -webkit-text-fill-color:
+    #b5cac7 !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-contact-cell {
+  color:
+    #dcebea !important;
+
+  -webkit-text-fill-color:
+    #dcebea !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-row-icon {
+  background:
+    color-mix(
+      in srgb,
+      var(--sup-orange) 14%,
+      #195249
+    );
+
+  color:
+    var(--sup-orange);
+}
+
+
+/* =========================================================
+   DARK STATUS
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.supplier-status.active {
+  border-color:
+    rgba(141, 224, 186, 0.24);
+
+  background:
+    rgba(64, 167, 125, 0.14);
+
+  color:
+    #8de0ba !important;
+
+  -webkit-text-fill-color:
+    #8de0ba !important;
+}
+
+
+[data-admin-theme="dark"]
+.supplier-status.inactive {
+  border-color:
+    rgba(255, 156, 156, 0.24);
+
+  background:
+    rgba(201, 80, 80, 0.15);
+
+  color:
+    #ff9c9c !important;
+
+  -webkit-text-fill-color:
+    #ff9c9c !important;
+}
+
+
+[data-admin-theme="dark"]
+.supplier-status-button.reactivate {
+  border-color:
+    rgba(141, 224, 186, 0.24);
+
+  background:
+    rgba(64, 167, 125, 0.14);
+
+  color:
+    #8de0ba;
+}
+
+
+[data-admin-theme="dark"]
+.supplier-status-button.deactivate {
+  border-color:
+    rgba(255, 156, 156, 0.2);
+
+  background:
+    rgba(201, 80, 80, 0.14);
+
+  color:
+    #ff9c9c;
+}
+
+
+/* =========================================================
+   DARK CARD HOVER
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-suppliers-form-card:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--sup-teal) 45%,
+      #347263
+    ) !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-suppliers-list-card:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--sup-orange) 45%,
+      #347263
+    ) !important;
+}
+
+
+/* =========================================================
+   WIDE DESKTOP
+   80% / 100%
+   ========================================================= */
+
+@media (min-width: 1401px) {
+
   .admin-suppliers-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns:
+      minmax(350px, 0.72fr)
+      minmax(0, 1.28fr);
   }
+
 }
 
-@media (max-width: 760px) {
-  .admin-suppliers-page {
-    padding: 24px 18px 18px;
+
+/* =========================================================
+   DESKTOP ZOOM RANGE
+   125% / 150%
+
+   STACK ADD SUPPLIER + DIRECTORY
+   DIRECTORY GETS FULL WIDTH
+   ========================================================= */
+
+@media (max-width: 1400px) {
+
+  .admin-suppliers-grid {
+    grid-template-columns:
+      1fr;
+
+    align-items:
+      start;
+
+    gap:
+      16px;
   }
 
-  .admin-suppliers-stats {
-    grid-template-columns: 1fr;
+
+  .admin-suppliers-form-card,
+  .admin-suppliers-list-card {
+    width:
+      100%;
+
+    min-width:
+      0;
+
+    height:
+      auto;
   }
+
 
   .admin-suppliers-list-header {
-    align-items: stretch;
-    flex-direction: column;
+    min-height:
+      0;
+
+    grid-template-columns:
+      minmax(0, 1fr)
+      auto;
+
+    grid-template-areas:
+      "title count"
+      "search search";
+
+    align-items:
+      center;
+
+    column-gap:
+      18px;
+
+    row-gap:
+      12px;
+
+    padding:
+      15px
+      18px
+      16px;
   }
 
-  .admin-suppliers-list-header input {
-    width: 100%;
+
+  .admin-suppliers-list-header
+  .admin-suppliers-card-header-copy {
+    grid-area:
+      title;
   }
+
+
+  .admin-suppliers-search {
+    grid-area:
+      search;
+
+    width:
+      100%;
+
+    max-width:
+      none;
+
+    justify-self:
+      stretch;
+  }
+
+
+  .admin-suppliers-count {
+    grid-area:
+      count;
+
+    width:
+      auto;
+
+    min-width:
+      max-content;
+
+    justify-self:
+      end;
+
+    padding:
+      0
+      14px;
+  }
+
+
+  .admin-suppliers-table-wrap {
+    width:
+      100%;
+
+    overflow-x:
+      hidden;
+  }
+
+
+  .admin-suppliers-table {
+    width:
+      100%;
+
+    max-width:
+      100%;
+
+    min-width:
+      0;
+
+    table-layout:
+      fixed;
+  }
+
+}
+
+
+/* =========================================================
+   150% DESKTOP
+   COMPACT DIRECTORY
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .admin-suppliers-page {
+    width:
+      100% !important;
+
+    max-width:
+      100% !important;
+
+    min-width:
+      0 !important;
+
+    margin:
+      0 !important;
+
+    padding:
+      10px
+      10px
+      20px !important;
+
+    overflow-x:
+      hidden !important;
+  }
+
+
+  .admin-suppliers-stats {
+    gap:
+      10px;
+  }
+
+
+  .admin-suppliers-stat {
+    min-height:
+      118px;
+
+    gap:
+      13px;
+
+    padding:
+      16px
+      15px;
+  }
+
+
+  .admin-suppliers-stat-icon {
+    width:
+      50px;
+
+    height:
+      50px;
+
+    flex-basis:
+      50px;
+  }
+
+
+  .admin-suppliers-stat-copy
+  > span {
+    font-size:
+      10px;
+  }
+
+
+  .admin-suppliers-stat-copy
+  strong {
+    font-size:
+      30px;
+  }
+
+
+  .admin-suppliers-stat-copy
+  small {
+    font-size:
+      11px;
+  }
+
+
+  .admin-suppliers-list-header {
+    row-gap:
+      10px;
+
+    padding:
+      14px
+      16px
+      15px;
+  }
+
+
+  .admin-suppliers-search {
+    min-height:
+      44px;
+  }
+
+
+  .admin-suppliers-count {
+    min-height:
+      38px;
+  }
+
+
+  .admin-suppliers-table-wrap {
+    padding:
+      7px
+      7px
+      12px;
+  }
+
+
+  .admin-suppliers-table
+  th:nth-child(1) {
+    width:
+      25%;
+  }
+
+
+  .admin-suppliers-table
+  th:nth-child(2) {
+    width:
+      16%;
+  }
+
+
+  .admin-suppliers-table
+  th:nth-child(3) {
+    width:
+      14%;
+  }
+
+
+  .admin-suppliers-table
+  th:nth-child(4) {
+    width:
+      22%;
+  }
+
+
+  .admin-suppliers-table
+  th:nth-child(5) {
+    width:
+      11%;
+  }
+
+
+  .admin-suppliers-table
+  th:nth-child(6) {
+    width:
+      12%;
+  }
+
+
+  .admin-suppliers-table
+  th {
+    padding:
+      8px
+      4px;
+
+    font-size:
+      8px;
+
+    letter-spacing:
+      0.35px;
+  }
+
+
+  .admin-suppliers-table
+  td {
+    padding:
+      10px
+      4px;
+
+    font-size:
+      9px;
+  }
+
+
+  .admin-suppliers-row-icon {
+    width:
+      29px;
+
+    height:
+      29px;
+
+    flex-basis:
+      29px;
+
+    border-radius:
+      8px;
+  }
+
+
+  .admin-suppliers-supplier-cell {
+    gap:
+      5px;
+  }
+
+
+  .admin-suppliers-supplier-cell
+  strong {
+    font-size:
+      10px;
+  }
+
+
+  .admin-suppliers-supplier-cell
+  small {
+    font-size:
+      8px;
+  }
+
+
+  .admin-suppliers-contact-cell {
+    gap:
+      3px;
+
+    font-size:
+      9px;
+  }
+
+
+  .admin-suppliers-contact-cell
+  svg {
+    width:
+      12px;
+
+    height:
+      12px;
+  }
+
+
+  .admin-suppliers-table
+  td:nth-child(3),
+
+  .admin-suppliers-table
+  td:nth-child(4) {
+    font-size:
+      8.5px;
+  }
+
+
+  .supplier-status {
+    min-height:
+      28px;
+
+    padding:
+      4px
+      3px;
+
+    font-size:
+      8px;
+  }
+
+
+  .supplier-status-button {
+    min-height:
+      30px;
+
+    padding:
+      0
+      3px;
+
+    font-size:
+      8px;
+  }
+
+}
+
+
+/* =========================================================
+   TIGHT DESKTOP
+   ========================================================= */
+
+@media (
+  min-width: 761px
+)
+and
+(
+  max-width: 900px
+) {
+
+  .admin-suppliers-list-header {
+    grid-template-columns:
+      1fr;
+
+    grid-template-areas:
+      "title"
+      "search"
+      "count";
+  }
+
+
+  .admin-suppliers-count {
+    width:
+      100%;
+
+    min-width:
+      0;
+
+    justify-self:
+      stretch;
+  }
+
+
+  .admin-suppliers-table
+  th:nth-child(1) {
+    width:
+      24%;
+  }
+
+
+  .admin-suppliers-table
+  th:nth-child(2) {
+    width:
+      15%;
+  }
+
+
+  .admin-suppliers-table
+  th:nth-child(3) {
+    width:
+      14%;
+  }
+
+
+  .admin-suppliers-table
+  th:nth-child(4) {
+    width:
+      22%;
+  }
+
+
+  .admin-suppliers-table
+  th:nth-child(5) {
+    width:
+      11%;
+  }
+
+
+  .admin-suppliers-table
+  th:nth-child(6) {
+    width:
+      14%;
+  }
+
+
+  .admin-suppliers-table
+  th {
+    font-size:
+      7.5px;
+  }
+
+
+  .admin-suppliers-table
+  td {
+    font-size:
+      8.5px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .admin-suppliers-page {
+    width:
+      100% !important;
+
+    max-width:
+      100% !important;
+
+    margin:
+      0 !important;
+
+    padding:
+      8px
+      8px
+      18px !important;
+  }
+
+
+  .admin-suppliers-page
+  > .admin-page-intro {
+    margin-bottom:
+      14px;
+  }
+
+
+  .admin-suppliers-stats {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .admin-suppliers-stat {
+    min-height:
+      112px;
+  }
+
+
+  .admin-suppliers-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .admin-suppliers-card-header {
+    padding:
+      16px;
+  }
+
+
+  .admin-suppliers-list-header {
+    grid-template-columns:
+      1fr;
+
+    grid-template-areas:
+      "title"
+      "search"
+      "count";
+
+    padding:
+      17px
+      15px;
+  }
+
+
+  .admin-suppliers-card-header-copy
+  h2 {
+    font-size:
+      21px;
+  }
+
+
+  .admin-suppliers-search {
+    width:
+      100%;
+  }
+
+
+  .admin-suppliers-count {
+    width:
+      100%;
+
+    min-width:
+      0;
+
+    justify-self:
+      stretch;
+  }
+
+
+  .admin-suppliers-form {
+    padding:
+      13px;
+  }
+
+
+  .admin-suppliers-table-wrap {
+    overflow-x:
+      auto;
+  }
+
+
+  .admin-suppliers-table {
+    width:
+      820px;
+
+    min-width:
+      820px;
+
+    max-width:
+      none;
+
+    table-layout:
+      auto;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL PHONE
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+  .admin-suppliers-card-header-copy {
+    align-items:
+      flex-start;
+  }
+
+
+  .admin-suppliers-card-icon {
+    width:
+      44px;
+
+    height:
+      44px;
+
+    flex-basis:
+      44px;
+  }
+
+
+  .admin-suppliers-form {
+    padding:
+      11px;
+  }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+
+  .admin-suppliers-stat,
+  .admin-suppliers-card,
+  .admin-suppliers-table tbody tr,
+  .admin-suppliers-submit-button {
+    transition:
+      none;
+  }
+
 }

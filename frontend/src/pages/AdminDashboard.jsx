@@ -11,7 +11,416 @@ import {
   getAdminDashboard,
 } from "../api";
 
+import AdminPageIntro from "../components/AdminPageIntro";
+
 import "./AdminDashboard.css";
+
+
+function DashboardIcon({
+  name,
+  size = 22,
+}) {
+  const common = {
+    width: size,
+    height: size,
+    viewBox: "0 0 24 24",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: 1.8,
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    "aria-hidden": true,
+  };
+
+
+  const icons = {
+    patients: (
+      <>
+        <circle cx="9" cy="8" r="3" />
+        <path d="M3 20a6 6 0 0 1 12 0" />
+        <circle cx="17" cy="9" r="2" />
+        <path d="M16 14a5 5 0 0 1 5 5" />
+      </>
+    ),
+
+    orders: (
+      <>
+        <path d="m4 7 8-4 8 4-8 4Z" />
+        <path d="m4 7v10l8 4 8-4V7" />
+        <path d="M12 11v10" />
+      </>
+    ),
+
+    pending: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 2" />
+      </>
+    ),
+
+    refill: (
+      <>
+        <path d="M20 7v5h-5" />
+        <path d="M4 17v-5h5" />
+        <path d="M6.1 8A7 7 0 0 1 18 6l2 6" />
+        <path d="M17.9 16A7 7 0 0 1 6 18l-2-6" />
+      </>
+    ),
+
+    sales: (
+      <>
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 6v12" />
+        <path d="M15.5 8.5c-.8-.7-2-1-3.5-1-2 0-3.5 1-3.5 2.5 0 1.6 1.5 2.2 3.5 2.5 2 .3 3.5.9 3.5 2.5 0 1.5-1.5 2.5-3.5 2.5-1.5 0-2.8-.4-3.7-1.2" />
+      </>
+    ),
+
+    profit: (
+      <>
+        <path d="M4 19V9" />
+        <path d="M10 19V5" />
+        <path d="M16 19v-7" />
+        <path d="M22 19V3" />
+      </>
+    ),
+
+    trend: (
+      <>
+        <path d="M3 17l6-6 4 4 8-9" />
+        <path d="M16 6h5v5" />
+      </>
+    ),
+
+    inventory: (
+      <>
+        <path d="m4 7 8-4 8 4-8 4Z" />
+        <path d="m4 7v10l8 4 8-4V7" />
+        <path d="M12 11v10" />
+      </>
+    ),
+
+    recent: (
+      <>
+        <rect x="4" y="4" width="16" height="16" rx="3" />
+        <path d="M8 9h8M8 13h6M8 17h4" />
+      </>
+    ),
+
+    snapshot: (
+      <>
+        <path d="M4 18V9" />
+        <path d="M10 18V5" />
+        <path d="M16 18v-7" />
+        <path d="M22 18V3" />
+      </>
+    ),
+
+    quick: (
+      <>
+        <path d="M13 2 4 14h7l-1 8 9-12h-7Z" />
+      </>
+    ),
+
+    pos: (
+      <>
+        <rect x="3" y="4" width="18" height="16" rx="2" />
+        <path d="M7 8h10M7 12h4M15 12h2M7 16h2M13 16h4" />
+      </>
+    ),
+
+    reports: (
+      <>
+        <path d="M4 19V9" />
+        <path d="M10 19V5" />
+        <path d="M16 19v-7" />
+        <path d="M22 19V3" />
+      </>
+    ),
+
+    payment: (
+      <>
+        <rect x="3" y="6" width="18" height="13" rx="2" />
+        <path d="M3 10h18" />
+        <path d="M7 15h4" />
+      </>
+    ),
+  };
+
+
+  return (
+    <svg {...common}>
+      {
+        icons[name] ||
+        icons.inventory
+      }
+    </svg>
+  );
+}
+
+
+function SectionTitle({
+  icon,
+  eyebrow,
+  title,
+}) {
+  return (
+    <div className="admin-section-title">
+      <span className="admin-section-title__icon">
+        <DashboardIcon
+          name={icon}
+          size={21}
+        />
+      </span>
+
+      <div>
+        <span>
+          {eyebrow}
+        </span>
+
+        <h2>
+          {title}
+        </h2>
+      </div>
+    </div>
+  );
+}
+
+
+function ActivityMetric({
+  icon,
+  tone,
+  label,
+  value,
+  onClick,
+}) {
+  const clickable =
+    Boolean(
+      onClick
+    );
+
+
+  function handleKeyDown(
+    event
+  ) {
+    if (!clickable) {
+      return;
+    }
+
+
+    if (
+      event.key === "Enter" ||
+      event.key === " "
+    ) {
+      event.preventDefault();
+
+      onClick();
+    }
+  }
+
+
+  return (
+    <div
+      className={
+        `admin-activity-metric admin-activity-metric--${tone}`
+      }
+      role={
+        clickable
+          ? "button"
+          : undefined
+      }
+      tabIndex={
+        clickable
+          ? 0
+          : undefined
+      }
+      onClick={
+        onClick
+      }
+      onKeyDown={
+        handleKeyDown
+      }
+      style={
+        clickable
+          ? {
+              cursor: "pointer",
+            }
+          : undefined
+      }
+    >
+      <span className="admin-activity-metric__icon">
+        <DashboardIcon
+          name={icon}
+          size={22}
+        />
+      </span>
+
+      <div className="admin-activity-metric__copy">
+        <span>
+          {label}
+        </span>
+
+        <strong>
+          {value}
+        </strong>
+      </div>
+    </div>
+  );
+}
+
+
+function formatCurrency(
+  value
+) {
+  const numericValue =
+    Number(
+      value || 0
+    );
+
+
+  return new Intl.NumberFormat(
+    "en-GH",
+    {
+      style: "currency",
+      currency: "GHS",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }
+  ).format(
+    Number.isFinite(
+      numericValue
+    )
+      ? numericValue
+      : 0
+  );
+}
+
+
+function formatCompactCurrency(
+  value
+) {
+  const numericValue =
+    Number(
+      value || 0
+    );
+
+
+  if (
+    !Number.isFinite(
+      numericValue
+    )
+  ) {
+    return "GH₵0";
+  }
+
+
+  const absoluteValue =
+    Math.abs(
+      numericValue
+    );
+
+
+  if (
+    absoluteValue >=
+    1000000
+  ) {
+    return `GH₵${(
+      numericValue /
+      1000000
+    ).toFixed(1)}M`;
+  }
+
+
+  if (
+    absoluteValue >=
+    1000
+  ) {
+    return `GH₵${(
+      numericValue /
+      1000
+    ).toFixed(1)}K`;
+  }
+
+
+  return `GH₵${numericValue.toFixed(0)}`;
+}
+
+
+function formatNumber(
+  value
+) {
+  const numericValue =
+    Number(
+      value || 0
+    );
+
+
+  return new Intl.NumberFormat(
+    "en-GB"
+  ).format(
+    Number.isFinite(
+      numericValue
+    )
+      ? numericValue
+      : 0
+  );
+}
+
+
+function formatMonth(
+  value
+) {
+  if (!value) {
+    return "—";
+  }
+
+
+  const parts =
+    String(
+      value
+    ).split("-");
+
+
+  if (
+    parts.length !== 2
+  ) {
+    return value;
+  }
+
+
+  const year =
+    Number(
+      parts[0]
+    );
+
+
+  const month =
+    Number(
+      parts[1]
+    );
+
+
+  if (
+    !year ||
+    !month
+  ) {
+    return value;
+  }
+
+
+  return new Intl.DateTimeFormat(
+    "en-GB",
+    {
+      month: "short",
+      year: "numeric",
+    }
+  ).format(
+    new Date(
+      year,
+      month - 1,
+      1
+    )
+  );
+}
 
 
 function AdminDashboard() {
@@ -22,108 +431,151 @@ function AdminDashboard() {
   const [
     dashboard,
     setDashboard,
-  ] = useState(null);
+  ] = useState(
+    null
+  );
+
 
   const [
     loading,
     setLoading,
-  ] = useState(true);
+  ] = useState(
+    true
+  );
+
 
   const [
     error,
     setError,
-  ] = useState("");
+  ] = useState(
+    ""
+  );
 
 
-  /* =========================================================
-     LOAD DASHBOARD
-  ========================================================= */
-
-  useEffect(() => {
-    let active = true;
+  useEffect(
+    () => {
+      let active =
+        true;
 
 
-    async function loadDashboard() {
-      try {
-        setLoading(true);
-        setError("");
-
-        const data =
-          await getAdminDashboard();
-
-        if (active) {
-          setDashboard(
-            data
+      async function loadDashboard() {
+        try {
+          setLoading(
+            true
           );
-        }
-      }
 
-      catch (err) {
-        console.error(
-          "Unable to load admin dashboard:",
-          err
-        );
-
-        if (active) {
           setError(
-            err?.message ||
-            "Unable to load the administrator dashboard."
+            ""
           );
+
+
+          const data =
+            await getAdminDashboard();
+
+
+          if (active) {
+            setDashboard(
+              data
+            );
+          }
+
+        } catch (err) {
+
+          if (active) {
+            setError(
+              err?.message ||
+                "Unable to load the administrator dashboard."
+            );
+          }
+
+        } finally {
+
+          if (active) {
+            setLoading(
+              false
+            );
+          }
         }
       }
 
-      finally {
-        if (active) {
-          setLoading(false);
-        }
-      }
-    }
+
+      loadDashboard();
 
 
-    loadDashboard();
+      return () => {
+        active =
+          false;
+      };
+    },
+    []
+  );
 
-
-    return () => {
-      active = false;
-    };
-  }, []);
-
-
-  /* =========================================================
-     DASHBOARD DATA
-  ========================================================= */
 
   const metrics =
-    dashboard?.metrics ?? {};
+    dashboard?.metrics ||
+    {};
+
 
   const recentOrders =
-    dashboard?.recent_orders ?? [];
+    Array.isArray(
+      dashboard?.recent_orders
+    )
+      ? dashboard.recent_orders
+      : [];
 
 
-  /*
-   * This array is intentionally calculated directly.
-   *
-   * There is no need for useMemo here because this is a
-   * very small amount of work, and avoiding useMemo also
-   * prevents unstable object dependency warnings.
-   */
+  const topMedicines =
+    Array.isArray(
+      dashboard?.top_medicines
+    )
+      ? dashboard.top_medicines
+      : [];
+
+
+  const salesTrend =
+    Array.isArray(
+      dashboard?.sales_trend
+    )
+      ? dashboard.sales_trend
+      : [];
+
+
+  const refillSummary =
+    dashboard?.refill_summary ||
+    {};
+
+
+  const paymentSummary =
+    dashboard?.payment_summary ||
+    {};
+
+
+  const inventorySummary =
+    dashboard?.inventory_summary ||
+    {};
+
+
   const stats = [
     {
       label:
         "TOTAL PATIENTS",
 
       value:
-        metrics.total_patients ??
-        0,
+        formatNumber(
+          metrics.total_patients
+        ),
 
       note:
-        "Registered patient accounts",
+        "Registered pharmacy patients",
 
       type:
-        "purple",
+        "violet",
 
       icon:
-        "👥",
+        "patients",
+
+      route:
+        "/admin/patients",
     },
 
     {
@@ -131,17 +583,21 @@ function AdminDashboard() {
         "TOTAL ORDERS",
 
       value:
-        metrics.total_orders ??
-        0,
+        formatNumber(
+          metrics.total_orders
+        ),
 
       note:
         "Medicine orders received",
 
       type:
-        "orange",
+        "amber",
 
       icon:
-        "📦",
+        "orders",
+
+      route:
+        "/admin/sales",
     },
 
     {
@@ -149,8 +605,9 @@ function AdminDashboard() {
         "PENDING ORDERS",
 
       value:
-        metrics.pending_orders ??
-        0,
+        formatNumber(
+          metrics.pending_orders
+        ),
 
       note:
         "Awaiting pharmacy action",
@@ -159,7 +616,10 @@ function AdminDashboard() {
         "blue",
 
       icon:
-        "⌛",
+        "pending",
+
+      route:
+        "/admin/alerts",
     },
 
     {
@@ -167,94 +627,109 @@ function AdminDashboard() {
         "PENDING REFILLS",
 
       value:
-        metrics.pending_refills ??
-        0,
+        formatNumber(
+          metrics.pending_refills
+        ),
 
       note:
-        "Awaiting review",
+        "Awaiting patient confirmation",
 
       type:
         "teal",
 
       icon:
-        "↻",
+        "refill",
+
+      route:
+        "/admin/alerts",
     },
 
     {
       label:
-        "PENDING APPOINTMENTS",
+        "TOTAL SALES",
 
       value:
-        metrics.pending_appointments ??
-        0,
+        formatCurrency(
+          metrics.total_sales
+        ),
 
       note:
-        "Appointment requests",
+        "Revenue from medicine sales",
 
       type:
-        "red",
+        "rose",
 
       icon:
-        "!",
+        "sales",
+
+      route:
+        "/admin/sales",
     },
 
     {
       label:
-        "ACTIVE PRESCRIPTIONS",
+        "TOTAL PROFIT",
 
       value:
-        metrics.active_prescriptions ??
-        0,
+        formatCurrency(
+          metrics.total_profit
+        ),
 
       note:
-        "Current active prescriptions",
+        "Gross pharmacy profit",
 
       type:
         "green",
 
       icon:
-        "Rx",
+        "profit",
+
+      route:
+        "/admin/reports",
     },
   ];
 
 
-  /* =========================================================
-     LOADING
-  ========================================================= */
+  const trendValues =
+    salesTrend.map(
+      item =>
+        Number(
+          item?.sales ||
+          0
+        )
+    );
+
+
+  const maxTrendSales =
+    Math.max(
+      ...trendValues,
+      1
+    );
+
 
   if (loading) {
     return (
       <section className="admin-dashboard">
-
         <div className="admin-dashboard-state">
-
           <span className="admin-dashboard-state__spinner" />
 
           <strong>
             Loading administrator dashboard...
           </strong>
 
-          <p>
-            Retrieving pharmacy data.
-          </p>
-
+          <span>
+            Preparing live pharmacy data.
+          </span>
         </div>
-
       </section>
     );
   }
 
 
-  /* =========================================================
-     ERROR
-  ========================================================= */
-
   if (error) {
     return (
       <section className="admin-dashboard">
-
         <div className="admin-dashboard-state admin-dashboard-state--error">
-
           <strong>
             Dashboard could not be loaded
           </strong>
@@ -262,673 +737,979 @@ function AdminDashboard() {
           <p>
             {error}
           </p>
-
-          <button
-            type="button"
-            onClick={() =>
-              window.location.reload()
-            }
-          >
-            Try Again
-          </button>
-
         </div>
-
       </section>
     );
   }
 
 
-  /* =========================================================
-     DASHBOARD
-  ========================================================= */
-
   return (
     <section className="admin-dashboard">
+      <AdminPageIntro
+        eyebrow="Management Overview"
+        title="Administrator Dashboard"
+        subtitle="Monitor live pharmacy operations, sales, patients, orders and inventory from one workspace."
+        accent="teal"
+      />
 
-
-      {/* =====================================================
-          HEADING
-      ===================================================== */}
-
-      <div className="admin-dashboard__heading">
-
-        <div>
-
-          <span>
-            MANAGEMENT OVERVIEW
-          </span>
-
-          <h1>
-            Administrator Dashboard
-          </h1>
-
-          <p>
-            Monitor patients, medicine orders,
-            refill requests, prescriptions and
-            pharmacy operations from one place.
-          </p>
-
-        </div>
-
-
-        <div className="admin-dashboard__date">
-
-          <small>
-            SIGNED IN AS
-          </small>
-
-          <strong>
-            {
-              dashboard
-                ?.administrator
-                ?.full_name
-              ||
-              "Administrator"
-            }
-          </strong>
-
-        </div>
-
-      </div>
-
-
-      {/* =====================================================
-          LIVE DATABASE STATS
-      ===================================================== */}
 
       <div className="admin-stats-grid">
-
         {
           stats.map(
-            (
-              stat
-            ) => (
+            stat => (
               <article
                 key={
                   stat.label
                 }
-                className="admin-stat-card"
-              >
+                className={
+                  `admin-stat-card admin-stat-card--${stat.type}`
+                }
+                role="button"
+                tabIndex={0}
+                onClick={
+                  () =>
+                    navigate(
+                      stat.route
+                    )
+                }
+                onKeyDown={
+                  event => {
 
+                    if (
+                      event.key === "Enter" ||
+                      event.key === " "
+                    ) {
+                      event.preventDefault();
+
+                      navigate(
+                        stat.route
+                      );
+                    }
+                  }
+                }
+                style={{
+                  cursor:
+                    "pointer",
+                }}
+              >
                 <span
                   className={
                     `admin-stat-icon ${stat.type}`
                   }
                 >
-                  {stat.icon}
+                  <DashboardIcon
+                    name={
+                      stat.icon
+                    }
+                  />
                 </span>
 
 
-                <div>
-
+                <div className="admin-stat-card__content">
                   <span className="admin-stat-label">
-                    {stat.label}
+                    {
+                      stat.label
+                    }
                   </span>
 
                   <strong>
-                    {stat.value}
+                    {
+                      stat.value
+                    }
                   </strong>
 
                   <small>
-                    {stat.note}
+                    {
+                      stat.note
+                    }
                   </small>
-
                 </div>
-
               </article>
             )
           )
         }
-
       </div>
 
 
-      {/* =====================================================
-          OPERATIONS OVERVIEW
-      ===================================================== */}
-
       <div className="admin-dashboard-grid">
-
-        <article className="admin-panel admin-panel--wide">
-
+        <article className="admin-panel admin-panel--sales">
           <div className="admin-panel__header">
-
-            <div>
-
-              <span>
-                SALES PERFORMANCE
-              </span>
-
-              <h2>
-                Pharmacy Sales
-              </h2>
-
-            </div>
-
+            <SectionTitle
+              icon="sales"
+              eyebrow="SALES PERFORMANCE"
+              title="Pharmacy Sales"
+            />
 
             <button
               type="button"
-              onClick={() =>
-                navigate(
-                  "/admin/sales"
-                )
+              onClick={
+                () =>
+                  navigate(
+                    "/admin/sales"
+                  )
               }
             >
               View Sales
             </button>
-
           </div>
 
 
-          <div className="admin-module-placeholder">
-
-            <span className="admin-module-placeholder__icon">
-              ₵
-            </span>
-
-            <strong>
-              Sales analytics are available
-            </strong>
-
-            <p>
-              Review pharmacy revenue,
-              transactions and medicine
-              performance in the Sales module.
-            </p>
-
-            <button
-              type="button"
-              onClick={() =>
-                navigate(
-                  "/admin/sales"
-                )
-              }
+          <div
+            style={{
+              padding:
+                "22px",
+              display:
+                "grid",
+              gap:
+                "18px",
+            }}
+          >
+            <div
+              style={{
+                display:
+                  "grid",
+                gridTemplateColumns:
+                  "repeat(3, minmax(0, 1fr))",
+                gap:
+                  "12px",
+              }}
             >
-              Open Sales
-            </button>
+              <div className="admin-activity-metric admin-activity-metric--teal">
+                <span className="admin-activity-metric__icon">
+                  <DashboardIcon
+                    name="sales"
+                    size={21}
+                  />
+                </span>
 
-          </div>
+                <div className="admin-activity-metric__copy">
+                  <span>
+                    Revenue
+                  </span>
 
-        </article>
+                  <strong>
+                    {
+                      formatCompactCurrency(
+                        metrics.total_sales
+                      )
+                    }
+                  </strong>
+                </div>
+              </div>
 
 
-        <article className="admin-panel">
+              <div className="admin-activity-metric admin-activity-metric--violet">
+                <span className="admin-activity-metric__icon">
+                  <DashboardIcon
+                    name="profit"
+                    size={21}
+                  />
+                </span>
 
-          <div className="admin-panel__header">
+                <div className="admin-activity-metric__copy">
+                  <span>
+                    Profit
+                  </span>
 
-            <div>
+                  <strong>
+                    {
+                      formatCompactCurrency(
+                        metrics.total_profit
+                      )
+                    }
+                  </strong>
+                </div>
+              </div>
 
-              <span>
-                MEDICINE PERFORMANCE
-              </span>
 
-              <h2>
-                Top Selling Medicines
-              </h2>
+              <div className="admin-activity-metric admin-activity-metric--amber">
+                <span className="admin-activity-metric__icon">
+                  <DashboardIcon
+                    name="orders"
+                    size={21}
+                  />
+                </span>
 
+                <div className="admin-activity-metric__copy">
+                  <span>
+                    Units Sold
+                  </span>
+
+                  <strong>
+                    {
+                      formatNumber(
+                        metrics.units_sold
+                      )
+                    }
+                  </strong>
+                </div>
+              </div>
             </div>
 
 
+            {
+              salesTrend.length >
+              0 ? (
+                <div
+                  style={{
+                    display:
+                      "grid",
+                    gap:
+                      "12px",
+                  }}
+                >
+                  {
+                    salesTrend
+                      .slice(
+                        -6
+                      )
+                      .map(
+                        item => {
+
+                          const sales =
+                            Number(
+                              item?.sales ||
+                              0
+                            );
+
+
+                          const width =
+                            Math.max(
+                              4,
+                              Math.min(
+                                100,
+                                (
+                                  sales /
+                                  maxTrendSales
+                                ) *
+                                  100
+                              )
+                            );
+
+
+                          return (
+                            <div
+                              key={
+                                item.month
+                              }
+                              style={{
+                                display:
+                                  "grid",
+                                gridTemplateColumns:
+                                  "90px minmax(0, 1fr) 100px",
+                                alignItems:
+                                  "center",
+                                gap:
+                                  "12px",
+                              }}
+                            >
+                              <strong
+                                style={{
+                                  fontSize:
+                                    "12px",
+                                }}
+                              >
+                                {
+                                  formatMonth(
+                                    item.month
+                                  )
+                                }
+                              </strong>
+
+
+                              <div
+                                style={{
+                                  height:
+                                    "9px",
+                                  borderRadius:
+                                    "999px",
+                                  background:
+                                    "rgba(255,255,255,.12)",
+                                  overflow:
+                                    "hidden",
+                                }}
+                              >
+                                <div
+                                  style={{
+                                    width:
+                                      `${width}%`,
+                                    height:
+                                      "100%",
+                                    borderRadius:
+                                      "inherit",
+                                    background:
+                                      "currentColor",
+                                  }}
+                                />
+                              </div>
+
+
+                              <strong
+                                style={{
+                                  textAlign:
+                                    "right",
+                                  fontSize:
+                                    "12px",
+                                  whiteSpace:
+                                    "nowrap",
+                                }}
+                              >
+                                {
+                                  formatCompactCurrency(
+                                    sales
+                                  )
+                                }
+                              </strong>
+                            </div>
+                          );
+                        }
+                      )
+                  }
+                </div>
+              ) : (
+                <div className="admin-module-placeholder">
+                  <strong>
+                    No sales trend available yet
+                  </strong>
+
+                  <p>
+                    Monthly sales will appear here as order data is recorded.
+                  </p>
+                </div>
+              )
+            }
+          </div>
+        </article>
+
+
+        <article className="admin-panel admin-panel--medicine">
+          <div className="admin-panel__header">
+            <SectionTitle
+              icon="trend"
+              eyebrow="MEDICINE PERFORMANCE"
+              title="Top Selling Medicines"
+            />
+
             <button
               type="button"
-              onClick={() =>
-                navigate(
-                  "/admin/reports"
-                )
+              onClick={
+                () =>
+                  navigate(
+                    "/admin/reports"
+                  )
               }
             >
               Reports
             </button>
-
           </div>
 
 
-          <div className="admin-module-placeholder">
+          <div
+            style={{
+              padding:
+                "18px",
+              display:
+                "grid",
+              gap:
+                "10px",
+            }}
+          >
+            {
+              topMedicines.length >
+              0 ? (
+                topMedicines
+                  .slice(
+                    0,
+                    6
+                  )
+                  .map(
+                    (
+                      medicine,
+                      index
+                    ) => (
+                      <div
+                        key={
+                          medicine.drug_id ||
+                          `${medicine.drug_name}-${index}`
+                        }
+                        className="admin-order-item"
+                      >
+                        <div
+                          style={{
+                            minWidth:
+                              0,
+                          }}
+                        >
+                          <strong>
+                            #
+                            {
+                              index +
+                              1
+                            }{" "}
+                            {
+                              medicine.drug_name
+                            }
+                          </strong>
 
-            <span className="admin-module-placeholder__icon">
-              Rx
-            </span>
+                          <small>
+                            {
+                              formatNumber(
+                                medicine.quantity_sold
+                              )
+                            }{" "}
+                            units •{" "}
+                            {
+                              medicine.category ||
+                              "Medicine"
+                            }
+                          </small>
+                        </div>
 
-            <strong>
-              Medicine performance reporting
-            </strong>
 
-            <p>
-              View rankings calculated
-              from real POS sales and
-              transaction records.
-            </p>
+                        <strong
+                          className="admin-order-patient-id"
+                          style={{
+                            whiteSpace:
+                              "nowrap",
+                          }}
+                        >
+                          {
+                            formatCurrency(
+                              medicine.sales
+                            )
+                          }
+                        </strong>
 
-            <button
-              type="button"
-              onClick={() =>
-                navigate(
-                  "/admin/reports"
-                )
-              }
-            >
-              View Reports
-            </button>
 
+                        <span className="admin-order-status completed">
+                          {
+                            formatCurrency(
+                              medicine.profit
+                            )
+                          }{" "}
+                          profit
+                        </span>
+                      </div>
+                    )
+                  )
+              ) : (
+                <div className="admin-module-placeholder">
+                  <strong>
+                    No medicine sales yet
+                  </strong>
+
+                  <p>
+                    Medicine rankings will appear after sales are recorded.
+                  </p>
+                </div>
+              )
+            }
           </div>
-
         </article>
-
       </div>
 
 
-      {/* =====================================================
-          OPERATIONS
-      ===================================================== */}
-
       <div className="admin-dashboard-grid admin-dashboard-grid--bottom">
-
-
-        {/* INVENTORY */}
-
-        <article className="admin-panel">
-
+        <article className="admin-panel admin-panel--inventory">
           <div className="admin-panel__header">
-
-            <div>
-
-              <span>
-                INVENTORY
-              </span>
-
-              <h2>
-                Stock Monitoring
-              </h2>
-
-            </div>
-
+            <SectionTitle
+              icon="inventory"
+              eyebrow="INVENTORY"
+              title="Stock Monitoring"
+            />
 
             <button
               type="button"
-              onClick={() =>
-                navigate(
-                  "/admin/inventory"
-                )
+              onClick={
+                () =>
+                  navigate(
+                    "/admin/inventory"
+                  )
               }
             >
               Inventory
             </button>
-
           </div>
 
 
-          <div className="admin-module-placeholder admin-module-placeholder--small">
-
-            <span className="admin-module-placeholder__icon">
-              📦
-            </span>
-
+          <div className="admin-module-placeholder">
             <strong>
               {
-                metrics.inventory_items !==
-                undefined
-                  ? `${metrics.inventory_items} medicines tracked`
-                  : "Inventory monitoring"
+                `${formatNumber(
+                  inventorySummary.total_items ??
+                  metrics.inventory_items
+                )} medicines tracked`
               }
             </strong>
 
+
             <p>
               {
-                metrics.low_stock_items !==
-                undefined
-                  ? `${metrics.low_stock_items} medicines currently require low-stock attention.`
-                  : "Monitor medicine stock quantities, reorder levels and availability."
+                `${formatNumber(
+                  metrics.low_stock_items
+                )} medicines currently require low-stock attention.`
               }
             </p>
 
+
             <button
               type="button"
-              onClick={() =>
-                navigate(
-                  "/admin/inventory"
-                )
+              onClick={
+                () =>
+                  navigate(
+                    "/admin/inventory"
+                  )
               }
             >
               Manage Inventory
             </button>
-
           </div>
-
         </article>
 
 
-        {/* RECENT ORDERS */}
-
-        <article className="admin-panel">
-
+        <article className="admin-panel admin-panel--orders">
           <div className="admin-panel__header">
-
-            <div>
-
-              <span>
-                ORDER ACTIVITY
-              </span>
-
-              <h2>
-                Recent Medicine Orders
-              </h2>
-
-            </div>
-
+            <SectionTitle
+              icon="recent"
+              eyebrow="ORDER ACTIVITY"
+              title="Recent Medicine Orders"
+            />
 
             <button
               type="button"
-              onClick={() =>
-                navigate(
-                  "/admin"
-                )
+              onClick={
+                () =>
+                  navigate(
+                    "/admin/sales"
+                  )
               }
             >
-              Recent
+              View All
             </button>
-
           </div>
 
 
           <div className="admin-orders-list">
-
             {
               recentOrders.length >
-              0
-                ? (
-                  recentOrders.map(
-                    (
-                      order
-                    ) => {
-                      const orderStatus =
-                        String(
-                          order.status ||
-                          "pending"
-                        )
-                          .trim()
-                          .toLowerCase();
+              0 ? (
+                recentOrders.map(
+                  order => {
 
-                      const statusClass =
-                        orderStatus
-                          .replace(
-                            /\s+/g,
-                            "-"
-                          );
+                    const orderStatus =
+                      String(
+                        order.order_status ||
+                        ""
+                      )
+                        .trim()
+                        .toLowerCase();
 
-                      return (
-                        <div
-                          key={
-                            order.order_id
+
+                    const paymentStatus =
+                      String(
+                        order.payment_status ||
+                        ""
+                      )
+                        .trim()
+                        .toLowerCase();
+
+
+                    const displayStatus =
+                      orderStatus ||
+                      paymentStatus ||
+                      "pending";
+
+
+                    return (
+                      <div
+                        key={
+                          order.order_id
+                        }
+                        className="admin-order-item"
+                        role="button"
+                        tabIndex={0}
+                        onClick={
+                          () =>
+                            navigate(
+                              "/admin/sales"
+                            )
+                        }
+                        onKeyDown={
+                          event => {
+
+                            if (
+                              event.key ===
+                                "Enter" ||
+                              event.key ===
+                                " "
+                            ) {
+                              event.preventDefault();
+
+                              navigate(
+                                "/admin/sales"
+                              );
+                            }
                           }
-                          className="admin-order-item"
-                        >
-
-                          <div>
-
-                            <strong>
-                              #
-                              {
-                                order.order_id
-                              }
-                              {" "}
-                              {
-                                order.medicine_name
-                              }
-                            </strong>
-
-                            <small>
-                              {
-                                order.patient_name
-                              }
-
-                              {" • Qty: "}
-
-                              {
-                                order.quantity
-                              }
-                            </small>
-
-                          </div>
-
-
-                          <strong className="admin-order-patient-id">
-                            Patient #
+                        }
+                        style={{
+                          cursor:
+                            "pointer",
+                        }}
+                      >
+                        <div>
+                          <strong>
+                            #
                             {
-                              order.patient_id
+                              order.order_id
+                            }{" "}
+                            {
+                              order.medicine_name ||
+                              "Medicine Order"
                             }
                           </strong>
 
-
-                          <span
-                            className={
-                              `admin-order-status ${statusClass}`
+                          <small>
+                            {
+                              order.patient_name
                             }
-                          >
-                            {orderStatus}
-                          </span>
 
+                            {" • Qty: "}
+
+                            {
+                              order.quantity
+                            }
+                          </small>
                         </div>
-                      );
-                    }
-                  )
+
+
+                        <strong className="admin-order-patient-id">
+                          Patient #
+                          {
+                            order.patient_id
+                          }
+                        </strong>
+
+
+                        <span
+                          className={
+                            `admin-order-status ${displayStatus}`
+                          }
+                        >
+                          {
+                            displayStatus
+                          }
+                        </span>
+                      </div>
+                    );
+                  }
                 )
-                : (
-                  <div className="admin-empty-orders">
+              ) : (
+                <div className="admin-empty-orders">
+                  <strong>
+                    No medicine orders yet
+                  </strong>
 
-                    <strong>
-                      No medicine orders yet
-                    </strong>
-
-                    <p>
-                      Patient orders will appear
-                      here when they are submitted.
-                    </p>
-
-                  </div>
-                )
+                  <p>
+                    Pharmacy orders will appear here after submission.
+                  </p>
+                </div>
+              )
             }
-
           </div>
-
         </article>
-
       </div>
 
 
-      {/* =====================================================
-          LIVE SYSTEM SNAPSHOT
-      ===================================================== */}
-
-      <article className="admin-system-panel">
-
-        <div>
-
-          <span>
-            LIVE SYSTEM SNAPSHOT
-          </span>
-
-          <h2>
-            Pharmacy Activity
-          </h2>
-
+      <article className="admin-system-panel admin-system-panel--activity">
+        <div className="admin-system-heading">
+          <SectionTitle
+            icon="snapshot"
+            eyebrow="LIVE SYSTEM SNAPSHOT"
+            title="Pharmacy Activity"
+          />
         </div>
 
 
         <div className="admin-system-grid">
-
-          <div>
-
-            <span>
-              Patients
-            </span>
-
-            <strong>
-              {
-                metrics.total_patients ??
-                0
-              }
-            </strong>
-
-          </div>
-
-
-          <div>
-
-            <span>
-              Orders Awaiting Action
-            </span>
-
-            <strong>
-              {
-                metrics.pending_orders ??
-                0
-              }
-            </strong>
-
-          </div>
+          <ActivityMetric
+            icon="patients"
+            tone="violet"
+            label="Patients"
+            value={
+              formatNumber(
+                metrics.total_patients
+              )
+            }
+            onClick={
+              () =>
+                navigate(
+                  "/admin/patients"
+                )
+            }
+          />
 
 
-          <div>
+          <ActivityMetric
+            icon="pending"
+            tone="amber"
+            label="Orders Awaiting Action"
+            value={
+              formatNumber(
+                metrics.pending_orders
+              )
+            }
+            onClick={
+              () =>
+                navigate(
+                  "/admin/alerts"
+                )
+            }
+          />
 
-            <span>
-              Refill Requests
-            </span>
 
-            <strong>
-              {
-                metrics.pending_refills ??
-                0
-              }
-            </strong>
+          <ActivityMetric
+            icon="refill"
+            tone="teal"
+            label="Refill Requests"
+            value={
+              formatNumber(
+                metrics.pending_refills
+              )
+            }
+            onClick={
+              () =>
+                navigate(
+                  "/admin/alerts"
+                )
+            }
+          />
 
-          </div>
 
-
-          <div>
-
-            <span>
-              Appointment Requests
-            </span>
-
-            <strong>
-              {
-                metrics.pending_appointments ??
-                0
-              }
-            </strong>
-
-          </div>
-
+          <ActivityMetric
+            icon="payment"
+            tone="rose"
+            label="Pending Payments"
+            value={
+              formatNumber(
+                paymentSummary.pending ??
+                metrics.pending_payments
+              )
+            }
+            onClick={
+              () =>
+                navigate(
+                  "/admin/sales"
+                )
+            }
+          />
         </div>
-
       </article>
 
 
-      {/* =====================================================
-          QUICK ACTIONS
-      ===================================================== */}
+      <article className="admin-system-panel admin-system-panel--activity">
+        <div className="admin-system-heading">
+          <SectionTitle
+            icon="refill"
+            eyebrow="REFILL STATUS"
+            title="Refill Monitoring"
+          />
+        </div>
 
-      <article className="admin-quick-panel">
 
-        <div>
+        <div className="admin-system-grid">
+          <ActivityMetric
+            icon="refill"
+            tone="teal"
+            label="Due Soon"
+            value={
+              formatNumber(
+                refillSummary.due_soon
+              )
+            }
+            onClick={
+              () =>
+                navigate(
+                  "/admin/alerts"
+                )
+            }
+          />
 
-          <span>
-            QUICK ACTIONS
-          </span>
 
-          <h2>
-            Pharmacy Management
-          </h2>
+          <ActivityMetric
+            icon="pending"
+            tone="amber"
+            label="Due Today"
+            value={
+              formatNumber(
+                refillSummary.due_today
+              )
+            }
+            onClick={
+              () =>
+                navigate(
+                  "/admin/alerts"
+                )
+            }
+          />
 
+
+          <ActivityMetric
+            icon="pending"
+            tone="rose"
+            label="Overdue"
+            value={
+              formatNumber(
+                refillSummary.overdue
+              )
+            }
+            onClick={
+              () =>
+                navigate(
+                  "/admin/alerts"
+                )
+            }
+          />
+
+
+          <ActivityMetric
+            icon="orders"
+            tone="violet"
+            label="Confirmed"
+            value={
+              formatNumber(
+                refillSummary.confirmed
+              )
+            }
+            onClick={
+              () =>
+                navigate(
+                  "/admin/reports"
+                )
+            }
+          />
+        </div>
+      </article>
+
+
+      <article className="admin-quick-panel admin-quick-panel--management">
+        <div className="admin-quick-heading">
+          <SectionTitle
+            icon="quick"
+            eyebrow="QUICK ACTIONS"
+            title="Pharmacy Management"
+          />
         </div>
 
 
         <div className="admin-quick-grid">
-
           <button
             type="button"
-            onClick={() =>
-              navigate(
-                "/admin/pos"
-              )
+            onClick={
+              () =>
+                navigate(
+                  "/admin/pos"
+                )
             }
           >
+            <span className="admin-quick-icon">
+              <DashboardIcon
+                name="pos"
+              />
+            </span>
 
-            <strong>
-              Open POS
-            </strong>
+            <div>
+              <strong>
+                Open POS
+              </strong>
 
-            <small>
-              Start a pharmacy sale
-            </small>
-
+              <small>
+                Start a pharmacy sale
+              </small>
+            </div>
           </button>
 
 
           <button
             type="button"
-            onClick={() =>
-              navigate(
-                "/admin/inventory"
-              )
+            onClick={
+              () =>
+                navigate(
+                  "/admin/inventory"
+                )
             }
           >
+            <span className="admin-quick-icon">
+              <DashboardIcon
+                name="inventory"
+              />
+            </span>
 
-            <strong>
-              Inventory
-            </strong>
+            <div>
+              <strong>
+                Inventory
+              </strong>
 
-            <small>
-              Manage medicine stock
-            </small>
-
+              <small>
+                Manage medicine stock
+              </small>
+            </div>
           </button>
 
 
           <button
             type="button"
-            onClick={() =>
-              navigate(
-                "/admin/patients"
-              )
+            onClick={
+              () =>
+                navigate(
+                  "/admin/patients"
+                )
             }
           >
+            <span className="admin-quick-icon">
+              <DashboardIcon
+                name="patients"
+              />
+            </span>
 
-            <strong>
-              Patient Records
-            </strong>
+            <div>
+              <strong>
+                Patient Records
+              </strong>
 
-            <small>
-              View registered patients
-            </small>
-
+              <small>
+                View registered patients
+              </small>
+            </div>
           </button>
 
 
           <button
             type="button"
-            onClick={() =>
-              navigate(
-                "/admin/reports"
-              )
+            onClick={
+              () =>
+                navigate(
+                  "/admin/reports"
+                )
             }
           >
+            <span className="admin-quick-icon">
+              <DashboardIcon
+                name="reports"
+              />
+            </span>
 
-            <strong>
-              Reports
-            </strong>
+            <div>
+              <strong>
+                Reports
+              </strong>
 
-            <small>
-              Review pharmacy analytics
-            </small>
-
+              <small>
+                Review pharmacy analytics
+              </small>
+            </div>
           </button>
-
         </div>
-
       </article>
-
     </section>
   );
 }

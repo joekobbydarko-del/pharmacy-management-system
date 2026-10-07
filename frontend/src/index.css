@@ -243,3 +243,79 @@ html[data-theme="dark"] .patient-sidebar {
   box-shadow:
     8px 0 30px rgba(0, 0, 0, 0.13);
 }
+
+/* =========================================================
+   GLOBAL HIDDEN SCROLLBARS
+   SCROLLING REMAINS NATIVE
+   ========================================================= */
+
+/* Firefox */
+html,
+body,
+#root,
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Chrome / Edge / Safari */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+#root::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/*
+  IMPORTANT:
+  Do not set overflow here.
+  Each page/layout keeps its own scrolling rules.
+*/
+
+
+/* =========================================================
+   GLOBAL LOGOUT DANGER HOVER
+   ========================================================= */
+
+button[class*="logout"],
+a[class*="logout"],
+[class*="logout"] button,
+.logout-button,
+.admin-logout,
+.patient-logout,
+.tech-logout {
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+}
+
+button[class*="logout"]:hover,
+a[class*="logout"]:hover,
+[class*="logout"] button:hover,
+.logout-button:hover,
+.admin-logout:hover,
+.patient-logout:hover,
+.tech-logout:hover {
+  background: #dc2626 !important;
+  border-color: #dc2626 !important;
+  color: #ffffff !important;
+
+  box-shadow:
+    0 8px 20px rgba(220, 38, 38, 0.22);
+}
+
+button[class*="logout"]:hover svg,
+a[class*="logout"]:hover svg,
+[class*="logout"] button:hover svg,
+.logout-button:hover svg,
+.admin-logout:hover svg,
+.patient-logout:hover svg,
+.tech-logout:hover svg {
+  color: #ffffff !important;
+  stroke: currentColor !important;
+}
+

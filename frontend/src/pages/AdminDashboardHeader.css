@@ -1,0 +1,162 @@
+/* =========================================================
+   DR. EVANS PHARMACY
+   ADMIN DASHBOARD LIVE CLOCK
+========================================================= */
+
+.admin-dashboard-time-card {
+  min-width: 220px;
+  min-height: 84px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 13px;
+
+  padding:
+    14px
+    17px;
+
+  box-sizing: border-box;
+
+  border:
+    1px solid
+    #d8e7eb;
+
+  border-radius: 16px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 10px 28px
+    rgba(
+      7,
+      59,
+      76,
+      0.045
+    );
+}
+
+.admin-dashboard-time-icon {
+  width: 44px;
+  height: 44px;
+
+  flex:
+    0 0 44px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 13px;
+
+  background: #def6f4;
+
+  color: #0f9f98;
+}
+
+.admin-dashboard-time-icon svg {
+  width: 21px;
+  height: 21px;
+}
+
+.admin-dashboard-time-card
+> div {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-dashboard-time-card small {
+  color: #0f9f98;
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: 1.3px;
+}
+
+.admin-dashboard-time-card strong {
+  margin-top: 3px;
+
+  color: #073b4c;
+
+  font-size: 19px;
+  font-weight: 900;
+
+  line-height: 1.1;
+}
+
+.admin-dashboard-time-card
+> div
+> span {
+  margin-top: 3px;
+
+  color: #678693;
+
+  font-size: 9px;
+  font-weight: 700;
+}
+
+
+/* DARK MODE */
+
+[data-admin-theme="dark"]
+.admin-dashboard-time-card {
+  border-color: #294b57;
+
+  background: #122d37;
+
+  box-shadow:
+    0 12px 30px
+    rgba(
+      0,
+      0,
+      0,
+      0.16
+    );
+}
+
+[data-admin-theme="dark"]
+.admin-dashboard-time-icon {
+  background:
+    rgba(
+      15,
+      159,
+      152,
+      0.17
+    );
+
+  color: #69ddd6;
+}
+
+[data-admin-theme="dark"]
+.admin-dashboard-time-card small {
+  color: #69ddd6;
+}
+
+[data-admin-theme="dark"]
+.admin-dashboard-time-card strong {
+  color: #f3fbfc;
+}
+
+[data-admin-theme="dark"]
+.admin-dashboard-time-card
+> div
+> span {
+  color: #b4cbd2;
+}
+
+
+/* MOBILE */
+
+@media (
+  max-width: 650px
+) {
+  .admin-dashboard-time-card {
+    width: 100%;
+
+    min-width: 0;
+
+    margin-top: 16px;
+  }
+}

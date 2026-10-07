@@ -48,9 +48,12 @@ import AdminPOSPage from "./pages/AdminPOSPage";
 import AdminSalesPage from "./pages/AdminSalesPage";
 import AdminPurchasesPage from "./pages/AdminPurchasesPage";
 import AdminSuppliersPage from "./pages/AdminSuppliersPage";
+import AdminAppointmentsPage from "./pages/AdminAppointmentsPage";
 import AdminReportsPage from "./pages/AdminReportsPage";
 import AdminAlertsPage from "./pages/AdminAlertsPage";
 import AdminSettingsPage from "./pages/AdminSettingsPage";
+import AdminProfilePage from "./pages/AdminProfilePage";
+import AdminSupportPage from "./pages/AdminSupportPage";
 
 
 /* =========================================================
@@ -193,7 +196,6 @@ function App() {
 
   return (
     <BrowserRouter>
-
       <Routes>
 
         {/* =================================================
@@ -237,13 +239,10 @@ function App() {
           path="/patient"
           element={
             <ProtectedPatientRoute>
-
               <PatientLayout />
-
             </ProtectedPatientRoute>
           }
         >
-
           <Route
             index
             element={
@@ -320,7 +319,6 @@ function App() {
               <TechnicalSupportPage />
             }
           />
-
         </Route>
 
 
@@ -332,13 +330,10 @@ function App() {
           path="/admin"
           element={
             <ProtectedAdminRoute>
-
               <AdminLayout />
-
             </ProtectedAdminRoute>
           }
         >
-
           <Route
             index
             element={
@@ -389,6 +384,13 @@ function App() {
           />
 
           <Route
+            path="appointments"
+            element={
+              <AdminAppointmentsPage />
+            }
+          />
+
+          <Route
             path="reports"
             element={
               <AdminReportsPage />
@@ -403,12 +405,25 @@ function App() {
           />
 
           <Route
+            path="support"
+            element={
+              <AdminSupportPage />
+            }
+          />
+
+          <Route
+            path="profile"
+            element={
+              <AdminProfilePage />
+            }
+          />
+
+          <Route
             path="settings"
             element={
               <AdminSettingsPage />
             }
           />
-
         </Route>
 
 
@@ -437,7 +452,6 @@ function App() {
         />
 
       </Routes>
-
     </BrowserRouter>
   );
 }
