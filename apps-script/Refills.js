@@ -6,105 +6,343 @@
  * - Refill status calculation
  * - Refill validation
  * - Patient refill confirmation
- * - Order/invoice creation flow
+ * - Missed / expired refill review
+ * - Refill rescheduling
+ * - Patient cancellation
+ * - Clinical decline
+ * - Order / invoice creation flow
  * - Voice reminder integration
  */
 
+
+/* =========================================================
+   REFILL RULES
+   ========================================================= */
+
 const REFILL_RULES = {
+  DUE_SOON_DAYS: 7,
 
-  DUE_SOON_DAYS:
-    7,
+  OVERDUE_MAX_DAYS: 7,
 
-  /**
-   * Voice reminders are allowed
-   * for these refill statuses.
-   */
   VOICE_ELIGIBLE_STATUSES: [
     "Due Soon",
     "Due Today",
-    "Overdue"
-  ]
+    "Overdue",
+  ],
 };
 
 
-/**
- * REFRESH ALL REFILL STATUSES
- */
-function refreshRefillStatuses() {
+/* =========================================================
+   EXTRA REFILL WORKFLOW COLUMNS
+   ========================================================= */
 
-  const sheet =
+const REFILL_WORKFLOW_COLUMNS = [
+  "Generated_Order_ID",
+  "Resolution_Status",
+  "Resolution_Reason",
+  "Review_Note",
+  "Reviewed_By",
+  "Reviewed_At",
+  "Previous_Refill_Date",
+];
+
+
+/* =========================================================
+   ENSURE EXTRA COLUMNS EXIST
+   ========================================================= */
+
+function ensureRefillWorkflowColumns_() {
+  const refillSheet =
     sheet_("Refills");
 
-  const map =
-    headerMap_("Refills");
+  const lastColumn =
+    Math.max(
+      refillSheet.getLastColumn(),
+      1
+    );
 
-  const refills =
-    tableRows_("Refills");
+  const headers =
+    refillSheet
+      .getRange(
+        1,
+        1,
+        1,
+        lastColumn
+      )
+      .getValues()[0]
+      .map(
+        value =>
+          String(
+            value || ""
+          ).trim()
+      );
 
-  let overdue = 0;
-  let dueToday = 0;
-  let dueSoon = 0;
-  let notDueYet = 0;
+  let nextColumn =
+    headers.length + 1;
+
+  let changed =
+    false;
 
 
-  refills.forEach(refill => {
+  REFILL_WORKFLOW_COLUMNS.forEach(
+    header => {
+      if (
+        headers.indexOf(
+          header
+        ) !== -1
+      ) {
+        return;
+      }
 
-    const status =
-      calculateRefillStatus_(
-        refill.Next_Refill_Date
+
+      refillSheet
+        .getRange(
+          1,
+          nextColumn
+        )
+        .setValue(
+          header
+        );
+
+
+      headers.push(
+        header
       );
 
 
-    sheet
-      .getRange(
-        refill._row,
-        map.Reminder_Status
-      )
-      .setValue(status);
+      nextColumn++;
 
-
-    if (
-      status ===
-      "Overdue"
-    ) {
-
-      overdue++;
+      changed =
+        true;
     }
+  );
 
 
-    if (
-      status ===
-      "Due Today"
-    ) {
+  if (
+    changed
+  ) {
+    SpreadsheetApp.flush();
+  }
 
-      dueToday++;
+
+  return headerMap_(
+    "Refills"
+  );
+}
+
+
+/* =========================================================
+   CHECK WHETHER REFILL IS CLOSED
+   ========================================================= */
+
+function isRefillClosed_(
+  refill
+) {
+  if (
+    !refill
+  ) {
+    return false;
+  }
+
+
+  const patientResponse =
+    String(
+      refill.Patient_Response ||
+      ""
+    )
+      .trim()
+      .toLowerCase();
+
+
+  const confirmationStatus =
+    String(
+      refill.Confirmation_Status ||
+      ""
+    )
+      .trim()
+      .toLowerCase();
+
+
+  const resolutionStatus =
+    String(
+      refill.Resolution_Status ||
+      ""
+    )
+      .trim()
+      .toLowerCase();
+
+
+  const generatedOrderId =
+    String(
+      refill.Generated_Order_ID ||
+      ""
+    ).trim();
+
+
+  if (
+    generatedOrderId
+  ) {
+    return true;
+  }
+
+
+  if (
+    [
+      "confirmed",
+      "completed",
+    ].indexOf(
+      confirmationStatus
+    ) !== -1
+  ) {
+    return true;
+  }
+
+
+  if (
+    [
+      "confirmed",
+      "cancelled by patient",
+      "patient cancelled",
+    ].indexOf(
+      patientResponse
+    ) !== -1
+  ) {
+    return true;
+  }
+
+
+  return (
+    [
+      "cancelled by patient",
+      "patient cancelled",
+      "clinically declined",
+      "declined on clinical review",
+      "completed",
+      "closed",
+    ].indexOf(
+      resolutionStatus
+    ) !== -1
+  );
+}
+
+
+/* =========================================================
+   REFRESH ALL REFILL STATUSES
+   ========================================================= */
+
+function refreshRefillStatuses() {
+  const refillSheet =
+    sheet_(
+      "Refills"
+    );
+
+
+  const map =
+    ensureRefillWorkflowColumns_();
+
+
+  const refills =
+    tableRows_(
+      "Refills"
+    );
+
+
+  let missedExpired =
+    0;
+
+  let overdue =
+    0;
+
+  let dueToday =
+    0;
+
+  let dueSoon =
+    0;
+
+  let notDueYet =
+    0;
+
+  let closed =
+    0;
+
+
+  refills.forEach(
+    refill => {
+      if (
+        isRefillClosed_(
+          refill
+        )
+      ) {
+        closed++;
+
+        return;
+      }
+
+
+      const status =
+        calculateRefillStatus_(
+          refill.Next_Refill_Date
+        );
+
+
+      refillSheet
+        .getRange(
+          refill._row,
+          map.Reminder_Status
+        )
+        .setValue(
+          status
+        );
+
+
+      if (
+        status ===
+        "Missed / Expired"
+      ) {
+        missedExpired++;
+      }
+
+
+      if (
+        status ===
+        "Overdue"
+      ) {
+        overdue++;
+      }
+
+
+      if (
+        status ===
+        "Due Today"
+      ) {
+        dueToday++;
+      }
+
+
+      if (
+        status ===
+        "Due Soon"
+      ) {
+        dueSoon++;
+      }
+
+
+      if (
+        status ===
+        "Not Due Yet"
+      ) {
+        notDueYet++;
+      }
     }
-
-
-    if (
-      status ===
-      "Due Soon"
-    ) {
-
-      dueSoon++;
-    }
-
-
-    if (
-      status ===
-      "Not Due Yet"
-    ) {
-
-      notDueYet++;
-    }
-
-  });
+  );
 
 
   SpreadsheetApp.flush();
 
 
   const result = {
+    missedExpired:
+      missedExpired,
 
     overdue:
       overdue,
@@ -116,7 +354,10 @@ function refreshRefillStatuses() {
       dueSoon,
 
     notDueYet:
-      notDueYet
+      notDueYet,
+
+    closed:
+      closed,
   };
 
 
@@ -133,13 +374,13 @@ function refreshRefillStatuses() {
 }
 
 
-/**
- * CALCULATE REFILL STATUS
- */
+/* =========================================================
+   CALCULATE REFILL STATUS
+   ========================================================= */
+
 function calculateRefillStatus_(
   nextRefillDate
 ) {
-
   const refillDay =
     dateSerial_(
       nextRefillDate
@@ -153,9 +394,9 @@ function calculateRefillStatus_(
 
 
   if (
-    refillDay === null
+    refillDay ===
+    null
   ) {
-
     throw new Error(
       "Invalid Next_Refill_Date found."
     );
@@ -172,27 +413,48 @@ function calculateRefillStatus_(
     );
 
 
+  /*
+   * 8+ DAYS LATE
+   */
   if (
-    difference < 0
+    difference <
+    -REFILL_RULES
+      .OVERDUE_MAX_DAYS
   ) {
+    return "Missed / Expired";
+  }
 
+
+  /*
+   * 1-7 DAYS LATE
+   */
+  if (
+    difference <
+    0
+  ) {
     return "Overdue";
   }
 
 
+  /*
+   * TODAY
+   */
   if (
-    difference === 0
+    difference ===
+    0
   ) {
-
     return "Due Today";
   }
 
 
+  /*
+   * NEXT 7 DAYS
+   */
   if (
     difference <=
-    REFILL_RULES.DUE_SOON_DAYS
+    REFILL_RULES
+      .DUE_SOON_DAYS
   ) {
-
     return "Due Soon";
   }
 
@@ -201,19 +463,18 @@ function calculateRefillStatus_(
 }
 
 
-/**
- * CONVERT DATE TO DAY SERIAL
- */
+/* =========================================================
+   CONVERT DATE TO DAY SERIAL
+   ========================================================= */
+
 function dateSerial_(
   value
 ) {
-
   if (
     value === "" ||
     value === null ||
     value === undefined
   ) {
-
     return null;
   }
 
@@ -224,14 +485,16 @@ function dateSerial_(
 
 
   if (
-    Object.prototype.toString.call(
-      value
-    ) === "[object Date]" &&
+    Object.prototype
+      .toString
+      .call(
+        value
+      ) ===
+      "[object Date]" &&
     !isNaN(
       value.getTime()
     )
   ) {
-
     const formatted =
       Utilities.formatDate(
         value,
@@ -241,7 +504,9 @@ function dateSerial_(
 
 
     const parts =
-      formatted.split("-");
+      formatted.split(
+        "-"
+      );
 
 
     year =
@@ -263,7 +528,6 @@ function dateSerial_(
   }
 
   else {
-
     const text =
       String(
         value
@@ -279,7 +543,6 @@ function dateSerial_(
     if (
       match
     ) {
-
       day =
         Number(
           match[1]
@@ -296,11 +559,9 @@ function dateSerial_(
         Number(
           match[3]
         );
-
     }
 
     else {
-
       match =
         text.match(
           /^(\d{4})-(\d{1,2})-(\d{1,2})$/
@@ -310,7 +571,6 @@ function dateSerial_(
       if (
         !match
       ) {
-
         return null;
       }
 
@@ -340,7 +600,6 @@ function dateSerial_(
     !month ||
     !day
   ) {
-
     return null;
   }
 
@@ -353,10 +612,13 @@ function dateSerial_(
 }
 
 
-/**
- * VALIDATE REFILL DATA
- */
+/* =========================================================
+   VALIDATE REFILL DATA
+   ========================================================= */
+
 function checkRefillData() {
+  ensureRefillWorkflowColumns_();
+
 
   const refills =
     tableRows_(
@@ -398,27 +660,30 @@ function checkRefillData() {
     );
 
 
-  const problems = [];
+  const problems =
+    [];
 
 
   refills.forEach(
     refill => {
-
       const refillId =
         String(
-          refill.Refill_ID
+          refill.Refill_ID ||
+          ""
         ).trim();
 
 
       const patientId =
         String(
-          refill.Patient_ID
+          refill.Patient_ID ||
+          ""
         ).trim();
 
 
       const drugId =
         String(
-          refill.Drug_ID
+          refill.Drug_ID ||
+          ""
         ).trim();
 
 
@@ -427,7 +692,6 @@ function checkRefillData() {
           patientId
         )
       ) {
-
         problems.push(
           refillId +
           ": Patient " +
@@ -442,7 +706,6 @@ function checkRefillData() {
           drugId
         )
       ) {
-
         problems.push(
           refillId +
           ": Drug " +
@@ -455,23 +718,22 @@ function checkRefillData() {
       if (
         dateSerial_(
           refill.Next_Refill_Date
-        ) === null
+        ) ===
+        null
       ) {
-
         problems.push(
           refillId +
           ": Invalid Next_Refill_Date."
         );
       }
-
     }
   );
 
 
   if (
-    problems.length > 0
+    problems.length >
+    0
   ) {
-
     throw new Error(
       problems.join(
         "\n"
@@ -481,7 +743,6 @@ function checkRefillData() {
 
 
   const result = {
-
     refillsChecked:
       refills.length,
 
@@ -492,7 +753,7 @@ function checkRefillData() {
       true,
 
     datesValid:
-      true
+      true,
   };
 
 
@@ -509,32 +770,889 @@ function checkRefillData() {
 }
 
 
-/**
- * PROCESS PATIENT REFILL CONFIRMATION
- *
- * Workflow:
- * 1. Verify secure token
- * 2. Find refill
- * 3. Create/reuse order
- * 4. Create/reuse invoice
- * 5. Mark refill confirmed
- * 6. Create payment link
- */
-function processRefillConfirmation_(
-  refillId,
-  token
-) {
+/* =========================================================
+   GET OPEN REFILL FOR REVIEW
+   ========================================================= */
 
+function getOpenRefillForReview_(
+  refillId
+) {
   const cleanRefillId =
     String(
-      refillId || ""
+      refillId ||
+      ""
     ).trim();
 
 
   if (
     !cleanRefillId
   ) {
+    throw new Error(
+      "Refill ID is missing."
+    );
+  }
 
+
+  const refill =
+    findRecord_(
+      "Refills",
+      "Refill_ID",
+      cleanRefillId
+    );
+
+
+  if (
+    !refill
+  ) {
+    throw new Error(
+      "Refill " +
+      cleanRefillId +
+      " was not found."
+    );
+  }
+
+
+  const generatedOrderId =
+    String(
+      refill.Generated_Order_ID ||
+      ""
+    ).trim();
+
+
+  const confirmationStatus =
+    String(
+      refill.Confirmation_Status ||
+      ""
+    )
+      .trim()
+      .toLowerCase();
+
+
+  const resolutionStatus =
+    String(
+      refill.Resolution_Status ||
+      ""
+    )
+      .trim()
+      .toLowerCase();
+
+
+  if (
+    generatedOrderId ||
+    confirmationStatus ===
+      "confirmed"
+  ) {
+    throw new Error(
+      "This refill has already been confirmed or converted into an order."
+    );
+  }
+
+
+  if (
+    [
+      "cancelled by patient",
+      "clinically declined",
+      "completed",
+      "closed",
+    ].indexOf(
+      resolutionStatus
+    ) !== -1
+  ) {
+    throw new Error(
+      "This refill has already been closed."
+    );
+  }
+
+
+  return refill;
+}
+
+
+/* =========================================================
+   PHARMACIST REVIEW
+   ========================================================= */
+
+function reviewRefill_(
+  refillId,
+  note,
+  reviewedBy
+) {
+  const cleanNote =
+    String(
+      note ||
+      ""
+    ).trim();
+
+
+  const reviewer =
+    String(
+      reviewedBy ||
+      "Pharmacist"
+    ).trim();
+
+
+  if (
+    !cleanNote
+  ) {
+    throw new Error(
+      "A pharmacist review note is required."
+    );
+  }
+
+
+  const refill =
+    getOpenRefillForReview_(
+      refillId
+    );
+
+
+  const refillSheet =
+    sheet_(
+      "Refills"
+    );
+
+
+  const map =
+    ensureRefillWorkflowColumns_();
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Review_Note
+    )
+    .setValue(
+      cleanNote
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Reviewed_By
+    )
+    .setValue(
+      reviewer
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Reviewed_At
+    )
+    .setValue(
+      new Date()
+    );
+
+
+  SpreadsheetApp.flush();
+
+
+  logAudit_({
+    userType:
+      "Admin",
+
+    userId:
+      reviewer,
+
+    action:
+      "REFILL REVIEWED",
+
+    recordType:
+      "Refill",
+
+    recordId:
+      String(
+        refill.Refill_ID ||
+        ""
+      ),
+
+    details:
+      cleanNote,
+  });
+
+
+  return {
+    success:
+      true,
+
+    refillId:
+      refill.Refill_ID,
+
+    reviewNote:
+      cleanNote,
+
+    reviewedBy:
+      reviewer,
+  };
+}
+
+
+/* =========================================================
+   RESCHEDULE REFILL
+   ========================================================= */
+
+function rescheduleRefill_(
+  refillId,
+  newRefillDate,
+  note,
+  reviewedBy
+) {
+  const refill =
+    getOpenRefillForReview_(
+      refillId
+    );
+
+
+  const reviewer =
+    String(
+      reviewedBy ||
+      "Pharmacist"
+    ).trim();
+
+
+  const cleanNote =
+    String(
+      note ||
+      ""
+    ).trim();
+
+
+  if (
+    !cleanNote
+  ) {
+    throw new Error(
+      "A pharmacist note is required when rescheduling a refill."
+    );
+  }
+
+
+  const newDateSerial =
+    dateSerial_(
+      newRefillDate
+    );
+
+
+  const todaySerial =
+    dateSerial_(
+      new Date()
+    );
+
+
+  if (
+    newDateSerial ===
+    null
+  ) {
+    throw new Error(
+      "The new refill date is invalid."
+    );
+  }
+
+
+  if (
+    newDateSerial <
+    todaySerial
+  ) {
+    throw new Error(
+      "The new refill date cannot be in the past."
+    );
+  }
+
+
+  const refillSheet =
+    sheet_(
+      "Refills"
+    );
+
+
+  const map =
+    ensureRefillWorkflowColumns_();
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Previous_Refill_Date
+    )
+    .setValue(
+      refill.Next_Refill_Date ||
+      ""
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Next_Refill_Date
+    )
+    .setValue(
+      newRefillDate
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Reminder_Status
+    )
+    .setValue(
+      calculateRefillStatus_(
+        newRefillDate
+      )
+    );
+
+
+  if (
+    map.Reminder_Sent
+  ) {
+    refillSheet
+      .getRange(
+        refill._row,
+        map.Reminder_Sent
+      )
+      .clearContent();
+  }
+
+
+  if (
+    map.Reminder_Sent_Date
+  ) {
+    refillSheet
+      .getRange(
+        refill._row,
+        map.Reminder_Sent_Date
+      )
+      .clearContent();
+  }
+
+
+  if (
+    map.Patient_Response
+  ) {
+    refillSheet
+      .getRange(
+        refill._row,
+        map.Patient_Response
+      )
+      .clearContent();
+  }
+
+
+  if (
+    map.Confirmation_Date
+  ) {
+    refillSheet
+      .getRange(
+        refill._row,
+        map.Confirmation_Date
+      )
+      .clearContent();
+  }
+
+
+  if (
+    map.Confirmation_Status
+  ) {
+    refillSheet
+      .getRange(
+        refill._row,
+        map.Confirmation_Status
+      )
+      .setValue(
+        "Pending"
+      );
+  }
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Resolution_Status
+    )
+    .setValue(
+      "Rescheduled"
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Resolution_Reason
+    )
+    .setValue(
+      cleanNote
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Review_Note
+    )
+    .setValue(
+      cleanNote
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Reviewed_By
+    )
+    .setValue(
+      reviewer
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Reviewed_At
+    )
+    .setValue(
+      new Date()
+    );
+
+
+  SpreadsheetApp.flush();
+
+
+  logAudit_({
+    userType:
+      "Admin",
+
+    userId:
+      reviewer,
+
+    action:
+      "REFILL RESCHEDULED",
+
+    recordType:
+      "Refill",
+
+    recordId:
+      String(
+        refill.Refill_ID ||
+        ""
+      ),
+
+    details:
+      "Refill rescheduled to " +
+      String(
+        newRefillDate
+      ) +
+      ". Reason: " +
+      cleanNote,
+  });
+
+
+  return {
+    success:
+      true,
+
+    refillId:
+      refill.Refill_ID,
+
+    status:
+      "Rescheduled",
+
+    nextRefillDate:
+      newRefillDate,
+
+    note:
+      cleanNote,
+
+    reviewedBy:
+      reviewer,
+  };
+}
+
+
+/* =========================================================
+   CANCEL REFILL BY PATIENT
+   ========================================================= */
+
+function cancelRefillByPatient_(
+  refillId,
+  reason,
+  reviewedBy
+) {
+  const refill =
+    getOpenRefillForReview_(
+      refillId
+    );
+
+
+  const cleanReason =
+    String(
+      reason ||
+      ""
+    ).trim();
+
+
+  const reviewer =
+    String(
+      reviewedBy ||
+      "Pharmacist"
+    ).trim();
+
+
+  if (
+    !cleanReason
+  ) {
+    throw new Error(
+      "The patient's cancellation reason is required."
+    );
+  }
+
+
+  const refillSheet =
+    sheet_(
+      "Refills"
+    );
+
+
+  const map =
+    ensureRefillWorkflowColumns_();
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Patient_Response
+    )
+    .setValue(
+      "Cancelled by Patient"
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Confirmation_Status
+    )
+    .setValue(
+      "Cancelled"
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Reminder_Status
+    )
+    .setValue(
+      "Cancelled by Patient"
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Resolution_Status
+    )
+    .setValue(
+      "Cancelled by Patient"
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Resolution_Reason
+    )
+    .setValue(
+      cleanReason
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Review_Note
+    )
+    .setValue(
+      "Patient requested cancellation."
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Reviewed_By
+    )
+    .setValue(
+      reviewer
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Reviewed_At
+    )
+    .setValue(
+      new Date()
+    );
+
+
+  SpreadsheetApp.flush();
+
+
+  logAudit_({
+    userType:
+      "Admin",
+
+    userId:
+      reviewer,
+
+    action:
+      "REFILL CANCELLED BY PATIENT",
+
+    recordType:
+      "Refill",
+
+    recordId:
+      String(
+        refill.Refill_ID ||
+        ""
+      ),
+
+    details:
+      "Patient reason: " +
+      cleanReason,
+  });
+
+
+  return {
+    success:
+      true,
+
+    refillId:
+      refill.Refill_ID,
+
+    status:
+      "Cancelled by Patient",
+
+    reason:
+      cleanReason,
+
+    reviewedBy:
+      reviewer,
+  };
+}
+
+
+/* =========================================================
+   CLINICALLY DECLINE REFILL
+   ========================================================= */
+
+function clinicallyDeclineRefill_(
+  refillId,
+  reason,
+  note,
+  reviewedBy
+) {
+  const refill =
+    getOpenRefillForReview_(
+      refillId
+    );
+
+
+  const cleanReason =
+    String(
+      reason ||
+      ""
+    ).trim();
+
+
+  const cleanNote =
+    String(
+      note ||
+      ""
+    ).trim();
+
+
+  const reviewer =
+    String(
+      reviewedBy ||
+      "Pharmacist"
+    ).trim();
+
+
+  if (
+    !cleanReason
+  ) {
+    throw new Error(
+      "A clinical decline reason is required."
+    );
+  }
+
+
+  if (
+    !reviewer
+  ) {
+    throw new Error(
+      "The reviewer name or role is required."
+    );
+  }
+
+
+  const refillSheet =
+    sheet_(
+      "Refills"
+    );
+
+
+  const map =
+    ensureRefillWorkflowColumns_();
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Confirmation_Status
+    )
+    .setValue(
+      "Clinically Declined"
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Reminder_Status
+    )
+    .setValue(
+      "Clinically Declined"
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Resolution_Status
+    )
+    .setValue(
+      "Clinically Declined"
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Resolution_Reason
+    )
+    .setValue(
+      cleanReason
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Review_Note
+    )
+    .setValue(
+      cleanNote
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Reviewed_By
+    )
+    .setValue(
+      reviewer
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Reviewed_At
+    )
+    .setValue(
+      new Date()
+    );
+
+
+  SpreadsheetApp.flush();
+
+
+  logAudit_({
+    userType:
+      "Admin",
+
+    userId:
+      reviewer,
+
+    action:
+      "REFILL CLINICALLY DECLINED",
+
+    recordType:
+      "Refill",
+
+    recordId:
+      String(
+        refill.Refill_ID ||
+        ""
+      ),
+
+    details:
+      "Clinical reason: " +
+      cleanReason +
+      (
+        cleanNote
+          ? ". Note: " +
+            cleanNote
+          : ""
+      ),
+  });
+
+
+  return {
+    success:
+      true,
+
+    refillId:
+      refill.Refill_ID,
+
+    status:
+      "Clinically Declined",
+
+    reason:
+      cleanReason,
+
+    note:
+      cleanNote,
+
+    reviewedBy:
+      reviewer,
+  };
+}
+
+
+/* =========================================================
+   PROCESS PATIENT REFILL CONFIRMATION
+   ========================================================= */
+
+function processRefillConfirmation_(
+  refillId,
+  token
+) {
+  const cleanRefillId =
+    String(
+      refillId ||
+      ""
+    ).trim();
+
+
+  if (
+    !cleanRefillId
+  ) {
     throw new Error(
       "Refill ID is missing."
     );
@@ -552,7 +1670,6 @@ function processRefillConfirmation_(
   if (
     !validToken
   ) {
-
     throw new Error(
       "This refill confirmation link is invalid."
     );
@@ -570,9 +1687,35 @@ function processRefillConfirmation_(
   if (
     !refill
   ) {
-
     throw new Error(
       "The refill record could not be found."
+    );
+  }
+
+
+  if (
+    isRefillClosed_(
+      refill
+    )
+  ) {
+    throw new Error(
+      "This refill is already closed, confirmed, cancelled, or clinically declined."
+    );
+  }
+
+
+  const currentRefillStatus =
+    calculateRefillStatus_(
+      refill.Next_Refill_Date
+    );
+
+
+  if (
+    currentRefillStatus ===
+    "Missed / Expired"
+  ) {
+    throw new Error(
+      "This refill is missed / expired and requires pharmacist review before it can continue."
     );
   }
 
@@ -588,16 +1731,16 @@ function processRefillConfirmation_(
   if (
     !patient
   ) {
-
     throw new Error(
       "The patient record could not be found."
     );
   }
 
 
-  /**
+  /*
    * CREATE OR REUSE ORDER
    */
+
   const orderResult =
     createOrderFromRefill_(
       cleanRefillId
@@ -608,30 +1751,30 @@ function processRefillConfirmation_(
     orderResult.orderId;
 
 
-  /**
+  /*
    * CREATE OR REUSE INVOICE
    */
+
   const invoiceResult =
     createInvoiceForOrder_(
       orderId
     );
 
 
-  /**
+  /*
    * MARK REFILL CONFIRMED
-   *
-   * Only after order +
-   * invoice succeed.
    */
+
   markRefillConfirmed_(
     cleanRefillId,
     orderId
   );
 
 
-  /**
+  /*
    * PAYMENT LINK
    */
+
   const paymentToken =
     createToken_(
       "PAYMENT:" +
@@ -643,18 +1786,16 @@ function processRefillConfirmation_(
     buildPublicUrl_(
       "payment",
       {
-
         orderId:
           orderId,
 
         token:
-          paymentToken
+          paymentToken,
       }
     );
 
 
   const result = {
-
     refillId:
       cleanRefillId,
 
@@ -675,7 +1816,8 @@ function processRefillConfirmation_(
 
     invoiceAmount:
       Number(
-        invoiceResult.amount || 0
+        invoiceResult.amount ||
+        0
       ),
 
     invoiceLink:
@@ -688,7 +1830,7 @@ function processRefillConfirmation_(
       paymentLink,
 
     confirmed:
-      true
+      true,
   };
 
 
@@ -705,14 +1847,14 @@ function processRefillConfirmation_(
 }
 
 
-/**
- * MARK REFILL AS CONFIRMED
- */
+/* =========================================================
+   MARK REFILL AS CONFIRMED
+   ========================================================= */
+
 function markRefillConfirmed_(
   refillId,
   orderId
 ) {
-
   const refill =
     findRecord_(
       "Refills",
@@ -724,7 +1866,6 @@ function markRefillConfirmed_(
   if (
     !refill
   ) {
-
     throw new Error(
       "Refill " +
       refillId +
@@ -733,19 +1874,17 @@ function markRefillConfirmed_(
   }
 
 
-  const sheet =
+  const refillSheet =
     sheet_(
       "Refills"
     );
 
 
   const map =
-    headerMap_(
-      "Refills"
-    );
+    ensureRefillWorkflowColumns_();
 
 
-  sheet
+  refillSheet
     .getRange(
       refill._row,
       map.Patient_Response
@@ -755,7 +1894,7 @@ function markRefillConfirmed_(
     );
 
 
-  sheet
+  refillSheet
     .getRange(
       refill._row,
       map.Confirmation_Date
@@ -765,7 +1904,7 @@ function markRefillConfirmed_(
     );
 
 
-  sheet
+  refillSheet
     .getRange(
       refill._row,
       map.Confirmation_Status
@@ -775,7 +1914,7 @@ function markRefillConfirmed_(
     );
 
 
-  sheet
+  refillSheet
     .getRange(
       refill._row,
       map.Generated_Order_ID
@@ -785,11 +1924,30 @@ function markRefillConfirmed_(
     );
 
 
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Resolution_Status
+    )
+    .setValue(
+      "Completed"
+    );
+
+
+  refillSheet
+    .getRange(
+      refill._row,
+      map.Resolution_Reason
+    )
+    .setValue(
+      "Patient confirmed refill and an order was created."
+    );
+
+
   SpreadsheetApp.flush();
 
 
   logAudit_({
-
     userType:
       "Patient",
 
@@ -808,8 +1966,7 @@ function markRefillConfirmed_(
     details:
       "Refill confirmed and linked to order " +
       orderId +
-      "."
-
+      ".",
   });
 
 
@@ -817,92 +1974,26 @@ function markRefillConfirmed_(
 }
 
 
-/********************************************************
- * VOICE REMINDER SECTION
- ********************************************************/
+/* =========================================================
+   CHECK IF REFILL IS ALREADY CLOSED / CONFIRMED
+   ========================================================= */
 
-
-/**
- * CHECK IF REFILL IS ALREADY CONFIRMED
- */
 function isRefillConfirmed_(
   refill
 ) {
-
-  if (
-    !refill
-  ) {
-
-    return false;
-  }
-
-
-  const confirmationStatus =
-    String(
-      refill.Confirmation_Status || ""
-    )
-      .trim()
-      .toLowerCase();
-
-
-  const patientResponse =
-    String(
-      refill.Patient_Response || ""
-    )
-      .trim()
-      .toLowerCase();
-
-
-  const generatedOrderId =
-    String(
-      refill.Generated_Order_ID || ""
-    ).trim();
-
-
-  if (
-    confirmationStatus ===
-    "confirmed"
-  ) {
-
-    return true;
-  }
-
-
-  if (
-    patientResponse ===
-    "confirmed"
-  ) {
-
-    return true;
-  }
-
-
-  if (
-    generatedOrderId
-  ) {
-
-    return true;
-  }
-
-
-  return false;
+  return isRefillClosed_(
+    refill
+  );
 }
 
 
-/**
- * BUILD UNIQUE CALL TYPE
- *
- * Example:
- *
- * Refill Reminder - R005
- *
- * This allows Call_Log to identify
- * which refill received the call.
- */
+/* =========================================================
+   BUILD UNIQUE VOICE CALL TYPE
+   ========================================================= */
+
 function buildRefillVoiceCallType_(
   refillId
 ) {
-
   return (
     "Refill Reminder - " +
     String(
@@ -912,26 +2003,23 @@ function buildRefillVoiceCallType_(
 }
 
 
-/**
- * CHECK IF VOICE REMINDER HAS
- * ALREADY BEEN SENT FOR REFILL
- *
- * Prevents duplicate calls.
- */
+/* =========================================================
+   CHECK FOR PREVIOUS VOICE REMINDER
+   ========================================================= */
+
 function hasVoiceReminderBeenSent_(
   refillId
 ) {
-
   const cleanRefillId =
     String(
-      refillId || ""
+      refillId ||
+      ""
     ).trim();
 
 
   if (
     !cleanRefillId
   ) {
-
     return false;
   }
 
@@ -950,28 +2038,31 @@ function hasVoiceReminderBeenSent_(
 
   return calls.some(
     call => {
-
       const existingCallType =
         String(
-          call.Call_Type || ""
+          call.Call_Type ||
+          ""
         ).trim();
 
 
       const status =
         String(
-          call.Call_Status || ""
+          call.Call_Status ||
+          ""
         )
           .trim()
           .toUpperCase();
 
 
-      /**
-       * FAILED attempts do not block
-       * another retry.
+      /*
+       * FAILED calls can be retried.
        */
+
       const successfulSubmission =
-        status !== "FAILED" &&
-        status !== "";
+        status !==
+          "FAILED" &&
+        status !==
+          "";
 
 
       return (
@@ -984,17 +2075,17 @@ function hasVoiceReminderBeenSent_(
 }
 
 
-/**
- * CHECK WHETHER REFILL STATUS
- * IS ELIGIBLE FOR VOICE REMINDER
- */
+/* =========================================================
+   CHECK VOICE STATUS ELIGIBILITY
+   ========================================================= */
+
 function isVoiceReminderStatusEligible_(
   status
 ) {
-
   const cleanStatus =
     String(
-      status || ""
+      status ||
+      ""
     ).trim();
 
 
@@ -1008,32 +2099,24 @@ function isVoiceReminderStatusEligible_(
 }
 
 
-/**
- * SEND ONE REFILL VOICE REMINDER
- *
- * Used by the refill engine.
- *
- * force = false:
- * prevents duplicate reminders.
- *
- * force = true:
- * allows an intentional resend.
- */
+/* =========================================================
+   SEND ONE REFILL VOICE REMINDER
+   ========================================================= */
+
 function sendVoiceReminderForRefill_(
   refillId,
   force
 ) {
-
   const cleanRefillId =
     String(
-      refillId || ""
+      refillId ||
+      ""
     ).trim();
 
 
   if (
     !cleanRefillId
   ) {
-
     throw new Error(
       "Refill ID is missing."
     );
@@ -1051,7 +2134,6 @@ function sendVoiceReminderForRefill_(
   if (
     !refill
   ) {
-
     throw new Error(
       "Refill " +
       cleanRefillId +
@@ -1060,31 +2142,28 @@ function sendVoiceReminderForRefill_(
   }
 
 
-  /**
-   * DO NOT CALL CONFIRMED REFILLS
+  /*
+   * DO NOT CALL CLOSED REFILLS
    */
+
   if (
     isRefillConfirmed_(
       refill
     )
   ) {
-
     throw new Error(
       "Refill " +
       cleanRefillId +
-      " is already confirmed. " +
+      " is already closed or confirmed. " +
       "No voice reminder will be sent."
     );
   }
 
 
-  /**
-   * CALCULATE CURRENT STATUS
-   *
-   * We calculate directly from the
-   * date so the decision does not rely
-   * on an old sheet value.
+  /*
+   * CALCULATE STATUS DIRECTLY FROM DATE
    */
+
   const currentStatus =
     calculateRefillStatus_(
       refill.Next_Refill_Date
@@ -1096,24 +2175,21 @@ function sendVoiceReminderForRefill_(
       currentStatus
     )
   ) {
-
     throw new Error(
       "Refill " +
       cleanRefillId +
       " is currently '" +
       currentStatus +
-      "'. Voice reminders are only " +
-      "sent for Due Soon, Due Today, " +
-      "or Overdue refills."
+      "'. Voice reminders are only sent for " +
+      "Due Soon, Due Today, or Overdue refills. " +
+      "Missed / Expired refills require pharmacist review."
     );
   }
 
 
-  /**
-   * PREVENT DUPLICATE CALL
-   */
   const allowForce =
-    force === true;
+    force ===
+    true;
 
 
   if (
@@ -1122,19 +2198,14 @@ function sendVoiceReminderForRefill_(
       cleanRefillId
     )
   ) {
-
     throw new Error(
-      "A voice reminder has already " +
-      "been submitted for refill " +
+      "A voice reminder has already been submitted for refill " +
       cleanRefillId +
       "."
     );
   }
 
 
-  /**
-   * FIND PATIENT
-   */
   const patient =
     findRecord_(
       "Patients",
@@ -1146,7 +2217,6 @@ function sendVoiceReminderForRefill_(
   if (
     !patient
   ) {
-
     throw new Error(
       "Patient " +
       refill.Patient_ID +
@@ -1155,19 +2225,16 @@ function sendVoiceReminderForRefill_(
   }
 
 
-  /**
-   * GET PHONE
-   */
   const phone =
     String(
-      patient.Phone || ""
+      patient.Phone ||
+      ""
     ).trim();
 
 
   if (
     !phone
   ) {
-
     throw new Error(
       "Patient " +
       patient.Patient_ID +
@@ -1189,27 +2256,20 @@ function sendVoiceReminderForRefill_(
     );
 
 
-  /**
+  /*
    * SEND THROUGH Voice.gs
    */
+
   const voiceResult =
     sendArkeselVoiceCall_(
-
       phone,
-
       patient.Patient_ID,
-
       preferredContact,
-
       callType
     );
 
 
-  /**
-   * AUDIT LOG
-   */
   logAudit_({
-
     userType:
       "System",
 
@@ -1235,13 +2295,11 @@ function sendVoiceReminderForRefill_(
         voiceResult.campaignId ||
         "Not returned"
       ) +
-      "."
-
+      ".",
   });
 
 
   const result = {
-
     success:
       true,
 
@@ -1267,8 +2325,7 @@ function sendVoiceReminderForRefill_(
       voiceResult.campaignId,
 
     providerStatus:
-      voiceResult.providerStatus
-
+      voiceResult.providerStatus,
   };
 
 
@@ -1285,19 +2342,17 @@ function sendVoiceReminderForRefill_(
 }
 
 
-/**
- * CHECK WHETHER A REFILL IS READY
- * FOR A VOICE REMINDER
- *
- * DOES NOT MAKE A CALL.
- */
+/* =========================================================
+   CHECK VOICE REMINDER READINESS
+   ========================================================= */
+
 function checkVoiceReminderReadiness_(
   refillId
 ) {
-
   const cleanRefillId =
     String(
-      refillId || ""
+      refillId ||
+      ""
     ).trim();
 
 
@@ -1312,7 +2367,6 @@ function checkVoiceReminderReadiness_(
   if (
     !refill
   ) {
-
     throw new Error(
       "Refill " +
       cleanRefillId +
@@ -1332,7 +2386,6 @@ function checkVoiceReminderReadiness_(
   if (
     !patient
   ) {
-
     throw new Error(
       "Patient record was not found."
     );
@@ -1360,7 +2413,8 @@ function checkVoiceReminderReadiness_(
   const phoneExists =
     Boolean(
       String(
-        patient.Phone || ""
+        patient.Phone ||
+        ""
       ).trim()
     );
 
@@ -1379,7 +2433,6 @@ function checkVoiceReminderReadiness_(
 
 
   return {
-
     refillId:
       cleanRefillId,
 
@@ -1402,31 +2455,72 @@ function checkVoiceReminderReadiness_(
       duplicate,
 
     readyForVoiceReminder:
-      ready
-
+      ready,
   };
 }
 
 
-/**
- * TEST ONE REAL REFILL
- *
- * STEP 1:
- *
- * Put an UNCONFIRMED Due Soon,
- * Due Today, or Overdue Refill_ID
- * below.
- *
- * Example:
- * R010
- *
- * Do NOT use R003 because R003
- * has already been confirmed.
- *
- * This function WILL place a real call.
- */
-function testSingleRefillVoiceReminder() {
+/* =========================================================
+   SAFE TEST:
+   CALCULATE ONE REFILL STATUS
+   ========================================================= */
 
+function testRefillStatusCalculation() {
+  const refillId =
+    "R001";
+
+
+  const refill =
+    findRecord_(
+      "Refills",
+      "Refill_ID",
+      refillId
+    );
+
+
+  if (
+    !refill
+  ) {
+    throw new Error(
+      refillId +
+      " was not found."
+    );
+  }
+
+
+  const result = {
+    refillId:
+      refillId,
+
+    nextRefillDate:
+      refill.Next_Refill_Date,
+
+    calculatedStatus:
+      calculateRefillStatus_(
+        refill.Next_Refill_Date
+      ),
+  };
+
+
+  Logger.log(
+    JSON.stringify(
+      result,
+      null,
+      2
+    )
+  );
+
+
+  return result;
+}
+
+
+/* =========================================================
+   TEST ONE REAL VOICE REMINDER
+   WARNING: THIS CAN PLACE A REAL CALL
+   ========================================================= */
+
+function testSingleRefillVoiceReminder() {
   const refillId =
     "R001";
 
@@ -1435,17 +2529,12 @@ function testSingleRefillVoiceReminder() {
     refillId ===
     "ENTER_REFILL_ID_HERE"
   ) {
-
     throw new Error(
-      "Enter one unconfirmed refill ID " +
-      "inside testSingleRefillVoiceReminder()."
+      "Enter one unconfirmed refill ID inside testSingleRefillVoiceReminder()."
     );
   }
 
 
-  /**
-   * CHECK FIRST
-   */
   const readiness =
     checkVoiceReminderReadiness_(
       refillId
@@ -1467,19 +2556,15 @@ function testSingleRefillVoiceReminder() {
 
 
   if (
-    !readiness.readyForVoiceReminder
+    !readiness
+      .readyForVoiceReminder
   ) {
-
     throw new Error(
-      "This refill is not ready for a voice reminder. " +
-      "Check the execution log for details."
+      "This refill is not ready for a voice reminder. Check the execution log for details."
     );
   }
 
 
-  /**
-   * SEND REAL CALL
-   */
   const result =
     sendVoiceReminderForRefill_(
       refillId,
@@ -1505,16 +2590,12 @@ function testSingleRefillVoiceReminder() {
 }
 
 
-/**
- * SAFE VOICE READINESS TEST
- *
- * DOES NOT PLACE ANY CALL.
- *
- * Put a refill ID below and run
- * this first if you want to check it.
- */
-function testVoiceReminderReadiness() {
+/* =========================================================
+   SAFE VOICE READINESS TEST
+   DOES NOT PLACE A CALL
+   ========================================================= */
 
+function testVoiceReminderReadiness() {
   const refillId =
     "R001";
 
@@ -1523,10 +2604,8 @@ function testVoiceReminderReadiness() {
     refillId ===
     "ENTER_REFILL_ID_HERE"
   ) {
-
     throw new Error(
-      "Enter a refill ID inside " +
-      "testVoiceReminderReadiness()."
+      "Enter a refill ID inside testVoiceReminderReadiness()."
     );
   }
 
@@ -1550,19 +2629,12 @@ function testVoiceReminderReadiness() {
 }
 
 
-/**
- * SAFE CONFIRMATION READINESS TEST
- *
- * This does NOT:
- * - create an order
- * - create an invoice
- * - confirm the refill
- *
- * It only checks the secure token
- * and linked data.
- */
-function testRefillConfirmationReadiness() {
+/* =========================================================
+   SAFE CONFIRMATION READINESS TEST
+   DOES NOT CREATE ORDER / INVOICE
+   ========================================================= */
 
+function testRefillConfirmationReadiness() {
   const refillId =
     "R003";
 
@@ -1593,9 +2665,9 @@ function testRefillConfirmationReadiness() {
   if (
     !refill
   ) {
-
     throw new Error(
-      "R003 was not found."
+      refillId +
+      " was not found."
     );
   }
 
@@ -1611,15 +2683,19 @@ function testRefillConfirmationReadiness() {
   if (
     !patient
   ) {
-
     throw new Error(
       "Patient was not found."
     );
   }
 
 
-  const result = {
+  const currentStatus =
+    calculateRefillStatus_(
+      refill.Next_Refill_Date
+    );
 
+
+  const result = {
     refillId:
       refillId,
 
@@ -1629,12 +2705,23 @@ function testRefillConfirmationReadiness() {
     tokenValid:
       tokenValid,
 
+    refillStatus:
+      currentStatus,
+
+    requiresReview:
+      currentStatus ===
+      "Missed / Expired",
+
     confirmationStatus:
       refill.Confirmation_Status,
 
-    existingOrderId:
-      refill.Generated_Order_ID || ""
+    resolutionStatus:
+      refill.Resolution_Status ||
+      "",
 
+    existingOrderId:
+      refill.Generated_Order_ID ||
+      "",
   };
 
 
@@ -1651,10 +2738,81 @@ function testRefillConfirmationReadiness() {
 }
 
 
-/**
- * REFILL ENGINE TEST
- */
+/* =========================================================
+   TEST REFILL RESCHEDULE LOGIC
+   SAFE UNLESS YOU CALL rescheduleRefill_ DIRECTLY
+   ========================================================= */
+
+function testRefillReviewReadiness() {
+  const refills =
+    tableRows_(
+      "Refills"
+    );
+
+
+  const results =
+    refills.map(
+      refill => {
+        const status =
+          calculateRefillStatus_(
+            refill.Next_Refill_Date
+          );
+
+
+        return {
+          refillId:
+            refill.Refill_ID,
+
+          patientId:
+            refill.Patient_ID,
+
+          drugId:
+            refill.Drug_ID,
+
+          nextRefillDate:
+            refill.Next_Refill_Date,
+
+          status:
+            status,
+
+          closed:
+            isRefillClosed_(
+              refill
+            ),
+
+          reviewRequired:
+            status ===
+              "Missed / Expired" &&
+            !isRefillClosed_(
+              refill
+            ),
+        };
+      }
+    );
+
+
+  Logger.log(
+    JSON.stringify(
+      results,
+      null,
+      2
+    )
+  );
+
+
+  return results;
+}
+
+
+/* =========================================================
+   REFILL ENGINE TEST
+   SAFE:
+   UPDATES REMINDER_STATUS + ADDS WORKFLOW COLUMNS
+   ========================================================= */
+
 function testRefillEngine() {
+  ensureRefillWorkflowColumns_();
+
 
   checkRefillData();
 

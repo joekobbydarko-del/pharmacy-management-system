@@ -1,11 +1,13 @@
 import {
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from "react";
 
 import {
   checkoutAdminPOS,
+  getAdminPatients,
   getAdminPOSProducts,
   getAdminPOSSales,
 } from "../api";
@@ -13,6 +15,42 @@ import {
 import AdminPageIntro from "../components/AdminPageIntro";
 
 import "./AdminPOSPage.css";
+
+
+const PAYMENT_OPTIONS = [
+  {
+    value: "cash",
+    label: "Cash",
+    description:
+      "Record payment received in cash",
+    icon: "money",
+  },
+
+  {
+    value: "mobile_money",
+    label: "Mobile Money",
+    description:
+      "Record a mobile money payment",
+    icon: "phone",
+  },
+
+  {
+    value: "card",
+    label: "Card",
+    description:
+      "Record a card payment",
+    icon: "card",
+  },
+
+  {
+    value: "bank_transfer",
+    label: "Bank Transfer",
+    description:
+      "Record payment by bank transfer",
+    icon: "bank",
+  },
+];
+
 
 function POSIcon({
   name,
@@ -40,14 +78,24 @@ function POSIcon({
 
     search: (
       <>
-        <circle cx="11" cy="11" r="7" />
+        <circle
+          cx="11"
+          cy="11"
+          r="7"
+        />
+
         <path d="m20 20-4-4" />
       </>
     ),
 
     patient: (
       <>
-        <circle cx="12" cy="8" r="4" />
+        <circle
+          cx="12"
+          cy="8"
+          r="4"
+        />
+
         <path d="M4 21a8 8 0 0 1 16 0" />
       </>
     ),
@@ -71,18 +119,73 @@ function POSIcon({
     wallet: (
       <>
         <path d="M4 6h14a2 2 0 0 1 2 2v10H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h12" />
+
         <path d="M16 10h4" />
-        <circle cx="16" cy="13" r=".8" />
+
+        <circle
+          cx="16"
+          cy="13"
+          r=".8"
+        />
       </>
     ),
 
     money: (
       <>
-        <circle cx="12" cy="12" r="9" />
+        <circle
+          cx="12"
+          cy="12"
+          r="9"
+        />
 
         <path d="M15 8.5c-.7-.5-1.6-.8-2.6-.8-1.5 0-2.6.7-2.6 1.8 0 2.8 5.7 1.3 5.7 4.3 0 1.2-1.1 2.1-2.9 2.1-1.2 0-2.3-.4-3.1-1" />
 
         <path d="M12 6v12" />
+      </>
+    ),
+
+    phone: (
+      <>
+        <rect
+          x="7"
+          y="2.5"
+          width="10"
+          height="19"
+          rx="2"
+        />
+
+        <path d="M10 5h4" />
+
+        <path d="M11.5 18.5h1" />
+      </>
+    ),
+
+    card: (
+      <>
+        <rect
+          x="3"
+          y="5"
+          width="18"
+          height="14"
+          rx="2"
+        />
+
+        <path d="M3 9h18" />
+
+        <path d="M7 15h3" />
+      </>
+    ),
+
+    bank: (
+      <>
+        <path d="m3 10 9-6 9 6" />
+
+        <path d="M5 10v8" />
+        <path d="M9 10v8" />
+        <path d="M15 10v8" />
+        <path d="M19 10v8" />
+
+        <path d="M3 20h18" />
       </>
     ),
 
@@ -94,32 +197,45 @@ function POSIcon({
     ),
 
     minus: (
-      <>
-        <path d="M5 12h14" />
-      </>
+      <path d="M5 12h14" />
     ),
 
     trash: (
       <>
         <path d="M4 7h16" />
+
         <path d="M9 7V4h6v3" />
+
         <path d="m7 7 1 13h8l1-13" />
+
         <path d="M10 11v5" />
+
         <path d="M14 11v5" />
       </>
     ),
 
     check: (
       <>
-        <circle cx="12" cy="12" r="9" />
+        <circle
+          cx="12"
+          cy="12"
+          r="9"
+        />
+
         <path d="m8.5 12 2.2 2.2 4.8-5" />
       </>
     ),
 
     alert: (
       <>
-        <circle cx="12" cy="12" r="9" />
+        <circle
+          cx="12"
+          cy="12"
+          r="9"
+        />
+
         <path d="M12 8v5" />
+
         <path d="M12 16h.01" />
       </>
     ),
@@ -127,7 +243,9 @@ function POSIcon({
     history: (
       <>
         <path d="M3 12a9 9 0 1 0 3-6.7" />
+
         <path d="M3 4v5h5" />
+
         <path d="M12 7v5l3 2" />
       </>
     ),
@@ -143,8 +261,21 @@ function POSIcon({
         />
 
         <path d="M9 4.5V3h6v1.5" />
+
         <path d="M8 10h8" />
+
         <path d="M8 14h5" />
+      </>
+    ),
+
+    chevron: (
+      <path d="m8 10 4 4 4-4" />
+    ),
+
+    close: (
+      <>
+        <path d="M6 6l12 12" />
+        <path d="M18 6 6 18" />
       </>
     ),
   };
@@ -156,14 +287,21 @@ function POSIcon({
   );
 }
 
+
 function formatCurrency(value) {
-  return `GHS ${Number(value || 0).toFixed(2)}`;
+  return `GHS ${Number(
+    value || 0
+  ).toFixed(2)}`;
 }
 
+
 function formatPaymentMethod(value) {
-  const normalized = String(value || "")
-    .replaceAll("_", " ")
-    .trim();
+  const normalized =
+    String(
+      value || ""
+    )
+      .replaceAll("_", " ")
+      .trim();
 
   if (!normalized) {
     return "—";
@@ -179,12 +317,14 @@ function formatPaymentMethod(value) {
     .join(" ");
 }
 
+
 function formatRecordStatus(value) {
-  const normalized = String(
-    value || "completed"
-  )
-    .replaceAll("_", " ")
-    .trim();
+  const normalized =
+    String(
+      value || "completed"
+    )
+      .replaceAll("_", " ")
+      .trim();
 
   return normalized
     .split(" ")
@@ -196,10 +336,103 @@ function formatRecordStatus(value) {
     .join(" ");
 }
 
+
+function getPatientId(patient) {
+  return String(
+    patient?.patient_id ??
+      patient?.Patient_ID ??
+      patient?.id ??
+      ""
+  ).trim();
+}
+
+
+function getPatientName(patient) {
+  return String(
+    patient?.full_name ??
+      patient?.Full_Name ??
+      patient?.patient_name ??
+      patient?.name ??
+      ""
+  ).trim();
+}
+
+
+function getPatientCustomerType(
+  patient
+) {
+  return String(
+    patient?.customer_type ??
+      patient?.Customer_Type ??
+      ""
+  ).trim();
+}
+
+
+function isMonthlyPatient(patient) {
+  return (
+    getPatientCustomerType(
+      patient
+    ).toLowerCase() ===
+    "monthly"
+  );
+}
+
+
+function getProductPrice(
+  product,
+  patient
+) {
+  if (!product) {
+    return 0;
+  }
+
+  if (
+    patient &&
+    isMonthlyPatient(
+      patient
+    )
+  ) {
+    const monthlyPrice =
+      Number(
+        product.monthly_price ||
+          0
+      );
+
+    if (
+      Number.isFinite(
+        monthlyPrice
+      ) &&
+      monthlyPrice > 0
+    ) {
+      return monthlyPrice;
+    }
+  }
+
+  const oneTimePrice =
+    Number(
+      product.one_time_price ??
+        product.price ??
+        0
+    );
+
+  return Number.isFinite(
+    oneTimePrice
+  )
+    ? oneTimePrice
+    : 0;
+}
+
+
 function AdminPOSPage() {
   const [
     products,
     setProducts,
+  ] = useState([]);
+
+  const [
+    patients,
+    setPatients,
   ] = useState([]);
 
   const [
@@ -218,14 +451,34 @@ function AdminPOSPage() {
   ] = useState("");
 
   const [
-    patientName,
-    setPatientName,
+    selectedPatientId,
+    setSelectedPatientId,
   ] = useState("");
+
+  const [
+    patientSearch,
+    setPatientSearch,
+  ] = useState("");
+
+  const [
+    patientDropdownOpen,
+    setPatientDropdownOpen,
+  ] = useState(false);
+
+  const [
+    highlightedPatientIndex,
+    setHighlightedPatientIndex,
+  ] = useState(0);
 
   const [
     paymentMethod,
     setPaymentMethod,
   ] = useState("cash");
+
+  const [
+    paymentDropdownOpen,
+    setPaymentDropdownOpen,
+  ] = useState(false);
 
   const [
     amountPaid,
@@ -252,6 +505,111 @@ function AdminPOSPage() {
     setSuccess,
   ] = useState("");
 
+  const patientPickerRef =
+    useRef(null);
+
+  const paymentPickerRef =
+    useRef(null);
+
+
+  const selectedPatient =
+    useMemo(
+      () =>
+        patients.find(
+          (patient) =>
+            getPatientId(
+              patient
+            ) ===
+            selectedPatientId
+        ) || null,
+      [
+        patients,
+        selectedPatientId,
+      ]
+    );
+
+
+  const selectedPayment =
+    useMemo(
+      () =>
+        PAYMENT_OPTIONS.find(
+          (option) =>
+            option.value ===
+            paymentMethod
+        ) ||
+        PAYMENT_OPTIONS[0],
+      [paymentMethod]
+    );
+
+
+  const sortedPatients =
+    useMemo(
+      () =>
+        [...patients].sort(
+          (a, b) =>
+            getPatientName(a)
+              .localeCompare(
+                getPatientName(b)
+              )
+        ),
+      [patients]
+    );
+
+
+  const filteredPatients =
+    useMemo(
+      () => {
+        const term =
+          patientSearch
+            .trim()
+            .toLowerCase();
+
+        const source =
+          !term
+            ? sortedPatients
+            : sortedPatients.filter(
+                (patient) => {
+                  const name =
+                    getPatientName(
+                      patient
+                    ).toLowerCase();
+
+                  const id =
+                    getPatientId(
+                      patient
+                    ).toLowerCase();
+
+                  const type =
+                    getPatientCustomerType(
+                      patient
+                    ).toLowerCase();
+
+                  return (
+                    name.includes(
+                      term
+                    ) ||
+                    id.includes(
+                      term
+                    ) ||
+                    type.includes(
+                      term
+                    )
+                  );
+                }
+              );
+
+        return source.slice(
+          0,
+          12
+        );
+      },
+      [
+        patientSearch,
+        sortedPatients,
+      ]
+    );
+
+
   useEffect(() => {
     let cancelled = false;
 
@@ -260,22 +618,56 @@ function AdminPOSPage() {
         const [
           productData,
           salesData,
-        ] = await Promise.all([
-          getAdminPOSProducts(),
-          getAdminPOSSales(),
-        ]);
+          patientData,
+        ] =
+          await Promise.all([
+            getAdminPOSProducts(),
+            getAdminPOSSales(),
+            getAdminPatients(),
+          ]);
 
-        if (!cancelled) {
-          setProducts(
-            productData?.products ?? []
-          );
-
-          setSales(
-            salesData?.sales ?? []
-          );
-
-          setError("");
+        if (cancelled) {
+          return;
         }
+
+        setProducts(
+          Array.isArray(
+            productData?.products
+          )
+            ? productData.products
+            : []
+        );
+
+        setSales(
+          Array.isArray(
+            salesData?.sales
+          )
+            ? salesData.sales
+            : []
+        );
+
+        if (
+          Array.isArray(
+            patientData?.patients
+          )
+        ) {
+          setPatients(
+            patientData.patients
+          );
+        } else if (
+          Array.isArray(
+            patientData
+          )
+        ) {
+          setPatients(
+            patientData
+          );
+        } else {
+          setPatients([]);
+        }
+
+        setError("");
+
       } catch (err) {
         if (!cancelled) {
           setError(
@@ -283,6 +675,7 @@ function AdminPOSPage() {
               "Unable to load medication dispensing data."
           );
         }
+
       } finally {
         if (!cancelled) {
           setLoading(false);
@@ -297,88 +690,346 @@ function AdminPOSPage() {
     };
   }, []);
 
-  const filteredProducts = useMemo(
-    () => {
-      const term = search
-        .trim()
-        .toLowerCase();
 
-      if (!term) {
-        return products;
+  useEffect(() => {
+    function handleOutsideClick(
+      event
+    ) {
+      if (
+        patientPickerRef.current &&
+        !patientPickerRef.current.contains(
+          event.target
+        )
+      ) {
+        setPatientDropdownOpen(
+          false
+        );
       }
 
-      return products.filter(
-        (product) =>
-          product.drug_name
-            ?.toLowerCase()
-            .includes(term) ||
-          product.drug_id
-            ?.toLowerCase()
-            .includes(term) ||
-          product.category
-            ?.toLowerCase()
-            .includes(term)
-      );
-    },
-    [
-      products,
-      search,
-    ]
-  );
+      if (
+        paymentPickerRef.current &&
+        !paymentPickerRef.current.contains(
+          event.target
+        )
+      ) {
+        setPaymentDropdownOpen(
+          false
+        );
+      }
+    }
 
-  const medicationTotal = useMemo(
-    () => {
-      return cart.reduce(
-        (
-          total,
-          item
-        ) =>
-          total +
-          Number(
-            item.price || 0
-          ) *
+    document.addEventListener(
+      "mousedown",
+      handleOutsideClick
+    );
+
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        handleOutsideClick
+      );
+    };
+  }, []);
+
+
+  const filteredProducts =
+    useMemo(
+      () => {
+        const term =
+          search
+            .trim()
+            .toLowerCase();
+
+        if (!term) {
+          return products;
+        }
+
+        return products.filter(
+          (product) =>
+            String(
+              product.drug_name ||
+                ""
+            )
+              .toLowerCase()
+              .includes(term) ||
+
+            String(
+              product.drug_id ||
+                ""
+            )
+              .toLowerCase()
+              .includes(term) ||
+
+            String(
+              product.category ||
+                ""
+            )
+              .toLowerCase()
+              .includes(term)
+        );
+      },
+      [
+        products,
+        search,
+      ]
+    );
+
+
+  const medicationTotal =
+    useMemo(
+      () =>
+        cart.reduce(
+          (
+            total,
+            item
+          ) => {
+            const unitPrice =
+              getProductPrice(
+                item,
+                selectedPatient
+              );
+
+            return (
+              total +
+              unitPrice *
+                Number(
+                  item.quantity ||
+                    0
+                )
+            );
+          },
+          0
+        ),
+      [
+        cart,
+        selectedPatient,
+      ]
+    );
+
+
+  const totalMedicationUnits =
+    useMemo(
+      () =>
+        cart.reduce(
+          (
+            total,
+            item
+          ) =>
+            total +
             Number(
               item.quantity || 0
             ),
-        0
+          0
+        ),
+      [cart]
+    );
+
+
+  const balanceChange =
+    Math.max(
+      0,
+      Number(
+        amountPaid || 0
+      ) -
+        medicationTotal
+    );
+
+
+  function choosePatient(
+    patient
+  ) {
+    const id =
+      getPatientId(
+        patient
       );
-    },
-    [cart]
-  );
 
-  const totalMedicationUnits = useMemo(
-    () => {
-      return cart.reduce(
-        (
-          total,
-          item
-        ) =>
-          total +
-          Number(
-            item.quantity || 0
-          ),
-        0
+    const name =
+      getPatientName(
+        patient
       );
-    },
-    [cart]
-  );
 
-  const balanceChange = Math.max(
-    0,
-    Number(
-      amountPaid || 0
-    ) - medicationTotal
-  );
+    setSelectedPatientId(
+      id
+    );
 
-  function addMedication(product) {
+    setPatientSearch(
+      name
+        ? `${name} • ${id}`
+        : id
+    );
+
+    setPatientDropdownOpen(
+      false
+    );
+
+    setHighlightedPatientIndex(
+      0
+    );
+
+    setAmountPaid("");
+
+    setError("");
+
+    setSuccess("");
+  }
+
+
+  function clearPatient() {
+    setSelectedPatientId("");
+
+    setPatientSearch("");
+
+    setHighlightedPatientIndex(
+      0
+    );
+
+    setAmountPaid("");
+
+    setPatientDropdownOpen(
+      true
+    );
+
+    setError("");
+
+    setSuccess("");
+  }
+
+
+  function handlePatientInputChange(
+    event
+  ) {
+    setPatientSearch(
+      event.target.value
+    );
+
+    setSelectedPatientId("");
+
+    setHighlightedPatientIndex(
+      0
+    );
+
+    setPatientDropdownOpen(
+      true
+    );
+
+    setAmountPaid("");
+
+    setSuccess("");
+  }
+
+
+  function handlePatientKeyDown(
+    event
+  ) {
+    if (
+      event.key ===
+      "ArrowDown"
+    ) {
+      event.preventDefault();
+
+      setPatientDropdownOpen(
+        true
+      );
+
+      setHighlightedPatientIndex(
+        (current) =>
+          Math.min(
+            current + 1,
+            Math.max(
+              filteredPatients.length -
+                1,
+              0
+            )
+          )
+      );
+
+      return;
+    }
+
+    if (
+      event.key ===
+      "ArrowUp"
+    ) {
+      event.preventDefault();
+
+      setHighlightedPatientIndex(
+        (current) =>
+          Math.max(
+            current - 1,
+            0
+          )
+      );
+
+      return;
+    }
+
+    if (
+      event.key ===
+        "Enter" &&
+      patientDropdownOpen &&
+      filteredPatients.length >
+        0
+    ) {
+      event.preventDefault();
+
+      choosePatient(
+        filteredPatients[
+          highlightedPatientIndex
+        ]
+      );
+
+      return;
+    }
+
+    if (
+      event.key ===
+      "Escape"
+    ) {
+      setPatientDropdownOpen(
+        false
+      );
+    }
+  }
+
+
+  function choosePaymentMethod(
+    option
+  ) {
+    setPaymentMethod(
+      option.value
+    );
+
+    setPaymentDropdownOpen(
+      false
+    );
+
+    setError("");
+
+    setSuccess("");
+  }
+
+
+  function addMedication(
+    product
+  ) {
     setSuccess("");
     setError("");
 
-    if (
+    if (!selectedPatient) {
+      setError(
+        "Select a registered patient before adding medicines."
+      );
+
+      return;
+    }
+
+    const stock =
       Number(
-        product.stock_quantity || 0
-      ) <= 0
-    ) {
+        product.stock_quantity ||
+          0
+      );
+
+    if (stock <= 0) {
       setError(
         `${product.drug_name} is currently unavailable.`
       );
@@ -386,16 +1037,34 @@ function AdminPOSPage() {
       return;
     }
 
-    const existing = cart.find(
-      (item) =>
-        item.drug_id ===
-        product.drug_id
-    );
+    const patientPrice =
+      getProductPrice(
+        product,
+        selectedPatient
+      );
+
+    if (
+      patientPrice <= 0
+    ) {
+      setError(
+        `A valid price is not available for ${product.drug_name}.`
+      );
+
+      return;
+    }
+
+    const existing =
+      cart.find(
+        (item) =>
+          item.drug_id ===
+          product.drug_id
+      );
 
     if (
       existing &&
-      existing.quantity >=
-        product.stock_quantity
+      Number(
+        existing.quantity
+      ) >= stock
     ) {
       setError(
         `Available stock limit reached for ${product.drug_name}.`
@@ -420,9 +1089,13 @@ function AdminPOSPage() {
               product.drug_id
                 ? {
                     ...item,
+                    ...product,
+
                     quantity:
-                      item.quantity +
-                      1,
+                      Number(
+                        item.quantity ||
+                          0
+                      ) + 1,
                   }
                 : item
           );
@@ -439,10 +1112,14 @@ function AdminPOSPage() {
     );
   }
 
+
   function updateQuantity(
     drugId,
     nextQuantity
   ) {
+    setError("");
+    setSuccess("");
+
     setCart(
       (current) =>
         current.map(
@@ -454,31 +1131,41 @@ function AdminPOSPage() {
               return item;
             }
 
-            const safeQuantity =
+            const stock =
               Math.max(
                 1,
-                Math.min(
-                  nextQuantity,
-                  Number(
-                    item.stock_quantity ||
-                      1
-                  )
+                Number(
+                  item.stock_quantity ||
+                    1
                 )
               );
 
             return {
               ...item,
+
               quantity:
-                safeQuantity,
+                Math.max(
+                  1,
+                  Math.min(
+                    Number(
+                      nextQuantity
+                    ),
+                    stock
+                  )
+                ),
             };
           }
         )
     );
   }
 
+
   function removeMedication(
     drugId
   ) {
+    setError("");
+    setSuccess("");
+
     setCart(
       (current) =>
         current.filter(
@@ -489,9 +1176,49 @@ function AdminPOSPage() {
     );
   }
 
+
+  async function refreshPOSData() {
+    const [
+      refreshedProducts,
+      refreshedSales,
+    ] =
+      await Promise.all([
+        getAdminPOSProducts(),
+        getAdminPOSSales(),
+      ]);
+
+    setProducts(
+      Array.isArray(
+        refreshedProducts?.products
+      )
+        ? refreshedProducts.products
+        : []
+    );
+
+    setSales(
+      Array.isArray(
+        refreshedSales?.sales
+      )
+        ? refreshedSales.sales
+        : []
+    );
+  }
+
+
   async function handleDispensing() {
     setError("");
     setSuccess("");
+
+    if (
+      !selectedPatient ||
+      !selectedPatientId
+    ) {
+      setError(
+        "Select the registered patient receiving this order."
+      );
+
+      return;
+    }
 
     if (
       cart.length === 0
@@ -503,10 +1230,31 @@ function AdminPOSPage() {
       return;
     }
 
+    const invalidStockItem =
+      cart.find(
+        (item) =>
+          Number(
+            item.quantity || 0
+          ) >
+          Number(
+            item.stock_quantity ||
+              0
+          )
+      );
+
+    if (invalidStockItem) {
+      setError(
+        `Not enough stock is available for ${invalidStockItem.drug_name}.`
+      );
+
+      return;
+    }
+
     if (
       Number(
         amountPaid || 0
-      ) < medicationTotal
+      ) <
+      medicationTotal
     ) {
       setError(
         "Amount received is less than the medication total."
@@ -519,76 +1267,62 @@ function AdminPOSPage() {
       setProcessing(true);
 
       const result =
-        await checkoutAdminPOS(
-          {
-            customer_name:
-              patientName.trim() ||
-              "Patient / Recipient",
+        await checkoutAdminPOS({
+          patient_id:
+            selectedPatientId,
 
-            customer_type:
-              "walk_in",
+          payment_method:
+            paymentMethod,
 
-            patient_id:
-              null,
+          amount_paid:
+            Number(
+              amountPaid
+            ),
 
-            payment_method:
-              paymentMethod,
+          items:
+            cart.map(
+              (item) => ({
+                drug_id:
+                  item.drug_id,
 
-            amount_paid:
-              Number(
-                amountPaid
-              ),
+                quantity:
+                  Number(
+                    item.quantity
+                  ),
+              })
+            ),
+        });
 
-            items:
-              cart.map(
-                (item) => ({
-                  drug_id:
-                    item.drug_id,
-
-                  quantity:
-                    item.quantity,
-                })
-              ),
-          }
-        );
-
-      const [
-        refreshedProducts,
-        refreshedSales,
-      ] = await Promise.all([
-        getAdminPOSProducts(),
-        getAdminPOSSales(),
-      ]);
-
-      setProducts(
-        refreshedProducts?.products ??
-          []
-      );
-
-      setSales(
-        refreshedSales?.sales ??
-          []
-      );
+      await refreshPOSData();
 
       setCart([]);
-      setPatientName("");
+
       setAmountPaid("");
 
+      setSearch("");
+
+      const recordNumber =
+        result?.sale?.sale_number ||
+        result?.sale?.order_id ||
+        "";
+
       setSuccess(
-        `Dispensing record ${
-          result?.sale
-            ?.sale_number ?? ""
-        } completed successfully.`
+        recordNumber
+          ? `Dispensing record ${recordNumber} completed successfully.`
+          : "Medication dispensing completed successfully."
       );
+
     } catch (err) {
       setError(
         err?.message ||
           "Unable to complete medication dispensing."
       );
+
     } finally {
       setProcessing(false);
     }
   }
+
 
   if (loading) {
     return (
@@ -606,22 +1340,25 @@ function AdminPOSPage() {
           </strong>
 
           <span>
-            Preparing medicines and
-            dispensing records...
+            Preparing patients,
+            medicines and dispensing
+            records...
           </span>
         </div>
       </div>
     );
   }
 
+
   return (
     <div className="admin-pos-page">
       <AdminPageIntro
         eyebrow="Medication Services"
         title="Medication Dispensing"
-        subtitle="Dispense medicines securely and manage pharmacy transactions from one workspace."
+        subtitle="Dispense medicines to registered patients using live pharmacy inventory and transaction data."
         accent="teal"
       />
+
 
       {error && (
         <div className="admin-pos-message admin-pos-message--error">
@@ -636,6 +1373,7 @@ function AdminPOSPage() {
         </div>
       )}
 
+
       {success && (
         <div className="admin-pos-message admin-pos-message--success">
           <POSIcon
@@ -648,6 +1386,7 @@ function AdminPOSPage() {
           </span>
         </div>
       )}
+
 
       <section className="admin-pos-workspace">
         <div className="admin-pos-products admin-pos-card--medicines">
@@ -686,6 +1425,7 @@ function AdminPOSPage() {
             </div>
           </div>
 
+
           <div className="admin-pos-product-search-row">
             <div className="admin-pos-search">
               <POSIcon
@@ -699,8 +1439,7 @@ function AdminPOSPage() {
                 onChange={
                   (event) =>
                     setSearch(
-                      event.target
-                        .value
+                      event.target.value
                     )
                 }
                 placeholder="Search medicine, code or category..."
@@ -710,16 +1449,17 @@ function AdminPOSPage() {
                 <button
                   type="button"
                   className="admin-pos-search-clear"
-                  onClick={() =>
-                    setSearch("")
+                  onClick={
+                    () =>
+                      setSearch("")
                   }
-                  aria-label="Clear medicine search"
                 >
                   ×
                 </button>
               )}
             </div>
           </div>
+
 
           <div className="admin-pos-product-list">
             {filteredProducts.length ===
@@ -736,8 +1476,7 @@ function AdminPOSPage() {
 
                 <span>
                   Try another medicine
-                  name, code or
-                  category.
+                  name, code or category.
                 </span>
               </div>
             ) : (
@@ -749,6 +1488,14 @@ function AdminPOSPage() {
                         0
                     ) <= 0;
 
+                  const patientPrice =
+                    selectedPatient
+                      ? getProductPrice(
+                          product,
+                          selectedPatient
+                        )
+                      : 0;
+
                   return (
                     <button
                       type="button"
@@ -756,10 +1503,11 @@ function AdminPOSPage() {
                         product.drug_id
                       }
                       className="admin-pos-product-card"
-                      onClick={() =>
-                        addMedication(
-                          product
-                        )
+                      onClick={
+                        () =>
+                          addMedication(
+                            product
+                          )
                       }
                       disabled={
                         outOfStock
@@ -792,18 +1540,14 @@ function AdminPOSPage() {
 
                       <div className="admin-pos-product-meta">
                         <strong>
-                          {formatCurrency(
-                            product.price
-                          )}
+                          {selectedPatient
+                            ? formatCurrency(
+                                patientPrice
+                              )
+                            : "Select patient"}
                         </strong>
 
-                        <span
-                          className={
-                            outOfStock
-                              ? "out"
-                              : ""
-                          }
-                        >
+                        <span>
                           {outOfStock
                             ? "Unavailable"
                             : `${product.stock_quantity} available`}
@@ -816,6 +1560,7 @@ function AdminPOSPage() {
             )}
           </div>
         </div>
+
 
         <aside className="admin-pos-dispensing admin-pos-card--dispensing">
           <div className="admin-pos-dispensing-header">
@@ -840,9 +1585,7 @@ function AdminPOSPage() {
 
             <div className="admin-pos-dispensing-count">
               <strong>
-                {
-                  totalMedicationUnits
-                }
+                {totalMedicationUnits}
               </strong>
 
               <span>
@@ -854,89 +1597,387 @@ function AdminPOSPage() {
             </div>
           </div>
 
+
           <div className="admin-pos-recipient-section">
             <label className="admin-pos-field">
               <span>
-                Patient / Recipient
+                Registered Patient
               </span>
 
-              <div className="admin-pos-input-wrap">
-                <POSIcon
-                  name="patient"
-                  size={17}
-                />
+              <div
+                className="admin-pos-patient-picker"
+                ref={
+                  patientPickerRef
+                }
+              >
+                <div
+                  className={`admin-pos-patient-input ${
+                    patientDropdownOpen
+                      ? "is-open"
+                      : ""
+                  } ${
+                    selectedPatient
+                      ? "has-selection"
+                      : ""
+                  }`}
+                >
+                  <POSIcon
+                    name="search"
+                    size={17}
+                  />
 
-                <input
-                  type="text"
-                  value={
-                    patientName
-                  }
-                  onChange={
-                    (event) =>
-                      setPatientName(
-                        event.target
-                          .value
-                      )
-                  }
-                  placeholder="Enter patient or recipient name"
-                />
+                  <input
+                    type="text"
+                    value={
+                      patientSearch
+                    }
+                    onChange={
+                      handlePatientInputChange
+                    }
+                    onFocus={() => {
+                      setPatientDropdownOpen(
+                        true
+                      );
+
+                      setHighlightedPatientIndex(
+                        0
+                      );
+                    }}
+                    onKeyDown={
+                      handlePatientKeyDown
+                    }
+                    placeholder="Type patient name or ID..."
+                    autoComplete="off"
+                  />
+
+                  {patientSearch ? (
+                    <button
+                      type="button"
+                      className="admin-pos-patient-clear"
+                      onClick={
+                        clearPatient
+                      }
+                    >
+                      <POSIcon
+                        name="close"
+                        size={15}
+                      />
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="admin-pos-patient-chevron"
+                      onClick={() =>
+                        setPatientDropdownOpen(
+                          (current) =>
+                            !current
+                        )
+                      }
+                    >
+                      <POSIcon
+                        name="chevron"
+                        size={16}
+                      />
+                    </button>
+                  )}
+                </div>
+
+
+                {patientDropdownOpen && (
+                  <div className="admin-pos-patient-dropdown">
+                    <div className="admin-pos-patient-dropdown-top">
+                      <span>
+                        Registered Patients
+                      </span>
+
+                      <strong>
+                        {
+                          patients.length
+                        }
+                      </strong>
+                    </div>
+
+                    <div className="admin-pos-patient-results">
+                      {filteredPatients.length ===
+                      0 ? (
+                        <div className="admin-pos-patient-empty">
+                          <POSIcon
+                            name="search"
+                            size={22}
+                          />
+
+                          <strong>
+                            No patient found
+                          </strong>
+
+                          <span>
+                            Search by name or
+                            Patient ID.
+                          </span>
+                        </div>
+                      ) : (
+                        filteredPatients.map(
+                          (
+                            patient,
+                            index
+                          ) => {
+                            const patientId =
+                              getPatientId(
+                                patient
+                              );
+
+                            const patientName =
+                              getPatientName(
+                                patient
+                              );
+
+                            const customerType =
+                              getPatientCustomerType(
+                                patient
+                              );
+
+                            return (
+                              <button
+                                type="button"
+                                key={
+                                  patientId
+                                }
+                                className={`admin-pos-patient-option ${
+                                  patientId ===
+                                  selectedPatientId
+                                    ? "is-selected"
+                                    : ""
+                                } ${
+                                  index ===
+                                  highlightedPatientIndex
+                                    ? "is-highlighted"
+                                    : ""
+                                }`}
+                                onMouseEnter={() =>
+                                  setHighlightedPatientIndex(
+                                    index
+                                  )
+                                }
+                                onClick={() =>
+                                  choosePatient(
+                                    patient
+                                  )
+                                }
+                              >
+                                <span className="admin-pos-patient-option-icon">
+                                  <POSIcon
+                                    name="patient"
+                                    size={15}
+                                  />
+                                </span>
+
+                                <span className="admin-pos-patient-option-main">
+                                  <strong>
+                                    {patientName ||
+                                      "Unnamed Patient"}
+                                  </strong>
+
+                                  <small>
+                                    {patientId}
+                                  </small>
+                                </span>
+
+                                <span className="admin-pos-patient-option-type">
+                                  {customerType ||
+                                    "Patient"}
+                                </span>
+                              </button>
+                            );
+                          }
+                        )
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             </label>
 
-            <label className="admin-pos-field">
+
+            <div className="admin-pos-field">
               <span>
                 Payment Method
               </span>
 
-              <div className="admin-pos-input-wrap">
-                <POSIcon
-                  name="wallet"
-                  size={17}
-                />
-
-                <select
-                  value={
-                    paymentMethod
-                  }
-                  onChange={
-                    (event) =>
-                      setPaymentMethod(
-                        event.target
-                          .value
-                      )
+              <div
+                className="admin-pos-payment-picker"
+                ref={
+                  paymentPickerRef
+                }
+              >
+                <button
+                  type="button"
+                  className={`admin-pos-payment-trigger ${
+                    paymentDropdownOpen
+                      ? "is-open"
+                      : ""
+                  }`}
+                  onClick={() =>
+                    setPaymentDropdownOpen(
+                      (current) =>
+                        !current
+                    )
                   }
                 >
-                  <option value="cash">
-                    Cash
-                  </option>
+                  <span className="admin-pos-payment-trigger-icon">
+                    <POSIcon
+                      name={
+                        selectedPayment.icon
+                      }
+                      size={17}
+                    />
+                  </span>
 
-                  <option value="mobile_money">
-                    Mobile Money
-                  </option>
+                  <span className="admin-pos-payment-trigger-text">
+                    {
+                      selectedPayment.label
+                    }
+                  </span>
 
-                  <option value="card">
-                    Card
-                  </option>
+                  <span className="admin-pos-payment-trigger-chevron">
+                    <POSIcon
+                      name="chevron"
+                      size={16}
+                    />
+                  </span>
+                </button>
 
-                  <option value="bank_transfer">
-                    Bank Transfer
-                  </option>
-                </select>
+
+                {paymentDropdownOpen && (
+                  <div className="admin-pos-payment-dropdown">
+                    <div className="admin-pos-payment-dropdown-title">
+                      Select Payment Method
+                    </div>
+
+                    <div className="admin-pos-payment-options">
+                      {PAYMENT_OPTIONS.map(
+                        (option) => {
+                          const selected =
+                            paymentMethod ===
+                            option.value;
+
+                          return (
+                            <button
+                              type="button"
+                              key={
+                                option.value
+                              }
+                              className={`admin-pos-payment-option ${
+                                selected
+                                  ? "is-selected"
+                                  : ""
+                              }`}
+                              onClick={() =>
+                                choosePaymentMethod(
+                                  option
+                                )
+                              }
+                            >
+                              <span className="admin-pos-payment-option-icon">
+                                <POSIcon
+                                  name={
+                                    option.icon
+                                  }
+                                  size={18}
+                                />
+                              </span>
+
+                              <span className="admin-pos-payment-option-copy">
+                                <strong>
+                                  {
+                                    option.label
+                                  }
+                                </strong>
+
+                                <small>
+                                  {
+                                    option.description
+                                  }
+                                </small>
+                              </span>
+
+                              <span className="admin-pos-payment-option-check">
+                                {selected && (
+                                  <POSIcon
+                                    name="check"
+                                    size={16}
+                                  />
+                                )}
+                              </span>
+                            </button>
+                          );
+                        }
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
-            </label>
+            </div>
           </div>
 
-          <div className="admin-pos-selected-heading">
-            <div>
-              <strong>
-                Selected Medicines
-              </strong>
+
+          {selectedPatient && (
+            <div className="admin-pos-patient-summary">
+              <div className="admin-pos-patient-summary-avatar">
+                <POSIcon
+                  name="patient"
+                  size={18}
+                />
+              </div>
+
+              <div className="admin-pos-patient-summary-copy">
+                <span className="admin-pos-patient-summary-label">
+                  Selected Patient
+                </span>
+
+                <strong>
+                  {getPatientName(
+                    selectedPatient
+                  )}
+                </strong>
+
+                <small>
+                  {selectedPatientId}
+                </small>
+              </div>
+
+              <div className="admin-pos-patient-summary-plan">
+                <span>
+                  {getPatientCustomerType(
+                    selectedPatient
+                  ) ||
+                    "Registered"}
+                </span>
+
+                <small>
+                  Pricing plan
+                </small>
+              </div>
+
+              <div className="admin-pos-patient-summary-check">
+                <POSIcon
+                  name="check"
+                  size={16}
+                />
+              </div>
             </div>
+          )}
+
+
+          <div className="admin-pos-selected-heading">
+            <strong>
+              Selected Medicines
+            </strong>
 
             <span className="admin-pos-selected-count">
               {cart.length} selected
             </span>
           </div>
+
 
           <div className="admin-pos-cart-items">
             {cart.length === 0 ? (
@@ -953,110 +1994,120 @@ function AdminPOSPage() {
                 </strong>
 
                 <span>
-                  Select a medicine from
-                  the list to begin
-                  dispensing.
+                  Select a registered
+                  patient, then add
+                  medicines to the order.
                 </span>
               </div>
             ) : (
               cart.map(
-                (item) => (
-                  <article
-                    key={
-                      item.drug_id
-                    }
-                    className="admin-pos-cart-item"
-                  >
-                    <div className="admin-pos-cart-item-top">
-                      <div className="admin-pos-cart-item-copy">
-                        <strong>
-                          {
-                            item.drug_name
-                          }
-                        </strong>
+                (item) => {
+                  const unitPrice =
+                    getProductPrice(
+                      item,
+                      selectedPatient
+                    );
 
-                        <span>
+                  return (
+                    <article
+                      key={
+                        item.drug_id
+                      }
+                      className="admin-pos-cart-item"
+                    >
+                      <div className="admin-pos-cart-item-top">
+                        <div className="admin-pos-cart-item-copy">
+                          <strong>
+                            {
+                              item.drug_name
+                            }
+                          </strong>
+
+                          <span>
+                            {formatCurrency(
+                              unitPrice
+                            )}{" "}
+                            per unit
+                          </span>
+                        </div>
+
+                        <button
+                          type="button"
+                          className="admin-pos-remove-button"
+                          onClick={
+                            () =>
+                              removeMedication(
+                                item.drug_id
+                              )
+                          }
+                        >
+                          <POSIcon
+                            name="trash"
+                            size={15}
+                          />
+                        </button>
+                      </div>
+
+                      <div className="admin-pos-cart-item-bottom">
+                        <div className="admin-pos-quantity">
+                          <button
+                            type="button"
+                            onClick={
+                              () =>
+                                updateQuantity(
+                                  item.drug_id,
+                                  item.quantity -
+                                    1
+                                )
+                            }
+                          >
+                            <POSIcon
+                              name="minus"
+                              size={14}
+                            />
+                          </button>
+
+                          <span>
+                            {
+                              item.quantity
+                            }
+                          </span>
+
+                          <button
+                            type="button"
+                            onClick={
+                              () =>
+                                updateQuantity(
+                                  item.drug_id,
+                                  item.quantity +
+                                    1
+                                )
+                            }
+                          >
+                            <POSIcon
+                              name="plus"
+                              size={14}
+                            />
+                          </button>
+                        </div>
+
+                        <strong className="admin-pos-cart-line-total">
                           {formatCurrency(
-                            item.price
-                          )}{" "}
-                          per unit
-                        </span>
+                            unitPrice *
+                              Number(
+                                item.quantity ||
+                                  0
+                              )
+                          )}
+                        </strong>
                       </div>
-
-                      <button
-                        type="button"
-                        className="admin-pos-remove-button"
-                        onClick={() =>
-                          removeMedication(
-                            item.drug_id
-                          )
-                        }
-                        aria-label={`Remove ${item.drug_name}`}
-                      >
-                        <POSIcon
-                          name="trash"
-                          size={15}
-                        />
-                      </button>
-                    </div>
-
-                    <div className="admin-pos-cart-item-bottom">
-                      <div className="admin-pos-quantity">
-                        <button
-                          type="button"
-                          onClick={() =>
-                            updateQuantity(
-                              item.drug_id,
-                              item.quantity -
-                                1
-                            )
-                          }
-                          aria-label="Reduce quantity"
-                        >
-                          <POSIcon
-                            name="minus"
-                            size={14}
-                          />
-                        </button>
-
-                        <span>
-                          {
-                            item.quantity
-                          }
-                        </span>
-
-                        <button
-                          type="button"
-                          onClick={() =>
-                            updateQuantity(
-                              item.drug_id,
-                              item.quantity +
-                                1
-                            )
-                          }
-                          aria-label="Increase quantity"
-                        >
-                          <POSIcon
-                            name="plus"
-                            size={14}
-                          />
-                        </button>
-                      </div>
-
-                      <strong className="admin-pos-cart-line-total">
-                        {formatCurrency(
-                          Number(
-                            item.price
-                          ) *
-                            item.quantity
-                        )}
-                      </strong>
-                    </div>
-                  </article>
-                )
+                    </article>
+                  );
+                }
               )
             )}
           </div>
+
 
           <div className="admin-pos-summary">
             <div className="admin-pos-summary-row">
@@ -1092,8 +2143,7 @@ function AdminPOSPage() {
                   onChange={
                     (event) =>
                       setAmountPaid(
-                        event.target
-                          .value
+                        event.target.value
                       )
                   }
                   placeholder="0.00"
@@ -1121,7 +2171,8 @@ function AdminPOSPage() {
               }
               disabled={
                 processing ||
-                cart.length === 0
+                cart.length === 0 ||
+                !selectedPatientId
               }
             >
               <POSIcon
@@ -1138,6 +2189,7 @@ function AdminPOSPage() {
           </div>
         </aside>
       </section>
+
 
       <section className="admin-pos-recent-sales admin-pos-card--history">
         <div className="admin-pos-panel-header">
@@ -1181,7 +2233,7 @@ function AdminPOSPage() {
                 </th>
 
                 <th>
-                  Patient / Recipient
+                  Patient
                 </th>
 
                 <th>
@@ -1228,20 +2280,26 @@ function AdminPOSPage() {
                 sales
                   .slice(
                     0,
-                    8
+                    100
                   )
                   .map(
-                    (record) => (
+                    (
+                      record,
+                      index
+                    ) => (
                       <tr
                         key={
-                          record.id
+                          record.order_id ||
+                          record.sale_number ||
+                          record.id ||
+                          index
                         }
                       >
                         <td>
                           <strong className="admin-pos-sale-number">
-                            {
-                              record.sale_number
-                            }
+                            {record.sale_number ||
+                              record.order_id ||
+                              "—"}
                           </strong>
                         </td>
 
@@ -1256,7 +2314,9 @@ function AdminPOSPage() {
 
                             <span>
                               {record.customer_name ||
-                                "Patient / Recipient"}
+                                record.patient_name ||
+                                record.patient_id ||
+                                "Patient"}
                             </span>
                           </div>
                         </td>
@@ -1283,7 +2343,9 @@ function AdminPOSPage() {
                             />
 
                             {formatRecordStatus(
-                              record.status
+                              record.order_status ||
+                                record.status ||
+                                record.payment_status
                             )}
                           </span>
                         </td>
@@ -1298,5 +2360,6 @@ function AdminPOSPage() {
     </div>
   );
 }
+
 
 export default AdminPOSPage;

@@ -1,44 +1,25 @@
-from fastapi import (
-    APIRouter,
-    Depends,
-    HTTPException,
-)
-
-from fastapi.security import (
-    HTTPAuthorizationCredentials,
-    HTTPBearer,
-)
-
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from database import SessionLocal
 from models import User
 from appointment_models import Appointment
+from support_request_models import SupportRequest
 
 from inventory_sync import (
     get_google_admin_dashboard_data,
     sync_inventory_from_google,
 )
 
-from security import (
-    decode_access_token,
-)
+from security import decode_access_token
 
-
-# ============================================================
-# ROUTER
-# ============================================================
 
 router = APIRouter(
     prefix="/admin",
     tags=["Admin"],
 )
-
-
-# ============================================================
-# AUTH
-# ============================================================
 
 bearer_scheme = HTTPBearer()
 
@@ -156,6 +137,19 @@ class AppointmentRescheduleRequest(
     appointment_time: str
 
 
+class SupportResponseUpdate(
+    BaseModel
+):
+    support_response: str
+    status: str = "in progress"
+
+
+class SupportStatusUpdate(
+    BaseModel
+):
+    status: str
+
+
 # ============================================================
 # GENERAL HELPERS
 # ============================================================
@@ -174,6 +168,124 @@ def normalized_status(
     return clean_text(
         value
     ).lower()
+
+
+def canonical_support_status(
+    value,
+):
+    status = (
+        normalized_status(
+            value
+        )
+        .replace(
+            "_",
+            " ",
+        )
+        .replace(
+            "-",
+            " ",
+        )
+    )
+
+    status = " ".join(
+        status.split()
+    )
+
+    aliases = {
+        "pending": "pending",
+        "open": "pending",
+        "in progress": "in progress",
+        "processing": "in progress",
+        "resolved": "resolved",
+        "closed": "resolved",
+    }
+
+    result = aliases.get(
+        status
+    )
+
+    if not result:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Support status must be Pending, "
+                "In Progress or Resolved."
+            ),
+        )
+
+    return result
+
+
+def get_support_request_or_404(
+    db,
+    request_id,
+):
+    support_request = (
+        db.query(
+            SupportRequest
+        )
+        .filter(
+            SupportRequest.id
+            == request_id
+        )
+        .first()
+    )
+
+    if not support_request:
+        raise HTTPException(
+            status_code=404,
+            detail=(
+                "Support request was not found."
+            ),
+        )
+
+    return support_request
+
+
+def support_request_to_response(
+    support_request,
+    user=None,
+):
+    return {
+        "id":
+            support_request.id,
+
+        "request_id":
+            support_request.id,
+
+        "user_id":
+            support_request.user_id,
+
+        "user_name": (
+            user.full_name
+            if user
+            else ""
+        ),
+
+        "user_email": (
+            user.email
+            if user
+            else ""
+        ),
+
+        "subject":
+            support_request.subject,
+
+        "message":
+            support_request.message,
+
+        "status":
+            support_request.status,
+
+        "support_response":
+            support_request.support_response,
+
+        "created_at": (
+            support_request.created_at.isoformat()
+            if support_request.created_at
+            else None
+        ),
+    }
 
 
 def safe_float(
@@ -413,7 +525,8 @@ def build_live_inventory_response(
                 "Cost_Price"
             )
             if "Cost_Price" in drug
-            else drug.get(
+            else
+            drug.get(
                 "cost_price"
             )
         )
@@ -423,7 +536,8 @@ def build_live_inventory_response(
                 "Monthly_Price"
             )
             if "Monthly_Price" in drug
-            else drug.get(
+            else
+            drug.get(
                 "monthly_price"
             )
         )
@@ -433,7 +547,8 @@ def build_live_inventory_response(
                 "One_Time_Price"
             )
             if "One_Time_Price" in drug
-            else drug.get(
+            else
+            drug.get(
                 "one_time_price"
             )
         )
@@ -444,7 +559,8 @@ def build_live_inventory_response(
             )
             if "Stock_Quantity"
             in inventory_item
-            else inventory_item.get(
+            else
+            inventory_item.get(
                 "stock_quantity"
             )
         )
@@ -455,7 +571,8 @@ def build_live_inventory_response(
             )
             if "Reorder_Level"
             in inventory_item
-            else inventory_item.get(
+            else
+            inventory_item.get(
                 "reorder_level"
             )
         )
@@ -476,7 +593,8 @@ def build_live_inventory_response(
             )
             if "Last_Updated"
             in inventory_item
-            else inventory_item.get(
+            else
+            inventory_item.get(
                 "last_updated"
             )
         )
@@ -1262,10 +1380,6 @@ def get_admin_appointments(
     }
 
 
-# ============================================================
-# APPROVE APPOINTMENT
-# ============================================================
-
 @router.patch(
     "/appointments/{appointment_id}/approve"
 )
@@ -1331,10 +1445,6 @@ def approve_admin_appointment(
     }
 
 
-# ============================================================
-# REJECT APPOINTMENT
-# ============================================================
-
 @router.patch(
     "/appointments/{appointment_id}/reject"
 )
@@ -1399,10 +1509,6 @@ def reject_admin_appointment(
             ),
     }
 
-
-# ============================================================
-# RESCHEDULE APPOINTMENT
-# ============================================================
 
 @router.patch(
     "/appointments/{appointment_id}/reschedule"
@@ -1505,10 +1611,6 @@ def reschedule_admin_appointment(
     }
 
 
-# ============================================================
-# COMPLETE APPOINTMENT
-# ============================================================
-
 @router.patch(
     "/appointments/{appointment_id}/complete"
 )
@@ -1575,8 +1677,255 @@ def complete_admin_appointment(
 
 
 # ============================================================
+# ADMIN TECHNICAL SUPPORT
+# ============================================================
+
+@router.get(
+    "/support-requests"
+)
+def get_admin_support_requests(
+    current_admin: User = Depends(
+        get_current_admin
+    ),
+    db: Session = Depends(
+        get_db
+    ),
+):
+    rows = (
+        db.query(
+            SupportRequest,
+            User,
+        )
+        .outerjoin(
+            User,
+            User.id
+            == SupportRequest.user_id,
+        )
+        .order_by(
+            SupportRequest.id.desc()
+        )
+        .all()
+    )
+
+    requests = [
+        support_request_to_response(
+            support_request,
+            user,
+        )
+        for (
+            support_request,
+            user,
+        )
+        in rows
+    ]
+
+    pending_count = 0
+    in_progress_count = 0
+    resolved_count = 0
+
+    for item in requests:
+        status = (
+            normalized_status(
+                item.get(
+                    "status"
+                )
+            )
+            .replace(
+                "_",
+                " ",
+            )
+            .replace(
+                "-",
+                " ",
+            )
+        )
+
+        status = " ".join(
+            status.split()
+        )
+
+        if status in {
+            "resolved",
+            "closed",
+        }:
+            resolved_count += 1
+
+        elif status in {
+            "in progress",
+            "processing",
+        }:
+            in_progress_count += 1
+
+        else:
+            pending_count += 1
+
+    return {
+        "requests":
+            requests,
+
+        "count":
+            len(
+                requests
+            ),
+
+        "pending_count":
+            pending_count,
+
+        "in_progress_count":
+            in_progress_count,
+
+        "resolved_count":
+            resolved_count,
+    }
+
+
+@router.patch(
+    "/support-requests/{request_id}/respond"
+)
+def respond_to_admin_support_request(
+    request_id: int,
+    request: SupportResponseUpdate,
+    current_admin: User = Depends(
+        get_current_admin
+    ),
+    db: Session = Depends(
+        get_db
+    ),
+):
+    support_request = (
+        get_support_request_or_404(
+            db,
+            request_id,
+        )
+    )
+
+    response_text = clean_text(
+        request.support_response
+    )
+
+    if not response_text:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Technical support response is required."
+            ),
+        )
+
+    if len(
+        response_text
+    ) > 2000:
+        raise HTTPException(
+            status_code=400,
+            detail=(
+                "Technical support response cannot "
+                "exceed 2000 characters."
+            ),
+        )
+
+    status = canonical_support_status(
+        request.status
+    )
+
+    support_request.support_response = (
+        response_text
+    )
+
+    support_request.status = (
+        status
+    )
+
+    db.commit()
+
+    db.refresh(
+        support_request
+    )
+
+    user = (
+        db.query(
+            User
+        )
+        .filter(
+            User.id
+            == support_request.user_id
+        )
+        .first()
+    )
+
+    return {
+        "message": (
+            "Support request resolved successfully."
+            if status == "resolved"
+            else
+            "Support response saved successfully."
+        ),
+
+        "request":
+            support_request_to_response(
+                support_request,
+                user,
+            ),
+    }
+
+
+@router.patch(
+    "/support-requests/{request_id}/status"
+)
+def update_admin_support_status(
+    request_id: int,
+    request: SupportStatusUpdate,
+    current_admin: User = Depends(
+        get_current_admin
+    ),
+    db: Session = Depends(
+        get_db
+    ),
+):
+    support_request = (
+        get_support_request_or_404(
+            db,
+            request_id,
+        )
+    )
+
+    status = canonical_support_status(
+        request.status
+    )
+
+    support_request.status = (
+        status
+    )
+
+    db.commit()
+
+    db.refresh(
+        support_request
+    )
+
+    user = (
+        db.query(
+            User
+        )
+        .filter(
+            User.id
+            == support_request.user_id
+        )
+        .first()
+    )
+
+    return {
+        "message":
+            "Support request status updated successfully.",
+
+        "request":
+            support_request_to_response(
+                support_request,
+                user,
+            ),
+    }
+
+
+# ============================================================
 # ADMIN PATIENTS
-# LIVE GOOGLE SHEETS DIRECTORY
 # ============================================================
 
 @router.get(
@@ -1696,7 +2045,6 @@ def get_admin_patients(
 
 # ============================================================
 # ADMIN PATIENT DETAIL
-# LIVE GOOGLE SHEETS
 # ============================================================
 
 @router.get(
@@ -1720,7 +2068,6 @@ def get_admin_patient(
 
 # ============================================================
 # LOCAL LOGIN ACCOUNT STATUS
-# PRESERVED FOR OLDER ACCOUNT MANAGEMENT
 # ============================================================
 
 @router.patch(
@@ -1759,12 +2106,10 @@ def update_admin_patient_status(
         )
         .filter(
             User.id
-            ==
-            numeric_patient_id,
+            == numeric_patient_id,
 
             User.role
-            ==
-            "patient",
+            == "patient",
         )
         .first()
     )
@@ -1805,7 +2150,6 @@ def update_admin_patient_status(
 
 # ============================================================
 # ADMIN INVENTORY SYNC
-# LOCAL SQL MIRROR
 # ============================================================
 
 @router.post(
@@ -1853,7 +2197,6 @@ def sync_admin_inventory(
 
 # ============================================================
 # ADMIN INVENTORY
-# LIVE GOOGLE SHEETS
 # ============================================================
 
 @router.get(

@@ -1,0 +1,1669 @@
+/* =========================================================
+   DR. EVANS PHARMACY
+   ADMIN PROFILE ENHANCEMENTS
+
+   THIS SINGLE FILE NOW CONTAINS:
+   - Signed-in Devices scrolling
+   - Professional profile refinements
+   - Professional Account & Security styling
+   - Account Session readability
+   - Light mode
+   - Dark mode
+   - Desktop zoom safety
+   - Mobile responsiveness
+
+   NO OTHER PROFESSIONAL PROFILE CSS IMPORT IS REQUIRED.
+   ========================================================= */
+
+
+/* =========================================================
+   PROFILE DESIGN VARIABLES
+   ========================================================= */
+
+.admin-profile-page {
+  --pro-shadow:
+    0 15px 36px
+    rgba(7, 59, 76, 0.065);
+
+  --pro-shadow-hover:
+    0 18px 38px
+    rgba(7, 59, 76, 0.1);
+
+  --pro-transition:
+    0.2s ease;
+}
+
+
+/* =========================================================
+   PROFILE HERO
+   ========================================================= */
+
+.admin-profile-page__header {
+  min-height: 176px;
+
+  padding:
+    57px
+    26px
+    25px;
+
+  border-radius: 20px;
+
+  box-shadow:
+    var(--pro-shadow);
+}
+
+
+.admin-profile-hero-main {
+  gap: 16px;
+}
+
+
+/* =========================================================
+   HERO PROFILE PHOTO
+   ========================================================= */
+
+.admin-profile-hero-icon {
+  width: 60px;
+  height: 60px;
+
+  flex:
+    0 0 60px;
+
+  border-radius: 17px;
+
+  border:
+    3px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    );
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff,
+      #e5f8f6
+    );
+
+  box-shadow:
+    0 9px 22px
+    rgba(
+      8,
+      127,
+      123,
+      0.12
+    );
+
+  overflow: hidden;
+}
+
+
+.admin-profile-hero-icon__photo {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  object-position: center;
+
+  border-radius: 13px;
+}
+
+
+.admin-profile-page__header h1 {
+  font-size:
+    clamp(
+      35px,
+      3.2vw,
+      49px
+    );
+
+  letter-spacing:
+    -1px;
+}
+
+
+.admin-profile-page__header p {
+  max-width: 670px;
+
+  margin-top: 8px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   HERO SECURITY BADGE
+   ========================================================= */
+
+.admin-profile-hero-badge {
+  min-height: 33px;
+
+  padding:
+    0
+    12px;
+
+  border:
+    1px solid
+    rgba(
+      49,
+      136,
+      94,
+      0.24
+    );
+
+  background:
+    rgba(
+      228,
+      244,
+      235,
+      0.92
+    );
+
+  box-shadow:
+    0 5px 15px
+    rgba(
+      49,
+      136,
+      94,
+      0.08
+    );
+}
+
+
+/* =========================================================
+   LEFT PROFILE CARD
+   ========================================================= */
+
+.admin-profile-card {
+  padding:
+    24px
+    22px
+    21px;
+
+  box-shadow:
+    var(--pro-shadow);
+}
+
+
+/* =========================================================
+   MAIN PROFILE PHOTO
+   ========================================================= */
+
+.admin-profile-card__avatar-section {
+  margin-bottom: 15px;
+}
+
+
+.admin-profile-card__avatar {
+  width: 78px;
+  height: 78px;
+
+  border-width: 4px;
+
+  border-radius: 21px;
+
+  font-size: 24px;
+
+  box-shadow:
+    0 10px 24px
+    rgba(
+      16,
+      156,
+      151,
+      0.16
+    );
+
+  overflow: hidden;
+}
+
+
+.admin-profile-card__avatar img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  object-position: center;
+}
+
+
+.admin-profile-card__verified {
+  right: -6px;
+  bottom: -6px;
+
+  width: 28px;
+  height: 28px;
+
+  border-width: 3px;
+}
+
+
+.admin-profile-photo-camera {
+  width: 36px;
+  height: 36px;
+
+  border-radius: 11px;
+}
+
+
+.admin-profile-card h2 {
+  font-size: 23px;
+}
+
+
+.admin-profile-card__description {
+  margin-bottom: 15px;
+}
+
+
+.admin-profile-photo-panel {
+  margin-top: 15px;
+
+  padding: 13px 14px;
+
+  border-radius: 14px;
+}
+
+
+/* =========================================================
+   ACCOUNT & SECURITY MAIN CARD
+   ========================================================= */
+
+.admin-profile-control-card:has(
+  .admin-profile-section-header--blue
+) {
+  position: relative;
+
+  overflow: hidden;
+
+  border-color:
+    rgba(
+      57,
+      123,
+      211,
+      0.2
+    );
+
+  box-shadow:
+    var(--pro-shadow);
+}
+
+
+.admin-profile-control-card:has(
+  .admin-profile-section-header--blue
+)::before {
+  content: "";
+
+  position: absolute;
+
+  z-index: 0;
+
+  top: -80px;
+  right: -80px;
+
+  width: 260px;
+  height: 260px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        57,
+        123,
+        211,
+        0.1
+      ),
+      transparent 68%
+    );
+
+  pointer-events: none;
+}
+
+
+.admin-profile-control-card:has(
+  .admin-profile-section-header--blue
+)
+> * {
+  position: relative;
+
+  z-index: 1;
+}
+
+
+/* =========================================================
+   PROFESSIONAL SECURITY HEADER
+   ========================================================= */
+
+.admin-profile-section-header--blue {
+  min-height: 102px;
+
+  padding:
+    17px
+    20px;
+
+  background:
+    linear-gradient(
+      115deg,
+      #eef5ff 0%,
+      #f6faff 54%,
+      #ffffff 100%
+    );
+}
+
+
+.admin-profile-section-header--blue
+.admin-profile-section-icon {
+  width: 52px;
+  height: 52px;
+
+  flex:
+    0 0 52px;
+
+  border:
+    1px solid
+    rgba(
+      57,
+      123,
+      211,
+      0.16
+    );
+
+  border-radius: 15px;
+
+  background:
+    #ffffff;
+
+  color:
+    var(--profile-blue);
+
+  box-shadow:
+    0 8px 20px
+    rgba(
+      57,
+      123,
+      211,
+      0.08
+    );
+}
+
+
+.admin-profile-section-header--blue
+.admin-profile-section-eyebrow {
+  font-size: 8px;
+
+  letter-spacing: 1.25px;
+}
+
+
+.admin-profile-section-header--blue
+h2 {
+  font-size: 22px;
+}
+
+
+.admin-profile-section-header--blue
+p {
+  margin-top: 5px;
+
+  font-size: 10px;
+
+  line-height: 1.5;
+}
+
+
+.admin-profile-section-header--blue
+.admin-profile-section-badge {
+  min-height: 35px;
+
+  padding:
+    0
+    12px;
+
+  border-color:
+    rgba(
+      57,
+      123,
+      211,
+      0.22
+    );
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.94
+    );
+
+  color:
+    #397bd3 !important;
+
+  box-shadow:
+    0 5px 14px
+    rgba(
+      57,
+      123,
+      211,
+      0.06
+    );
+}
+
+
+/* =========================================================
+   SECURITY ACTION GRID
+   ========================================================= */
+
+.admin-account-action-grid {
+  gap: 14px;
+
+  padding: 18px;
+}
+
+
+/* =========================================================
+   SECURITY ACTION CARD
+   ========================================================= */
+
+.admin-account-action {
+  position: relative;
+
+  min-height: 196px;
+
+  overflow: hidden;
+
+  padding: 17px;
+
+  border:
+    1px solid
+    #dce8eb;
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #ffffff 0%,
+      #f7fafb 100%
+    );
+
+  box-shadow:
+    0 6px 18px
+    rgba(
+      7,
+      59,
+      76,
+      0.035
+    );
+
+  transition:
+    transform
+    var(--pro-transition),
+    border-color
+    var(--pro-transition),
+    box-shadow
+    var(--pro-transition),
+    background
+    var(--pro-transition);
+}
+
+
+.admin-account-action::after {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 3px;
+
+  background:
+    var(--action-accent);
+
+  opacity: 0.82;
+}
+
+
+.admin-account-action:hover {
+  transform:
+    translateY(-4px);
+
+  border-color:
+    color-mix(
+      in srgb,
+      var(--action-accent)
+      35%,
+      #dce8eb
+    );
+
+  background:
+    #ffffff;
+
+  box-shadow:
+    var(--pro-shadow-hover);
+}
+
+
+/* =========================================================
+   SECURITY ACTION ICON
+   ========================================================= */
+
+.admin-account-action__icon {
+  width: 46px;
+  height: 46px;
+
+  margin-bottom: 13px;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(--action-accent)
+      18%,
+      #ffffff
+    );
+
+  border-radius: 13px;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--action-accent)
+      8%,
+      #ffffff
+    );
+
+  color:
+    var(--action-accent);
+
+  box-shadow:
+    0 6px 16px
+    rgba(
+      7,
+      59,
+      76,
+      0.045
+    );
+}
+
+
+/* =========================================================
+   SECURITY ACTION TEXT
+   ========================================================= */
+
+.admin-account-action__copy small {
+  display: inline-flex;
+
+  align-items: center;
+
+  min-height: 21px;
+
+  padding:
+    0
+    7px;
+
+  border-radius: 999px;
+
+  background:
+    color-mix(
+      in srgb,
+      var(--action-accent)
+      9%,
+      transparent
+    );
+
+  color:
+    var(--action-accent) !important;
+
+  font-size: 7px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.9px;
+}
+
+
+.admin-account-action__copy strong {
+  margin-top: 8px;
+
+  font-size: 15px;
+
+  line-height: 1.25;
+}
+
+
+.admin-account-action__copy > span {
+  margin-top: 8px;
+
+  font-size: 10px;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   SECURITY ACTION FOOTER
+   ========================================================= */
+
+.admin-account-action__footer {
+  margin-top: 14px;
+
+  padding-top: 12px;
+
+  border-top:
+    1px solid
+    #e3ecee;
+
+  color:
+    var(--action-accent) !important;
+}
+
+
+.admin-account-action__footer b {
+  font-size: 9px;
+
+  letter-spacing: 0.15px;
+}
+
+
+.admin-account-action__footer svg {
+  transition:
+    transform
+    var(--pro-transition);
+}
+
+
+.admin-account-action:hover
+.admin-account-action__footer svg {
+  transform:
+    translateX(3px);
+}
+
+
+/* =========================================================
+   SECURITY ACCENT COLORS
+   ========================================================= */
+
+.admin-account-action--blue {
+  --action-accent:
+    #397bd3;
+}
+
+
+.admin-account-action--violet {
+  --action-accent:
+    #7766c9;
+}
+
+
+.admin-account-action--orange {
+  --action-accent:
+    #d98722;
+}
+
+
+/* =========================================================
+   SIGNED-IN DEVICES
+   ========================================================= */
+
+
+/* =========================================================
+   SESSION ROWS CONTAINER
+
+   1-2 devices:
+   normal layout, no scrolling.
+
+   3+ devices:
+   about two rows visible,
+   extra rows scroll internally.
+
+   Scrollbar is hidden.
+   ========================================================= */
+
+.admin-session-devices-scroll {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 10px;
+
+  max-height: 246px;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  padding-right: 1px;
+
+  scrollbar-width: none;
+
+  -ms-overflow-style: none;
+
+  overscroll-behavior: contain;
+
+  scroll-behavior: smooth;
+}
+
+
+.admin-session-devices-scroll::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+
+  display: none;
+}
+
+
+/* =========================================================
+   ONE OR TWO DEVICES
+   ========================================================= */
+
+.admin-session-devices-scroll.is-short-list {
+  max-height: none;
+
+  overflow: visible;
+}
+
+
+/* =========================================================
+   DEVICE ROW
+   ========================================================= */
+
+.admin-session-devices-scroll
+.admin-session-item {
+  width: 100%;
+
+  flex: 0 0 auto;
+
+  min-height: 112px;
+
+  margin: 0;
+}
+
+
+/* =========================================================
+   SESSION SUMMARY
+   ========================================================= */
+
+.admin-session-devices-scroll
++ .admin-session-summary-grid {
+  margin-top: 12px;
+}
+
+
+/* =========================================================
+   SESSION MESSAGE
+   ========================================================= */
+
+.admin-session-status-message {
+  width: 100%;
+
+  margin-top: 12px;
+}
+
+
+/* =========================================================
+   SESSION CONTROLS
+   ========================================================= */
+
+.admin-session-controls {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  flex-wrap: wrap;
+
+  gap: 9px;
+
+  margin-top: 12px;
+
+  padding-top: 12px;
+
+  border-top:
+    1px solid
+    rgba(
+      151,
+      190,
+      184,
+      0.28
+    );
+}
+
+
+/* =========================================================
+   ACCOUNT SESSION CARD
+   ========================================================= */
+
+.admin-profile-danger-card {
+  position: relative;
+
+  min-height: 94px;
+
+  overflow: hidden;
+
+  padding:
+    17px
+    18px;
+
+  border:
+    1px solid
+    #d4e4e8;
+
+  background:
+    linear-gradient(
+      112deg,
+      #f2fbfa 0%,
+      #f8fdfd 48%,
+      #ffffff 100%
+    );
+
+  box-shadow:
+    var(--pro-shadow);
+}
+
+
+.admin-profile-danger-card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 4px;
+  height: 100%;
+
+  background:
+    linear-gradient(
+      180deg,
+      #16a39e,
+      #51d3cd
+    );
+}
+
+
+/* =========================================================
+   ACCOUNT SESSION ICON
+   ========================================================= */
+
+.admin-profile-danger-icon {
+  width: 46px;
+  height: 46px;
+
+  flex:
+    0 0 46px;
+
+  border:
+    1px solid
+    rgba(
+      15,
+      155,
+      150,
+      0.16
+    );
+
+  border-radius: 13px;
+
+  background:
+    #ddf6f4;
+
+  color:
+    #087f7b;
+
+  box-shadow:
+    0 5px 15px
+    rgba(
+      15,
+      155,
+      150,
+      0.08
+    );
+}
+
+
+/* =========================================================
+   ACCOUNT SESSION TEXT
+   ========================================================= */
+
+.admin-profile-danger-eyebrow {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color:
+    #087f7b !important;
+
+  font-size: 8px;
+
+  font-weight: 900;
+
+  letter-spacing: 1.1px;
+
+  text-transform: uppercase;
+}
+
+
+.admin-profile-danger-copy h2 {
+  margin: 0;
+
+  color:
+    #0b3142 !important;
+
+  font-size: 16px;
+
+  font-weight: 900;
+
+  line-height: 1.25;
+}
+
+
+.admin-profile-danger-copy p {
+  margin:
+    5px
+    0
+    0;
+
+  color:
+    #5f7b86 !important;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   LOGOUT BUTTON
+   ========================================================= */
+
+.admin-profile-logout-button {
+  min-width: 132px;
+
+  min-height: 45px;
+
+  border:
+    1px solid
+    #cbdde1;
+
+  border-radius: 12px;
+
+  background:
+    #ffffff;
+
+  color:
+    #234955 !important;
+
+  box-shadow:
+    0 5px 14px
+    rgba(
+      7,
+      59,
+      76,
+      0.055
+    );
+
+  transition:
+    transform
+    var(--pro-transition),
+    border-color
+    var(--pro-transition),
+    background
+    var(--pro-transition),
+    color
+    var(--pro-transition),
+    box-shadow
+    var(--pro-transition);
+}
+
+
+.admin-profile-logout-button:hover {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    #c95050;
+
+  background:
+    linear-gradient(
+      135deg,
+      #d95353,
+      #bb3d3d
+    );
+
+  color:
+    #ffffff !important;
+
+  box-shadow:
+    0 10px 22px
+    rgba(
+      201,
+      80,
+      80,
+      0.18
+    );
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-profile-page {
+  --pro-shadow:
+    0 15px 34px
+    rgba(
+      0,
+      0,
+      0,
+      0.15
+    );
+
+  --pro-shadow-hover:
+    0 18px 38px
+    rgba(
+      0,
+      0,
+      0,
+      0.2
+    );
+}
+
+
+/* =========================================================
+   DARK PROFILE PHOTO
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-profile-hero-icon {
+  border-color:
+    rgba(
+      112,
+      221,
+      215,
+      0.22
+    );
+
+  background:
+    #103c37;
+
+  box-shadow:
+    0 9px 22px
+    rgba(
+      0,
+      0,
+      0,
+      0.13
+    );
+}
+
+
+/* =========================================================
+   DARK SECURITY CARD
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-profile-control-card:has(
+  .admin-profile-section-header--blue
+) {
+  border-color:
+    #347263;
+
+  background:
+    linear-gradient(
+      180deg,
+      #184d42 0%,
+      #123f38 100%
+    );
+
+  box-shadow:
+    var(--pro-shadow);
+}
+
+
+[data-admin-theme="dark"]
+.admin-profile-control-card:has(
+  .admin-profile-section-header--blue
+)::before {
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        112,
+        138,
+        255,
+        0.12
+      ),
+      transparent 68%
+    );
+}
+
+
+/* =========================================================
+   DARK SECURITY HEADER
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-profile-section-header--blue {
+  border-bottom-color:
+    #39766c;
+
+  background:
+    linear-gradient(
+      110deg,
+      #1b5a4d 0%,
+      #174c43 55%,
+      #14443d 100%
+    );
+}
+
+
+[data-admin-theme="dark"]
+.admin-profile-section-header--blue
+.admin-profile-section-icon {
+  border-color:
+    #39766c;
+
+  background:
+    #103c37;
+
+  color:
+    #8db5ff;
+
+  box-shadow:
+    none;
+}
+
+
+[data-admin-theme="dark"]
+.admin-profile-section-header--blue
+.admin-profile-section-eyebrow {
+  color:
+    #8db5ff !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-profile-section-header--blue
+h2 {
+  color:
+    #ffffff !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-profile-section-header--blue
+p {
+  color:
+    #bdd2cc !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-profile-section-header--blue
+.admin-profile-section-badge {
+  border-color:
+    #39766c;
+
+  background:
+    #103c37;
+
+  color:
+    #a7c7ff !important;
+
+  box-shadow:
+    none;
+}
+
+
+/* =========================================================
+   DARK SECURITY ACTIONS
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-account-action {
+  border-color:
+    #39766c;
+
+  background:
+    linear-gradient(
+      145deg,
+      #195249,
+      #174a42
+    );
+
+  box-shadow:
+    none;
+}
+
+
+[data-admin-theme="dark"]
+.admin-account-action:hover {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--action-accent)
+      50%,
+      #39766c
+    );
+
+  background:
+    #1c584e;
+
+  box-shadow:
+    var(--pro-shadow-hover);
+}
+
+
+[data-admin-theme="dark"]
+.admin-account-action__icon {
+  border-color:
+    #39766c;
+
+  background:
+    #103c37;
+
+  color:
+    color-mix(
+      in srgb,
+      var(--action-accent)
+      70%,
+      #ffffff
+    );
+
+  box-shadow:
+    none;
+}
+
+
+[data-admin-theme="dark"]
+.admin-account-action__copy small {
+  background:
+    color-mix(
+      in srgb,
+      var(--action-accent)
+      15%,
+      transparent
+    );
+
+  color:
+    color-mix(
+      in srgb,
+      var(--action-accent)
+      65%,
+      #ffffff
+    ) !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-account-action__copy strong {
+  color:
+    #ffffff !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-account-action__copy > span {
+  color:
+    #bdd2cc !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-account-action__footer {
+  border-top-color:
+    #39766c;
+
+  color:
+    color-mix(
+      in srgb,
+      var(--action-accent)
+      68%,
+      #ffffff
+    ) !important;
+}
+
+
+/* =========================================================
+   DARK SESSION CONTROLS
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-session-controls {
+  border-top-color:
+    #39766c;
+}
+
+
+/* =========================================================
+   DARK ACCOUNT SESSION
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-profile-danger-card {
+  border-color:
+    #347263 !important;
+
+  background:
+    linear-gradient(
+      110deg,
+      #184d42 0%,
+      #15473f 55%,
+      #123f38 100%
+    ) !important;
+
+  box-shadow:
+    var(--pro-shadow);
+}
+
+
+[data-admin-theme="dark"]
+.admin-profile-danger-card::before {
+  background:
+    linear-gradient(
+      180deg,
+      #70ddd7,
+      #23bcb4
+    );
+}
+
+
+[data-admin-theme="dark"]
+.admin-profile-danger-icon {
+  border-color:
+    #39766c;
+
+  background:
+    #103c37;
+
+  color:
+    #70ddd7;
+
+  box-shadow:
+    none;
+}
+
+
+[data-admin-theme="dark"]
+.admin-profile-danger-eyebrow {
+  color:
+    #78ded7 !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-profile-danger-copy h2 {
+  color:
+    #ffffff !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-profile-danger-copy p {
+  color:
+    #bdd2cc !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-profile-logout-button {
+  border-color:
+    #4c7c70;
+
+  background:
+    #f5fbfa;
+
+  color:
+    #133c36 !important;
+
+  box-shadow:
+    0 7px 18px
+    rgba(
+      0,
+      0,
+      0,
+      0.11
+    );
+}
+
+
+[data-admin-theme="dark"]
+.admin-profile-logout-button:hover {
+  border-color:
+    #df6666;
+
+  background:
+    linear-gradient(
+      135deg,
+      #dc5757,
+      #bd3c3c
+    );
+
+  color:
+    #ffffff !important;
+}
+
+
+/* =========================================================
+   125% - 150% DESKTOP
+   ========================================================= */
+
+@media (
+  max-width: 1180px
+) {
+  .admin-account-action {
+    min-height: 184px;
+
+    padding: 15px;
+  }
+
+
+  .admin-account-action__icon {
+    width: 43px;
+    height: 43px;
+  }
+
+
+  .admin-profile-page__header {
+    min-height: 164px;
+  }
+
+
+  .admin-profile-card__avatar {
+    width: 72px;
+    height: 72px;
+
+    border-radius: 19px;
+  }
+}
+
+
+/* =========================================================
+   SESSION DESKTOP ZOOM SAFETY
+   ========================================================= */
+
+@media (
+  min-width: 761px
+)
+and
+(
+  max-width: 1180px
+) {
+  .admin-session-devices-scroll:not(
+    .is-short-list
+  ) {
+    max-height: 238px;
+  }
+
+
+  .admin-session-devices-scroll
+  .admin-session-item {
+    min-height: 108px;
+  }
+}
+
+
+/* =========================================================
+   COMPACT DESKTOP SECURITY
+   ========================================================= */
+
+@media (
+  min-width: 761px
+)
+and
+(
+  max-width: 950px
+) {
+  .admin-account-action-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(
+          0,
+          1fr
+        )
+      );
+  }
+
+
+  .admin-account-action:last-child {
+    grid-column:
+      1 / -1;
+
+    min-height: 160px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (
+  max-width: 760px
+) {
+  .admin-profile-page__header {
+    min-height: unset;
+  }
+
+
+  .admin-profile-hero-icon {
+    width: 56px;
+    height: 56px;
+
+    flex:
+      0 0 56px;
+
+    border-radius: 16px;
+  }
+
+
+  .admin-account-action-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .admin-account-action {
+    min-height: 175px;
+  }
+
+
+  .admin-session-devices-scroll:not(
+    .is-short-list
+  ) {
+    max-height: 350px;
+  }
+
+
+  .admin-session-devices-scroll
+  .admin-session-item {
+    min-height: 165px;
+  }
+
+
+  .admin-session-controls {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+
+  .admin-session-controls
+  .admin-session-refresh-button,
+  .admin-session-controls
+  .admin-session-signout-button {
+    width: 100%;
+  }
+
+
+  .admin-profile-danger-card {
+    gap: 15px;
+  }
+
+
+  .admin-profile-danger-copy {
+    align-items:
+      flex-start;
+  }
+
+
+  .admin-profile-logout-button {
+    width: 100%;
+  }
+}
+
+
+/* =========================================================
+   SMALL PHONE
+   ========================================================= */
+
+@media (
+  max-width: 430px
+) {
+  .admin-account-action {
+    min-height: 166px;
+
+    padding: 14px;
+  }
+
+
+  .admin-profile-danger-copy h2 {
+    font-size: 15px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+  .admin-account-action,
+  .admin-account-action__footer svg,
+  .admin-profile-logout-button {
+    transition: none;
+  }
+
+
+  .admin-session-devices-scroll {
+    scroll-behavior: auto;
+  }
+}

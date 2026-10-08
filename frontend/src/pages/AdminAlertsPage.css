@@ -1,19 +1,7 @@
 /* =========================================================
    DR. EVANS PHARMACY
    ADMIN ALERTS
-
-   COMPLETE REWRITTEN STYLESHEET
-
-   DESKTOP TARGET:
-   80% → 150% ZOOM
-
-   - SIDEBAR STAYS BESIDE CONTENT
-   - NO PAGE WIDTH HACKS
-   - 6 KPI COLORS
-   - DASHBOARD KPI LOGIC
-   - STRONG GREEN DARK CARDS
-   - ALERT CARDS RESPONSIVE
-   - NO DESKTOP HORIZONTAL SCROLL
+   COMPLETE STYLESHEET
    ========================================================= */
 
 
@@ -232,8 +220,7 @@
 
   border-radius: 17px;
 
-  background:
-    #ffffff;
+  background: #ffffff;
 
   box-shadow:
     0
@@ -253,7 +240,9 @@
    KPI ACCENT
    ========================================================= */
 
-.admin-alert-stat::before {
+.admin-alert-stat::before,
+.admin-alert-stat
+> .admin-alert-stat-accent {
   content: "";
 
   position: absolute;
@@ -265,36 +254,6 @@
 
   width: 100%;
   height: 4px;
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--stat-accent) 0%,
-      color-mix(
-        in srgb,
-        var(--stat-accent) 45%,
-        transparent
-      ) 58%,
-      transparent 100%
-    );
-
-  pointer-events: none;
-}
-
-
-.admin-alert-stat
-> .admin-alert-stat-accent {
-  position: absolute;
-
-  z-index: 1;
-
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 4px;
-
-  flex: none;
 
   background:
     linear-gradient(
@@ -609,33 +568,6 @@ small {
 .admin-alert-stat-icon {
   transform:
     translateY(-1px);
-
-  border-color:
-    color-mix(
-      in srgb,
-      var(--stat-accent) 34%,
-      transparent
-    );
-
-  background:
-    color-mix(
-      in srgb,
-      var(--stat-soft) 90%,
-      #ffffff
-    );
-
-  color:
-    var(--stat-accent);
-
-  box-shadow:
-    0
-    8px
-    20px
-    color-mix(
-      in srgb,
-      var(--stat-accent) 12%,
-      transparent
-    );
 }
 
 
@@ -721,13 +653,6 @@ small {
       in srgb,
       var(--stat-accent) 11%,
       #17253a
-    ) !important;
-
-  color:
-    color-mix(
-      in srgb,
-      var(--stat-accent) 70%,
-      #ffffff
     ) !important;
 }
 
@@ -829,6 +754,10 @@ small {
 }
 
 
+/* =========================================================
+   CARD COLORS
+   ========================================================= */
+
 .admin-alerts-card--critical {
   --card-accent:
     var(--alert-red);
@@ -864,6 +793,10 @@ small {
     var(--alert-blue-soft);
 }
 
+
+/* =========================================================
+   CARD HOVER
+   ========================================================= */
 
 .admin-alerts-card:hover {
   transform:
@@ -1148,7 +1081,7 @@ p {
 
 
 /* =========================================================
-   ALERT LIST
+   DEFAULT ALERT LIST
    ========================================================= */
 
 .admin-alerts-list {
@@ -1156,13 +1089,184 @@ p {
 
   min-width: 0;
 
-  display: grid;
+  display: flex;
+
+  flex-direction: column;
 
   gap: 9px;
 
   padding: 11px;
 
   scrollbar-width: none;
+
+  -ms-overflow-style: none;
+}
+
+
+.admin-alerts-list
+> * {
+  flex:
+    0
+    0
+    auto;
+}
+
+
+/* =========================================================
+   OVERDUE ITEMS
+   FIXED PROFESSIONAL HEIGHT
+   ========================================================= */
+
+.admin-alerts-card--overdue {
+  display: flex;
+
+  flex-direction: column;
+
+  height: 590px;
+
+  min-height: 590px;
+
+  max-height: 590px;
+}
+
+
+.admin-alerts-card--overdue
+.admin-alerts-card-header {
+  flex:
+    0
+    0
+    auto;
+}
+
+
+.admin-alerts-card--overdue
+.admin-alerts-list {
+  flex:
+    1
+    1
+    auto;
+
+  min-height: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: stretch;
+
+  justify-content: flex-start;
+
+  gap: 9px;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  scrollbar-width: none;
+
+  -ms-overflow-style: none;
+
+  overscroll-behavior: contain;
+
+  -webkit-overflow-scrolling: touch;
+}
+
+
+.admin-alerts-card--overdue
+.admin-alerts-list
+> * {
+  flex:
+    0
+    0
+    auto;
+
+  min-height: max-content;
+}
+
+
+.admin-alerts-card--overdue
+.admin-alert-item {
+  flex:
+    0
+    0
+    auto;
+
+  min-height: 92px;
+
+  height: auto;
+}
+
+
+.admin-alerts-card--overdue
+.admin-alerts-list::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+
+  display: none;
+}
+
+
+/* =========================================================
+   RECENT NOTIFICATIONS
+   CONTROLLED HEIGHT
+   ========================================================= */
+
+.admin-alerts-card--activity {
+  display: flex;
+
+  flex-direction: column;
+
+  max-height: 520px;
+}
+
+
+.admin-alerts-card--activity
+.admin-alerts-card-header {
+  flex:
+    0
+    0
+    auto;
+}
+
+
+.admin-alerts-card--activity
+.admin-alerts-list {
+  max-height: 390px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 9px;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  scrollbar-width: none;
+
+  -ms-overflow-style: none;
+
+  overscroll-behavior: contain;
+}
+
+
+.admin-alerts-card--activity
+.admin-alerts-list
+> * {
+  flex:
+    0
+    0
+    auto;
+}
+
+
+.admin-alerts-card--activity
+.admin-alerts-list::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+
+  display: none;
 }
 
 
@@ -1180,6 +1284,8 @@ p {
   position: relative;
 
   min-width: 0;
+
+  min-height: 86px;
 
   display: grid;
 
@@ -1936,17 +2042,14 @@ small {
         minmax(0, 1fr)
       );
 
-    gap:
-      10px;
+    gap: 10px;
   }
 
 
   .admin-alert-stat {
-    min-height:
-      118px;
+    min-height: 118px;
 
-    gap:
-      13px;
+    gap: 13px;
 
     padding:
       16px
@@ -1955,47 +2058,38 @@ small {
 
 
   .admin-alert-stat-icon {
-    width:
-      50px;
+    width: 50px;
+    height: 50px;
 
-    height:
-      50px;
-
-    flex-basis:
-      50px;
+    flex-basis: 50px;
   }
 
 
   .admin-alert-stat-copy
   > span {
-    font-size:
-      10px;
+    font-size: 10px;
   }
 
 
   .admin-alert-stat-copy
   strong {
-    font-size:
-      30px;
+    font-size: 30px;
   }
 
 
   .admin-alert-stat-copy
   small {
-    font-size:
-      11px;
+    font-size: 11px;
   }
 
 
   .admin-alerts-command-grid {
-    gap:
-      12px;
+    gap: 12px;
   }
 
 
   .admin-alerts-card-header {
-    min-height:
-      86px;
+    min-height: 86px;
 
     padding:
       14px
@@ -2004,34 +2098,29 @@ small {
 
 
   .admin-alerts-card-icon {
-    width:
-      46px;
+    width: 46px;
+    height: 46px;
 
-    height:
-      46px;
-
-    flex-basis:
-      46px;
+    flex-basis: 46px;
   }
 
 
   .admin-alerts-card-heading
   h2 {
-    font-size:
-      21px;
+    font-size: 21px;
   }
 
 
   .admin-alerts-card-heading
   p {
-    font-size:
-      10px;
+    font-size: 10px;
   }
 
 
   .admin-alert-item {
-    gap:
-      9px;
+    min-height: 80px;
+
+    gap: 9px;
 
     padding:
       12px
@@ -2041,51 +2130,67 @@ small {
   }
 
 
+  .admin-alerts-card--overdue
+  .admin-alert-item {
+    min-height: 84px;
+  }
+
+
   .admin-alert-icon {
-    width:
-      40px;
+    width: 40px;
+    height: 40px;
 
-    height:
-      40px;
-
-    flex-basis:
-      40px;
+    flex-basis: 40px;
   }
 
 
   .admin-alert-content
   strong {
-    font-size:
-      12px;
+    font-size: 12px;
   }
 
 
   .admin-alert-content
   p {
-    font-size:
-      11px;
+    font-size: 11px;
   }
 
 
   .admin-alert-content
   small {
-    font-size:
-      9px;
+    font-size: 9px;
   }
 
 
   .admin-alert-badge {
-    min-width:
-      58px;
+    min-width: 58px;
 
     padding:
       5px
       7px;
 
-    font-size:
-      8px;
+    font-size: 8px;
   }
 
+
+  .admin-alerts-card--overdue {
+    height: 540px;
+
+    min-height: 540px;
+
+    max-height: 540px;
+  }
+
+
+  .admin-alerts-card--activity {
+    max-height: 480px;
+  }
+
+
+  .admin-alerts-card--activity
+  .admin-alerts-list {
+    max-height: 355px;
+  }
 }
 
 
@@ -2108,17 +2213,14 @@ and
         minmax(0, 1fr)
       );
 
-    gap:
-      8px;
+    gap: 8px;
   }
 
 
   .admin-alert-stat {
-    min-height:
-      108px;
+    min-height: 108px;
 
-    gap:
-      9px;
+    gap: 9px;
 
     padding:
       13px
@@ -2127,35 +2229,28 @@ and
 
 
   .admin-alert-stat-icon {
-    width:
-      44px;
+    width: 44px;
+    height: 44px;
 
-    height:
-      44px;
-
-    flex-basis:
-      44px;
+    flex-basis: 44px;
   }
 
 
   .admin-alert-stat-copy
   > span {
-    font-size:
-      8px;
+    font-size: 8px;
   }
 
 
   .admin-alert-stat-copy
   strong {
-    font-size:
-      24px;
+    font-size: 24px;
   }
 
 
   .admin-alert-stat-copy
   small {
-    font-size:
-      9px;
+    font-size: 9px;
   }
 
 
@@ -2173,10 +2268,23 @@ and
 
 
   .admin-alert-title-row {
-    gap:
-      8px;
+    gap: 8px;
   }
 
+
+  .admin-alerts-card--overdue {
+    height: 500px;
+
+    min-height: 500px;
+
+    max-height: 500px;
+  }
+
+
+  .admin-alerts-card--overdue
+  .admin-alert-item {
+    min-height: 82px;
+  }
 }
 
 
@@ -2217,8 +2325,7 @@ and
         minmax(0, 1fr)
       );
 
-    gap:
-      11px;
+    gap: 11px;
   }
 
 
@@ -2272,8 +2379,7 @@ and
 
 
   .admin-alerts-card-header {
-    min-height:
-      90px;
+    min-height: 90px;
 
     align-items:
       flex-start;
@@ -2289,8 +2395,7 @@ and
 
   .admin-alerts-card-heading
   h2 {
-    font-size:
-      21px;
+    font-size: 21px;
   }
 
 
@@ -2314,6 +2419,31 @@ and
       flex-start;
   }
 
+
+  .admin-alerts-card--overdue {
+    height: 560px;
+
+    min-height: 560px;
+
+    max-height: 560px;
+  }
+
+
+  .admin-alerts-card--overdue
+  .admin-alert-item {
+    min-height: 110px;
+  }
+
+
+  .admin-alerts-card--activity {
+    max-height: 500px;
+  }
+
+
+  .admin-alerts-card--activity
+  .admin-alerts-list {
+    max-height: 360px;
+  }
 }
 
 
@@ -2338,6 +2468,8 @@ and
   .admin-alert-item {
     grid-template-columns:
       1fr;
+
+    min-height: 125px;
   }
 
 
@@ -2349,6 +2481,20 @@ and
       43px;
   }
 
+
+  .admin-alerts-card--overdue {
+    height: 520px;
+
+    min-height: 520px;
+
+    max-height: 520px;
+  }
+
+
+  .admin-alerts-card--overdue
+  .admin-alert-item {
+    min-height: 135px;
+  }
 }
 
 
@@ -2367,5 +2513,144 @@ and
     transition:
       none;
   }
+}
+/* =========================================================
+   MISSED / EXPIRED REFILLS
+   CONTROLLED HEIGHT + INTERNAL SCROLL
+   ========================================================= */
 
+.admin-alerts-page
+> .admin-alerts-card--critical {
+  display: flex;
+  flex-direction: column;
+
+  height: 590px;
+  min-height: 590px;
+  max-height: 590px;
+}
+
+.admin-alerts-page
+> .admin-alerts-card--critical
+.admin-alerts-card-header {
+  flex: 0 0 auto;
+}
+
+.admin-alerts-page
+> .admin-alerts-card--critical
+.admin-alerts-list {
+  flex: 1 1 auto;
+
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: stretch;
+  justify-content: flex-start;
+
+  gap: 9px;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.admin-alerts-page
+> .admin-alerts-card--critical
+.admin-alerts-list
+> * {
+  flex: 0 0 auto;
+}
+
+.admin-alerts-page
+> .admin-alerts-card--critical
+.admin-alert-item {
+  flex: 0 0 auto;
+
+  min-height: 92px;
+  height: auto;
+}
+
+.admin-alerts-page
+> .admin-alerts-card--critical
+.admin-alerts-list::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+
+  display: none;
+}
+
+
+@media (max-width: 1180px) {
+  .admin-alerts-page
+  > .admin-alerts-card--critical {
+    height: 540px;
+    min-height: 540px;
+    max-height: 540px;
+  }
+
+  .admin-alerts-page
+  > .admin-alerts-card--critical
+  .admin-alert-item {
+    min-height: 84px;
+  }
+}
+
+
+@media (
+  min-width: 761px
+)
+and
+(
+  max-width: 950px
+) {
+  .admin-alerts-page
+  > .admin-alerts-card--critical {
+    height: 500px;
+    min-height: 500px;
+    max-height: 500px;
+  }
+
+  .admin-alerts-page
+  > .admin-alerts-card--critical
+  .admin-alert-item {
+    min-height: 82px;
+  }
+}
+
+
+@media (max-width: 700px) {
+  .admin-alerts-page
+  > .admin-alerts-card--critical {
+    height: 560px;
+    min-height: 560px;
+    max-height: 560px;
+  }
+
+  .admin-alerts-page
+  > .admin-alerts-card--critical
+  .admin-alert-item {
+    min-height: 110px;
+  }
+}
+
+
+@media (max-width: 430px) {
+  .admin-alerts-page
+  > .admin-alerts-card--critical {
+    height: 520px;
+    min-height: 520px;
+    max-height: 520px;
+  }
+
+  .admin-alerts-page
+  > .admin-alerts-card--critical
+  .admin-alert-item {
+    min-height: 135px;
+  }
 }

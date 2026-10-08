@@ -13,7 +13,7 @@ const CONFIG = {
     WEB_APP_URL: "WEB_APP_URL",
     TOKEN_SECRET: "TOKEN_SECRET",
     PAYSTACK_SECRET: "PAYSTACK_TEST_SECRET_KEY",
-    ARKESEL_API_KEY: "ARKESEL_API_KEY"
+    ARKESEL_API_KEY: "ARKESEL_API_KEY",
   },
 
   SHEETS: {
@@ -26,7 +26,7 @@ const CONFIG = {
       "Customer_Type",
       "Preferred_Contact",
       "Patient_Email",
-      "Doctor_Email"
+      "Doctor_Email",
     ],
 
     Drugs: [
@@ -37,7 +37,7 @@ const CONFIG = {
       "Monthly_Price",
       "One_Time_Price",
       "Stock_Quantity",
-      "Reorder_Level"
+      "Reorder_Level",
     ],
 
     Orders: [
@@ -46,7 +46,7 @@ const CONFIG = {
       "Patient_ID",
       "Customer_Type",
       "Payment_Status",
-      "Order_Status"
+      "Order_Status",
     ],
 
     Order_Items: [
@@ -57,7 +57,7 @@ const CONFIG = {
       "Unit_Price",
       "Total_Amount",
       "Cost_Total",
-      "Profit"
+      "Profit",
     ],
 
     Payments: [
@@ -74,7 +74,7 @@ const CONFIG = {
       "Payment_Confirmed",
       "Confirmed_By",
       "Confirmation_Date",
-      "Payment_Status"
+      "Payment_Status",
     ],
 
     Inventory: [
@@ -84,7 +84,7 @@ const CONFIG = {
       "Stock_Quantity",
       "Reorder_Level",
       "Stock_Status",
-      "Last_Updated"
+      "Last_Updated",
     ],
 
     Refills: [
@@ -100,7 +100,18 @@ const CONFIG = {
       "Patient_Response",
       "Confirmation_Date",
       "Confirmation_Status",
-      "Generated_Order_ID"
+      "Generated_Order_ID",
+
+      /*
+       * ADMIN REFILL REVIEW WORKFLOW
+       */
+
+      "Resolution_Status",
+      "Resolution_Reason",
+      "Review_Note",
+      "Reviewed_By",
+      "Reviewed_At",
+      "Previous_Refill_Date",
     ],
 
     Invoices_Receipts: [
@@ -113,12 +124,12 @@ const CONFIG = {
       "Receipt_Date",
       "Receipt_Status",
       "Invoice_Link",
-      "Receipt_PDF_Link"
+      "Receipt_PDF_Link",
     ],
 
     Payment_Settings: [
       "Setting",
-      "Value"
+      "Value",
     ],
 
     Audit_Log: [
@@ -129,7 +140,7 @@ const CONFIG = {
       "Action",
       "Record_Type",
       "Record_ID",
-      "Details"
+      "Details",
     ],
 
     SMS_Log: [
@@ -140,7 +151,7 @@ const CONFIG = {
       "Message_Type",
       "Message_Text",
       "Provider_Message_ID",
-      "Delivery_Status"
+      "Delivery_Status",
     ],
 
     Call_Log: [
@@ -152,10 +163,10 @@ const CONFIG = {
       "Call_Type",
       "Call_Message",
       "Provider_Call_ID",
-      "Call_Status"
+      "Call_Status",
     ],
 
-    Dashboard: null
+    Dashboard: null,
   },
 
   REQUIRED_PAYMENT_SETTINGS: [
@@ -168,7 +179,7 @@ const CONFIG = {
     "Payment_Mode",
     "SMS_Provider",
     "Voice_Provider",
-    "Receipt_Requires_Confirmation"
+    "Receipt_Requires_Confirmation",
   ],
 
   STATUS: {
@@ -177,6 +188,18 @@ const CONFIG = {
     PAID: "Paid",
     COMPLETED: "Completed",
     FAILED: "Failed",
-    GENERATED: "Generated"
-  }
+    GENERATED: "Generated",
+
+    /*
+     * REFILL WORKFLOW
+     */
+
+    DUE_SOON: "Due Soon",
+    DUE_TODAY: "Due Today",
+    OVERDUE: "Overdue",
+    MISSED_EXPIRED: "Missed / Expired",
+    RESCHEDULED: "Rescheduled",
+    CANCELLED_BY_PATIENT: "Cancelled by Patient",
+    CLINICALLY_DECLINED: "Clinically Declined",
+  },
 };

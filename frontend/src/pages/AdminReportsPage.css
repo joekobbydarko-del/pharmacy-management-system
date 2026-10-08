@@ -1,19 +1,7 @@
 /* =========================================================
    DR. EVANS PHARMACY
    ADMIN REPORTS
-
-   COMPLETE REWRITTEN STYLESHEET
-
-   DESKTOP TARGET:
-   80% → 150% ZOOM
-
-   - DASHBOARD KPI LOGIC
-   - DIFFERENT KPI COLORS
-   - REPORT CARDS
-   - TABLES FIT DESKTOP
-   - NO DESKTOP HORIZONTAL SCROLLBAR
-   - STRONG GREEN DARK SURFACES
-   - MOBILE SCROLL ONLY WHEN REQUIRED
+   COMPLETE STYLESHEET
    ========================================================= */
 
 
@@ -114,28 +102,64 @@
   --reports-muted: #a3bdc4;
 
   --reports-teal: #5de0d9;
+
   --reports-teal-soft:
-    rgba(37, 212, 212, 0.13);
+    rgba(
+      37,
+      212,
+      212,
+      0.13
+    );
 
   --reports-blue: #93c7ef;
+
   --reports-blue-soft:
-    rgba(76, 143, 208, 0.15);
+    rgba(
+      76,
+      143,
+      208,
+      0.15
+    );
 
   --reports-violet: #b7acf0;
+
   --reports-violet-soft:
-    rgba(119, 103, 199, 0.16);
+    rgba(
+      119,
+      103,
+      199,
+      0.16
+    );
 
   --reports-orange: #f3bb68;
+
   --reports-orange-soft:
-    rgba(216, 137, 36, 0.16);
+    rgba(
+      216,
+      137,
+      36,
+      0.16
+    );
 
   --reports-green: #8de0ba;
+
   --reports-green-soft:
-    rgba(64, 167, 125, 0.14);
+    rgba(
+      64,
+      167,
+      125,
+      0.14
+    );
 
   --reports-red: #ff9c9c;
+
   --reports-red-soft:
-    rgba(201, 80, 80, 0.15);
+    rgba(
+      201,
+      80,
+      80,
+      0.15
+    );
 }
 
 
@@ -145,7 +169,6 @@
 
 .admin-reports-toolbar {
   width: 100%;
-
   min-width: 0;
   min-height: 58px;
 
@@ -177,7 +200,12 @@
     0
     7px
     22px
-    rgba(15, 47, 70, 0.04);
+    rgba(
+      15,
+      47,
+      70,
+      0.04
+    );
 }
 
 
@@ -194,6 +222,7 @@
     var(--reports-muted);
 
   font-size: 12px;
+
   font-weight: 800;
 }
 
@@ -245,6 +274,7 @@
   font-family: inherit;
 
   font-size: 12px;
+
   font-weight: 900;
 
   white-space: nowrap;
@@ -255,7 +285,12 @@
     0
     7px
     18px
-    rgba(15, 159, 153, 0.16);
+    rgba(
+      15,
+      159,
+      153,
+      0.16
+    );
 
   transition:
     transform 0.18s ease,
@@ -271,7 +306,12 @@
     0
     11px
     24px
-    rgba(15, 159, 153, 0.22);
+    rgba(
+      15,
+      159,
+      153,
+      0.22
+    );
 }
 
 
@@ -293,7 +333,12 @@
 
   border:
     1px solid
-    rgba(201, 80, 80, 0.22);
+    rgba(
+      201,
+      80,
+      80,
+      0.22
+    );
 
   border-radius: 13px;
 
@@ -304,6 +349,7 @@
     var(--reports-red);
 
   font-size: 13px;
+
   font-weight: 800;
 }
 
@@ -331,7 +377,6 @@
 
 /* =========================================================
    KPI CARD
-   DASHBOARD LOGIC
    ========================================================= */
 
 .admin-report-stat {
@@ -344,6 +389,7 @@
   position: relative;
 
   min-width: 0;
+
   min-height: 132px;
 
   display: flex;
@@ -372,7 +418,12 @@
     0
     9px
     26px
-    rgba(15, 47, 70, 0.045);
+    rgba(
+      15,
+      47,
+      70,
+      0.045
+    );
 
   transition:
     transform 0.2s ease,
@@ -381,10 +432,6 @@
     box-shadow 0.2s ease;
 }
 
-
-/* =========================================================
-   KPI TOP ACCENT
-   ========================================================= */
 
 .admin-report-stat::before {
   content: "";
@@ -402,13 +449,17 @@
   background:
     linear-gradient(
       90deg,
-      var(--stat-accent) 0%,
+      var(--stat-accent)
+      0%,
       color-mix(
         in srgb,
-        var(--stat-accent) 45%,
+        var(--stat-accent)
+        45%,
         transparent
-      ) 58%,
-      transparent 100%
+      )
+      58%,
+      transparent
+      100%
     );
 
   pointer-events: none;
@@ -432,22 +483,22 @@
   background:
     linear-gradient(
       90deg,
-      var(--stat-accent) 0%,
+      var(--stat-accent)
+      0%,
       color-mix(
         in srgb,
-        var(--stat-accent) 45%,
+        var(--stat-accent)
+        45%,
         transparent
-      ) 58%,
-      transparent 100%
+      )
+      58%,
+      transparent
+      100%
     );
 
   pointer-events: none;
 }
 
-
-/* =========================================================
-   KPI GLOW
-   ========================================================= */
 
 .admin-report-stat::after {
   content: "";
@@ -469,10 +520,13 @@
       circle,
       color-mix(
         in srgb,
-        var(--stat-accent) 16%,
+        var(--stat-accent)
+        16%,
         transparent
-      ) 0%,
-      transparent 72%
+      )
+      0%,
+      transparent
+      72%
     );
 
   opacity: 0;
@@ -583,7 +637,8 @@
     1px solid
     color-mix(
       in srgb,
-      var(--stat-accent) 14%,
+      var(--stat-accent)
+      14%,
       transparent
     );
 
@@ -636,6 +691,7 @@
     #607c88 !important;
 
   font-size: 12px;
+
   font-weight: 900;
 
   letter-spacing: 0.75px;
@@ -664,6 +720,7 @@ strong {
     #0f2f46 !important;
 
   font-size: 35px;
+
   font-weight: 900;
 
   line-height: 1;
@@ -687,6 +744,7 @@ small {
     #708994 !important;
 
   font-size: 13px;
+
   font-weight: 650;
 
   line-height: 1.4;
@@ -704,7 +762,8 @@ small {
   border-color:
     color-mix(
       in srgb,
-      var(--stat-accent) 48%,
+      var(--stat-accent)
+      48%,
       #dce8eb
     );
 
@@ -713,15 +772,20 @@ small {
       135deg,
       color-mix(
         in srgb,
-        var(--stat-soft) 60%,
+        var(--stat-soft)
+        60%,
         #ffffff
-      ) 0%,
+      )
+      0%,
       color-mix(
         in srgb,
-        var(--stat-soft) 22%,
+        var(--stat-soft)
+        22%,
         #ffffff
-      ) 58%,
-      #ffffff 100%
+      )
+      58%,
+      #ffffff
+      100%
     );
 
   box-shadow:
@@ -730,8 +794,14 @@ small {
     34px
     color-mix(
       in srgb,
-      var(--stat-accent) 11%,
-      rgba(15, 47, 70, 0.04)
+      var(--stat-accent)
+      11%,
+      rgba(
+        15,
+        47,
+        70,
+        0.04
+      )
     );
 }
 
@@ -748,33 +818,6 @@ small {
 .admin-report-stat-icon {
   transform:
     translateY(-1px);
-
-  border-color:
-    color-mix(
-      in srgb,
-      var(--stat-accent) 34%,
-      transparent
-    );
-
-  background:
-    color-mix(
-      in srgb,
-      var(--stat-soft) 90%,
-      #ffffff
-    );
-
-  color:
-    var(--stat-accent);
-
-  box-shadow:
-    0
-    8px
-    20px
-    color-mix(
-      in srgb,
-      var(--stat-accent) 12%,
-      transparent
-    );
 }
 
 
@@ -801,15 +844,22 @@ small {
   background:
     linear-gradient(
       145deg,
-      #101a2f 0%,
-      #0f192d 100%
+      #101a2f
+      0%,
+      #0f192d
+      100%
     ) !important;
 
   box-shadow:
     0
     9px
     28px
-    rgba(0, 0, 0, 0.14) !important;
+    rgba(
+      0,
+      0,
+      0,
+      0.14
+    ) !important;
 }
 
 
@@ -851,22 +901,17 @@ small {
   border-color:
     color-mix(
       in srgb,
-      var(--stat-accent) 22%,
+      var(--stat-accent)
+      22%,
       #263a50
     ) !important;
 
   background:
     color-mix(
       in srgb,
-      var(--stat-accent) 11%,
+      var(--stat-accent)
+      11%,
       #17253a
-    ) !important;
-
-  color:
-    color-mix(
-      in srgb,
-      var(--stat-accent) 70%,
-      #ffffff
     ) !important;
 }
 
@@ -876,7 +921,8 @@ small {
   border-color:
     color-mix(
       in srgb,
-      var(--stat-accent) 56%,
+      var(--stat-accent)
+      56%,
       #2a4258
     ) !important;
 
@@ -885,15 +931,20 @@ small {
       135deg,
       color-mix(
         in srgb,
-        var(--stat-accent) 20%,
+        var(--stat-accent)
+        20%,
         #112036
-      ) 0%,
+      )
+      0%,
       color-mix(
         in srgb,
-        var(--stat-accent) 10%,
+        var(--stat-accent)
+        10%,
         #101b30
-      ) 58%,
-      #101a2f 100%
+      )
+      58%,
+      #101a2f
+      100%
     ) !important;
 }
 
@@ -924,7 +975,7 @@ small {
 
 
 /* =========================================================
-   REPORT CARD
+   REPORT CARDS
    ========================================================= */
 
 .admin-reports-card,
@@ -954,7 +1005,12 @@ small {
     0
     9px
     26px
-    rgba(15, 47, 70, 0.045);
+    rgba(
+      15,
+      47,
+      70,
+      0.045
+    );
 
   transition:
     transform 0.2s ease,
@@ -1007,7 +1063,8 @@ small {
   border-color:
     color-mix(
       in srgb,
-      var(--card-accent) 52%,
+      var(--card-accent)
+      52%,
       var(--reports-border)
     );
 
@@ -1017,14 +1074,15 @@ small {
     36px
     color-mix(
       in srgb,
-      var(--card-accent) 10%,
+      var(--card-accent)
+      10%,
       transparent
     );
 }
 
 
 /* =========================================================
-   CARD HEADERS
+   HEADERS
    ========================================================= */
 
 .admin-reports-card-head,
@@ -1051,9 +1109,17 @@ small {
   background:
     linear-gradient(
       110deg,
-      var(--card-soft) 0%,
-      rgba(255, 255, 255, 0.97) 50%,
-      #ffffff 100%
+      var(--card-soft)
+      0%,
+      rgba(
+        255,
+        255,
+        255,
+        0.97
+      )
+      50%,
+      #ffffff
+      100%
     );
 }
 
@@ -1076,46 +1142,14 @@ small {
       var(--card-accent),
       color-mix(
         in srgb,
-        var(--card-accent) 48%,
+        var(--card-accent)
+        48%,
         transparent
       ),
       transparent
     );
 }
 
-
-.admin-reports-card-head::after,
-.admin-reports-section-head::after {
-  content: "";
-
-  position: absolute;
-
-  top: -65px;
-  left: -35px;
-
-  width: 165px;
-  height: 140px;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      color-mix(
-        in srgb,
-        var(--card-accent) 10%,
-        transparent
-      ),
-      transparent 72%
-    );
-
-  pointer-events: none;
-}
-
-
-/* =========================================================
-   CARD TITLES
-   ========================================================= */
 
 .admin-reports-card-title,
 .admin-reports-section-title {
@@ -1151,7 +1185,8 @@ small {
     1px solid
     color-mix(
       in srgb,
-      var(--card-accent) 21%,
+      var(--card-accent)
+      21%,
       transparent
     );
 
@@ -1173,10 +1208,8 @@ small {
 }
 
 
-.admin-reports-card-title
-span,
-.admin-reports-section-title
-span {
+.admin-reports-card-title span,
+.admin-reports-section-title span {
   display: block;
 
   margin-bottom: 4px;
@@ -1188,6 +1221,7 @@ span {
     var(--card-accent) !important;
 
   font-size: 11px;
+
   font-weight: 900;
 
   letter-spacing: 1px;
@@ -1196,10 +1230,8 @@ span {
 }
 
 
-.admin-reports-card-title
-h2,
-.admin-reports-section-title
-h2 {
+.admin-reports-card-title h2,
+.admin-reports-section-title h2 {
   margin: 0;
 
   color:
@@ -1221,10 +1253,8 @@ h2 {
 }
 
 
-.admin-reports-card-title
-p,
-.admin-reports-section-title
-p {
+.admin-reports-card-title p,
+.admin-reports-section-title p {
   margin:
     5px
     0
@@ -1237,6 +1267,7 @@ p {
     var(--reports-muted) !important;
 
   font-size: 12px;
+
   font-weight: 700;
 
   line-height: 1.4;
@@ -1268,19 +1299,26 @@ p {
     1px solid
     color-mix(
       in srgb,
-      var(--card-accent) 30%,
+      var(--card-accent)
+      30%,
       var(--reports-border)
     );
 
   border-radius: 12px;
 
   background:
-    rgba(255, 255, 255, 0.9);
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
 
   color:
     var(--card-accent);
 
   font-size: 17px;
+
   font-weight: 900;
 }
 
@@ -1307,19 +1345,26 @@ p {
     1px solid
     color-mix(
       in srgb,
-      var(--card-accent) 30%,
+      var(--card-accent)
+      30%,
       var(--reports-border)
     );
 
   border-radius: 999px;
 
   background:
-    rgba(255, 255, 255, 0.9);
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
 
   color:
     var(--card-accent);
 
   font-size: 11px;
+
   font-weight: 900;
 
   white-space: nowrap;
@@ -1327,7 +1372,7 @@ p {
 
 
 /* =========================================================
-   REPORT LIST
+   TOP CARD LIST
    ========================================================= */
 
 .admin-report-list {
@@ -1380,22 +1425,20 @@ p {
   border-color:
     color-mix(
       in srgb,
-      var(--card-accent) 40%,
+      var(--card-accent)
+      40%,
       var(--reports-border)
     );
 
   background:
     color-mix(
       in srgb,
-      var(--card-soft) 70%,
+      var(--card-soft)
+      70%,
       var(--reports-card)
     );
 }
 
-
-/* =========================================================
-   REPORT LIST LEFT
-   ========================================================= */
 
 .admin-report-left {
   min-width: 0;
@@ -1425,7 +1468,8 @@ p {
     1px solid
     color-mix(
       in srgb,
-      var(--card-accent) 20%,
+      var(--card-accent)
+      20%,
       var(--reports-border)
     );
 
@@ -1458,6 +1502,7 @@ strong {
     var(--reports-heading) !important;
 
   font-size: 14px;
+
   font-weight: 900;
 
   text-overflow: ellipsis;
@@ -1479,13 +1524,10 @@ small {
     var(--reports-muted) !important;
 
   font-size: 11px;
+
   font-weight: 700;
 }
 
-
-/* =========================================================
-   REPORT LIST RIGHT
-   ========================================================= */
 
 .admin-report-right {
   flex-shrink: 0;
@@ -1511,6 +1553,7 @@ strong {
     var(--reports-heading) !important;
 
   font-size: 13px;
+
   font-weight: 900;
 
   white-space: nowrap;
@@ -1526,6 +1569,7 @@ small {
     var(--card-accent) !important;
 
   font-size: 11px;
+
   font-weight: 900;
 
   white-space: nowrap;
@@ -1551,6 +1595,7 @@ small {
   border-radius: 999px;
 
   font-size: 9px;
+
   font-weight: 900;
 
   white-space: nowrap;
@@ -1560,7 +1605,12 @@ small {
 .admin-report-status.healthy {
   border:
     1px solid
-    rgba(59, 148, 114, 0.23);
+    rgba(
+      59,
+      148,
+      114,
+      0.23
+    );
 
   background:
     var(--reports-green-soft);
@@ -1576,7 +1626,12 @@ small {
 .admin-report-status.low {
   border:
     1px solid
-    rgba(201, 80, 80, 0.24);
+    rgba(
+      201,
+      80,
+      80,
+      0.24
+    );
 
   background:
     var(--reports-red-soft);
@@ -1590,7 +1645,7 @@ small {
 
 
 /* =========================================================
-   LARGE SECTIONS
+   LARGE REPORT SECTIONS
    ========================================================= */
 
 .admin-reports-section {
@@ -1599,7 +1654,56 @@ small {
 
 
 /* =========================================================
-   TABLE WRAP
+   REVENUE REPORT
+   CONTROLLED HEIGHT
+   ========================================================= */
+
+.admin-reports-section--revenue {
+  display: flex;
+
+  flex-direction: column;
+
+  height: 580px;
+
+  min-height: 580px;
+
+  max-height: 580px;
+}
+
+
+.admin-reports-section--revenue
+.admin-reports-section-head {
+  flex:
+    0
+    0
+    auto;
+}
+
+
+/* =========================================================
+   PURCHASE REPORT
+   ========================================================= */
+
+.admin-reports-section--purchases {
+  display: flex;
+
+  flex-direction: column;
+
+  max-height: 560px;
+}
+
+
+.admin-reports-section--purchases
+.admin-reports-section-head {
+  flex:
+    0
+    0
+    auto;
+}
+
+
+/* =========================================================
+   TABLE WRAPPER
    ========================================================= */
 
 .admin-reports-table-wrap {
@@ -1610,7 +1714,7 @@ small {
   min-width: 0;
 
   padding:
-    8px
+    0
     10px
     14px;
 
@@ -1618,13 +1722,71 @@ small {
 
   scrollbar-width: none;
 
+  -ms-overflow-style: none;
+
   -webkit-overflow-scrolling: touch;
+}
+
+
+/* Revenue: scroll inside card */
+
+.admin-reports-section--revenue
+.admin-reports-table-wrap {
+  flex:
+    1
+    1
+    auto;
+
+  min-height: 0;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  padding-top: 0;
+
+  scrollbar-width: none;
+
+  -ms-overflow-style: none;
+}
+
+
+.admin-reports-section--revenue
+.admin-reports-table-wrap::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+
+  display: none;
+}
+
+
+/* Purchases: stop future giant tables */
+
+.admin-reports-section--purchases
+.admin-reports-table-wrap {
+  max-height: 440px;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  scrollbar-width: none;
+
+  -ms-overflow-style: none;
+}
+
+
+.admin-reports-section--purchases
+.admin-reports-table-wrap::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+
+  display: none;
 }
 
 
 /* =========================================================
    TABLE
-   REMOVE OLD 900PX MIN WIDTH
    ========================================================= */
 
 .admin-reports-table {
@@ -1645,18 +1807,45 @@ small {
 
 
 /* =========================================================
-   GENERAL TABLE CELLS
+   TABLE HEADER
    ========================================================= */
 
 .admin-reports-table
+thead {
+  position: static;
+}
+
+
+.admin-reports-table
+thead tr {
+  position: static;
+}
+
+
+.admin-reports-table
 th {
+  position: sticky;
+
+  top: 0;
+
+  z-index: 15;
+
   min-width: 0;
 
+  height: 44px;
+
   padding:
-    10px
+    0
     8px;
 
   overflow: hidden;
+
+  border-bottom:
+    1px solid
+    var(--reports-border-soft);
+
+  background:
+    var(--reports-card);
 
   color:
     var(--reports-muted) !important;
@@ -1665,6 +1854,7 @@ th {
     var(--reports-muted) !important;
 
   font-size: 10px;
+
   font-weight: 900;
 
   letter-spacing: 0.55px;
@@ -1676,8 +1866,26 @@ th {
   text-transform: uppercase;
 
   white-space: normal;
+
+  vertical-align: middle;
+
+  box-shadow:
+    0
+    6px
+    12px
+    -12px
+    rgba(
+      15,
+      47,
+      70,
+      0.5
+    );
 }
 
+
+/* =========================================================
+   TABLE CELLS
+   ========================================================= */
 
 .admin-reports-table
 td {
@@ -1707,6 +1915,7 @@ td {
     var(--reports-text) !important;
 
   font-size: 11px;
+
   font-weight: 700;
 
   line-height: 1.3;
@@ -1775,21 +1984,23 @@ td {
   border-color:
     color-mix(
       in srgb,
-      var(--card-accent) 25%,
+      var(--card-accent)
+      25%,
       var(--reports-border)
     );
 
   background:
     color-mix(
       in srgb,
-      var(--card-soft) 62%,
+      var(--card-soft)
+      62%,
       var(--reports-card)
     );
 }
 
 
 /* =========================================================
-   REVENUE TABLE COLUMN WIDTHS
+   REVENUE TABLE WIDTHS
    ========================================================= */
 
 .admin-reports-section--revenue
@@ -1835,7 +2046,7 @@ th:nth-child(6) {
 
 
 /* =========================================================
-   PURCHASE TABLE COLUMN WIDTHS
+   PURCHASE TABLE WIDTHS
    ========================================================= */
 
 .admin-reports-section--purchases
@@ -1904,7 +2115,8 @@ th:nth-child(6) {
     1px solid
     color-mix(
       in srgb,
-      var(--card-accent) 28%,
+      var(--card-accent)
+      28%,
       var(--reports-border)
     );
 
@@ -1920,6 +2132,7 @@ th:nth-child(6) {
     var(--card-accent) !important;
 
   font-size: 9px;
+
   font-weight: 900;
 
   text-overflow: ellipsis;
@@ -1950,7 +2163,12 @@ th:nth-child(6) {
 
   border:
     1px solid
-    rgba(216, 137, 36, 0.24);
+    rgba(
+      216,
+      137,
+      36,
+      0.24
+    );
 
   border-radius: 999px;
 
@@ -1964,6 +2182,7 @@ th:nth-child(6) {
     var(--reports-orange) !important;
 
   font-size: 9px;
+
   font-weight: 900;
 
   text-overflow: ellipsis;
@@ -1973,7 +2192,7 @@ th:nth-child(6) {
 
 
 /* =========================================================
-   EMPTY
+   EMPTY STATE
    ========================================================= */
 
 .admin-reports-empty {
@@ -1989,6 +2208,7 @@ th:nth-child(6) {
     var(--reports-muted) !important;
 
   font-size: 12px !important;
+
   font-weight: 700 !important;
 
   text-align: center !important;
@@ -2040,6 +2260,7 @@ strong {
     var(--reports-heading) !important;
 
   font-size: 17px;
+
   font-weight: 900;
 }
 
@@ -2053,6 +2274,7 @@ span {
     var(--reports-muted) !important;
 
   font-size: 12px;
+
   font-weight: 700;
 }
 
@@ -2073,17 +2295,22 @@ span {
     0
     7px
     22px
-    rgba(0, 0, 0, 0.12);
+    rgba(
+      0,
+      0,
+      0,
+      0.12
+    );
 }
 
 
 /* =========================================================
    DARK MAIN REPORT CARDS
-   STRONG GREEN
    ========================================================= */
 
 [data-admin-theme="dark"]
 .admin-reports-card,
+
 [data-admin-theme="dark"]
 .admin-reports-section {
   border-color:
@@ -2092,15 +2319,22 @@ span {
   background:
     linear-gradient(
       180deg,
-      #184d42 0%,
-      #123f38 100%
+      #184d42
+      0%,
+      #123f38
+      100%
     ) !important;
 
   box-shadow:
     0
     10px
     30px
-    rgba(0, 0, 0, 0.18) !important;
+    rgba(
+      0,
+      0,
+      0,
+      0.18
+    ) !important;
 }
 
 
@@ -2110,6 +2344,7 @@ span {
 
 [data-admin-theme="dark"]
 .admin-reports-card-head,
+
 [data-admin-theme="dark"]
 .admin-reports-section-head {
   border-bottom-color:
@@ -2120,11 +2355,15 @@ span {
       110deg,
       color-mix(
         in srgb,
-        var(--card-accent) 13%,
+        var(--card-accent)
+        13%,
         #1b5a4d
-      ) 0%,
-      #174c43 58%,
-      #14443d 100%
+      )
+      0%,
+      #174c43
+      58%,
+      #14443d
+      100%
     ) !important;
 }
 
@@ -2132,6 +2371,7 @@ span {
 [data-admin-theme="dark"]
 .admin-reports-card-title
 h2,
+
 [data-admin-theme="dark"]
 .admin-reports-section-title
 h2 {
@@ -2146,6 +2386,7 @@ h2 {
 [data-admin-theme="dark"]
 .admin-reports-card-title
 p,
+
 [data-admin-theme="dark"]
 .admin-reports-section-title
 p {
@@ -2159,19 +2400,22 @@ p {
 
 [data-admin-theme="dark"]
 .admin-reports-card-icon,
+
 [data-admin-theme="dark"]
 .admin-reports-section-icon {
   border-color:
     color-mix(
       in srgb,
-      var(--card-accent) 27%,
+      var(--card-accent)
+      27%,
       #36776a
     );
 
   background:
     color-mix(
       in srgb,
-      var(--card-accent) 13%,
+      var(--card-accent)
+      13%,
       #103c37
     );
 
@@ -2182,12 +2426,14 @@ p {
 
 [data-admin-theme="dark"]
 .admin-reports-card-count,
+
 [data-admin-theme="dark"]
 .admin-reports-record-pill {
   border-color:
     color-mix(
       in srgb,
-      var(--card-accent) 34%,
+      var(--card-accent)
+      34%,
       #36776a
     );
 
@@ -2200,7 +2446,7 @@ p {
 
 
 /* =========================================================
-   DARK REPORT LIST
+   DARK LIST
    ========================================================= */
 
 [data-admin-theme="dark"]
@@ -2218,14 +2464,16 @@ p {
   border-color:
     color-mix(
       in srgb,
-      var(--card-accent) 42%,
+      var(--card-accent)
+      42%,
       #39766c
     ) !important;
 
   background:
     color-mix(
       in srgb,
-      var(--card-accent) 7%,
+      var(--card-accent)
+      7%,
       #205d52
     ) !important;
 }
@@ -2236,14 +2484,16 @@ p {
   border-color:
     color-mix(
       in srgb,
-      var(--card-accent) 25%,
+      var(--card-accent)
+      25%,
       #39766c
     );
 
   background:
     color-mix(
       in srgb,
-      var(--card-accent) 13%,
+      var(--card-accent)
+      13%,
       #195249
     );
 
@@ -2255,6 +2505,7 @@ p {
 [data-admin-theme="dark"]
 .admin-report-left
 strong,
+
 [data-admin-theme="dark"]
 .admin-report-right
 strong {
@@ -2284,11 +2535,29 @@ small {
 [data-admin-theme="dark"]
 .admin-reports-table
 th {
+  border-bottom-color:
+    #39766c;
+
+  background:
+    #184d42;
+
   color:
     #b7c9c6 !important;
 
   -webkit-text-fill-color:
     #b7c9c6 !important;
+
+  box-shadow:
+    0
+    8px
+    15px
+    -13px
+    rgba(
+      0,
+      0,
+      0,
+      0.8
+    );
 }
 
 
@@ -2318,14 +2587,16 @@ td {
   border-color:
     color-mix(
       in srgb,
-      var(--card-accent) 32%,
+      var(--card-accent)
+      32%,
       #39766c
     );
 
   background:
     color-mix(
       in srgb,
-      var(--card-accent) 7%,
+      var(--card-accent)
+      7%,
       #205d52
     );
 }
@@ -2352,7 +2623,8 @@ td:last-child {
   border-color:
     color-mix(
       in srgb,
-      var(--card-accent) 30%,
+      var(--card-accent)
+      30%,
       #39766c
     );
 
@@ -2374,10 +2646,20 @@ td:last-child {
 [data-admin-theme="dark"]
 .admin-report-status.healthy {
   border-color:
-    rgba(141, 224, 186, 0.24);
+    rgba(
+      141,
+      224,
+      186,
+      0.24
+    );
 
   background:
-    rgba(64, 167, 125, 0.14);
+    rgba(
+      64,
+      167,
+      125,
+      0.14
+    );
 
   color:
     #8de0ba !important;
@@ -2390,10 +2672,20 @@ td:last-child {
 [data-admin-theme="dark"]
 .admin-report-status.low {
   border-color:
-    rgba(255, 156, 156, 0.24);
+    rgba(
+      255,
+      156,
+      156,
+      0.24
+    );
 
   background:
-    rgba(201, 80, 80, 0.15);
+    rgba(
+      201,
+      80,
+      80,
+      0.15
+    );
 
   color:
     #ff9c9c !important;
@@ -2406,10 +2698,20 @@ td:last-child {
 [data-admin-theme="dark"]
 .admin-report-purchase-status {
   border-color:
-    rgba(243, 187, 104, 0.25);
+    rgba(
+      243,
+      187,
+      104,
+      0.25
+    );
 
   background:
-    rgba(216, 137, 36, 0.15);
+    rgba(
+      216,
+      137,
+      36,
+      0.15
+    );
 
   color:
     #f3bb68 !important;
@@ -2420,7 +2722,7 @@ td:last-child {
 
 
 /* =========================================================
-   DESKTOP 125% → 150%
+   125% → 150%
    ========================================================= */
 
 @media (max-width: 1180px) {
@@ -2455,17 +2757,14 @@ td:last-child {
         minmax(0, 1fr)
       );
 
-    gap:
-      10px;
+    gap: 10px;
   }
 
 
   .admin-report-stat {
-    min-height:
-      118px;
+    min-height: 118px;
 
-    gap:
-      13px;
+    gap: 13px;
 
     padding:
       16px
@@ -2474,35 +2773,29 @@ td:last-child {
 
 
   .admin-report-stat-icon {
-    width:
-      50px;
+    width: 50px;
 
-    height:
-      50px;
+    height: 50px;
 
-    flex-basis:
-      50px;
+    flex-basis: 50px;
   }
 
 
   .admin-report-stat-copy
   > span {
-    font-size:
-      10px;
+    font-size: 10px;
   }
 
 
   .admin-report-stat-copy
   strong {
-    font-size:
-      29px;
+    font-size: 29px;
   }
 
 
   .admin-report-stat-copy
   small {
-    font-size:
-      11px;
+    font-size: 11px;
   }
 
 
@@ -2510,49 +2803,50 @@ td:last-child {
     grid-template-columns:
       1fr;
 
-    gap:
-      14px;
+    gap: 14px;
+  }
+
+
+  .admin-reports-section--revenue {
+    height: 540px;
+
+    min-height: 540px;
+
+    max-height: 540px;
   }
 
 
   .admin-reports-table-wrap {
-    width:
-      100%;
+    width: 100%;
 
-    max-width:
-      100%;
+    max-width: 100%;
 
-    min-width:
-      0;
+    min-width: 0;
 
-    overflow-x:
-      hidden;
+    overflow-x: hidden;
   }
 
 
   .admin-reports-table {
-    width:
-      100%;
+    width: 100%;
 
-    max-width:
-      100%;
+    max-width: 100%;
 
-    min-width:
-      0;
+    min-width: 0;
 
-    table-layout:
-      fixed;
+    table-layout: fixed;
   }
 
 
   .admin-reports-table
   th {
+    height: 40px;
+
     padding:
-      8px
+      0
       5px;
 
-    font-size:
-      8px;
+    font-size: 8px;
 
     letter-spacing:
       0.35px;
@@ -2565,22 +2859,19 @@ td:last-child {
       10px
       5px;
 
-    font-size:
-      9px;
+    font-size: 9px;
   }
 
 
   .admin-report-record-code,
   .admin-report-purchase-status,
   .admin-report-status {
-    font-size:
-      8px;
+    font-size: 8px;
 
     padding:
       5px
       4px;
   }
-
 }
 
 
@@ -2603,17 +2894,14 @@ and
         minmax(0, 1fr)
       );
 
-    gap:
-      8px;
+    gap: 8px;
   }
 
 
   .admin-report-stat {
-    min-height:
-      110px;
+    min-height: 110px;
 
-    gap:
-      9px;
+    gap: 9px;
 
     padding:
       13px
@@ -2622,42 +2910,35 @@ and
 
 
   .admin-report-stat-icon {
-    width:
-      44px;
+    width: 44px;
 
-    height:
-      44px;
+    height: 44px;
 
-    flex-basis:
-      44px;
+    flex-basis: 44px;
   }
 
 
   .admin-report-stat-copy
   > span {
-    font-size:
-      8px;
+    font-size: 8px;
   }
 
 
   .admin-report-stat-copy
   strong {
-    font-size:
-      24px;
+    font-size: 24px;
   }
 
 
   .admin-report-stat-copy
   small {
-    font-size:
-      9px;
+    font-size: 9px;
   }
 
 
   .admin-reports-card-head,
   .admin-reports-section-head {
-    min-height:
-      84px;
+    min-height: 84px;
 
     padding:
       13px
@@ -2667,14 +2948,11 @@ and
 
   .admin-reports-card-icon,
   .admin-reports-section-icon {
-    width:
-      44px;
+    width: 44px;
 
-    height:
-      44px;
+    height: 44px;
 
-    flex-basis:
-      44px;
+    flex-basis: 44px;
   }
 
 
@@ -2682,8 +2960,7 @@ and
   h2,
   .admin-reports-section-title
   h2 {
-    font-size:
-      19px;
+    font-size: 19px;
   }
 
 
@@ -2691,8 +2968,16 @@ and
   p,
   .admin-reports-section-title
   p {
-    font-size:
-      10px;
+    font-size: 10px;
+  }
+
+
+  .admin-reports-section--revenue {
+    height: 500px;
+
+    min-height: 500px;
+
+    max-height: 500px;
   }
 
 
@@ -2708,7 +2993,6 @@ and
     font-size:
       8.5px;
   }
-
 }
 
 
@@ -2745,8 +3029,7 @@ and
 
 
   .admin-reports-print-button {
-    width:
-      100%;
+    width: 100%;
   }
 
 
@@ -2757,14 +3040,12 @@ and
         minmax(0, 1fr)
       );
 
-    gap:
-      11px;
+    gap: 11px;
   }
 
 
   .admin-report-stat {
-    min-height:
-      145px;
+    min-height: 145px;
 
     flex-direction:
       column;
@@ -2775,20 +3056,16 @@ and
     justify-content:
       center;
 
-    gap:
-      10px;
+    gap: 10px;
 
-    padding:
-      16px;
+    padding: 16px;
   }
 
 
   .admin-report-stat-icon {
-    width:
-      50px;
+    width: 50px;
 
-    height:
-      50px;
+    height: 50px;
 
     flex:
       0
@@ -2799,8 +3076,7 @@ and
 
   .admin-report-stat-copy
   strong {
-    font-size:
-      26px;
+    font-size: 26px;
   }
 
 
@@ -2812,8 +3088,7 @@ and
 
   .admin-reports-card-head,
   .admin-reports-section-head {
-    min-height:
-      90px;
+    min-height: 90px;
 
     padding:
       17px
@@ -2823,14 +3098,11 @@ and
 
   .admin-reports-card-icon,
   .admin-reports-section-icon {
-    width:
-      46px;
+    width: 46px;
 
-    height:
-      46px;
+    height: 46px;
 
-    flex-basis:
-      46px;
+    flex-basis: 46px;
   }
 
 
@@ -2838,8 +3110,7 @@ and
   h2,
   .admin-reports-section-title
   h2 {
-    font-size:
-      21px;
+    font-size: 21px;
   }
 
 
@@ -2852,8 +3123,37 @@ and
   }
 
 
+  .admin-reports-section--revenue {
+    height: 560px;
+
+    min-height: 560px;
+
+    max-height: 560px;
+  }
+
+
   .admin-reports-table-wrap {
     overflow-x:
+      auto;
+  }
+
+
+  .admin-reports-section--revenue
+  .admin-reports-table-wrap {
+    overflow-x:
+      auto;
+
+    overflow-y:
+      auto;
+  }
+
+
+  .admin-reports-section--purchases
+  .admin-reports-table-wrap {
+    overflow-x:
+      auto;
+
+    overflow-y:
       auto;
   }
 
@@ -2871,7 +3171,6 @@ and
     table-layout:
       auto;
   }
-
 }
 
 
@@ -2888,8 +3187,7 @@ and
 
 
   .admin-report-stat {
-    min-height:
-      112px;
+    min-height: 112px;
 
     flex-direction:
       row;
@@ -2928,6 +3226,14 @@ and
       flex-start;
   }
 
+
+  .admin-reports-section--revenue {
+    height: 520px;
+
+    min-height: 520px;
+
+    max-height: 520px;
+  }
 }
 
 
@@ -2949,5 +3255,4 @@ and
     transition:
       none;
   }
-
 }

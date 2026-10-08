@@ -6,29 +6,14 @@ import ssl
 import time
 
 from datetime import datetime
-from urllib.error import (
-    HTTPError,
-    URLError,
-)
-from urllib.parse import (
-    parse_qsl,
-    urlencode,
-    urljoin,
-    urlparse,
-    urlunparse,
-)
-from urllib.request import (
-    Request,
-    urlopen,
-)
+from urllib.error import HTTPError, URLError
+from urllib.parse import parse_qsl, urlencode, urljoin, urlparse, urlunparse
+from urllib.request import Request, urlopen
 
 from dotenv import load_dotenv
 from sqlalchemy.orm import Session
 
-from inventory_models import (
-    Drug,
-    InventoryItem,
-)
+from inventory_models import Drug, InventoryItem
 
 
 load_dotenv()
@@ -39,50 +24,25 @@ load_dotenv()
 # ============================================================
 
 GOOGLE_REQUEST_TIMEOUT = 90
-
 GOOGLE_REQUEST_RETRIES = 3
-
 GOOGLE_MAX_REDIRECTS = 8
-
-GOOGLE_RETRY_DELAYS = (
-    1.5,
-    3.0,
-    5.0,
-)
-
-GOOGLE_DNS_IPS = (
-    "8.8.8.8",
-    "8.8.4.4",
-)
+GOOGLE_RETRY_DELAYS = (1.5, 3.0, 5.0)
+GOOGLE_DNS_IPS = ("8.8.8.8", "8.8.4.4")
 
 
 # ============================================================
 # DATETIME
 # ============================================================
 
-def parse_datetime(
-    value,
-):
-
+def parse_datetime(value):
     if not value:
         return None
 
     try:
-
         return datetime.fromisoformat(
-            str(
-                value
-            ).replace(
-                "Z",
-                "+00:00",
-            )
+            str(value).replace("Z", "+00:00")
         )
-
-    except (
-        ValueError,
-        TypeError,
-    ):
-
+    except (ValueError, TypeError):
         return None
 
 
@@ -91,55 +51,37 @@ def parse_datetime(
 # ============================================================
 
 def get_google_settings():
-
-    base_url = os.getenv(
-        "GOOGLE_APPS_SCRIPT_URL"
-    )
-
-    sync_key = os.getenv(
-        "GOOGLE_APPS_SCRIPT_SYNC_KEY"
-    )
+    base_url = os.getenv("GOOGLE_APPS_SCRIPT_URL")
+    sync_key = os.getenv("GOOGLE_APPS_SCRIPT_SYNC_KEY")
 
     if not base_url:
-
         raise RuntimeError(
             "GOOGLE_APPS_SCRIPT_URL is missing from .env"
         )
 
     if not sync_key:
-
         raise RuntimeError(
             "GOOGLE_APPS_SCRIPT_SYNC_KEY is missing from .env"
         )
 
-    base_url = str(
-        base_url
-    ).strip()
-
-    sync_key = str(
-        sync_key
-    ).strip()
+    base_url = str(base_url).strip()
+    sync_key = str(sync_key).strip()
 
     if not base_url:
-
         raise RuntimeError(
             "GOOGLE_APPS_SCRIPT_URL is empty in .env"
         )
 
     if not sync_key:
-
         raise RuntimeError(
             "GOOGLE_APPS_SCRIPT_SYNC_KEY is empty in .env"
         )
 
-    return (
-        base_url,
-        sync_key,
-    )
+    return base_url, sync_key
 
 
 # ============================================================
-# BUILD GOOGLE ACTION URL
+# GOOGLE ACTION URLS
 # ============================================================
 
 def build_google_action_url(
@@ -147,24 +89,14 @@ def build_google_action_url(
     sync_key,
     action,
 ):
+    parsed = urlparse(str(base_url).strip())
 
-    parsed = urlparse(
-        str(
-            base_url
-        ).strip()
-    )
-
-    if (
-        parsed.scheme.lower()
-        != "https"
-    ):
-
+    if parsed.scheme.lower() != "https":
         raise RuntimeError(
             "Google Apps Script URL must use HTTPS."
         )
 
     if not parsed.hostname:
-
         raise RuntimeError(
             "Google Apps Script URL is invalid."
         )
@@ -178,15 +110,8 @@ def build_google_action_url(
 
     query.update(
         {
-            "action":
-                str(
-                    action
-                ).strip(),
-
-            "key":
-                str(
-                    sync_key
-                ).strip(),
+            "action": str(action).strip(),
+            "key": str(sync_key).strip(),
         }
     )
 
@@ -196,39 +121,16 @@ def build_google_action_url(
             parsed.netloc,
             parsed.path,
             parsed.params,
-            urlencode(
-                query
-            ),
+            urlencode(query),
             parsed.fragment,
         )
     )
 
 
-# ============================================================
-# INVENTORY URL
-# ============================================================
-
 def build_google_inventory_url(
     base_url,
     sync_key,
 ):
-
-    return build_google_action_url(
-        base_url,
-        sync_key,
-        "dashboard-inventory",
-    )
-
-
-# ============================================================
-# ADMIN DASHBOARD URL
-# ============================================================
-
-def build_google_admin_dashboard_url(
-    base_url,
-    sync_key,
-):
-
     return build_google_action_url(
         base_url,
         sync_key,
@@ -236,108 +138,105 @@ def build_google_admin_dashboard_url(
     )
 
 
+def build_google_admin_dashboard_url(
+    base_url,
+    sync_key,
+):
+    return build_google_action_url(
+        base_url,
+        sync_key,
+        "admin-dashboard",
+    )
+
+
+def build_google_admin_pos_products_url(
+    base_url,
+    sync_key,
+):
+    return build_google_action_url(
+        base_url,
+        sync_key,
+        "admin-pos-products",
+    )
+
+
+def build_google_admin_pos_sales_url(
+    base_url,
+    sync_key,
+):
+    return build_google_action_url(
+        base_url,
+        sync_key,
+        "admin-pos-sales",
+    )
+
+
+def build_google_admin_pos_checkout_url(
+    base_url,
+    sync_key,
+):
+    return build_google_action_url(
+        base_url,
+        sync_key,
+        "admin-pos-checkout",
+    )
+
+
 # ============================================================
-# VALIDATE GOOGLE PAYLOAD
+# GOOGLE PAYLOAD HELPERS
 # ============================================================
 
 def validate_google_payload(
     payload,
     context="Google request",
 ):
-
-    if not isinstance(
-        payload,
-        dict,
-    ):
-
+    if not isinstance(payload, dict):
         raise RuntimeError(
             f"{context} returned an unexpected response."
         )
 
-    if not payload.get(
-        "ok"
-    ):
-
+    if not payload.get("ok"):
         error_message = (
-            payload.get(
-                "error"
-            )
-            or
-            payload.get(
-                "detail"
-            )
-            or
-            f"{context} failed."
+            payload.get("error")
+            or payload.get("detail")
+            or f"{context} failed."
         )
 
-        raise RuntimeError(
-            str(
-                error_message
-            )
-        )
+        raise RuntimeError(str(error_message))
 
     return payload
 
-
-# ============================================================
-# JSON DECODER
-# ============================================================
 
 def decode_google_json(
     raw,
     context,
 ):
-
-    if isinstance(
-        raw,
-        bytes,
-    ):
-
+    if isinstance(raw, bytes):
         try:
-
-            text = raw.decode(
-                "utf-8"
-            )
-
+            text = raw.decode("utf-8")
         except UnicodeDecodeError:
-
             text = raw.decode(
                 "utf-8",
                 errors="replace",
             )
-
     else:
-
-        text = str(
-            raw
-        )
+        text = str(raw)
 
     text = text.strip()
 
     if not text:
-
         raise RuntimeError(
             f"{context} returned an empty response."
         )
 
     try:
-
-        return json.loads(
-            text
-        )
+        return json.loads(text)
 
     except json.JSONDecodeError as exc:
-
         preview = (
             text[:300]
-            .replace(
-                "\n",
-                " "
-            )
-            .replace(
-                "\r",
-                " "
-            )
+            .replace("\n", " ")
+            .replace("\r", " ")
         )
 
         raise RuntimeError(
@@ -346,90 +245,106 @@ def decode_google_json(
         ) from exc
 
 
+def encode_google_json(payload):
+    if payload is None:
+        return None
+
+    return json.dumps(payload).encode("utf-8")
+
+
+def should_fail_fast_google_error(message):
+    lower_message = str(message).lower()
+
+    return (
+        "unauthorized" in lower_message
+        or "sync key" in lower_message
+        or "not configured" in lower_message
+    )
+
+
 # ============================================================
-# PRIMARY HTTPS FETCH
+# PRIMARY GOOGLE REQUEST
 # ============================================================
 
 def fetch_google_primary(
     url,
+    method="GET",
+    payload=None,
 ):
+    method = str(
+        method or "GET"
+    ).upper()
+
+    body = (
+        encode_google_json(payload)
+        if method != "GET"
+        else None
+    )
+
+    headers = {
+        "Accept": "application/json",
+        "Accept-Encoding": "identity",
+        "User-Agent": "DrEvansPharmacy/1.0",
+        "Connection": "close",
+    }
+
+    if body is not None:
+        headers[
+            "Content-Type"
+        ] = (
+            "application/json; charset=utf-8"
+        )
 
     request = Request(
         url,
-        method="GET",
-        headers={
-            "Accept":
-                "application/json",
-
-            "Accept-Encoding":
-                "identity",
-
-            "User-Agent":
-                "DrEvansPharmacy/1.0",
-
-            "Connection":
-                "close",
-        },
+        data=body,
+        method=method,
+        headers=headers,
     )
 
     try:
-
         with urlopen(
             request,
-            timeout=
-                GOOGLE_REQUEST_TIMEOUT,
+            timeout=GOOGLE_REQUEST_TIMEOUT,
         ) as response:
+            raw = response.read()
 
-            raw = (
-                response
-                .read()
-            )
-
-            return (
-                decode_google_json(
-                    raw,
-                    "Google Apps Script",
-                )
-            )
+        return decode_google_json(
+            raw,
+            "Google Apps Script",
+        )
 
     except HTTPError as exc:
-
         try:
-
-            body = (
+            response_body = (
                 exc.read()
                 .decode(
                     "utf-8",
                     errors="replace",
                 )
             )
-
         except Exception:
-
-            body = ""
+            response_body = ""
 
         raise RuntimeError(
             "Google Apps Script returned "
             f"HTTP {exc.code}. "
-            f"{body[:300]}"
+            f"{response_body[:300]}"
         ) from exc
 
     except socket.timeout as exc:
-
         raise RuntimeError(
             "Google Apps Script request timed out "
             f"after {GOOGLE_REQUEST_TIMEOUT} seconds."
         ) from exc
 
     except TimeoutError as exc:
-
         raise RuntimeError(
             "Google Apps Script request timed out "
             f"after {GOOGLE_REQUEST_TIMEOUT} seconds."
         ) from exc
 
     except URLError as exc:
-
         reason = getattr(
             exc,
             "reason",
@@ -438,9 +353,7 @@ def fetch_google_primary(
 
         raise RuntimeError(
             "Google Apps Script connection failed: "
-            + str(
-                reason
-            )
+            + str(reason)
         ) from exc
 
 
@@ -448,10 +361,7 @@ def fetch_google_primary(
 # NORMAL IPV4 RESOLUTION
 # ============================================================
 
-def resolve_ipv4_normal(
-    hostname,
-):
-
+def resolve_ipv4_normal(hostname):
     addresses = socket.getaddrinfo(
         hostname,
         443,
@@ -462,14 +372,10 @@ def resolve_ipv4_normal(
     results = []
 
     for item in addresses:
-
         ip = item[4][0]
 
         if ip not in results:
-
-            results.append(
-                ip
-            )
+            results.append(ip)
 
     return results
 
@@ -478,21 +384,15 @@ def resolve_ipv4_normal(
 # GOOGLE DNS-OVER-HTTPS FALLBACK
 # ============================================================
 
-def resolve_ipv4_google_doh(
-    hostname,
-):
-
+def resolve_ipv4_google_doh(hostname):
     ssl_context = (
         ssl.create_default_context()
     )
 
     query = urlencode(
         {
-            "name":
-                hostname,
-
-            "type":
-                "A",
+            "name": hostname,
+            "type": "A",
         }
     )
 
@@ -504,12 +404,10 @@ def resolve_ipv4_google_doh(
     last_error = None
 
     for dns_ip in GOOGLE_DNS_IPS:
-
         raw_socket = None
         secure_socket = None
 
         try:
-
             raw_socket = (
                 socket.create_connection(
                     (
@@ -568,7 +466,6 @@ def resolve_ipv4_google_doh(
             ]
 
             if status != 200:
-
                 raise RuntimeError(
                     "Google DNS fallback returned "
                     f"HTTP {status}."
@@ -587,14 +484,12 @@ def resolve_ipv4_google_doh(
                 "Answer",
                 [],
             ):
-
                 if (
                     answer.get(
                         "type"
                     )
                     != 1
                 ):
-
                     continue
 
                 ip = str(
@@ -605,53 +500,38 @@ def resolve_ipv4_google_doh(
                 ).strip()
 
                 try:
-
                     socket.inet_aton(
                         ip
                     )
 
                 except OSError:
-
                     continue
 
                 if ip not in results:
-
                     results.append(
                         ip
                     )
 
             if results:
-
                 return results
 
         except Exception as exc:
-
             last_error = exc
 
         finally:
-
             if secure_socket:
-
                 try:
-
                     secure_socket.close()
-
                 except Exception:
-
                     pass
 
             elif raw_socket:
-
                 try:
-
                     raw_socket.close()
-
                 except Exception:
-
                     pass
 
     if last_error:
-
         raise RuntimeError(
             "Google DNS fallback failed: "
             + str(
@@ -668,12 +548,8 @@ def resolve_ipv4_google_doh(
 # RESOLVE HOST
 # ============================================================
 
-def resolve_ipv4(
-    hostname,
-):
-
+def resolve_ipv4(hostname):
     try:
-
         results = (
             resolve_ipv4_normal(
                 hostname
@@ -681,11 +557,9 @@ def resolve_ipv4(
         )
 
         if results:
-
             return results
 
     except Exception:
-
         pass
 
     return (
@@ -702,24 +576,19 @@ def resolve_ipv4(
 def decode_chunked_body_(
     body,
 ):
-
     output = bytearray()
-
     position = 0
-
     body_length = len(
         body
     )
 
     while position < body_length:
-
         line_end = body.find(
             b"\r\n",
             position,
         )
 
         if line_end == -1:
-
             raise RuntimeError(
                 "Invalid chunked HTTP response."
             )
@@ -737,14 +606,12 @@ def decode_chunked_body_(
         )
 
         try:
-
             chunk_size = int(
                 size_line,
                 16,
             )
 
         except ValueError as exc:
-
             raise RuntimeError(
                 "Invalid chunk size in HTTP response."
             ) from exc
@@ -754,7 +621,6 @@ def decode_chunked_body_(
         )
 
         if chunk_size == 0:
-
             break
 
         chunk_end = (
@@ -763,7 +629,6 @@ def decode_chunked_body_(
         )
 
         if chunk_end > body_length:
-
             raise RuntimeError(
                 "Incomplete chunked HTTP response."
             )
@@ -792,13 +657,10 @@ def decode_chunked_body_(
 def receive_http_response_(
     secure_socket,
 ):
-
     chunks = []
 
     while True:
-
         try:
-
             chunk = (
                 secure_socket.recv(
                     65536
@@ -806,14 +668,12 @@ def receive_http_response_(
             )
 
         except socket.timeout as exc:
-
             raise RuntimeError(
                 "Fallback HTTP request timed out "
                 f"after {GOOGLE_REQUEST_TIMEOUT} seconds."
             ) from exc
 
         if not chunk:
-
             break
 
         chunks.append(
@@ -830,7 +690,6 @@ def receive_http_response_(
         b"\r\n\r\n"
         not in response
     ):
-
         raise RuntimeError(
             "Google fallback returned an invalid HTTP response."
         )
@@ -869,19 +728,16 @@ def receive_http_response_(
     if len(
         status_parts
     ) < 2:
-
         raise RuntimeError(
             "Google fallback returned an invalid HTTP status."
         )
 
     try:
-
         status = int(
             status_parts[1]
         )
 
     except ValueError as exc:
-
         raise RuntimeError(
             "Google fallback returned an invalid HTTP status code."
         ) from exc
@@ -889,9 +745,7 @@ def receive_http_response_(
     headers = {}
 
     for line in header_lines[1:]:
-
         if ":" not in line:
-
             continue
 
         name, value = (
@@ -917,7 +771,6 @@ def receive_http_response_(
         "chunked"
         in transfer_encoding
     ):
-
         body = (
             decode_chunked_body_(
                 body
@@ -936,15 +789,12 @@ def receive_http_response_(
         "gzip"
         in content_encoding
     ):
-
         try:
-
             body = gzip.decompress(
                 body
             )
 
         except OSError as exc:
-
             raise RuntimeError(
                 "Unable to decompress Google response."
             ) from exc
@@ -967,8 +817,9 @@ def receive_http_response_(
 
 def direct_https_request(
     url,
+    method="GET",
+    payload=None,
 ):
-
     parsed = urlparse(
         url
     )
@@ -977,7 +828,6 @@ def direct_https_request(
         parsed.scheme.lower()
         != "https"
     ):
-
         raise RuntimeError(
             "Fallback request requires HTTPS."
         )
@@ -987,7 +837,6 @@ def direct_https_request(
     )
 
     if not hostname:
-
         raise RuntimeError(
             "Fallback request received an invalid hostname."
         )
@@ -1003,14 +852,27 @@ def direct_https_request(
     )
 
     if parsed.query:
-
         path += (
             "?"
             + parsed.query
         )
 
-    addresses = resolve_ipv4(
-        hostname
+    method = str(
+        method or "GET"
+    ).upper()
+
+    body = (
+        encode_google_json(
+            payload
+        )
+        if method != "GET"
+        else None
+    )
+
+    addresses = (
+        resolve_ipv4(
+            hostname
+        )
     )
 
     ssl_context = (
@@ -1020,12 +882,10 @@ def direct_https_request(
     last_error = None
 
     for ip in addresses:
-
         raw_socket = None
         secure_socket = None
 
         try:
-
             raw_socket = (
                 socket.create_connection(
                     (
@@ -1053,21 +913,40 @@ def direct_https_request(
                 GOOGLE_REQUEST_TIMEOUT
             )
 
-            request = (
-                f"GET {path} HTTP/1.1\r\n"
-                f"Host: {hostname}\r\n"
-                "Accept: application/json\r\n"
-                "Accept-Encoding: identity\r\n"
-                "User-Agent: DrEvansPharmacy/1.0\r\n"
-                "Connection: close\r\n"
-                "\r\n"
+            header_lines = [
+                f"{method} {path} HTTP/1.1",
+                f"Host: {hostname}",
+                "Accept: application/json",
+                "Accept-Encoding: identity",
+                "User-Agent: DrEvansPharmacy/1.0",
+                "Connection: close",
+            ]
+
+            if body is not None:
+                header_lines.extend(
+                    [
+                        "Content-Type: application/json; charset=utf-8",
+                        f"Content-Length: {len(body)}",
+                    ]
+                )
+
+            request_head = (
+                "\r\n".join(
+                    header_lines
+                )
+                + "\r\n\r\n"
+            ).encode(
+                "utf-8"
             )
 
             secure_socket.sendall(
-                request.encode(
-                    "utf-8"
-                )
+                request_head
             )
+
+            if body is not None:
+                secure_socket.sendall(
+                    body
+                )
 
             return (
                 receive_http_response_(
@@ -1076,33 +955,22 @@ def direct_https_request(
             )
 
         except Exception as exc:
-
             last_error = exc
 
         finally:
-
             if secure_socket:
-
                 try:
-
                     secure_socket.close()
-
                 except Exception:
-
                     pass
 
             elif raw_socket:
-
                 try:
-
                     raw_socket.close()
-
                 except Exception:
-
                     pass
 
     if last_error:
-
         raise RuntimeError(
             "Direct Google connection failed: "
             + str(
@@ -1121,18 +989,28 @@ def direct_https_request(
 
 def fetch_google_fallback(
     url,
+    method="GET",
+    payload=None,
 ):
-
     current_url = url
+
+    current_method = str(
+        method or "GET"
+    ).upper()
+
+    current_payload = payload
 
     for _ in range(
         GOOGLE_MAX_REDIRECTS
         + 1
     ):
-
         result = (
             direct_https_request(
-                current_url
+                current_url,
+                method=
+                    current_method,
+                payload=
+                    current_payload,
             )
         )
 
@@ -1155,7 +1033,6 @@ def fetch_google_fallback(
             307,
             308,
         }:
-
             location = (
                 headers.get(
                     "location"
@@ -1163,7 +1040,6 @@ def fetch_google_fallback(
             )
 
             if not location:
-
                 raise RuntimeError(
                     "Google redirect did not contain a destination."
                 )
@@ -1175,6 +1051,14 @@ def fetch_google_fallback(
                 )
             )
 
+            if status in {
+                301,
+                302,
+                303,
+            }:
+                current_method = "GET"
+                current_payload = None
+
             continue
 
         if (
@@ -1182,7 +1066,6 @@ def fetch_google_fallback(
             or
             status >= 300
         ):
-
             preview = (
                 body[:300]
                 .decode(
@@ -1216,51 +1099,41 @@ def fetch_google_fallback(
 def fetch_google_json(
     url,
     context,
+    method="GET",
+    payload=None,
 ):
-
     primary_errors = []
 
     for attempt in range(
         1,
         GOOGLE_REQUEST_RETRIES + 1,
     ):
-
         try:
-
-            payload = (
+            response_payload = (
                 fetch_google_primary(
-                    url
+                    url,
+                    method=method,
+                    payload=payload,
                 )
             )
 
             return (
                 validate_google_payload(
-                    payload,
+                    response_payload,
                     context,
                 )
             )
 
         except RuntimeError as exc:
-
             message = str(
                 exc
             )
 
-            lower_message = (
-                message.lower()
-            )
-
             if (
-                "unauthorized"
-                in lower_message
-                or
-                "sync key"
-                in lower_message
-                or
-                "not configured"
-                in lower_message
+                should_fail_fast_google_error(
+                    message
+                )
             ):
-
                 raise
 
             primary_errors.append(
@@ -1268,7 +1141,6 @@ def fetch_google_json(
             )
 
         except Exception as exc:
-
             primary_errors.append(
                 str(
                     exc
@@ -1280,7 +1152,6 @@ def fetch_google_json(
             <
             GOOGLE_REQUEST_RETRIES
         ):
-
             delay_index = min(
                 attempt - 1,
                 len(
@@ -1300,43 +1171,32 @@ def fetch_google_json(
         1,
         GOOGLE_REQUEST_RETRIES + 1,
     ):
-
         try:
-
-            payload = (
+            response_payload = (
                 fetch_google_fallback(
-                    url
+                    url,
+                    method=method,
+                    payload=payload,
                 )
             )
 
             return (
                 validate_google_payload(
-                    payload,
+                    response_payload,
                     context,
                 )
             )
 
         except RuntimeError as exc:
-
             message = str(
                 exc
             )
 
-            lower_message = (
-                message.lower()
-            )
-
             if (
-                "unauthorized"
-                in lower_message
-                or
-                "sync key"
-                in lower_message
-                or
-                "not configured"
-                in lower_message
+                should_fail_fast_google_error(
+                    message
+                )
             ):
-
                 raise
 
             fallback_errors.append(
@@ -1344,7 +1204,6 @@ def fetch_google_json(
             )
 
         except Exception as exc:
-
             fallback_errors.append(
                 str(
                     exc
@@ -1356,7 +1215,6 @@ def fetch_google_json(
             <
             GOOGLE_REQUEST_RETRIES
         ):
-
             delay_index = min(
                 attempt - 1,
                 len(
@@ -1392,11 +1250,67 @@ def fetch_google_json(
 
 
 # ============================================================
+# GENERIC GOOGLE ACTION HELPERS
+# ============================================================
+
+def get_google_action_data(
+    action,
+    context,
+):
+    base_url, sync_key = (
+        get_google_settings()
+    )
+
+    url = (
+        build_google_action_url(
+            base_url,
+            sync_key,
+            action,
+        )
+    )
+
+    return (
+        fetch_google_json(
+            url,
+            context,
+            method="GET",
+        )
+    )
+
+
+def post_google_action_data(
+    action,
+    payload,
+    context,
+):
+    base_url, sync_key = (
+        get_google_settings()
+    )
+
+    url = (
+        build_google_action_url(
+            base_url,
+            sync_key,
+            action,
+        )
+    )
+
+    return (
+        fetch_google_json(
+            url,
+            context,
+            method="POST",
+            payload=
+                payload or {},
+        )
+    )
+
+
+# ============================================================
 # GET GOOGLE INVENTORY
 # ============================================================
 
 def get_google_inventory_data():
-
     base_url, sync_key = (
         get_google_settings()
     )
@@ -1421,7 +1335,6 @@ def get_google_inventory_data():
 # ============================================================
 
 def get_google_admin_dashboard_data():
-
     base_url, sync_key = (
         get_google_settings()
     )
@@ -1442,13 +1355,96 @@ def get_google_admin_dashboard_data():
 
 
 # ============================================================
+# GOOGLE ADMIN POS PRODUCTS
+# ============================================================
+
+def get_google_admin_pos_products():
+    base_url, sync_key = (
+        get_google_settings()
+    )
+
+    url = (
+        build_google_admin_pos_products_url(
+            base_url,
+            sync_key,
+        )
+    )
+
+    return (
+        fetch_google_json(
+            url,
+            "Google admin POS products",
+        )
+    )
+
+
+# ============================================================
+# GOOGLE ADMIN POS SALES
+# ============================================================
+
+def get_google_admin_pos_sales():
+    base_url, sync_key = (
+        get_google_settings()
+    )
+
+    url = (
+        build_google_admin_pos_sales_url(
+            base_url,
+            sync_key,
+        )
+    )
+
+    return (
+        fetch_google_json(
+            url,
+            "Google admin POS sales",
+        )
+    )
+
+
+# ============================================================
+# GOOGLE ADMIN POS CHECKOUT
+# ============================================================
+
+def create_google_admin_pos_checkout(
+    payload,
+):
+    if not isinstance(
+        payload,
+        dict,
+    ):
+        raise RuntimeError(
+            "POS checkout payload must be an object."
+        )
+
+    base_url, sync_key = (
+        get_google_settings()
+    )
+
+    url = (
+        build_google_admin_pos_checkout_url(
+            base_url,
+            sync_key,
+        )
+    )
+
+    return (
+        fetch_google_json(
+            url,
+            "Google admin POS checkout",
+            method="POST",
+            payload=payload,
+        )
+    )
+
+
+# ============================================================
 # DATABASE INVENTORY SYNC
 # ============================================================
 
 def sync_inventory_from_google(
     db: Session,
 ):
-
     payload = (
         get_google_inventory_data()
     )
@@ -1467,33 +1463,27 @@ def sync_inventory_from_google(
         drugs,
         list,
     ):
-
         drugs = []
 
     if not isinstance(
         inventory,
         list,
     ):
-
         inventory = []
 
     drug_count = 0
-
     inventory_count = 0
 
     try:
-
         # ====================================================
         # DRUGS
         # ====================================================
 
         for item in drugs:
-
             if not isinstance(
                 item,
                 dict,
             ):
-
                 continue
 
             drug_id = str(
@@ -1504,7 +1494,6 @@ def sync_inventory_from_google(
             ).strip()
 
             if not drug_id:
-
                 continue
 
             drug = (
@@ -1519,7 +1508,6 @@ def sync_inventory_from_google(
             )
 
             if drug is None:
-
                 drug = Drug(
                     drug_id=
                         drug_id
@@ -1594,12 +1582,10 @@ def sync_inventory_from_google(
         # ====================================================
 
         for item in inventory:
-
             if not isinstance(
                 item,
                 dict,
             ):
-
                 continue
 
             inventory_id = str(
@@ -1610,7 +1596,6 @@ def sync_inventory_from_google(
             ).strip()
 
             if not inventory_id:
-
                 continue
 
             inventory_item = (
@@ -1625,7 +1610,6 @@ def sync_inventory_from_google(
             )
 
             if inventory_item is None:
-
                 inventory_item = (
                     InventoryItem(
                         inventory_id=
@@ -1691,7 +1675,6 @@ def sync_inventory_from_google(
         db.commit()
 
         return {
-
             "ok":
                 True,
 
@@ -1709,7 +1692,5 @@ def sync_inventory_from_google(
         }
 
     except Exception:
-
         db.rollback()
-
         raise

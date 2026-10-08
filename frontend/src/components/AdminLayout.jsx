@@ -21,11 +21,16 @@ import AdminNotificationCenter
 
 import "./AdminTopbar.css";
 import "./AdminLayout.css";
+import "./AdminAppLock.css";
+
+
+const API_BASE_URL =
+  `http://${window.location.hostname}:8000`;
 
 
 /* =========================================================
    ICONS
-========================================================= */
+   ========================================================= */
 
 function AdminIcon({
   name,
@@ -81,7 +86,6 @@ function AdminIcon({
       </>
     ),
 
-
     pos: (
       <>
         <rect
@@ -100,7 +104,6 @@ function AdminIcon({
       </>
     ),
 
-
     inventory: (
       <>
         <path d="m4 7 8-4 8 4-8 4Z" />
@@ -108,7 +111,6 @@ function AdminIcon({
         <path d="M12 11v10" />
       </>
     ),
-
 
     sales: (
       <>
@@ -118,7 +120,6 @@ function AdminIcon({
         <path d="M22 19V3" />
       </>
     ),
-
 
     purchase: (
       <>
@@ -138,7 +139,6 @@ function AdminIcon({
       </>
     ),
 
-
     supplier: (
       <>
         <path d="M3 19V8l6-3v14" />
@@ -146,7 +146,6 @@ function AdminIcon({
         <path d="M15 12l6-3v10" />
       </>
     ),
-
 
     patients: (
       <>
@@ -168,7 +167,6 @@ function AdminIcon({
       </>
     ),
 
-
     appointments: (
       <>
         <rect
@@ -187,7 +185,6 @@ function AdminIcon({
       </>
     ),
 
-
     reports: (
       <>
         <path d="M5 3h10l4 4v14H5Z" />
@@ -197,14 +194,12 @@ function AdminIcon({
       </>
     ),
 
-
     alerts: (
       <>
         <path d="M18 8a6 6 0 1 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9" />
         <path d="M10 21h4" />
       </>
     ),
-
 
     support: (
       <>
@@ -214,7 +209,6 @@ function AdminIcon({
         <path d="M16 21h-4" />
       </>
     ),
-
 
     search: (
       <>
@@ -228,7 +222,6 @@ function AdminIcon({
       </>
     ),
 
-
     user: (
       <>
         <circle
@@ -241,7 +234,6 @@ function AdminIcon({
       </>
     ),
 
-
     logout: (
       <>
         <path d="M10 5H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h4" />
@@ -250,16 +242,13 @@ function AdminIcon({
       </>
     ),
 
-
     chevron: (
       <path d="m9 18 6-6-6-6" />
     ),
 
-
     down: (
       <path d="m7 9 5 5 5-5" />
     ),
-
 
     close: (
       <>
@@ -267,190 +256,347 @@ function AdminIcon({
         <path d="M18 6 6 18" />
       </>
     ),
+
+    lock: (
+      <>
+        <rect
+          x="5"
+          y="10"
+          width="14"
+          height="11"
+          rx="2"
+        />
+
+        <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+      </>
+    ),
+
+    eye: (
+      <>
+        <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6S2 12 2 12Z" />
+
+        <circle
+          cx="12"
+          cy="12"
+          r="2.5"
+        />
+      </>
+    ),
+
+    eyeOff: (
+      <>
+        <path d="m3 3 18 18" />
+
+        <path d="M10.6 6.2A10.6 10.6 0 0 1 12 6c6.5 0 10 6 10 6" />
+
+        <path d="M6.6 6.6C3.5 8.2 2 12 2 12s3.5 6 10 6c1.6 0 3-.4 4.2-.9" />
+      </>
+    ),
   };
 
 
   return (
     <svg {...common}>
-      {icons[name] || icons.dashboard}
+      {
+        icons[name] ||
+        icons.dashboard
+      }
     </svg>
   );
 }
 
 
 /* =========================================================
-   SIDEBAR MENU
-========================================================= */
+   SIDEBAR
+   ========================================================= */
 
 const menuItems = [
   {
-    label: "Dashboard",
-    icon: "dashboard",
-    path: "/admin",
+    label:
+      "Dashboard",
+
+    icon:
+      "dashboard",
+
+    path:
+      "/admin",
   },
 
   {
-    label: "POS",
-    icon: "pos",
-    path: "/admin/pos",
+    label:
+      "POS",
+
+    icon:
+      "pos",
+
+    path:
+      "/admin/pos",
   },
 
   {
-    label: "Inventory",
-    icon: "inventory",
-    path: "/admin/inventory",
+    label:
+      "Inventory",
+
+    icon:
+      "inventory",
+
+    path:
+      "/admin/inventory",
   },
 
   {
-    label: "Sales",
-    icon: "sales",
-    path: "/admin/sales",
+    label:
+      "Sales",
+
+    icon:
+      "sales",
+
+    path:
+      "/admin/sales",
   },
 
   {
-    label: "Purchases",
-    icon: "purchase",
-    path: "/admin/purchases",
+    label:
+      "Purchases",
+
+    icon:
+      "purchase",
+
+    path:
+      "/admin/purchases",
   },
 
   {
-    label: "Suppliers",
-    icon: "supplier",
-    path: "/admin/suppliers",
+    label:
+      "Suppliers",
+
+    icon:
+      "supplier",
+
+    path:
+      "/admin/suppliers",
   },
 
   {
-    label: "Patients",
-    icon: "patients",
-    path: "/admin/patients",
+    label:
+      "Patients",
+
+    icon:
+      "patients",
+
+    path:
+      "/admin/patients",
   },
 
   {
-    label: "Appointments",
-    icon: "appointments",
-    path: "/admin/appointments",
+    label:
+      "Appointments",
+
+    icon:
+      "appointments",
+
+    path:
+      "/admin/appointments",
   },
 
   {
-    label: "Reports",
-    icon: "reports",
-    path: "/admin/reports",
+    label:
+      "Reports",
+
+    icon:
+      "reports",
+
+    path:
+      "/admin/reports",
   },
 
   {
-    label: "Alerts",
-    icon: "alerts",
-    path: "/admin/alerts",
+    label:
+      "Alerts",
+
+    icon:
+      "alerts",
+
+    path:
+      "/admin/alerts",
   },
 ];
 
 
-/* =========================================================
-   SEARCH ITEMS
-========================================================= */
-
 const searchItems = [
   {
-    title: "Dashboard",
+    title:
+      "Dashboard",
+
     description:
       "Pharmacy management overview",
-    path: "/admin",
-    icon: "dashboard",
+
+    path:
+      "/admin",
+
+    icon:
+      "dashboard",
   },
 
   {
-    title: "POS",
+    title:
+      "POS",
+
     description:
       "Start and manage pharmacy sales",
-    path: "/admin/pos",
-    icon: "pos",
+
+    path:
+      "/admin/pos",
+
+    icon:
+      "pos",
   },
 
   {
-    title: "Inventory",
+    title:
+      "Inventory",
+
     description:
       "Manage medicine stock",
-    path: "/admin/inventory",
-    icon: "inventory",
+
+    path:
+      "/admin/inventory",
+
+    icon:
+      "inventory",
   },
 
   {
-    title: "Sales",
+    title:
+      "Sales",
+
     description:
       "Review pharmacy sales and revenue",
-    path: "/admin/sales",
-    icon: "sales",
+
+    path:
+      "/admin/sales",
+
+    icon:
+      "sales",
   },
 
   {
-    title: "Purchases",
+    title:
+      "Purchases",
+
     description:
       "Receive medicines from suppliers",
-    path: "/admin/purchases",
-    icon: "purchase",
+
+    path:
+      "/admin/purchases",
+
+    icon:
+      "purchase",
   },
 
   {
-    title: "Suppliers",
+    title:
+      "Suppliers",
+
     description:
       "Manage medicine suppliers",
-    path: "/admin/suppliers",
-    icon: "supplier",
+
+    path:
+      "/admin/suppliers",
+
+    icon:
+      "supplier",
   },
 
   {
-    title: "Patients",
+    title:
+      "Patients",
+
     description:
       "View registered patient records",
-    path: "/admin/patients",
-    icon: "patients",
+
+    path:
+      "/admin/patients",
+
+    icon:
+      "patients",
   },
 
   {
-    title: "Appointments",
+    title:
+      "Appointments",
+
     description:
       "Review and manage patient appointment requests",
-    path: "/admin/appointments",
-    icon: "appointments",
+
+    path:
+      "/admin/appointments",
+
+    icon:
+      "appointments",
   },
 
   {
-    title: "Reports",
+    title:
+      "Reports",
+
     description:
       "Review pharmacy reports and analytics",
-    path: "/admin/reports",
-    icon: "reports",
+
+    path:
+      "/admin/reports",
+
+    icon:
+      "reports",
   },
 
   {
-    title: "Alerts",
+    title:
+      "Alerts",
+
     description:
       "Review pharmacy operational alerts",
-    path: "/admin/alerts",
-    icon: "alerts",
+
+    path:
+      "/admin/alerts",
+
+    icon:
+      "alerts",
   },
 
   {
-    title: "My Profile",
+    title:
+      "My Profile",
+
     description:
       "Profile, security and account controls",
-    path: "/admin/profile",
-    icon: "user",
+
+    path:
+      "/admin/profile",
+
+    icon:
+      "user",
   },
 
   {
-    title: "Technical Support",
+    title:
+      "Technical Support",
+
     description:
       "Submit and track technical support requests",
-    path: "/admin/support",
-    icon: "support",
+
+    path:
+      "/admin/support",
+
+    icon:
+      "support",
   },
 ];
 
 
 /* =========================================================
    ALERT HELPERS
-========================================================= */
+   ========================================================= */
 
 function alertText(
   alert
@@ -467,7 +613,7 @@ function isAttentionAlert(
   const severity =
     String(
       alert?.severity ||
-        ""
+      ""
     )
       .trim()
       .toLowerCase();
@@ -480,8 +626,10 @@ function isAttentionAlert(
 
 
   return (
-    severity === "critical" ||
-    severity === "warning" ||
+    severity ===
+      "critical" ||
+    severity ===
+      "warning" ||
     text.includes(
       "overdue"
     ) ||
@@ -498,7 +646,7 @@ function isCriticalAlert(
   const severity =
     String(
       alert?.severity ||
-        ""
+      ""
     )
       .trim()
       .toLowerCase();
@@ -511,7 +659,8 @@ function isCriticalAlert(
 
 
   return (
-    severity === "critical" ||
+    severity ===
+      "critical" ||
     text.includes(
       "overdue"
     )
@@ -520,12 +669,105 @@ function isCriticalAlert(
 
 
 /* =========================================================
+   VERIFY LOCK PASSWORD
+   ========================================================= */
+
+async function verifyUnlockPassword(
+  password
+) {
+  const token =
+    localStorage.getItem(
+      "access_token"
+    );
+
+
+  if (!token) {
+    throw new Error(
+      "Your administrator session is no longer available. Please sign in again."
+    );
+  }
+
+
+  let response;
+
+
+  try {
+    response =
+      await fetch(
+        `${API_BASE_URL}/me/verify-password`,
+        {
+          method:
+            "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            Authorization:
+              `Bearer ${token}`,
+          },
+
+          body:
+            JSON.stringify({
+              password,
+            }),
+        }
+      );
+  } catch {
+    throw new Error(
+      "Unable to verify your password. Check that the backend is running."
+    );
+  }
+
+
+  let data;
+
+
+  try {
+    data =
+      await response.json();
+  } catch {
+    data =
+      null;
+  }
+
+
+  if (
+    response.status ===
+    401
+  ) {
+    throw new Error(
+      "Your administrator session has expired. Please sign in again."
+    );
+  }
+
+
+  if (!response.ok) {
+    const message =
+      typeof data?.detail ===
+      "string"
+        ? data.detail
+        : "Unable to verify your password.";
+
+
+    throw new Error(
+      message
+    );
+  }
+
+
+  return data;
+}
+
+
+/* =========================================================
    ADMIN LAYOUT
-========================================================= */
+   ========================================================= */
 
 function AdminLayout() {
   const navigate =
     useNavigate();
+
 
   const location =
     useLocation();
@@ -533,6 +775,7 @@ function AdminLayout() {
 
   const profileRef =
     useRef(null);
+
 
   const searchRef =
     useRef(null);
@@ -594,6 +837,42 @@ function AdminLayout() {
   );
 
 
+  const [
+    applicationLocked,
+    setApplicationLocked,
+  ] = useState(
+    () =>
+      localStorage.getItem(
+        "admin_application_locked"
+      ) ===
+      "1"
+  );
+
+
+  const [
+    unlockPassword,
+    setUnlockPassword,
+  ] = useState("");
+
+
+  const [
+    unlockError,
+    setUnlockError,
+  ] = useState("");
+
+
+  const [
+    unlocking,
+    setUnlocking,
+  ] = useState(false);
+
+
+  const [
+    showUnlockPassword,
+    setShowUnlockPassword,
+  ] = useState(false);
+
+
   const adminName =
     localStorage.getItem(
       "user_name"
@@ -624,215 +903,470 @@ function AdminLayout() {
 
 
   /* =======================================================
-     PROFILE PHOTO SYNC
-  ======================================================= */
+     PROFILE PHOTO
+     ======================================================= */
 
-  useEffect(() => {
-    function handlePhotoUpdate(
-      event
-    ) {
-      const newPhoto =
-        event?.detail?.photo ??
-        localStorage.getItem(
-          "admin_profile_photo"
-        ) ??
-        "";
-
-      setProfilePhoto(
-        newPhoto
-      );
-    }
-
-
-    function handleStorage(
-      event
-    ) {
-      if (
-        event.key ===
-        "admin_profile_photo"
+  useEffect(
+    () => {
+      function handlePhotoUpdate(
+        event
       ) {
+        const newPhoto =
+          event?.detail?.photo ??
+          localStorage.getItem(
+            "admin_profile_photo"
+          ) ??
+          "";
+
+
         setProfilePhoto(
-          event.newValue ||
-            ""
+          newPhoto
         );
       }
-    }
 
 
-    window.addEventListener(
-      "admin-profile-photo-updated",
-      handlePhotoUpdate
-    );
+      function handleStorage(
+        event
+      ) {
+        if (
+          event.key ===
+          "admin_profile_photo"
+        ) {
+          setProfilePhoto(
+            event.newValue ||
+            ""
+          );
+        }
+      }
 
 
-    window.addEventListener(
-      "storage",
-      handleStorage
-    );
-
-
-    return () => {
-      window.removeEventListener(
+      window.addEventListener(
         "admin-profile-photo-updated",
         handlePhotoUpdate
       );
 
 
-      window.removeEventListener(
+      window.addEventListener(
         "storage",
         handleStorage
       );
-    };
-  }, []);
+
+
+      return () => {
+        window.removeEventListener(
+          "admin-profile-photo-updated",
+          handlePhotoUpdate
+        );
+
+
+        window.removeEventListener(
+          "storage",
+          handleStorage
+        );
+      };
+    },
+    []
+  );
 
 
   /* =======================================================
-     ALERT LOADING
-  ======================================================= */
+     LOCK
+     ======================================================= */
 
-  useEffect(() => {
-    let active = true;
-
-
-    async function loadAlerts() {
-      try {
-        const data =
-          await getAdminAlerts();
-
-
-        if (!active) {
-          return;
-        }
-
-
-        const alerts =
-          Array.isArray(
-            data?.alerts
-          )
-            ? data.alerts
-            : [];
-
-
-        const total =
-          Number(
-            data?.count ??
-            alerts.length ??
-            0
-          );
-
-
-        setAlertCount(
-          Number.isFinite(
-            total
-          )
-            ? total
-            : 0
+  const lockApplication =
+    useCallback(
+      () => {
+        localStorage.setItem(
+          "admin_application_locked",
+          "1"
         );
 
 
-        const actionable =
-          alerts.filter(
-            isAttentionAlert
-          );
-
-
-        setSidebarAlertCount(
-          actionable.length
+        setApplicationLocked(
+          true
         );
 
 
-        setSidebarAlertTone(
-          actionable.some(
-            isCriticalAlert
-          )
-            ? "critical"
-            : "warning"
-        );
-      } catch {
-        if (!active) {
-          return;
-        }
+        setUnlockPassword("");
 
+        setUnlockError("");
 
-        setAlertCount(
-          0
+        setShowUnlockPassword(
+          false
         );
 
 
-        setSidebarAlertCount(
-          0
+        setProfileOpen(
+          false
         );
 
 
-        setSidebarAlertTone(
-          "warning"
+        setMobileOpen(
+          false
         );
+
+
+        setSearchOpen(
+          false
+        );
+      },
+      []
+    );
+
+
+  useEffect(
+    () => {
+      function handleLockRequest() {
+        lockApplication();
       }
+
+
+      function handleStorage(
+        event
+      ) {
+        if (
+          event.key !==
+          "admin_application_locked"
+        ) {
+          return;
+        }
+
+
+        const locked =
+          event.newValue ===
+          "1";
+
+
+        setApplicationLocked(
+          locked
+        );
+
+
+        if (locked) {
+          setUnlockPassword("");
+
+          setUnlockError("");
+        }
+      }
+
+
+      window.addEventListener(
+        "admin-request-lock",
+        handleLockRequest
+      );
+
+
+      window.addEventListener(
+        "storage",
+        handleStorage
+      );
+
+
+      return () => {
+        window.removeEventListener(
+          "admin-request-lock",
+          handleLockRequest
+        );
+
+
+        window.removeEventListener(
+          "storage",
+          handleStorage
+        );
+      };
+    },
+    [
+      lockApplication,
+    ]
+  );
+
+
+  useEffect(
+    () => {
+      if (
+        !applicationLocked
+      ) {
+        return undefined;
+      }
+
+
+      const previousOverflow =
+        document.body.style.overflow;
+
+
+      document.body.style.overflow =
+        "hidden";
+
+
+      return () => {
+        document.body.style.overflow =
+          previousOverflow;
+      };
+    },
+    [
+      applicationLocked,
+    ]
+  );
+
+
+  /* =======================================================
+     UNLOCK
+
+     IMPORTANT:
+     This verifies the password against the CURRENT session.
+     It DOES NOT call login() and DOES NOT create another
+     user_sessions record.
+     ======================================================= */
+
+  async function handleUnlock(
+    event
+  ) {
+    event.preventDefault();
+
+
+    setUnlockError("");
+
+
+    if (!adminEmail) {
+      setUnlockError(
+        "Administrator email is missing from this session. Please sign out and sign in again."
+      );
+
+
+      return;
     }
 
 
-    loadAlerts();
+    if (!unlockPassword) {
+      setUnlockError(
+        "Enter your administrator password."
+      );
 
 
-    return () => {
-      active = false;
-    };
-  }, [
-    location.pathname,
-  ]);
+      return;
+    }
+
+
+    setUnlocking(
+      true
+    );
+
+
+    try {
+      const result =
+        await verifyUnlockPassword(
+          unlockPassword
+        );
+
+
+      const role =
+        String(
+          result?.role ||
+          localStorage.getItem(
+            "user_role"
+          ) ||
+          ""
+        )
+          .trim()
+          .toLowerCase();
+
+
+      if (
+        role &&
+        role !==
+        "admin"
+      ) {
+        throw new Error(
+          "Administrator verification failed."
+        );
+      }
+
+
+      localStorage.removeItem(
+        "admin_application_locked"
+      );
+
+
+      setApplicationLocked(
+        false
+      );
+
+
+      setUnlockPassword("");
+
+      setUnlockError("");
+
+
+      setShowUnlockPassword(
+        false
+      );
+    } catch (error) {
+      setUnlockError(
+        error?.message ||
+        "Incorrect password. The application remains locked."
+      );
+    } finally {
+      setUnlocking(
+        false
+      );
+    }
+  }
+
+
+  /* =======================================================
+     ALERTS
+     ======================================================= */
+
+  useEffect(
+    () => {
+      let active =
+        true;
+
+
+      async function loadAlerts() {
+        try {
+          const data =
+            await getAdminAlerts();
+
+
+          if (!active) {
+            return;
+          }
+
+
+          const alerts =
+            Array.isArray(
+              data?.alerts
+            )
+              ? data.alerts
+              : [];
+
+
+          const total =
+            Number(
+              data?.count ??
+              alerts.length ??
+              0
+            );
+
+
+          setAlertCount(
+            Number.isFinite(
+              total
+            )
+              ? total
+              : 0
+          );
+
+
+          const actionable =
+            alerts.filter(
+              isAttentionAlert
+            );
+
+
+          setSidebarAlertCount(
+            actionable.length
+          );
+
+
+          setSidebarAlertTone(
+            actionable.some(
+              isCriticalAlert
+            )
+              ? "critical"
+              : "warning"
+          );
+        } catch {
+          if (!active) {
+            return;
+          }
+
+
+          setAlertCount(0);
+
+          setSidebarAlertCount(0);
+
+          setSidebarAlertTone(
+            "warning"
+          );
+        }
+      }
+
+
+      if (
+        !applicationLocked
+      ) {
+        void loadAlerts();
+      }
+
+
+      return () => {
+        active =
+          false;
+      };
+    },
+    [
+      location.pathname,
+      applicationLocked,
+    ]
+  );
 
 
   /* =======================================================
      CLICK OUTSIDE
-  ======================================================= */
+     ======================================================= */
 
-  useEffect(() => {
-    function handleOutsideClick(
-      event
-    ) {
-      if (
-        profileRef.current &&
-        !profileRef.current.contains(
-          event.target
-        )
+  useEffect(
+    () => {
+      function handleOutsideClick(
+        event
       ) {
-        setProfileOpen(
-          false
-        );
+        if (
+          profileRef.current &&
+          !profileRef.current.contains(
+            event.target
+          )
+        ) {
+          setProfileOpen(
+            false
+          );
+        }
+
+
+        if (
+          searchRef.current &&
+          !searchRef.current.contains(
+            event.target
+          )
+        ) {
+          setSearchOpen(
+            false
+          );
+        }
       }
 
 
-      if (
-        searchRef.current &&
-        !searchRef.current.contains(
-          event.target
-        )
-      ) {
-        setSearchOpen(
-          false
-        );
-      }
-    }
-
-
-    document.addEventListener(
-      "mousedown",
-      handleOutsideClick
-    );
-
-
-    return () => {
-      document.removeEventListener(
+      document.addEventListener(
         "mousedown",
         handleOutsideClick
       );
-    };
-  }, []);
+
+
+      return () => {
+        document.removeEventListener(
+          "mousedown",
+          handleOutsideClick
+        );
+      };
+    },
+    []
+  );
 
 
   /* =======================================================
      SEARCH
-  ======================================================= */
+     ======================================================= */
 
   const filteredSearch =
     useMemo(
@@ -891,6 +1425,13 @@ function AdminLayout() {
   function goTo(
     path
   ) {
+    if (
+      applicationLocked
+    ) {
+      return;
+    }
+
+
     navigate(
       path
     );
@@ -911,9 +1452,7 @@ function AdminLayout() {
     );
 
 
-    setSearchTerm(
-      ""
-    );
+    setSearchTerm("");
   }
 
 
@@ -936,7 +1475,7 @@ function AdminLayout() {
 
   /* =======================================================
      LOGOUT
-  ======================================================= */
+     ======================================================= */
 
   const handleLogout =
     useCallback(
@@ -949,6 +1488,7 @@ function AdminLayout() {
           "user_email",
           "token",
           "role",
+          "admin_application_locked",
         ].forEach(
           (key) => {
             localStorage.removeItem(
@@ -968,10 +1508,16 @@ function AdminLayout() {
         );
 
 
+        setApplicationLocked(
+          false
+        );
+
+
         navigate(
           "/login",
           {
-            replace: true,
+            replace:
+              true,
           }
         );
       },
@@ -981,70 +1527,63 @@ function AdminLayout() {
     );
 
 
-  /* =======================================================
-     PROFILE PAGE LOGOUT EVENT
-  ======================================================= */
-
-  useEffect(() => {
-    function handleProfileLogout() {
-      handleLogout();
-    }
+  useEffect(
+    () => {
+      function handleProfileLogout() {
+        handleLogout();
+      }
 
 
-    window.addEventListener(
-      "admin-request-logout",
-      handleProfileLogout
-    );
-
-
-    return () => {
-      window.removeEventListener(
+      window.addEventListener(
         "admin-request-logout",
         handleProfileLogout
       );
-    };
-  }, [
-    handleLogout,
-  ]);
+
+
+      return () => {
+        window.removeEventListener(
+          "admin-request-logout",
+          handleProfileLogout
+        );
+      };
+    },
+    [
+      handleLogout,
+    ]
+  );
 
 
   /* =======================================================
      RENDER
-  ======================================================= */
+     ======================================================= */
 
   return (
     <div className="admin-shell">
+      {
+        mobileOpen && (
+          <button
+            type="button"
+            className="admin-backdrop"
+            onClick={() =>
+              setMobileOpen(
+                false
+              )
+            }
+            aria-label="Close navigation"
+          />
+        )
+      }
 
-      {/* =====================================================
-          MOBILE BACKDROP
-      ===================================================== */}
-
-      {mobileOpen && (
-        <button
-          type="button"
-          className="admin-backdrop"
-          onClick={() =>
-            setMobileOpen(
-              false
-            )
-          }
-          aria-label="Close navigation"
-        />
-      )}
-
-
-      {/* =====================================================
-          SIDEBAR
-      ===================================================== */}
 
       <aside
-        className={`admin-sidebar ${
-          mobileOpen
-            ? "is-open"
-            : ""
-        }`}
+        className={
+          `admin-sidebar ${
+            mobileOpen
+              ? "is-open"
+              : ""
+          }`
+        }
       >
-
         <button
           type="button"
           className="admin-brand"
@@ -1054,7 +1593,6 @@ function AdminLayout() {
             )
           }
         >
-
           <span className="admin-brand__logo">
             <img
               src="/dr-evans-logo.png"
@@ -1072,7 +1610,6 @@ function AdminLayout() {
               Administration
             </small>
           </span>
-
         </button>
 
 
@@ -1085,103 +1622,103 @@ function AdminLayout() {
 
 
         <nav className="admin-sidebar__nav">
-
-          {menuItems.map(
-            (item) => {
-              const active =
-                isItemActive(
-                  item
-                );
-
-
-              const isAlerts =
-                item.path ===
-                "/admin/alerts";
+          {
+            menuItems.map(
+              (item) => {
+                const active =
+                  isItemActive(
+                    item
+                  );
 
 
-              return (
-                <button
-                  type="button"
-                  key={
-                    item.path
-                  }
-                  className={`admin-nav-item ${
-                    active
-                      ? "is-active"
-                      : ""
-                  } ${
-                    isAlerts &&
-                    sidebarAlertCount >
-                      0
-                      ? "has-alert-signal"
-                      : ""
-                  }`}
-                  onClick={() =>
-                    goTo(
+                const isAlerts =
+                  item.path ===
+                  "/admin/alerts";
+
+
+                return (
+                  <button
+                    type="button"
+                    key={
                       item.path
-                    )
-                  }
-                >
+                    }
+                    className={
+                      `admin-nav-item ${
+                        active
+                          ? "is-active"
+                          : ""
+                      } ${
+                        isAlerts &&
+                        sidebarAlertCount >
+                          0
+                          ? "has-alert-signal"
+                          : ""
+                      }`
+                    }
+                    onClick={() =>
+                      goTo(
+                        item.path
+                      )
+                    }
+                  >
+                    <span className="admin-nav-item__icon">
+                      <AdminIcon
+                        name={
+                          item.icon
+                        }
+                        size={19}
+                      />
+                    </span>
 
-                  <span className="admin-nav-item__icon">
-                    <AdminIcon
-                      name={
-                        item.icon
-                      }
-                      size={19}
-                    />
-                  </span>
+
+                    <span className="admin-nav-item__label">
+                      {item.label}
+                    </span>
 
 
-                  <span className="admin-nav-item__label">
-                    {item.label}
-                  </span>
-
-
-                  {isAlerts &&
-                    sidebarAlertCount >
-                      0 && (
-                      <span
-                        className={`admin-sidebar-alert-badge admin-sidebar-alert-badge--${sidebarAlertTone}`}
-                        aria-label={`${sidebarAlertCount} alerts require attention`}
-                        title={`${sidebarAlertCount} alerts require attention`}
-                      >
-                        {sidebarAlertCount >
-                        9
-                          ? "9+"
-                          : sidebarAlertCount}
-                      </span>
-                    )}
-
-                </button>
-              );
-            }
-          )}
-
+                    {
+                      isAlerts &&
+                      sidebarAlertCount >
+                        0 && (
+                        <span
+                          className={
+                            `admin-sidebar-alert-badge admin-sidebar-alert-badge--${sidebarAlertTone}`
+                          }
+                        >
+                          {
+                            sidebarAlertCount >
+                            9
+                              ? "9+"
+                              : sidebarAlertCount
+                          }
+                        </span>
+                      )
+                    }
+                  </button>
+                );
+              }
+            )
+          }
         </nav>
 
 
-        {/* ===================================================
-            SIDEBAR BOTTOM
-        =================================================== */}
-
         <div className="admin-sidebar__bottom">
-
           <button
             type="button"
-            className={`admin-nav-item ${
-              location.pathname ===
-              "/admin/support"
-                ? "is-active"
-                : ""
-            }`}
+            className={
+              `admin-nav-item ${
+                location.pathname ===
+                "/admin/support"
+                  ? "is-active"
+                  : ""
+              }`
+            }
             onClick={() =>
               goTo(
                 "/admin/support"
               )
             }
           >
-
             <span className="admin-nav-item__icon">
               <AdminIcon
                 name="support"
@@ -1189,11 +1726,9 @@ function AdminLayout() {
               />
             </span>
 
-
             <span className="admin-nav-item__label">
               Technical Support
             </span>
-
           </button>
 
 
@@ -1213,24 +1748,12 @@ function AdminLayout() {
               Logout
             </span>
           </button>
-
         </div>
-
       </aside>
 
 
-      {/* =====================================================
-          MAIN
-      ===================================================== */}
-
       <div className="admin-main">
-
-        {/* ===================================================
-            TOPBAR
-        =================================================== */}
-
         <header className="admin-topbar">
-
           <button
             type="button"
             className="admin-mobile-menu"
@@ -1258,24 +1781,18 @@ function AdminLayout() {
           </div>
 
 
-          {/* =================================================
-              SEARCH
-          ================================================= */}
-
           <div
             className="admin-topbar-search-area"
             ref={
               searchRef
             }
           >
-
             <form
               className="admin-topbar__search"
               onSubmit={
                 handleSearchSubmit
               }
             >
-
               <AdminIcon
                 name="search"
                 size={18}
@@ -1290,8 +1807,7 @@ function AdminLayout() {
                 onChange={
                   (event) => {
                     setSearchTerm(
-                      event.target
-                        .value
+                      event.target.value
                     );
 
                     setSearchOpen(
@@ -1309,99 +1825,97 @@ function AdminLayout() {
               />
 
 
-              {searchTerm && (
-                <button
-                  type="button"
-                  className="admin-search-clear"
-                  onClick={() => {
-                    setSearchTerm(
-                      ""
-                    );
+              {
+                searchTerm && (
+                  <button
+                    type="button"
+                    className="admin-search-clear"
+                    onClick={() => {
+                      setSearchTerm("");
 
-                    setSearchOpen(
-                      false
-                    );
-                  }}
-                  aria-label="Clear search"
-                >
-                  <AdminIcon
-                    name="close"
-                    size={15}
-                  />
-                </button>
-              )}
-
+                      setSearchOpen(
+                        false
+                      );
+                    }}
+                    aria-label="Clear search"
+                  >
+                    <AdminIcon
+                      name="close"
+                      size={15}
+                    />
+                  </button>
+                )
+              }
             </form>
 
 
-            {searchOpen &&
+            {
+              searchOpen &&
               searchTerm.trim() && (
                 <div className="admin-search-results">
-
-                  {filteredSearch.length >
-                  0 ? (
-                    filteredSearch.map(
-                      (item) => (
-                        <button
-                          type="button"
-                          key={
-                            item.path
-                          }
-                          onClick={() =>
-                            goTo(
-                              item.path
-                            )
-                          }
-                        >
-
-                          <span className="admin-search-result-icon">
-                            <AdminIcon
-                              name={
-                                item.icon
+                  {
+                    filteredSearch.length >
+                    0
+                      ? (
+                        filteredSearch.map(
+                          (item) => (
+                            <button
+                              type="button"
+                              key={
+                                item.path
                               }
-                              size={18}
-                            />
-                          </span>
+                              onClick={() =>
+                                goTo(
+                                  item.path
+                                )
+                              }
+                            >
+                              <span className="admin-search-result-icon">
+                                <AdminIcon
+                                  name={
+                                    item.icon
+                                  }
+                                  size={18}
+                                />
+                              </span>
 
 
-                          <span className="admin-search-result-copy">
-                            <strong>
-                              {item.title}
-                            </strong>
+                              <span className="admin-search-result-copy">
+                                <strong>
+                                  {item.title}
+                                </strong>
 
-                            <small>
-                              {item.description}
-                            </small>
-                          </span>
-
-                        </button>
+                                <small>
+                                  {
+                                    item.description
+                                  }
+                                </small>
+                              </span>
+                            </button>
+                          )
+                        )
                       )
-                    )
-                  ) : (
-                    <div className="admin-search-empty">
-                      <strong>
-                        No matching section
-                      </strong>
+                      : (
+                        <div className="admin-search-empty">
+                          <strong>
+                            No matching section
+                          </strong>
 
-                      <span>
-                        Try Inventory, Patients, Appointments,
-                        Sales, Reports, Alerts or Profile.
-                      </span>
-                    </div>
-                  )}
-
+                          <span>
+                            Try Inventory, Patients,
+                            Appointments, Sales,
+                            Reports, Alerts or Profile.
+                          </span>
+                        </div>
+                      )
+                  }
                 </div>
-              )}
-
+              )
+            }
           </div>
 
 
-          {/* =================================================
-              TOPBAR ACTIONS
-          ================================================= */}
-
           <div className="admin-topbar__actions">
-
             <AdminNotificationCenter
               initialCount={
                 alertCount
@@ -1409,17 +1923,12 @@ function AdminLayout() {
             />
 
 
-            {/* ===============================================
-                PROFILE
-            =============================================== */}
-
             <div
               className="admin-profile-wrap"
               ref={
                 profileRef
               }
             >
-
               <button
                 type="button"
                 className="admin-profile-trigger admin-profile-trigger--named"
@@ -1433,27 +1942,28 @@ function AdminLayout() {
                   profileOpen
                 }
               >
-
                 <span
-                  className={`admin-profile-avatar ${
-                    profilePhoto
-                      ? "has-photo"
-                      : ""
-                  }`}
+                  className={
+                    `admin-profile-avatar ${
+                      profilePhoto
+                        ? "has-photo"
+                        : ""
+                    }`
+                  }
                 >
-
-                  {profilePhoto ? (
-                    <img
-                      src={
-                        profilePhoto
-                      }
-                      alt=""
-                      className="admin-profile-avatar__photo"
-                    />
-                  ) : (
-                    initials
-                  )}
-
+                  {
+                    profilePhoto
+                      ? (
+                        <img
+                          src={
+                            profilePhoto
+                          }
+                          alt=""
+                          className="admin-profile-avatar__photo"
+                        />
+                      )
+                      : initials
+                  }
                 </span>
 
 
@@ -1466,154 +1976,385 @@ function AdminLayout() {
                   name="down"
                   size={15}
                 />
-
               </button>
 
 
-              {/* =============================================
-                  PROFILE DROPDOWN
-              ============================================= */}
+              {
+                profileOpen && (
+                  <section className="admin-profile-dropdown">
+                    <div className="admin-profile-dropdown__hero">
+                      <span
+                        className={
+                          `admin-profile-dropdown__avatar ${
+                            profilePhoto
+                              ? "has-photo"
+                              : ""
+                          }`
+                        }
+                      >
+                        {
+                          profilePhoto
+                            ? (
+                              <img
+                                src={
+                                  profilePhoto
+                                }
+                                alt=""
+                                className="admin-profile-dropdown__avatar-photo"
+                              />
+                            )
+                            : initials
+                        }
+                      </span>
 
-              {profileOpen && (
-                <section className="admin-profile-dropdown">
 
-                  <div className="admin-profile-dropdown__hero">
+                      <div>
+                        <span className="admin-profile-dropdown__role">
+                          Administrator
+                        </span>
 
-                    <span
-                      className={`admin-profile-dropdown__avatar ${
-                        profilePhoto
-                          ? "has-photo"
-                          : ""
-                      }`}
-                    >
+                        <strong>
+                          {adminName}
+                        </strong>
 
-                      {profilePhoto ? (
+                        <p>
+                          {
+                            adminEmail ||
+                            "Dr. Evans Pharmacy"
+                          }
+                        </p>
+                      </div>
+                    </div>
+
+
+                    <div className="admin-profile-dropdown__menu">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          goTo(
+                            "/admin/profile"
+                          )
+                        }
+                      >
+                        <span className="admin-profile-dropdown__menu-icon">
+                          <AdminIcon
+                            name="user"
+                            size={18}
+                          />
+                        </span>
+
+
+                        <span className="admin-profile-dropdown__menu-text">
+                          <strong>
+                            My Profile
+                          </strong>
+
+                          <small>
+                            Profile, security and account controls
+                          </small>
+                        </span>
+
+
+                        <AdminIcon
+                          name="chevron"
+                          size={16}
+                        />
+                      </button>
+
+
+                      <button
+                        type="button"
+                        onClick={
+                          lockApplication
+                        }
+                      >
+                        <span className="admin-profile-dropdown__menu-icon">
+                          <AdminIcon
+                            name="lock"
+                            size={18}
+                          />
+                        </span>
+
+
+                        <span className="admin-profile-dropdown__menu-text">
+                          <strong>
+                            Lock Application
+                          </strong>
+
+                          <small>
+                            Protect the dashboard without signing out
+                          </small>
+                        </span>
+
+
+                        <AdminIcon
+                          name="chevron"
+                          size={16}
+                        />
+                      </button>
+                    </div>
+
+
+                    <div className="admin-profile-dropdown__footer">
+                      <button
+                        type="button"
+                        onClick={
+                          handleLogout
+                        }
+                      >
+                        <AdminIcon
+                          name="logout"
+                          size={18}
+                        />
+
+                        <span>
+                          <strong>
+                            Sign Out
+                          </strong>
+
+                          <small>
+                            End administrator session
+                          </small>
+                        </span>
+                      </button>
+                    </div>
+                  </section>
+                )
+              }
+            </div>
+          </div>
+        </header>
+
+
+        <main className="admin-content">
+          <Outlet />
+        </main>
+      </div>
+
+
+      {
+        applicationLocked && (
+          <div className="admin-app-lock">
+            <div className="admin-app-lock__background" />
+
+
+            <section className="admin-app-lock__card">
+              <div className="admin-app-lock__brand">
+                <span className="admin-app-lock__logo">
+                  <img
+                    src="/dr-evans-logo.png"
+                    alt=""
+                  />
+                </span>
+
+
+                <div>
+                  <strong>
+                    Dr. Evans Pharmacy
+                  </strong>
+
+                  <span>
+                    Administration
+                  </span>
+                </div>
+              </div>
+
+
+              <div className="admin-app-lock__lock-icon">
+                <AdminIcon
+                  name="lock"
+                  size={30}
+                />
+              </div>
+
+
+              <span className="admin-app-lock__eyebrow">
+                Application Locked
+              </span>
+
+
+              <h1>
+                Welcome back, {adminName}
+              </h1>
+
+
+              <p className="admin-app-lock__description">
+                The pharmacy dashboard has been
+                temporarily locked. Enter your
+                administrator password to continue.
+              </p>
+
+
+              <div className="admin-app-lock__identity">
+                <span
+                  className={
+                    `admin-app-lock__avatar ${
+                      profilePhoto
+                        ? "has-photo"
+                        : ""
+                    }`
+                  }
+                >
+                  {
+                    profilePhoto
+                      ? (
                         <img
                           src={
                             profilePhoto
                           }
                           alt=""
-                          className="admin-profile-dropdown__avatar-photo"
                         />
-                      ) : (
-                        initials
-                      )}
-
-                    </span>
-
-
-                    <div>
-
-                      <span className="admin-profile-dropdown__role">
-                        Administrator
-                      </span>
+                      )
+                      : initials
+                  }
+                </span>
 
 
-                      <strong>
-                        {adminName}
-                      </strong>
+                <div>
+                  <strong>
+                    {adminName}
+                  </strong>
+
+                  <span>
+                    {adminEmail}
+                  </span>
+                </div>
+              </div>
 
 
-                      <p>
-                        {adminEmail ||
-                          "Dr. Evans Pharmacy"}
-                      </p>
+              <form
+                className="admin-app-lock__form"
+                onSubmit={
+                  handleUnlock
+                }
+              >
+                <label className="admin-app-lock__field">
+                  <span>
+                    Administrator Password
+                  </span>
 
-                    </div>
 
-                  </div>
+                  <div className="admin-app-lock__password-wrap">
+                    <AdminIcon
+                      name="lock"
+                      size={18}
+                    />
 
 
-                  <div className="admin-profile-dropdown__menu">
+                    <input
+                      type={
+                        showUnlockPassword
+                          ? "text"
+                          : "password"
+                      }
+                      value={
+                        unlockPassword
+                      }
+                      onChange={
+                        (event) => {
+                          setUnlockPassword(
+                            event.target.value
+                          );
+
+
+                          if (
+                            unlockError
+                          ) {
+                            setUnlockError("");
+                          }
+                        }
+                      }
+                      autoComplete="current-password"
+                      placeholder="Enter your password"
+                      autoFocus
+                    />
+
 
                     <button
                       type="button"
                       onClick={() =>
-                        goTo(
-                          "/admin/profile"
+                        setShowUnlockPassword(
+                          (current) =>
+                            !current
                         )
                       }
-                    >
-
-                      <span className="admin-profile-dropdown__menu-icon">
-                        <AdminIcon
-                          name="user"
-                          size={18}
-                        />
-                      </span>
-
-
-                      <span className="admin-profile-dropdown__menu-text">
-                        <strong>
-                          My Profile
-                        </strong>
-
-                        <small>
-                          Profile, security and account controls
-                        </small>
-                      </span>
-
-
-                      <AdminIcon
-                        name="chevron"
-                        size={16}
-                      />
-
-                    </button>
-
-                  </div>
-
-
-                  {/* =========================================
-                      SIGN OUT
-                  ========================================= */}
-
-                  <div className="admin-profile-dropdown__footer">
-
-                    <button
-                      type="button"
-                      onClick={
-                        handleLogout
+                      aria-label={
+                        showUnlockPassword
+                          ? "Hide password"
+                          : "Show password"
                       }
                     >
                       <AdminIcon
-                        name="logout"
+                        name={
+                          showUnlockPassword
+                            ? "eyeOff"
+                            : "eye"
+                        }
                         size={18}
                       />
-
-                      <span>
-                        <strong>
-                          Sign Out
-                        </strong>
-
-                        <small>
-                          End administrator session
-                        </small>
-                      </span>
                     </button>
-
                   </div>
+                </label>
 
-                </section>
-              )}
 
-            </div>
+                {
+                  unlockError && (
+                    <div className="admin-app-lock__error">
+                      {unlockError}
+                    </div>
+                  )
+                }
 
+
+                <button
+                  type="submit"
+                  className="admin-app-lock__unlock"
+                  disabled={
+                    unlocking
+                  }
+                >
+                  <AdminIcon
+                    name="lock"
+                    size={18}
+                  />
+
+                  <span>
+                    {
+                      unlocking
+                        ? "Verifying..."
+                        : "Unlock Dashboard"
+                    }
+                  </span>
+                </button>
+              </form>
+
+
+              <button
+                type="button"
+                className="admin-app-lock__signout"
+                onClick={
+                  handleLogout
+                }
+                disabled={
+                  unlocking
+                }
+              >
+                Sign out instead
+              </button>
+
+
+              <div className="admin-app-lock__security-note">
+                <AdminIcon
+                  name="lock"
+                  size={14}
+                />
+
+                Your pharmacy session remains protected while locked.
+              </div>
+            </section>
           </div>
-
-        </header>
-
-
-        {/* ===================================================
-            CONTENT
-        =================================================== */}
-
-        <main className="admin-content">
-          <Outlet />
-        </main>
-
-      </div>
-
+        )
+      }
     </div>
   );
 }

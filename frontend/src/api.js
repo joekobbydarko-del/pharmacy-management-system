@@ -4,7 +4,7 @@ const API_BASE_URL =
 
 /* =========================================================
    STORAGE HELPERS
-========================================================= */
+   ========================================================= */
 
 export function getStoredToken() {
   return (
@@ -101,7 +101,7 @@ export function clearAuthStorage() {
 
 /* =========================================================
    CORE API REQUEST
-========================================================= */
+   ========================================================= */
 
 async function apiRequest(
   endpoint,
@@ -121,15 +121,17 @@ async function apiRequest(
   const isFormData =
     typeof FormData !==
       "undefined" &&
-    options.body instanceof FormData;
+    options.body instanceof
+      FormData;
 
   if (
     hasBody &&
     !isFormData &&
     !headers["Content-Type"]
   ) {
-    headers["Content-Type"] =
-      "application/json";
+    headers[
+      "Content-Type"
+    ] = "application/json";
   }
 
   if (token) {
@@ -158,10 +160,6 @@ async function apiRequest(
   }
 
 
-  /* =======================================================
-     READ RESPONSE
-  ======================================================= */
-
   let data;
 
   const contentType =
@@ -189,10 +187,6 @@ async function apiRequest(
   }
 
 
-  /* =======================================================
-     PUBLIC AUTH ROUTES
-  ======================================================= */
-
   const publicAuthEndpoints = [
     "/login",
     "/signup",
@@ -208,10 +202,6 @@ async function apiRequest(
         )
     );
 
-
-  /* =======================================================
-     SESSION EXPIRED
-  ======================================================= */
 
   if (
     response.status === 401 &&
@@ -232,10 +222,6 @@ async function apiRequest(
     );
   }
 
-
-  /* =======================================================
-     API ERRORS
-  ======================================================= */
 
   if (!response.ok) {
     let message =
@@ -286,7 +272,7 @@ async function apiRequest(
 
 /* =========================================================
    AUTH
-========================================================= */
+   ========================================================= */
 
 export async function signup(
   fullName,
@@ -392,7 +378,7 @@ export function logout() {
 
 /* =========================================================
    CURRENT USER / PROFILE
-========================================================= */
+   ========================================================= */
 
 export async function getMe() {
   return apiRequest(
@@ -418,9 +404,34 @@ export async function updateMe(
 }
 
 
+export async function changePassword(
+  currentPassword,
+  newPassword,
+  confirmPassword
+) {
+  return apiRequest(
+    "/me/password",
+    {
+      method: "PATCH",
+
+      body: JSON.stringify({
+        current_password:
+          currentPassword,
+
+        new_password:
+          newPassword,
+
+        confirm_password:
+          confirmPassword,
+      }),
+    }
+  );
+}
+
+
 /* =========================================================
    PASSWORD RESET
-========================================================= */
+   ========================================================= */
 
 export async function forgotPassword(
   email
@@ -460,7 +471,7 @@ export async function resetPassword(
 
 /* =========================================================
    MEDICINE ORDERS
-========================================================= */
+   ========================================================= */
 
 export async function createMedicineOrder(
   userId,
@@ -501,7 +512,7 @@ export async function getUserOrders(
 
 /* =========================================================
    PRESCRIPTIONS
-========================================================= */
+   ========================================================= */
 
 export async function getUserPrescriptions(
   userId
@@ -514,7 +525,7 @@ export async function getUserPrescriptions(
 
 /* =========================================================
    REFILL REQUESTS
-========================================================= */
+   ========================================================= */
 
 export async function createRefillRequest(
   userId,
@@ -553,7 +564,7 @@ export async function getUserRefillRequests(
 
 /* =========================================================
    PATIENT APPOINTMENTS
-========================================================= */
+   ========================================================= */
 
 export async function createAppointment(
   userId,
@@ -598,7 +609,7 @@ export async function getUserAppointments(
 
 /* =========================================================
    PHARMACIST MESSAGES
-========================================================= */
+   ========================================================= */
 
 export async function createPharmacistMessage(
   userId,
@@ -634,7 +645,7 @@ export async function getUserPharmacistMessages(
 
 /* =========================================================
    TECHNICAL SUPPORT
-========================================================= */
+   ========================================================= */
 
 export async function createSupportRequest(
   userId,
@@ -670,7 +681,7 @@ export async function getUserSupportRequests(
 
 /* =========================================================
    NOTIFICATIONS
-========================================================= */
+   ========================================================= */
 
 export async function createNotification(
   userId,
@@ -746,7 +757,7 @@ export async function clearUserNotifications(
 
 /* =========================================================
    LAB RESULTS
-========================================================= */
+   ========================================================= */
 
 export async function getUserLabResults(
   userId
@@ -759,7 +770,7 @@ export async function getUserLabResults(
 
 /* =========================================================
    REMINDERS
-========================================================= */
+   ========================================================= */
 
 export async function getUserReminders(
   userId
@@ -784,7 +795,7 @@ export async function markReminderComplete(
 
 /* =========================================================
    ADMIN DASHBOARD
-========================================================= */
+   ========================================================= */
 
 export async function getAdminDashboard() {
   return apiRequest(
@@ -795,7 +806,7 @@ export async function getAdminDashboard() {
 
 /* =========================================================
    ADMIN APPOINTMENTS
-========================================================= */
+   ========================================================= */
 
 export async function getAdminAppointments() {
   return apiRequest(
@@ -864,7 +875,7 @@ export async function completeAdminAppointment(
 
 /* =========================================================
    ADMIN PATIENTS
-========================================================= */
+   ========================================================= */
 
 export async function getAdminPatients() {
   return apiRequest(
@@ -902,7 +913,7 @@ export async function updateAdminPatientStatus(
 
 /* =========================================================
    ADMIN INVENTORY
-========================================================= */
+   ========================================================= */
 
 export async function getAdminInventory() {
   return apiRequest(
@@ -923,7 +934,7 @@ export async function syncAdminInventory() {
 
 /* =========================================================
    ADMIN POS
-========================================================= */
+   ========================================================= */
 
 export async function getAdminPOSProducts() {
   return apiRequest(
@@ -957,7 +968,7 @@ export async function getAdminPOSSales() {
 
 /* =========================================================
    ADMIN SALES
-========================================================= */
+   ========================================================= */
 
 export async function getAdminSalesSummary() {
   return apiRequest(
@@ -989,7 +1000,7 @@ export async function getAdminDailySales() {
 
 /* =========================================================
    ADMIN PURCHASES
-========================================================= */
+   ========================================================= */
 
 export async function getAdminPurchaseDrugs() {
   return apiRequest(
@@ -1023,7 +1034,7 @@ export async function createAdminPurchase(
 
 /* =========================================================
    ADMIN SUPPLIERS
-========================================================= */
+   ========================================================= */
 
 export async function getAdminSuppliers() {
   return apiRequest(
@@ -1059,9 +1070,7 @@ export async function updateAdminSupplierStatus(
 
       body: JSON.stringify({
         is_active:
-          Boolean(
-            isActive
-          ),
+          Boolean(isActive),
       }),
     }
   );
@@ -1070,7 +1079,7 @@ export async function updateAdminSupplierStatus(
 
 /* =========================================================
    ADMIN REPORTS
-========================================================= */
+   ========================================================= */
 
 export async function getAdminReportsOverview() {
   return apiRequest(
@@ -1109,10 +1118,126 @@ export async function getAdminReportsTopProducts() {
 
 /* =========================================================
    ADMIN ALERTS
-========================================================= */
+   ========================================================= */
 
 export async function getAdminAlerts() {
   return apiRequest(
     "/admin/alerts"
+  );
+}
+
+
+/* =========================================================
+   ADMIN REFILL ACTIONS
+   ========================================================= */
+
+export async function reviewAdminRefill(
+  refillId,
+  note
+) {
+  return apiRequest(
+    "/admin/alerts/refills/review",
+    {
+      method: "POST",
+
+      body: JSON.stringify({
+        refill_id:
+          String(
+            refillId || ""
+          ).trim(),
+
+        note:
+          String(
+            note || ""
+          ).trim(),
+      }),
+    }
+  );
+}
+
+
+export async function rescheduleAdminRefill(
+  refillId,
+  newRefillDate,
+  note
+) {
+  return apiRequest(
+    "/admin/alerts/refills/reschedule",
+    {
+      method: "POST",
+
+      body: JSON.stringify({
+        refill_id:
+          String(
+            refillId || ""
+          ).trim(),
+
+        new_refill_date:
+          String(
+            newRefillDate || ""
+          ).trim(),
+
+        note:
+          String(
+            note || ""
+          ).trim(),
+      }),
+    }
+  );
+}
+
+
+export async function cancelAdminRefillByPatient(
+  refillId,
+  reason
+) {
+  return apiRequest(
+    "/admin/alerts/refills/patient-cancel",
+    {
+      method: "POST",
+
+      body: JSON.stringify({
+        refill_id:
+          String(
+            refillId || ""
+          ).trim(),
+
+        reason:
+          String(
+            reason || ""
+          ).trim(),
+      }),
+    }
+  );
+}
+
+
+export async function clinicallyDeclineAdminRefill(
+  refillId,
+  reason,
+  note = ""
+) {
+  return apiRequest(
+    "/admin/alerts/refills/clinical-decline",
+    {
+      method: "POST",
+
+      body: JSON.stringify({
+        refill_id:
+          String(
+            refillId || ""
+          ).trim(),
+
+        reason:
+          String(
+            reason || ""
+          ).trim(),
+
+        note:
+          String(
+            note || ""
+          ).trim(),
+      }),
+    }
   );
 }

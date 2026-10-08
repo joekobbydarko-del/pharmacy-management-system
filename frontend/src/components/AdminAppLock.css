@@ -1,0 +1,960 @@
+/* =========================================================
+   DR. EVANS PHARMACY
+   ADMIN APPLICATION LOCK
+   ========================================================= */
+
+.admin-app-lock {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 10000;
+
+  display: grid;
+  place-items: center;
+
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+
+  padding: 24px;
+
+  overflow-y: auto;
+
+  background:
+    rgba(
+      4,
+      29,
+      36,
+      0.76
+    );
+
+  backdrop-filter:
+    blur(15px);
+
+  -webkit-backdrop-filter:
+    blur(15px);
+}
+
+
+.admin-app-lock__background {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: -1;
+
+  overflow: hidden;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 18% 18%,
+      rgba(40, 205, 198, 0.18),
+      transparent 33%
+    ),
+    radial-gradient(
+      circle at 84% 78%,
+      rgba(62, 127, 211, 0.14),
+      transparent 36%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(2, 58, 65, 0.92),
+      rgba(3, 34, 43, 0.97)
+    );
+}
+
+
+.admin-app-lock__card {
+  position: relative;
+
+  width:
+    min(
+      470px,
+      100%
+    );
+
+  min-width: 0;
+
+  padding:
+    27px
+    27px
+    24px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.2
+    );
+
+  border-radius: 25px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.97
+    );
+
+  box-shadow:
+    0
+    35px
+    90px
+    rgba(
+      0,
+      0,
+      0,
+      0.34
+    );
+
+  text-align: center;
+}
+
+
+.admin-app-lock__card::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #07958e,
+      #2dc9c3 55%,
+      #74e2dc
+    );
+}
+
+
+/* =========================================================
+   BRAND
+   ========================================================= */
+
+.admin-app-lock__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-bottom: 23px;
+}
+
+
+.admin-app-lock__logo {
+  width: 46px;
+  height: 46px;
+
+  flex:
+    0
+    0
+    46px;
+
+  display: grid;
+  place-items: center;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    #d6e7e8;
+
+  border-radius: 13px;
+
+  background: #ffffff;
+}
+
+
+.admin-app-lock__logo img {
+  width: 35px !important;
+  height: 35px !important;
+
+  max-width: 35px !important;
+  max-height: 35px !important;
+
+  object-fit: contain !important;
+}
+
+
+.admin-app-lock__brand > div {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+}
+
+
+.admin-app-lock__brand strong {
+  color: #0b3142 !important;
+
+  font-size: 13px;
+  font-weight: 900;
+
+  line-height: 1.2;
+}
+
+
+.admin-app-lock__brand span {
+  margin-top: 3px;
+
+  color: #72909a;
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: 1.4px;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   LOCK ICON
+   ========================================================= */
+
+.admin-app-lock__lock-icon {
+  width: 69px;
+  height: 69px;
+
+  display: grid;
+  place-items: center;
+
+  margin:
+    0
+    auto
+    16px;
+
+  border:
+    1px solid
+    #cceae8;
+
+  border-radius: 20px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #e8faf8,
+      #d8f4f1
+    );
+
+  color: #0b908b;
+
+  box-shadow:
+    0
+    11px
+    25px
+    rgba(
+      15,
+      155,
+      150,
+      0.12
+    );
+}
+
+
+.admin-app-lock__eyebrow {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 27px;
+
+  padding:
+    0
+    10px;
+
+  border:
+    1px solid
+    rgba(
+      15,
+      155,
+      150,
+      0.17
+    );
+
+  border-radius: 999px;
+
+  background: #edf9f8;
+
+  color: #0c8985 !important;
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: 1.15px;
+
+  text-transform: uppercase;
+}
+
+
+.admin-app-lock__card h1 {
+  margin:
+    12px
+    0
+    0;
+
+  color: #0b3142 !important;
+
+  font-size:
+    clamp(
+      25px,
+      3vw,
+      31px
+    );
+
+  font-weight: 900;
+
+  letter-spacing:
+    -0.5px;
+}
+
+
+.admin-app-lock__description {
+  max-width: 370px;
+
+  margin:
+    9px
+    auto
+    18px;
+
+  color: #66818c !important;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   IDENTITY
+   ========================================================= */
+
+.admin-app-lock__identity {
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  margin-bottom: 19px;
+
+  padding: 12px;
+
+  border:
+    1px solid
+    #dce8eb;
+
+  border-radius: 14px;
+
+  background: #f7fafb;
+
+  text-align: left;
+}
+
+
+.admin-app-lock__avatar {
+  width: 46px;
+  height: 46px;
+
+  flex:
+    0
+    0
+    46px;
+
+  display: grid;
+  place-items: center;
+
+  overflow: hidden;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #18bfc0,
+      #087f7a
+    );
+
+  color: #ffffff !important;
+
+  font-size: 12px;
+  font-weight: 900;
+}
+
+
+.admin-app-lock__avatar.has-photo {
+  background: #e4f6f4;
+}
+
+
+.admin-app-lock__avatar img {
+  width: 100% !important;
+  height: 100% !important;
+
+  max-width: 100% !important;
+  max-height: 100% !important;
+
+  display: block !important;
+
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+
+.admin-app-lock__identity > div {
+  min-width: 0;
+}
+
+
+.admin-app-lock__identity strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #0b3142 !important;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+.admin-app-lock__identity span {
+  display: block;
+
+  margin-top: 4px;
+
+  overflow: hidden;
+
+  color: #708994 !important;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   FORM
+   ========================================================= */
+
+.admin-app-lock__form {
+  display: grid;
+
+  gap: 13px;
+
+  text-align: left;
+}
+
+
+.admin-app-lock__field {
+  display: grid;
+
+  gap: 7px;
+}
+
+
+.admin-app-lock__field > span {
+  color: #294d5b !important;
+
+  font-size: 9px;
+  font-weight: 900;
+}
+
+
+.admin-app-lock__password-wrap {
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns:
+    auto
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 9px;
+
+  min-height: 49px;
+
+  padding:
+    0
+    7px
+    0
+    13px;
+
+  border:
+    1px solid
+    #cedee2;
+
+  border-radius: 12px;
+
+  background: #ffffff;
+
+  color: #64808a;
+
+  transition:
+    border-color
+    0.17s ease,
+    box-shadow
+    0.17s ease;
+}
+
+
+.admin-app-lock__password-wrap:focus-within {
+  border-color: #109c97;
+
+  box-shadow:
+    0
+    0
+    0
+    4px
+    rgba(
+      16,
+      156,
+      151,
+      0.09
+    );
+}
+
+
+.admin-app-lock__password-wrap input {
+  width: 100%;
+  min-width: 0;
+  height: 47px;
+
+  padding: 0;
+
+  border: 0;
+  outline: 0;
+
+  background: transparent;
+
+  color: #123440 !important;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+
+.admin-app-lock__password-wrap input::placeholder {
+  color: #96a9b0;
+}
+
+
+.admin-app-lock__password-wrap button {
+  width: 35px;
+  height: 35px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
+
+  border: 0;
+  border-radius: 9px;
+
+  background: transparent;
+
+  color: #627e88;
+
+  cursor: pointer;
+}
+
+
+.admin-app-lock__password-wrap button:hover {
+  background: #edf6f6;
+
+  color: #087f7b;
+}
+
+
+/* =========================================================
+   ERROR
+   ========================================================= */
+
+.admin-app-lock__error {
+  padding:
+    10px
+    11px;
+
+  border:
+    1px solid
+    rgba(
+      201,
+      80,
+      80,
+      0.23
+    );
+
+  border-radius: 10px;
+
+  background: #fff2f2;
+
+  color: #b54141 !important;
+
+  font-size: 9px;
+  font-weight: 800;
+
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   UNLOCK BUTTON
+   ========================================================= */
+
+.admin-app-lock__unlock {
+  width: 100%;
+  min-height: 47px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  padding:
+    0
+    15px;
+
+  border:
+    1px solid
+    #078c87;
+
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #12aaa4,
+      #087f7b
+    );
+
+  color: #ffffff !important;
+
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  box-shadow:
+    0
+    10px
+    22px
+    rgba(
+      8,
+      127,
+      123,
+      0.2
+    );
+
+  transition:
+    transform
+    0.17s ease,
+    box-shadow
+    0.17s ease;
+}
+
+
+.admin-app-lock__unlock:hover:not(
+  :disabled
+) {
+  transform:
+    translateY(-2px);
+
+  box-shadow:
+    0
+    14px
+    27px
+    rgba(
+      8,
+      127,
+      123,
+      0.27
+    );
+}
+
+
+.admin-app-lock__unlock:disabled {
+  opacity: 0.65;
+
+  cursor: wait;
+}
+
+
+/* =========================================================
+   SIGN OUT
+   ========================================================= */
+
+.admin-app-lock__signout {
+  margin-top: 15px;
+
+  padding:
+    7px
+    10px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #6a838d !important;
+
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 850;
+
+  cursor: pointer;
+}
+
+
+.admin-app-lock__signout:hover {
+  color: #c95050 !important;
+}
+
+
+.admin-app-lock__signout:disabled {
+  opacity: 0.5;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================================================
+   SECURITY NOTE
+   ========================================================= */
+
+.admin-app-lock__security-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  margin-top: 15px;
+
+  padding-top: 14px;
+
+  border-top:
+    1px solid
+    #e3ecee;
+
+  color: #82979f !important;
+
+  font-size: 8px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   DARK MODE
+   ========================================================= */
+
+[data-admin-theme="dark"]
+.admin-app-lock {
+  background:
+    rgba(
+      2,
+      19,
+      25,
+      0.84
+    );
+}
+
+
+[data-admin-theme="dark"]
+.admin-app-lock__card {
+  border-color: #347263;
+
+  background:
+    linear-gradient(
+      180deg,
+      #184d42,
+      #123f38
+    );
+
+  box-shadow:
+    0
+    35px
+    90px
+    rgba(
+      0,
+      0,
+      0,
+      0.46
+    );
+}
+
+
+[data-admin-theme="dark"]
+.admin-app-lock__brand strong,
+[data-admin-theme="dark"]
+.admin-app-lock__card h1,
+[data-admin-theme="dark"]
+.admin-app-lock__identity strong {
+  color: #ffffff !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-app-lock__brand span,
+[data-admin-theme="dark"]
+.admin-app-lock__description,
+[data-admin-theme="dark"]
+.admin-app-lock__identity span {
+  color: #b9d0ca !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-app-lock__logo {
+  border-color: #39766c;
+
+  background: #ffffff;
+}
+
+
+[data-admin-theme="dark"]
+.admin-app-lock__lock-icon {
+  border-color: #39766c;
+
+  background: #103c37;
+
+  color: #74ebe5;
+}
+
+
+[data-admin-theme="dark"]
+.admin-app-lock__eyebrow {
+  border-color: #39766c;
+
+  background: #103c37;
+
+  color: #74ebe5 !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-app-lock__identity {
+  border-color: #39766c;
+
+  background: #195249;
+}
+
+
+[data-admin-theme="dark"]
+.admin-app-lock__field > span {
+  color: #d8e8e3 !important;
+}
+
+
+[data-admin-theme="dark"]
+.admin-app-lock__password-wrap {
+  border-color: #39766c;
+
+  background: #103c37;
+
+  color: #b8cec9;
+}
+
+
+[data-admin-theme="dark"]
+.admin-app-lock__password-wrap input {
+  color: #ffffff !important;
+
+  color-scheme: dark;
+}
+
+
+[data-admin-theme="dark"]
+.admin-app-lock__password-wrap button:hover {
+  background: #195249;
+
+  color: #74ebe5;
+}
+
+
+[data-admin-theme="dark"]
+.admin-app-lock__security-note {
+  border-top-color: #39766c;
+
+  color: #a9c4bd !important;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .admin-app-lock {
+    padding: 12px;
+  }
+
+
+  .admin-app-lock__card {
+    padding:
+      23px
+      17px
+      20px;
+
+    border-radius: 20px;
+  }
+
+
+  .admin-app-lock__brand {
+    margin-bottom: 18px;
+  }
+
+
+  .admin-app-lock__lock-icon {
+    width: 61px;
+    height: 61px;
+
+    border-radius: 17px;
+  }
+
+
+  .admin-app-lock__card h1 {
+    font-size: 24px;
+  }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (
+  prefers-reduced-motion:
+    reduce
+) {
+  .admin-app-lock__unlock,
+  .admin-app-lock__password-wrap {
+    transition: none;
+  }
+}

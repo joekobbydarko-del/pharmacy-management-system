@@ -1,28 +1,3 @@
-/**
- * ============================================================
- * DR. EVANS PHARMACY
- * COMPLETE WEB APP ROUTER
- *
- * DASHBOARD + SALES + PATIENTS + INVENTORY
- * PURCHASES + SUPPLIERS
- *
- * IMPORTANT BUSINESS RULE
- * ------------------------------------------------------------
- * Suppliers provide medicine TO Dr. Evans Pharmacy.
- * Patients buy medicine FROM Dr. Evans Pharmacy.
- *
- * Suppliers are created ONLY from the Suppliers workflow.
- * Purchases may NEVER automatically create suppliers.
- * ============================================================
- */
-
-
-/**
- * ============================================================
- * BASIC WEB APP HELPERS
- * ============================================================
- */
-
 function webAppUrl_() {
   const url = PropertiesService
     .getScriptProperties()
@@ -112,12 +87,6 @@ function buildPublicUrl_(action, parameters) {
 }
 
 
-/**
- * ============================================================
- * JSON RESPONSE
- * ============================================================
- */
-
 function webJson_(payload) {
   return ContentService
     .createTextOutput(
@@ -128,12 +97,6 @@ function webJson_(payload) {
     );
 }
 
-
-/**
- * ============================================================
- * SPREADSHEET
- * ============================================================
- */
 
 function dashboardSpreadsheet_() {
   const properties =
@@ -161,12 +124,6 @@ function dashboardSpreadsheet_() {
 }
 
 
-/**
- * ============================================================
- * MAIN GET ROUTER
- * ============================================================
- */
-
 function doGet(e) {
   try {
     const action = String(
@@ -193,6 +150,18 @@ function doGet(e) {
       action === "admin-sales"
     ) {
       return handleAdminSales_(e);
+    }
+
+    if (
+      action === "admin-pos-products"
+    ) {
+      return handleAdminPosProducts_(e);
+    }
+
+    if (
+      action === "admin-pos-sales"
+    ) {
+      return handleAdminPosSales_(e);
     }
 
     if (
@@ -263,12 +232,6 @@ function doGet(e) {
 }
 
 
-/**
- * ============================================================
- * MAIN POST ROUTER
- * ============================================================
- */
-
 function doPost(e) {
   try {
     const action = String(
@@ -280,6 +243,15 @@ function doPost(e) {
     )
       .trim()
       .toLowerCase();
+
+    if (
+      action ===
+      "admin-pos-checkout"
+    ) {
+      return handleAdminPosCheckout_(
+        e
+      );
+    }
 
     if (
       action ===
@@ -310,6 +282,42 @@ function doPost(e) {
 
     if (
       action ===
+      "admin-refill-review"
+    ) {
+      return handleAdminRefillReview_(
+        e
+      );
+    }
+
+    if (
+      action ===
+      "admin-refill-reschedule"
+    ) {
+      return handleAdminRefillReschedule_(
+        e
+      );
+    }
+
+    if (
+      action ===
+      "admin-refill-patient-cancel"
+    ) {
+      return handleAdminRefillPatientCancel_(
+        e
+      );
+    }
+
+    if (
+      action ===
+      "admin-refill-clinical-decline"
+    ) {
+      return handleAdminRefillClinicalDecline_(
+        e
+      );
+    }
+
+    if (
+      action ===
       "bank-transfer-submit"
     ) {
       return handleBankTransferSubmission_(
@@ -333,12 +341,6 @@ function doPost(e) {
 }
 
 
-/**
- * ============================================================
- * ADMIN SECURITY
- * ============================================================
- */
-
 function adminDashboardSyncKey_() {
   const value = PropertiesService
     .getScriptProperties()
@@ -356,13 +358,11 @@ function adminDashboardSyncKey_() {
 }
 
 
-function verifyAdminDashboardRequest_(
-  e
-) {
+function verifyAdminDashboardRequest_(e) {
   const supplied = String(
     e &&
-    e.parameter &&
-    e.parameter.key
+      e.parameter &&
+      e.parameter.key
       ? e.parameter.key
       : ""
   ).trim();
@@ -377,12 +377,6 @@ function verifyAdminDashboardRequest_(
   );
 }
 
-
-/**
- * ============================================================
- * GENERIC SHEET READER
- * ============================================================
- */
 
 function dashboardReadSheet_(
   spreadsheet,
@@ -440,15 +434,12 @@ function dashboardReadSheet_(
 
     for (
       let columnIndex = 0;
-      columnIndex <
-      sourceRow.length;
+      columnIndex < sourceRow.length;
       columnIndex++
     ) {
       if (
-        sourceRow[columnIndex] !==
-          "" &&
-        sourceRow[columnIndex] !==
-          null
+        sourceRow[columnIndex] !== "" &&
+        sourceRow[columnIndex] !== null
       ) {
         hasValue = true;
         break;
@@ -478,12 +469,6 @@ function dashboardReadSheet_(
   return rows;
 }
 
-
-/**
- * ============================================================
- * VALUES
- * ============================================================
- */
 
 function dashboardNumber_(value) {
   if (
@@ -640,16 +625,13 @@ function dashboardMonth_(value) {
     "-" +
     String(
       date.getMonth() + 1
-    ).padStart(2, "0")
+    ).padStart(
+      2,
+      "0"
+    )
   );
 }
 
-
-/**
- * ============================================================
- * JSON BODY
- * ============================================================
- */
 
 function parseJsonBody_(e) {
   if (
@@ -672,11 +654,9 @@ function parseJsonBody_(e) {
 }
 
 
-/**
- * ============================================================
- * PURCHASE / SUPPLIER SHEETS
- * ============================================================
- */
+/* =========================================================
+   PURCHASE / SUPPLIER DEFINITIONS
+   ========================================================= */
 
 function purchaseSheetDefinitions_() {
   return {
@@ -717,12 +697,6 @@ function purchaseSheetDefinitions_() {
   };
 }
 
-
-/**
- * ============================================================
- * ENSURE PURCHASE / SUPPLIER SHEETS
- * ============================================================
- */
 
 function ensurePurchaseSheets_(
   spreadsheet
@@ -796,12 +770,6 @@ function ensurePurchaseSheets_(
 }
 
 
-/**
- * ============================================================
- * HEADER MAP
- * ============================================================
- */
-
 function purchaseHeaderMap_(sheet) {
   const lastColumn =
     sheet.getLastColumn();
@@ -838,12 +806,6 @@ function purchaseHeaderMap_(sheet) {
   return map;
 }
 
-
-/**
- * ============================================================
- * NEXT ID
- * ============================================================
- */
 
 function nextSheetId_(
   rows,
@@ -889,12 +851,6 @@ function nextSheetId_(
 }
 
 
-/**
- * ============================================================
- * SUPPLIER ROW LOOKUP
- * ============================================================
- */
-
 function findSupplierRow_(
   sheet,
   supplierId
@@ -918,14 +874,15 @@ function findSupplierRow_(
     return null;
   }
 
-  const values = sheet
-    .getRange(
-      2,
-      idColumn,
-      lastRow - 1,
-      1
-    )
-    .getValues();
+  const values =
+    sheet
+      .getRange(
+        2,
+        idColumn,
+        lastRow - 1,
+        1
+      )
+      .getValues();
 
   for (
     let index = 0;
@@ -954,17 +911,6 @@ function findSupplierRow_(
   return null;
 }
 
-
-/**
- * ============================================================
- * PURCHASE SUPPLIER LOOKUP
- *
- * IMPORTANT:
- * Purchases DO NOT create suppliers.
- *
- * Supplier must already exist in Suppliers and must be Active.
- * ============================================================
- */
 
 function getPurchaseSupplierById_(
   spreadsheet,
@@ -1048,12 +994,6 @@ function getPurchaseSupplierById_(
   };
 }
 
-
-/**
- * ============================================================
- * NORMALIZE SUPPLIER
- * ============================================================
- */
 
 function normalizeAdminSupplier_(
   supplier
@@ -1150,12 +1090,6 @@ function normalizeAdminSupplier_(
 }
 
 
-/**
- * ============================================================
- * BUILD SUPPLIERS
- * ============================================================
- */
-
 function buildAdminSuppliers_() {
   const spreadsheet =
     dashboardSpreadsheet_();
@@ -1224,14 +1158,16 @@ function buildAdminSuppliers_() {
       })
       .sort(
         function (a, b) {
-          return a.supplier_name.localeCompare(
-            b.supplier_name
-          );
+          return a.supplier_name
+            .localeCompare(
+              b.supplier_name
+            );
         }
       );
 
   return {
-    ok: true,
+    ok:
+      true,
 
     source:
       "google-sheets",
@@ -1262,12 +1198,6 @@ function buildAdminSuppliers_() {
 }
 
 
-/**
- * ============================================================
- * GET SUPPLIERS
- * ============================================================
- */
-
 function handleAdminSuppliers_(e) {
   try {
     if (
@@ -1276,7 +1206,9 @@ function handleAdminSuppliers_(e) {
       )
     ) {
       return webJson_({
-        ok: false,
+        ok:
+          false,
+
         error:
           "Unauthorized suppliers request.",
       });
@@ -1285,11 +1217,14 @@ function handleAdminSuppliers_(e) {
     return webJson_(
       buildAdminSuppliers_()
     );
+
   } catch (error) {
     console.error(error);
 
     return webJson_({
-      ok: false,
+      ok:
+        false,
+
       error:
         error.message ||
         "Unable to load suppliers.",
@@ -1298,17 +1233,12 @@ function handleAdminSuppliers_(e) {
 }
 
 
-/**
- * ============================================================
- * CREATE SUPPLIER
- *
- * Suppliers are created ONLY through this supplier workflow.
- * ============================================================
- */
-
 function createGoogleSupplier_(
   payload
 ) {
+  payload =
+    payload || {};
+
   const spreadsheet =
     dashboardSpreadsheet_();
 
@@ -1454,12 +1384,6 @@ function createGoogleSupplier_(
 }
 
 
-/**
- * ============================================================
- * CREATE SUPPLIER ENDPOINT
- * ============================================================
- */
-
 function handleAdminSupplierCreate_(
   e
 ) {
@@ -1470,7 +1394,9 @@ function handleAdminSupplierCreate_(
       )
     ) {
       return webJson_({
-        ok: false,
+        ok:
+          false,
+
         error:
           "Unauthorized supplier request.",
       });
@@ -1485,7 +1411,8 @@ function handleAdminSupplierCreate_(
       );
 
     return webJson_({
-      ok: true,
+      ok:
+        true,
 
       message:
         "Supplier created successfully.",
@@ -1493,11 +1420,13 @@ function handleAdminSupplierCreate_(
       supplier:
         supplier,
     });
+
   } catch (error) {
     console.error(error);
 
     return webJson_({
-      ok: false,
+      ok:
+        false,
 
       error:
         error.message ||
@@ -1507,15 +1436,12 @@ function handleAdminSupplierCreate_(
 }
 
 
-/**
- * ============================================================
- * UPDATE SUPPLIER STATUS
- * ============================================================
- */
-
 function updateGoogleSupplierStatus_(
   payload
 ) {
+  payload =
+    payload || {};
+
   const spreadsheet =
     dashboardSpreadsheet_();
 
@@ -1576,7 +1502,9 @@ function updateGoogleSupplierStatus_(
       info.row,
       info.map.Status
     )
-    .setValue(status);
+    .setValue(
+      status
+    );
 
   const supplierName =
     info.map.Supplier_Name
@@ -1613,15 +1541,7 @@ function updateGoogleSupplierStatus_(
 }
 
 
-/**
- * ============================================================
- * SUPPLIER STATUS ENDPOINT
- * ============================================================
- */
-
-function handleAdminSupplierStatus_(
-  e
-) {
+function handleAdminSupplierStatus_(e) {
   try {
     if (
       !verifyAdminDashboardRequest_(
@@ -1629,7 +1549,9 @@ function handleAdminSupplierStatus_(
       )
     ) {
       return webJson_({
-        ok: false,
+        ok:
+          false,
+
         error:
           "Unauthorized supplier status request.",
       });
@@ -1644,7 +1566,8 @@ function handleAdminSupplierStatus_(
       );
 
     return webJson_({
-      ok: true,
+      ok:
+        true,
 
       message:
         "Supplier status updated successfully.",
@@ -1652,11 +1575,13 @@ function handleAdminSupplierStatus_(
       supplier:
         supplier,
     });
+
   } catch (error) {
     console.error(error);
 
     return webJson_({
-      ok: false,
+      ok:
+        false,
 
       error:
         error.message ||
@@ -1666,11 +1591,535 @@ function handleAdminSupplierStatus_(
 }
 
 
-/**
- * ============================================================
- * FIND DRUG ROW
- * ============================================================
- */
+/* =========================================================
+   ADMIN REFILL ACTION HELPERS
+   ========================================================= */
+
+function adminRefillPayloadValue_(
+  payload,
+  snakeKey,
+  camelKey
+) {
+  if (!payload) {
+    return "";
+  }
+
+  if (
+    payload[snakeKey] !==
+      undefined &&
+    payload[snakeKey] !==
+      null
+  ) {
+    return payload[snakeKey];
+  }
+
+  if (
+    camelKey &&
+    payload[camelKey] !==
+      undefined &&
+    payload[camelKey] !==
+      null
+  ) {
+    return payload[camelKey];
+  }
+
+  return "";
+}
+
+
+function adminRefillReviewer_(
+  payload
+) {
+  const reviewer =
+    String(
+      adminRefillPayloadValue_(
+        payload,
+        "reviewed_by",
+        "reviewedBy"
+      ) ||
+      adminRefillPayloadValue_(
+        payload,
+        "reviewer",
+        "reviewer"
+      ) ||
+      adminRefillPayloadValue_(
+        payload,
+        "admin_name",
+        "adminName"
+      ) ||
+      "Admin"
+    ).trim();
+
+  return (
+    reviewer ||
+    "Admin"
+  );
+}
+
+
+/* =========================================================
+   SAVE REVIEW NOTE
+   ========================================================= */
+
+function handleAdminRefillReview_(
+  e
+) {
+  try {
+    if (
+      !verifyAdminDashboardRequest_(
+        e
+      )
+    ) {
+      return webJson_({
+        ok:
+          false,
+
+        error:
+          "Unauthorized refill review request.",
+      });
+    }
+
+    const payload =
+      parseJsonBody_(
+        e
+      );
+
+    const refillId =
+      String(
+        adminRefillPayloadValue_(
+          payload,
+          "refill_id",
+          "refillId"
+        ) ||
+        ""
+      ).trim();
+
+    const note =
+      String(
+        adminRefillPayloadValue_(
+          payload,
+          "note",
+          "note"
+        ) ||
+        adminRefillPayloadValue_(
+          payload,
+          "review_note",
+          "reviewNote"
+        ) ||
+        ""
+      ).trim();
+
+    const reviewedBy =
+      adminRefillReviewer_(
+        payload
+      );
+
+    if (!refillId) {
+      throw new Error(
+        "Refill ID is required."
+      );
+    }
+
+    if (!note) {
+      throw new Error(
+        "A pharmacist review note is required."
+      );
+    }
+
+    const result =
+      reviewRefill_(
+        refillId,
+        note,
+        reviewedBy
+      );
+
+    return webJson_({
+      ok:
+        true,
+
+      message:
+        "Refill review saved successfully.",
+
+      refill:
+        result,
+    });
+
+  } catch (error) {
+    console.error(
+      error
+    );
+
+    return webJson_({
+      ok:
+        false,
+
+      error:
+        error.message ||
+        "Unable to save refill review.",
+    });
+  }
+}
+
+
+/* =========================================================
+   RESCHEDULE REFILL
+   ========================================================= */
+
+function handleAdminRefillReschedule_(
+  e
+) {
+  try {
+    if (
+      !verifyAdminDashboardRequest_(
+        e
+      )
+    ) {
+      return webJson_({
+        ok:
+          false,
+
+        error:
+          "Unauthorized refill reschedule request.",
+      });
+    }
+
+    const payload =
+      parseJsonBody_(
+        e
+      );
+
+    const refillId =
+      String(
+        adminRefillPayloadValue_(
+          payload,
+          "refill_id",
+          "refillId"
+        ) ||
+        ""
+      ).trim();
+
+    const newRefillDate =
+      adminRefillPayloadValue_(
+        payload,
+        "new_refill_date",
+        "newRefillDate"
+      ) ||
+      adminRefillPayloadValue_(
+        payload,
+        "next_refill_date",
+        "nextRefillDate"
+      );
+
+    const note =
+      String(
+        adminRefillPayloadValue_(
+          payload,
+          "note",
+          "note"
+        ) ||
+        adminRefillPayloadValue_(
+          payload,
+          "reason",
+          "reason"
+        ) ||
+        adminRefillPayloadValue_(
+          payload,
+          "review_note",
+          "reviewNote"
+        ) ||
+        ""
+      ).trim();
+
+    const reviewedBy =
+      adminRefillReviewer_(
+        payload
+      );
+
+    if (!refillId) {
+      throw new Error(
+        "Refill ID is required."
+      );
+    }
+
+    if (
+      newRefillDate === "" ||
+      newRefillDate === null ||
+      newRefillDate === undefined
+    ) {
+      throw new Error(
+        "A new refill date is required."
+      );
+    }
+
+    if (!note) {
+      throw new Error(
+        "A reason or pharmacist note is required when rescheduling a refill."
+      );
+    }
+
+    const result =
+      rescheduleRefill_(
+        refillId,
+        newRefillDate,
+        note,
+        reviewedBy
+      );
+
+    return webJson_({
+      ok:
+        true,
+
+      message:
+        "Refill rescheduled successfully.",
+
+      refill:
+        result,
+    });
+
+  } catch (error) {
+    console.error(
+      error
+    );
+
+    return webJson_({
+      ok:
+        false,
+
+      error:
+        error.message ||
+        "Unable to reschedule refill.",
+    });
+  }
+}
+
+
+/* =========================================================
+   PATIENT CANCELLATION
+   ========================================================= */
+
+function handleAdminRefillPatientCancel_(
+  e
+) {
+  try {
+    if (
+      !verifyAdminDashboardRequest_(
+        e
+      )
+    ) {
+      return webJson_({
+        ok:
+          false,
+
+        error:
+          "Unauthorized refill cancellation request.",
+      });
+    }
+
+    const payload =
+      parseJsonBody_(
+        e
+      );
+
+    const refillId =
+      String(
+        adminRefillPayloadValue_(
+          payload,
+          "refill_id",
+          "refillId"
+        ) ||
+        ""
+      ).trim();
+
+    const reason =
+      String(
+        adminRefillPayloadValue_(
+          payload,
+          "reason",
+          "reason"
+        ) ||
+        adminRefillPayloadValue_(
+          payload,
+          "cancellation_reason",
+          "cancellationReason"
+        ) ||
+        ""
+      ).trim();
+
+    const reviewedBy =
+      adminRefillReviewer_(
+        payload
+      );
+
+    if (!refillId) {
+      throw new Error(
+        "Refill ID is required."
+      );
+    }
+
+    if (!reason) {
+      throw new Error(
+        "The patient's cancellation reason is required."
+      );
+    }
+
+    const result =
+      cancelRefillByPatient_(
+        refillId,
+        reason,
+        reviewedBy
+      );
+
+    return webJson_({
+      ok:
+        true,
+
+      message:
+        "Refill cancelled by patient successfully.",
+
+      refill:
+        result,
+    });
+
+  } catch (error) {
+    console.error(
+      error
+    );
+
+    return webJson_({
+      ok:
+        false,
+
+      error:
+        error.message ||
+        "Unable to record patient cancellation.",
+    });
+  }
+}
+
+
+/* =========================================================
+   CLINICAL DECLINE
+   ========================================================= */
+
+function handleAdminRefillClinicalDecline_(
+  e
+) {
+  try {
+    if (
+      !verifyAdminDashboardRequest_(
+        e
+      )
+    ) {
+      return webJson_({
+        ok:
+          false,
+
+        error:
+          "Unauthorized clinical refill review request.",
+      });
+    }
+
+    const payload =
+      parseJsonBody_(
+        e
+      );
+
+    const refillId =
+      String(
+        adminRefillPayloadValue_(
+          payload,
+          "refill_id",
+          "refillId"
+        ) ||
+        ""
+      ).trim();
+
+    const reason =
+      String(
+        adminRefillPayloadValue_(
+          payload,
+          "reason",
+          "reason"
+        ) ||
+        adminRefillPayloadValue_(
+          payload,
+          "clinical_reason",
+          "clinicalReason"
+        ) ||
+        ""
+      ).trim();
+
+    const note =
+      String(
+        adminRefillPayloadValue_(
+          payload,
+          "note",
+          "note"
+        ) ||
+        adminRefillPayloadValue_(
+          payload,
+          "review_note",
+          "reviewNote"
+        ) ||
+        ""
+      ).trim();
+
+    const reviewedBy =
+      adminRefillReviewer_(
+        payload
+      );
+
+    if (!refillId) {
+      throw new Error(
+        "Refill ID is required."
+      );
+    }
+
+    if (!reason) {
+      throw new Error(
+        "A clinical decline reason is required."
+      );
+    }
+
+    const result =
+      clinicallyDeclineRefill_(
+        refillId,
+        reason,
+        note,
+        reviewedBy
+      );
+
+    return webJson_({
+      ok:
+        true,
+
+      message:
+        "Refill clinically declined successfully.",
+
+      refill:
+        result,
+    });
+
+  } catch (error) {
+    console.error(
+      error
+    );
+
+    return webJson_({
+      ok:
+        false,
+
+      error:
+        error.message ||
+        "Unable to record clinical decline.",
+    });
+  }
+}
+
+
+/* =========================================================
+   PURCHASE DRUG / INVENTORY HELPERS
+   ========================================================= */
 
 function findDrugRow_(
   drugsSheet,
@@ -1735,12 +2184,6 @@ function findDrugRow_(
 }
 
 
-/**
- * ============================================================
- * FIND INVENTORY ROW
- * ============================================================
- */
-
 function findInventoryRow_(
   inventorySheet,
   drugId
@@ -1804,12 +2247,6 @@ function findInventoryRow_(
 }
 
 
-/**
- * ============================================================
- * INVENTORY STATUS
- * ============================================================
- */
-
 function calculateInventoryStatus_(
   stock,
   reorder
@@ -1834,12 +2271,6 @@ function calculateInventoryStatus_(
   return "Healthy";
 }
 
-
-/**
- * ============================================================
- * BUILD ADMIN PURCHASES
- * ============================================================
- */
 
 function buildAdminPurchases_() {
   const spreadsheet =
@@ -1879,7 +2310,8 @@ function buildAdminPurchases_() {
       "Purchase_Items"
     );
 
-  const inventoryByDrug = {};
+  const inventoryByDrug =
+    {};
 
   inventory.forEach(
     function (item) {
@@ -1950,15 +2382,12 @@ function buildAdminPurchases_() {
         };
       })
       .sort(function (a, b) {
-        return a.drug_name.localeCompare(
-          b.drug_name
-        );
+        return a.drug_name
+          .localeCompare(
+            b.drug_name
+          );
       });
 
-  /**
-   * Suppliers sent to Purchases are normalized.
-   * Frontend will show ONLY active suppliers in selector.
-   */
   const supplierResponse =
     suppliers
       .map(function (supplier) {
@@ -1967,9 +2396,10 @@ function buildAdminPurchases_() {
         );
       })
       .sort(function (a, b) {
-        return a.supplier_name.localeCompare(
-          b.supplier_name
-        );
+        return a.supplier_name
+          .localeCompare(
+            b.supplier_name
+          );
       });
 
   const itemCountByPurchase =
@@ -2096,7 +2526,8 @@ function buildAdminPurchases_() {
       });
 
   return {
-    ok: true,
+    ok:
+      true,
 
     source:
       "google-sheets",
@@ -2107,9 +2538,6 @@ function buildAdminPurchases_() {
     drugs:
       drugsResponse,
 
-    /**
-     * Purchases can use these for the supplier dropdown.
-     */
     suppliers:
       supplierResponse,
 
@@ -2132,12 +2560,6 @@ function buildAdminPurchases_() {
 }
 
 
-/**
- * ============================================================
- * PURCHASES GET
- * ============================================================
- */
-
 function handleAdminPurchases_(e) {
   try {
     if (
@@ -2146,7 +2568,9 @@ function handleAdminPurchases_(e) {
       )
     ) {
       return webJson_({
-        ok: false,
+        ok:
+          false,
+
         error:
           "Unauthorized purchases request.",
       });
@@ -2155,11 +2579,13 @@ function handleAdminPurchases_(e) {
     return webJson_(
       buildAdminPurchases_()
     );
+
   } catch (error) {
     console.error(error);
 
     return webJson_({
-      ok: false,
+      ok:
+        false,
 
       error:
         error.message ||
@@ -2169,27 +2595,12 @@ function handleAdminPurchases_(e) {
 }
 
 
-/**
- * ============================================================
- * CREATE PURCHASE
- *
- * CORRECT STOCK FLOW:
- *
- * Existing Supplier
- *      ↓
- * Purchase
- *      ↓
- * Purchase Items
- *      ↓
- * Inventory increases
- *
- * This function NEVER creates suppliers.
- * ============================================================
- */
-
 function createGooglePurchase_(
   payload
 ) {
+  payload =
+    payload || {};
+
   const spreadsheet =
     dashboardSpreadsheet_();
 
@@ -2197,10 +2608,6 @@ function createGooglePurchase_(
     spreadsheet
   );
 
-  /**
-   * REQUIRED:
-   * supplier_id must refer to an existing ACTIVE supplier.
-   */
   const supplierId =
     String(
       payload.supplier_id ||
@@ -2266,7 +2673,9 @@ function createGooglePurchase_(
         );
 
       const match =
-        value.match(/(\d+)$/);
+        value.match(
+          /(\d+)$/
+        );
 
       if (
         match &&
@@ -2301,7 +2710,8 @@ function createGooglePurchase_(
     );
   }
 
-  const purchaseItemsData = [];
+  const purchaseItemsData =
+    [];
 
   let subtotal = 0;
 
@@ -2397,7 +2807,8 @@ function createGooglePurchase_(
           ).toFixed(2)
         );
 
-      subtotal += totalCost;
+      subtotal +=
+        totalCost;
 
       purchaseItemsData.push({
         drug_id:
@@ -2453,14 +2864,11 @@ function createGooglePurchase_(
   const lock =
     LockService.getScriptLock();
 
-  lock.waitLock(30000);
+  lock.waitLock(
+    30000
+  );
 
   try {
-    /**
-     * Validate supplier AGAIN while lock is held.
-     * Prevents receiving stock against a supplier
-     * that was deactivated just before submission.
-     */
     const lockedSupplier =
       getPurchaseSupplierById_(
         spreadsheet,
@@ -2529,16 +2937,14 @@ function createGooglePurchase_(
           currentStock +
           item.quantity;
 
-        /**
-         * Inventory goes UP because pharmacy
-         * has received stock from supplier.
-         */
         inventorySheet
           .getRange(
             inventoryRowInfo.row,
             stockColumn
           )
-          .setValue(newStock);
+          .setValue(
+            newStock
+          );
 
         if (statusColumn) {
           inventorySheet
@@ -2560,12 +2966,11 @@ function createGooglePurchase_(
               inventoryRowInfo.row,
               updatedColumn
             )
-            .setValue(now);
+            .setValue(
+              now
+            );
         }
 
-        /**
-         * Keep Drugs.Stock_Quantity in sync.
-         */
         if (
           item.drug_map
             .Stock_Quantity
@@ -2581,9 +2986,6 @@ function createGooglePurchase_(
             );
         }
 
-        /**
-         * Latest supplier acquisition cost.
-         */
         if (
           item.drug_map.Cost_Price
         ) {
@@ -2623,11 +3025,13 @@ function createGooglePurchase_(
         "Purchase_Items"
       );
 
-    const rowsToAppend = [];
+    const rowsToAppend =
+      [];
 
     purchaseItemsData.forEach(
       function (item) {
-        nextPurchaseItemNumber += 1;
+        nextPurchaseItemNumber +=
+          1;
 
         const purchaseItemId =
           "PI" +
@@ -2665,6 +3069,8 @@ function createGooglePurchase_(
           rowsToAppend
         );
     }
+
+    SpreadsheetApp.flush();
 
     return {
       message:
@@ -2705,21 +3111,14 @@ function createGooglePurchase_(
           now.toISOString(),
       },
     };
+
   } finally {
     lock.releaseLock();
   }
 }
 
 
-/**
- * ============================================================
- * CREATE PURCHASE ENDPOINT
- * ============================================================
- */
-
-function handleAdminPurchaseCreate_(
-  e
-) {
+function handleAdminPurchaseCreate_(e) {
   try {
     if (
       !verifyAdminDashboardRequest_(
@@ -2727,7 +3126,9 @@ function handleAdminPurchaseCreate_(
       )
     ) {
       return webJson_({
-        ok: false,
+        ok:
+          false,
+
         error:
           "Unauthorized purchase request.",
       });
@@ -2742,14 +3143,18 @@ function handleAdminPurchaseCreate_(
       );
 
     return webJson_({
-      ok: true,
+      ok:
+        true,
+
       ...result,
     });
+
   } catch (error) {
     console.error(error);
 
     return webJson_({
-      ok: false,
+      ok:
+        false,
 
       error:
         error.message ||
@@ -2759,11 +3164,9 @@ function handleAdminPurchaseCreate_(
 }
 
 
-/**
- * ============================================================
- * ADMIN SALES
- * ============================================================
- */
+/* =========================================================
+   SALES
+   ========================================================= */
 
 function buildAdminSales_() {
   const spreadsheet =
@@ -2799,10 +3202,17 @@ function buildAdminSales_() {
       "Payments"
     );
 
-  const patientsById = {};
-  const drugsById = {};
-  const itemsByOrder = {};
-  const paymentsByOrder = {};
+  const patientsById =
+    {};
+
+  const drugsById =
+    {};
+
+  const itemsByOrder =
+    {};
+
+  const paymentsByOrder =
+    {};
 
   patients.forEach(
     function (patient) {
@@ -2858,7 +3268,9 @@ function buildAdminSales_() {
 
       itemsByOrder[
         orderId
-      ].push(item);
+      ].push(
+        item
+      );
     }
   );
 
@@ -2886,7 +3298,9 @@ function buildAdminSales_() {
 
       paymentsByOrder[
         orderId
-      ].push(payment);
+      ].push(
+        payment
+      );
     }
   );
 
@@ -2895,7 +3309,8 @@ function buildAdminSales_() {
   let totalProfit = 0;
   let totalUnits = 0;
 
-  const productTotals = {};
+  const productTotals =
+    {};
 
   orderItems.forEach(
     function (item) {
@@ -2923,10 +3338,17 @@ function buildAdminSales_() {
         explicitProfit ||
         sales - cost;
 
-      totalUnits += quantity;
-      totalSales += sales;
-      totalCost += cost;
-      totalProfit += profit;
+      totalUnits +=
+        quantity;
+
+      totalSales +=
+        sales;
+
+      totalCost +=
+        cost;
+
+      totalProfit +=
+        profit;
 
       const drugId =
         String(
@@ -2978,19 +3400,23 @@ function buildAdminSales_() {
 
       productTotals[
         drugId
-      ].units_sold += quantity;
+      ].units_sold +=
+        quantity;
 
       productTotals[
         drugId
-      ].revenue += sales;
+      ].revenue +=
+        sales;
 
       productTotals[
         drugId
-      ].cost += cost;
+      ].cost +=
+        cost;
 
       productTotals[
         drugId
-      ].profit += profit;
+      ].profit +=
+        profit;
     }
   );
 
@@ -3180,7 +3606,9 @@ function buildAdminSales_() {
       productTotals
     )
       .map(function (key) {
-        return productTotals[key];
+        return productTotals[
+          key
+        ];
       })
       .sort(function (a, b) {
         return (
@@ -3190,7 +3618,8 @@ function buildAdminSales_() {
       });
 
   return {
-    ok: true,
+    ok:
+      true,
 
     source:
       "google-sheets",
@@ -3239,12 +3668,6 @@ function buildAdminSales_() {
 }
 
 
-/**
- * ============================================================
- * ADMIN SALES ENDPOINT
- * ============================================================
- */
-
 function handleAdminSales_(e) {
   try {
     if (
@@ -3253,7 +3676,8 @@ function handleAdminSales_(e) {
       )
     ) {
       return webJson_({
-        ok: false,
+        ok:
+          false,
 
         error:
           "Unauthorized sales request.",
@@ -3263,11 +3687,13 @@ function handleAdminSales_(e) {
     return webJson_(
       buildAdminSales_()
     );
+
   } catch (error) {
     console.error(error);
 
     return webJson_({
-      ok: false,
+      ok:
+        false,
 
       error:
         error.message ||
@@ -3277,11 +3703,9 @@ function handleAdminSales_(e) {
 }
 
 
-/**
- * ============================================================
- * ADMIN DASHBOARD
- * ============================================================
- */
+/* =========================================================
+   ADMIN DASHBOARD
+   ========================================================= */
 
 function buildAdminDashboard_() {
   const spreadsheet =
@@ -3341,10 +3765,17 @@ function buildAdminDashboard_() {
       "Audit_Log"
     );
 
-  const patientsById = {};
-  const drugsById = {};
-  const ordersById = {};
-  const itemsByOrder = {};
+  const patientsById =
+    {};
+
+  const drugsById =
+    {};
+
+  const ordersById =
+    {};
+
+  const itemsByOrder =
+    {};
 
   patients.forEach(
     function (patient) {
@@ -3415,7 +3846,9 @@ function buildAdminDashboard_() {
 
       itemsByOrder[
         orderId
-      ].push(item);
+      ].push(
+        item
+      );
     }
   );
 
@@ -3424,8 +3857,11 @@ function buildAdminDashboard_() {
   let totalProfit = 0;
   let unitsSold = 0;
 
-  const medicineTotals = {};
-  const monthlyTotals = {};
+  const medicineTotals =
+    {};
+
+  const monthlyTotals =
+    {};
 
   orderItems.forEach(
     function (item) {
@@ -3450,10 +3886,17 @@ function buildAdminDashboard_() {
         ) ||
         sales - cost;
 
-      totalSales += sales;
-      totalCost += cost;
-      totalProfit += profit;
-      unitsSold += quantity;
+      totalSales +=
+        sales;
+
+      totalCost +=
+        cost;
+
+      totalProfit +=
+        profit;
+
+      unitsSold +=
+        quantity;
 
       const drugId =
         String(
@@ -3502,15 +3945,18 @@ function buildAdminDashboard_() {
 
       medicineTotals[
         drugId
-      ].quantity_sold += quantity;
+      ].quantity_sold +=
+        quantity;
 
       medicineTotals[
         drugId
-      ].sales += sales;
+      ].sales +=
+        sales;
 
       medicineTotals[
         drugId
-      ].profit += profit;
+      ].profit +=
+        profit;
 
       const order =
         ordersById[
@@ -3551,15 +3997,18 @@ function buildAdminDashboard_() {
 
           monthlyTotals[
             month
-          ].sales += sales;
+          ].sales +=
+            sales;
 
           monthlyTotals[
             month
-          ].profit += profit;
+          ].profit +=
+            profit;
 
           monthlyTotals[
             month
-          ].units += quantity;
+          ].units +=
+            quantity;
         }
       }
     }
@@ -3585,14 +4034,16 @@ function buildAdminDashboard_() {
         paymentStatus ===
         "paid"
       ) {
-        paidOrders += 1;
+        paidOrders +=
+          1;
       }
 
       if (
         orderStatus ===
         "completed"
       ) {
-        completedOrders += 1;
+        completedOrders +=
+          1;
       }
 
       if (
@@ -3601,10 +4052,16 @@ function buildAdminDashboard_() {
         orderStatus !==
           "completed"
       ) {
-        pendingOrders += 1;
+        pendingOrders +=
+          1;
       }
     }
   );
+
+
+  /* =======================================================
+     REFILL SUMMARY
+     ======================================================= */
 
   const refillSummary = {
     total:
@@ -3619,12 +4076,25 @@ function buildAdminDashboard_() {
     overdue:
       0,
 
+    missed_expired:
+      0,
+
+    rescheduled:
+      0,
+
+    cancelled_by_patient:
+      0,
+
+    clinically_declined:
+      0,
+
     confirmed:
       0,
 
     pending_confirmation:
       0,
   };
+
 
   refills.forEach(
     function (refill) {
@@ -3638,6 +4108,54 @@ function buildAdminDashboard_() {
           refill.Confirmation_Status
         );
 
+      const patientResponse =
+        dashboardStatus_(
+          refill.Patient_Response
+        );
+
+      const resolution =
+        dashboardStatus_(
+          refill.Resolution_Status
+        );
+
+      const generatedOrderId =
+        String(
+          refill.Generated_Order_ID ||
+            ""
+        ).trim();
+
+
+      const isConfirmed =
+        confirmation ===
+          "confirmed" ||
+        patientResponse ===
+          "confirmed" ||
+        Boolean(
+          generatedOrderId
+        );
+
+
+      const isCancelled =
+        resolution ===
+          "cancelled by patient" ||
+        patientResponse ===
+          "cancelled by patient" ||
+        patientResponse ===
+          "patient cancelled";
+
+
+      const isClinicallyDeclined =
+        resolution ===
+          "clinically declined" ||
+        resolution ===
+          "declined on clinical review";
+
+
+      const isRescheduled =
+        resolution ===
+          "rescheduled";
+
+
       if (
         reminder ===
         "due soon"
@@ -3645,6 +4163,7 @@ function buildAdminDashboard_() {
         refillSummary.due_soon +=
           1;
       }
+
 
       if (
         reminder ===
@@ -3654,6 +4173,7 @@ function buildAdminDashboard_() {
           1;
       }
 
+
       if (
         reminder ===
         "overdue"
@@ -3662,19 +4182,64 @@ function buildAdminDashboard_() {
           1;
       }
 
+
       if (
-        confirmation ===
-        "confirmed"
+        reminder ===
+        "missed / expired"
+      ) {
+        refillSummary
+          .missed_expired +=
+          1;
+      }
+
+
+      if (
+        isRescheduled
+      ) {
+        refillSummary
+          .rescheduled +=
+          1;
+      }
+
+
+      if (
+        isCancelled
+      ) {
+        refillSummary
+          .cancelled_by_patient +=
+          1;
+      }
+
+
+      if (
+        isClinicallyDeclined
+      ) {
+        refillSummary
+          .clinically_declined +=
+          1;
+      }
+
+
+      if (
+        isConfirmed
       ) {
         refillSummary.confirmed +=
           1;
-      } else {
+      } else if (
+        !isCancelled &&
+        !isClinicallyDeclined
+      ) {
         refillSummary
           .pending_confirmation +=
           1;
       }
     }
   );
+
+
+  /* =======================================================
+     INVENTORY SUMMARY
+     ======================================================= */
 
   const inventorySummary = {
     total_items:
@@ -3693,7 +4258,8 @@ function buildAdminDashboard_() {
       0,
   };
 
-  const lowStockItems = [];
+  const lowStockItems =
+    [];
 
   inventory.forEach(
     function (item) {
@@ -3713,11 +4279,13 @@ function buildAdminDashboard_() {
       if (stock <= 0) {
         inventorySummary.out_of_stock +=
           1;
+
       } else if (
         stock <= reorder
       ) {
         inventorySummary.low_stock +=
           1;
+
       } else {
         inventorySummary.healthy +=
           1;
@@ -3761,6 +4329,11 @@ function buildAdminDashboard_() {
     }
   );
 
+
+  /* =======================================================
+     PAYMENT SUMMARY
+     ======================================================= */
+
   const paymentSummary = {
     total:
       payments.length,
@@ -3795,6 +4368,7 @@ function buildAdminDashboard_() {
           dashboardNumber_(
             payment.Amount_Paid
           );
+
       } else {
         paymentSummary.pending +=
           1;
@@ -3815,6 +4389,11 @@ function buildAdminDashboard_() {
     }
   );
 
+
+  /* =======================================================
+     RECENT ORDERS
+     ======================================================= */
+
   const recentOrders =
     orders
       .slice()
@@ -3828,7 +4407,10 @@ function buildAdminDashboard_() {
           )
         );
       })
-      .slice(0, 10)
+      .slice(
+        0,
+        10
+      )
       .map(function (order) {
         const orderId =
           String(
@@ -3946,6 +4528,7 @@ function buildAdminDashboard_() {
         };
       });
 
+
   const topMedicines =
     Object.keys(
       medicineTotals
@@ -3956,9 +4539,16 @@ function buildAdminDashboard_() {
         ];
       })
       .sort(function (a, b) {
-        return b.sales - a.sales;
+        return (
+          b.sales -
+          a.sales
+        );
       })
-      .slice(0, 10);
+      .slice(
+        0,
+        10
+      );
+
 
   const salesTrend =
     Object.keys(
@@ -3971,8 +4561,10 @@ function buildAdminDashboard_() {
         ];
       });
 
+
   return {
-    ok: true,
+    ok:
+      true,
 
     source:
       "google-sheets",
@@ -4117,10 +4709,6 @@ function buildAdminDashboard_() {
       suppliers:
         true,
 
-      /**
-       * Appointments will become true
-       * when we build the real workflow.
-       */
       appointments:
         false,
 
@@ -4131,12 +4719,6 @@ function buildAdminDashboard_() {
 }
 
 
-/**
- * ============================================================
- * DASHBOARD ENDPOINT
- * ============================================================
- */
-
 function handleAdminDashboard_(e) {
   try {
     if (
@@ -4145,7 +4727,8 @@ function handleAdminDashboard_(e) {
       )
     ) {
       return webJson_({
-        ok: false,
+        ok:
+          false,
 
         error:
           "Unauthorized dashboard request.",
@@ -4155,11 +4738,13 @@ function handleAdminDashboard_(e) {
     return webJson_(
       buildAdminDashboard_()
     );
+
   } catch (error) {
     console.error(error);
 
     return webJson_({
-      ok: false,
+      ok:
+        false,
 
       error:
         error.message ||
@@ -4169,15 +4754,11 @@ function handleAdminDashboard_(e) {
 }
 
 
-/**
- * ============================================================
- * EXISTING PATIENT / PAYMENT ROUTES
- * ============================================================
- */
+/* =========================================================
+   PUBLIC REFILL CONFIRMATION
+   ========================================================= */
 
-function handleRefillConfirmationPage_(
-  e
-) {
+function handleRefillConfirmationPage_(e) {
   const refillId =
     String(
       e?.parameter?.refillId ||
@@ -4210,6 +4791,7 @@ function handleRefillConfirmationPage_(
     return refillConfirmedPage_(
       result
     );
+
   } catch (error) {
     return errorPage_(
       "Unable to Confirm Refill",
@@ -4218,6 +4800,10 @@ function handleRefillConfirmationPage_(
   }
 }
 
+
+/* =========================================================
+   PAYMENT PAGE
+   ========================================================= */
 
 function handlePaymentPage_(e) {
   const orderId =
@@ -4268,6 +4854,7 @@ function handlePaymentPage_(e) {
       context,
       settings
     );
+
   } catch (error) {
     return errorPage_(
       "Payment Centre Error",
@@ -4379,6 +4966,7 @@ function handlePaystackCallback_(e) {
     return paymentVerifiedPage_(
       result
     );
+
   } catch (error) {
     return paymentVerificationFailedPage_(
       error.message
@@ -4482,6 +5070,7 @@ function handleInvoicePage_(e) {
           }
         ),
     });
+
   } catch (error) {
     return errorPage_(
       "Invoice Error",
@@ -4491,9 +5080,7 @@ function handleInvoicePage_(e) {
 }
 
 
-function handleContactPatientPage_(
-  e
-) {
+function handleContactPatientPage_(e) {
   const patientId =
     String(
       e?.parameter?.patientId ||
@@ -4549,9 +5136,7 @@ function handleContactPatientPage_(
 }
 
 
-function handleBankTransferSubmission_(
-  e
-) {
+function handleBankTransferSubmission_(e) {
   const orderId =
     String(
       e?.parameter?.orderId ||
@@ -4621,12 +5206,6 @@ function handleBankTransferSubmission_(
 }
 
 
-/**
- * ============================================================
- * PROVIDER REDIRECT
- * ============================================================
- */
-
 function redirectToProviderPage_(url) {
   const safeUrl =
     String(url || "")
@@ -4687,7 +5266,9 @@ function redirectToProviderPage_(url) {
   `;
 
   return HtmlService
-    .createHtmlOutput(html)
+    .createHtmlOutput(
+      html
+    )
     .setTitle(
       "Secure Payment"
     );
