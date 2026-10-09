@@ -1,6 +1,4 @@
-import {
-  useEffect,
-} from "react";
+import { useEffect } from "react";
 
 import {
   BrowserRouter,
@@ -9,20 +7,18 @@ import {
   Routes,
 } from "react-router-dom";
 
-
 /* =========================================================
    AUTH PAGES
-========================================================= */
+   ========================================================= */
 
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/ResetPasswordPage";
 
-
 /* =========================================================
    PATIENT PAGES
-========================================================= */
+   ========================================================= */
 
 import PatientDashboard from "./pages/PatientDashboard";
 import AppointmentsPage from "./pages/AppointmentsPage";
@@ -36,12 +32,12 @@ import PatientProfilePage from "./pages/PatientProfilePage";
 import PatientSettingsPage from "./pages/PatientSettingsPage";
 import TechnicalSupportPage from "./pages/TechnicalSupportPage";
 
-
 /* =========================================================
-   ADMIN PAGES
-========================================================= */
+   PHARMACIST / ADMIN PAGES
+   ========================================================= */
 
 import AdminDashboard from "./pages/AdminDashboard";
+import AdminOrdersPage from "./pages/AdminOrdersPage";
 import AdminPatientsPage from "./pages/AdminPatientsPage";
 import AdminInventoryPage from "./pages/AdminInventoryPage";
 import AdminPOSPage from "./pages/AdminPOSPage";
@@ -55,62 +51,43 @@ import AdminSettingsPage from "./pages/AdminSettingsPage";
 import AdminProfilePage from "./pages/AdminProfilePage";
 import AdminSupportPage from "./pages/AdminSupportPage";
 
-
 /* =========================================================
    LAYOUTS
-========================================================= */
+   ========================================================= */
 
 import PatientLayout from "./components/PatientLayout";
 import AdminLayout from "./components/AdminLayout";
 
-
 /* =========================================================
    API HELPERS
-========================================================= */
+   ========================================================= */
 
 import {
   getStoredUserRole,
   isLoggedIn,
 } from "./api";
 
-
 /* =========================================================
    MOBILE STYLES
-========================================================= */
+   ========================================================= */
 
 import "./PatientMobile.css";
 import "./AdminMobile.css";
 
-
 /* =========================================================
    PATIENT ROUTE PROTECTION
-========================================================= */
+   ========================================================= */
 
-function ProtectedPatientRoute({
-  children,
-}) {
-  const loggedIn =
-    isLoggedIn();
+function ProtectedPatientRoute({ children }) {
+  const loggedIn = isLoggedIn();
 
-  const role =
-    String(
-      getStoredUserRole() || ""
-    )
-      .trim()
-      .toLowerCase();
+  const role = String(
+    getStoredUserRole() || ""
+  )
+    .trim()
+    .toLowerCase();
 
-  if (!loggedIn) {
-    return (
-      <Navigate
-        to="/login"
-        replace
-      />
-    );
-  }
-
-  if (
-    role !== "patient"
-  ) {
+  if (!loggedIn || role !== "patient") {
     return (
       <Navigate
         to="/login"
@@ -122,36 +99,20 @@ function ProtectedPatientRoute({
   return children;
 }
 
-
 /* =========================================================
-   ADMIN ROUTE PROTECTION
-========================================================= */
+   PHARMACIST ROUTE PROTECTION
+   ========================================================= */
 
-function ProtectedAdminRoute({
-  children,
-}) {
-  const loggedIn =
-    isLoggedIn();
+function ProtectedAdminRoute({ children }) {
+  const loggedIn = isLoggedIn();
 
-  const role =
-    String(
-      getStoredUserRole() || ""
-    )
-      .trim()
-      .toLowerCase();
+  const role = String(
+    getStoredUserRole() || ""
+  )
+    .trim()
+    .toLowerCase();
 
-  if (!loggedIn) {
-    return (
-      <Navigate
-        to="/login"
-        replace
-      />
-    );
-  }
-
-  if (
-    role !== "admin"
-  ) {
+  if (!loggedIn || role !== "admin") {
     return (
       <Navigate
         to="/login"
@@ -163,77 +124,61 @@ function ProtectedAdminRoute({
   return children;
 }
 
-
 /* =========================================================
-   APP
-========================================================= */
+   MAIN APPLICATION
+   ========================================================= */
 
 function App() {
   useEffect(() => {
     const patientTheme =
-      localStorage.getItem(
-        "patient_theme"
-      ) || "light";
+      localStorage.getItem("patient_theme") ||
+      "light";
 
     const adminTheme =
-      localStorage.getItem(
-        "admin_theme"
-      ) || "light";
+      localStorage.getItem("admin_theme") ||
+      "light";
 
-    document.documentElement
-      .setAttribute(
-        "data-theme",
-        patientTheme
-      );
+    document.documentElement.setAttribute(
+      "data-theme",
+      patientTheme
+    );
 
-    document.documentElement
-      .setAttribute(
-        "data-admin-theme",
-        adminTheme
-      );
+    document.documentElement.setAttribute(
+      "data-admin-theme",
+      adminTheme
+    );
   }, []);
-
 
   return (
     <BrowserRouter>
       <Routes>
-
-        {/* =================================================
-            PUBLIC AUTH ROUTES
-        ================================================= */}
+        {/* ================================================
+            PUBLIC AUTHENTICATION
+           ================================================ */}
 
         <Route
           path="/login"
-          element={
-            <LoginPage />
-          }
+          element={<LoginPage />}
         />
 
         <Route
           path="/signup"
-          element={
-            <SignUpPage />
-          }
+          element={<SignUpPage />}
         />
 
         <Route
           path="/forgot-password"
-          element={
-            <ForgotPasswordPage />
-          }
+          element={<ForgotPasswordPage />}
         />
 
         <Route
           path="/reset-password"
-          element={
-            <ResetPasswordPage />
-          }
+          element={<ResetPasswordPage />}
         />
 
-
-        {/* =================================================
+        {/* ================================================
             PATIENT PORTAL
-        ================================================= */}
+           ================================================ */}
 
         <Route
           path="/patient"
@@ -245,86 +190,63 @@ function App() {
         >
           <Route
             index
-            element={
-              <PatientDashboard />
-            }
+            element={<PatientDashboard />}
           />
 
           <Route
             path="appointments"
-            element={
-              <AppointmentsPage />
-            }
+            element={<AppointmentsPage />}
           />
 
           <Route
             path="prescriptions"
-            element={
-              <PrescriptionsPage />
-            }
+            element={<PrescriptionsPage />}
           />
 
           <Route
             path="orders"
-            element={
-              <OrderMedicinesPage />
-            }
+            element={<OrderMedicinesPage />}
           />
 
           <Route
             path="refills"
-            element={
-              <RefillRequestsPage />
-            }
+            element={<RefillRequestsPage />}
           />
 
           <Route
             path="order-history"
-            element={
-              <OrderHistoryPage />
-            }
+            element={<OrderHistoryPage />}
           />
 
           <Route
             path="activity"
-            element={
-              <PatientActivityPage />
-            }
+            element={<PatientActivityPage />}
           />
 
           <Route
             path="contact-pharmacist"
-            element={
-              <ContactPharmacistPage />
-            }
+            element={<ContactPharmacistPage />}
           />
 
           <Route
             path="profile"
-            element={
-              <PatientProfilePage />
-            }
+            element={<PatientProfilePage />}
           />
 
           <Route
             path="settings"
-            element={
-              <PatientSettingsPage />
-            }
+            element={<PatientSettingsPage />}
           />
 
           <Route
             path="support"
-            element={
-              <TechnicalSupportPage />
-            }
+            element={<TechnicalSupportPage />}
           />
         </Route>
 
-
-        {/* =================================================
-            ADMIN PORTAL
-        ================================================= */}
+        {/* ================================================
+            PHARMACIST / ADMIN PORTAL
+           ================================================ */}
 
         <Route
           path="/admin"
@@ -336,100 +258,82 @@ function App() {
         >
           <Route
             index
-            element={
-              <AdminDashboard />
-            }
+            element={<AdminDashboard />}
           />
+
+          {/* Main patient Orders management page */}
+
+          <Route
+            path="orders"
+            element={<AdminOrdersPage />}
+          />
+
+          {/* Internal dispensing / checkout engine */}
 
           <Route
             path="pos"
-            element={
-              <AdminPOSPage />
-            }
+            element={<AdminPOSPage />}
           />
 
           <Route
             path="inventory"
-            element={
-              <AdminInventoryPage />
-            }
+            element={<AdminInventoryPage />}
           />
 
           <Route
             path="sales"
-            element={
-              <AdminSalesPage />
-            }
+            element={<AdminSalesPage />}
           />
 
           <Route
             path="purchases"
-            element={
-              <AdminPurchasesPage />
-            }
+            element={<AdminPurchasesPage />}
           />
 
           <Route
             path="suppliers"
-            element={
-              <AdminSuppliersPage />
-            }
+            element={<AdminSuppliersPage />}
           />
 
           <Route
             path="patients"
-            element={
-              <AdminPatientsPage />
-            }
+            element={<AdminPatientsPage />}
           />
 
           <Route
             path="appointments"
-            element={
-              <AdminAppointmentsPage />
-            }
+            element={<AdminAppointmentsPage />}
           />
 
           <Route
             path="reports"
-            element={
-              <AdminReportsPage />
-            }
+            element={<AdminReportsPage />}
           />
 
           <Route
             path="alerts"
-            element={
-              <AdminAlertsPage />
-            }
+            element={<AdminAlertsPage />}
           />
 
           <Route
             path="support"
-            element={
-              <AdminSupportPage />
-            }
+            element={<AdminSupportPage />}
           />
 
           <Route
             path="profile"
-            element={
-              <AdminProfilePage />
-            }
+            element={<AdminProfilePage />}
           />
 
           <Route
             path="settings"
-            element={
-              <AdminSettingsPage />
-            }
+            element={<AdminSettingsPage />}
           />
         </Route>
 
-
-        {/* =================================================
+        {/* ================================================
             DEFAULT ROUTES
-        ================================================= */}
+           ================================================ */}
 
         <Route
           path="/"
@@ -450,11 +354,9 @@ function App() {
             />
           }
         />
-
       </Routes>
     </BrowserRouter>
   );
 }
-
 
 export default App;

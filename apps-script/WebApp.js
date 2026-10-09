@@ -165,6 +165,18 @@ function doGet(e) {
     }
 
     if (
+      action === "admin-orders"
+    ) {
+      return handleAdminOrders_(e);
+    }
+
+    if (
+      action === "admin-order"
+    ) {
+      return handleAdminOrderDetail_(e);
+    }
+
+    if (
       action === "admin-purchases"
     ) {
       return handleAdminPurchases_(e);
@@ -249,6 +261,15 @@ function doPost(e) {
       "admin-pos-checkout"
     ) {
       return handleAdminPosCheckout_(
+        e
+      );
+    }
+
+    if (
+      action ===
+      "admin-order-status"
+    ) {
+      return handleAdminOrderStatus_(
         e
       );
     }

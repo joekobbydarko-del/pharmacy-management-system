@@ -1,1941 +1,1032 @@
+
 /* =========================================================
    DR. EVANS PHARMACY
    MEDICATION DISPENSING
-   FULL REPLACEMENT
+   COMPLETE RESPONSIVE STYLESHEET
    ========================================================= */
 
 .admin-pos-page {
   --pos-card: #ffffff;
   --pos-soft: #f7fbfc;
   --pos-soft-2: #edf6f8;
-
   --pos-border: #d8e7ea;
   --pos-border-soft: #e6eff1;
-
   --pos-heading: #0f2f46;
   --pos-text: #365664;
   --pos-muted: #6f8893;
-
   --pos-orange: #df8a20;
   --pos-orange-dark: #be6d08;
   --pos-orange-soft: #fff3e2;
-
   --pos-blue: #4c8fd0;
   --pos-blue-soft: #eaf3fc;
-
   --pos-violet: #7767c7;
   --pos-violet-soft: #f0eefb;
-
   --pos-green: #3b9472;
   --pos-green-soft: #e8f5ef;
-
   --pos-red: #c95050;
   --pos-red-soft: #ffeded;
 
   width: 100%;
   min-width: 0;
-
-  padding:
-    0
-    10px
-    42px;
-
+  padding: 0 10px 48px;
   box-sizing: border-box;
-
-  color:
-    var(--pos-text);
-
-  overflow-x: hidden;
+  color: var(--pos-text);
+  overflow-x: clip;
 }
-
 
 /* =========================================================
    DARK MODE
    ========================================================= */
 
-[data-admin-theme="dark"]
-.admin-pos-page {
+[data-admin-theme="dark"] .admin-pos-page {
   --pos-card: #0d4653;
   --pos-soft: #0a3d49;
   --pos-soft-2: #104b57;
-
   --pos-border: #1d5a67;
   --pos-border-soft: #284f5b;
-
   --pos-heading: #f4fbfc;
   --pos-text: #d8e8eb;
   --pos-muted: #a3bdc4;
-
   --pos-orange: #f3b45d;
   --pos-orange-dark: #ffc675;
-
-  --pos-orange-soft:
-    rgba(
-      223,
-      138,
-      32,
-      0.15
-    );
-
+  --pos-orange-soft: rgba(223, 138, 32, 0.15);
   --pos-blue: #93c7ef;
-
-  --pos-blue-soft:
-    rgba(
-      76,
-      143,
-      208,
-      0.15
-    );
-
+  --pos-blue-soft: rgba(76, 143, 208, 0.15);
   --pos-violet: #b7acf0;
-
-  --pos-violet-soft:
-    rgba(
-      119,
-      103,
-      199,
-      0.15
-    );
-
+  --pos-violet-soft: rgba(119, 103, 199, 0.15);
   --pos-green: #8de0ba;
-
-  --pos-green-soft:
-    rgba(
-      64,
-      167,
-      125,
-      0.14
-    );
-
+  --pos-green-soft: rgba(64, 167, 125, 0.14);
   --pos-red: #ff9c9c;
   --pos-red-soft: #47292d;
 }
 
-
 .admin-content:has(.admin-pos-page) {
-  padding-top:
-    14px !important;
+  padding-top: 14px !important;
 }
 
-
 /* =========================================================
-   FEEDBACK
+   ALERTS — IMMEDIATELY BELOW HERO
    ========================================================= */
 
 .admin-pos-message {
+  position: relative;
   display: flex;
   align-items: center;
-  gap: 10px;
-
-  margin-bottom: 16px;
-
-  padding:
-    14px
-    16px;
-
-  border-radius: 14px;
-
-  font-size: 14px;
-  font-weight: 800;
-  line-height: 1.45;
+  gap: 15px;
+  width: 100%;
+  min-height: 74px;
+  margin: 16px 0 4px;
+  padding: 15px 18px;
+  box-sizing: border-box;
+  border: 1px solid var(--pos-border);
+  border-radius: 15px;
+  color: var(--pos-text);
 }
-
-
-.admin-pos-message--error {
-  border:
-    1px solid
-    rgba(
-      201,
-      80,
-      80,
-      0.2
-    );
-
-  background:
-    var(--pos-red-soft);
-
-  color:
-    var(--pos-red);
-}
-
 
 .admin-pos-message--success {
-  border:
-    1px solid
-    rgba(
-      59,
-      148,
-      114,
-      0.2
-    );
-
-  background:
-    var(--pos-green-soft);
-
-  color:
-    var(--pos-green);
+  border-color: rgba(59, 148, 114, 0.35);
+  background: var(--pos-green-soft);
+  color: var(--pos-green);
 }
 
+.admin-pos-message--error {
+  border-color: rgba(201, 80, 80, 0.35);
+  background: var(--pos-red-soft);
+  color: var(--pos-red);
+}
+
+.admin-pos-message__icon {
+  width: 43px;
+  height: 43px;
+  flex: 0 0 43px;
+  display: grid;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 12px;
+  opacity: 0.95;
+}
+
+.admin-pos-message__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.admin-pos-message__content strong {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.admin-pos-message__content span {
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+.admin-pos-message__close {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid currentColor;
+  border-radius: 10px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.admin-pos-message__close:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.admin-pos-message__close:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
 
 /* =========================================================
-   WORKSPACE
+   MAIN WORKSPACE — FLEXIBLE HEIGHT
    ========================================================= */
 
 .admin-pos-workspace {
   display: grid;
-
-  grid-template-columns:
-    repeat(
-      2,
-      minmax(0, 1fr)
-    );
-
-  gap: 16px;
-
-  align-items: stretch;
-
-  padding-top: 16px;
-
-  margin-bottom: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  align-items: start;
+  padding-top: 18px;
+  margin-bottom: 22px;
 }
-
-
-/* =========================================================
-   MAIN CARDS
-   ========================================================= */
 
 .admin-pos-products,
 .admin-pos-dispensing,
 .admin-pos-recent-sales {
   min-width: 0;
-
-  overflow: hidden;
-
-  border:
-    1px solid
-    var(--pos-border);
-
-  border-radius: 17px;
-
-  background:
-    var(--pos-card);
-
-  box-shadow:
-    0
-    9px
-    26px
-    rgba(
-      15,
-      47,
-      70,
-      0.045
-    );
+  border: 1px solid var(--pos-border);
+  border-radius: 18px;
+  background: var(--pos-card);
+  box-shadow: 0 9px 26px rgba(15, 47, 70, 0.045);
 }
-
 
 .admin-pos-products,
 .admin-pos-dispensing {
-  height: 760px;
-  min-height: 760px;
-  max-height: 760px;
-
   display: flex;
   flex-direction: column;
+  min-height: 680px;
 }
 
+.admin-pos-products {
+  overflow: hidden;
+}
+
+.admin-pos-dispensing {
+  overflow: visible;
+}
 
 .admin-pos-recent-sales {
-  width: 100%;
-
-  height: 520px;
-  min-height: 520px;
-  max-height: 520px;
-
   display: flex;
   flex-direction: column;
-
-  position: relative;
+  overflow: hidden;
+  min-height: 250px;
 }
-
 
 .admin-pos-card--medicines {
-  --panel-accent:
-    var(--pos-orange);
-
-  --panel-soft:
-    var(--pos-orange-soft);
+  --panel-accent: var(--pos-orange);
+  --panel-soft: var(--pos-orange-soft);
 }
-
 
 .admin-pos-card--dispensing {
-  --panel-accent:
-    var(--pos-blue);
-
-  --panel-soft:
-    var(--pos-blue-soft);
+  --panel-accent: var(--pos-blue);
+  --panel-soft: var(--pos-blue-soft);
 }
-
 
 .admin-pos-card--history {
-  --panel-accent:
-    var(--pos-violet);
-
-  --panel-soft:
-    var(--pos-violet-soft);
+  --panel-accent: var(--pos-violet);
+  --panel-soft: var(--pos-violet-soft);
 }
 
-
 /* =========================================================
-   PANEL HEADER
+   CARD HEADERS
    ========================================================= */
 
 .admin-pos-panel-header,
 .admin-pos-dispensing-header {
   position: relative;
-
-  flex:
-    0
-    0
-    auto;
-
-  min-height: 88px;
-
+  flex: 0 0 auto;
+  min-height: 90px;
   display: flex;
-
   align-items: center;
   justify-content: space-between;
-
   gap: 14px;
-
-  padding:
-    16px
-    18px;
-
+  padding: 18px 20px;
   box-sizing: border-box;
-
-  border-bottom:
-    1px solid
-    var(--pos-border-soft);
-
-  background:
-    linear-gradient(
-      110deg,
-      var(--panel-soft),
-      var(--pos-card)
-      62%
-    );
+  border-bottom: 1px solid var(--pos-border-soft);
+  border-radius: 17px 17px 0 0;
+  background: linear-gradient(
+    110deg,
+    var(--panel-soft),
+    var(--pos-card) 75%
+  );
 }
-
 
 .admin-pos-panel-header::before,
 .admin-pos-dispensing-header::before {
   content: "";
-
   position: absolute;
-
   top: 0;
   left: 0;
-
   width: 100%;
   height: 4px;
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--panel-accent),
-      transparent
-    );
+  border-radius: 17px 17px 0 0;
+  background: linear-gradient(
+    90deg,
+    var(--panel-accent),
+    transparent
+  );
 }
-
 
 .admin-pos-panel-heading,
 .admin-pos-dispensing-header__main {
   display: flex;
-
   align-items: center;
-
-  gap: 12px;
-
+  gap: 13px;
   min-width: 0;
 }
 
-
 .admin-pos-panel-icon,
 .admin-pos-dispensing-icon {
-  width: 48px;
-  height: 48px;
-
-  flex:
-    0
-    0
-    48px;
-
+  width: 49px;
+  height: 49px;
+  flex: 0 0 49px;
   display: grid;
-
   place-items: center;
-
   border-radius: 14px;
-
-  background:
-    var(--panel-soft);
-
-  color:
-    var(--panel-accent);
+  background: var(--panel-soft);
+  color: var(--panel-accent);
 }
-
 
 .admin-pos-panel-eyebrow,
 .admin-pos-dispensing-header__main span {
   display: block;
-
-  margin-bottom: 4px;
-
-  color:
-    var(--panel-accent);
-
-  font-size: 11px;
-
+  margin-bottom: 5px;
+  color: var(--panel-accent);
+  font-size: 10px;
   font-weight: 900;
-
   letter-spacing: 1px;
-
   text-transform: uppercase;
 }
-
 
 .admin-pos-panel-heading h2,
 .admin-pos-dispensing-header__main h2 {
   margin: 0;
-
-  color:
-    var(--pos-heading);
-
-  font-size:
-    clamp(
-      20px,
-      1.5vw,
-      25px
-    );
-
+  color: var(--pos-heading);
+  font-size: clamp(19px, 1.5vw, 25px);
   font-weight: 900;
-
-  line-height: 1.15;
+  line-height: 1.2;
 }
-
-
-/* =========================================================
-   COUNTERS
-   ========================================================= */
 
 .admin-pos-product-count,
 .admin-pos-sales-count {
-  min-height: 40px;
-
   display: inline-flex;
-
   align-items: center;
   justify-content: center;
-
   gap: 7px;
-
-  padding:
-    0
-    13px;
-
-  border:
-    1px solid
-    var(--pos-border);
-
+  min-height: 39px;
+  padding: 0 13px;
+  border: 1px solid var(--pos-border);
   border-radius: 999px;
-
-  color:
-    var(--pos-heading);
-
-  font-size: 12px;
-
+  color: var(--pos-heading);
+  font-size: 11px;
   font-weight: 900;
-
   white-space: nowrap;
 }
 
-
 .admin-pos-dispensing-count {
-  min-width: 62px;
-
-  padding:
-    8px
-    10px;
-
-  border:
-    1px solid
-    var(--pos-border);
-
+  min-width: 64px;
+  padding: 9px;
+  box-sizing: border-box;
+  border: 1px solid var(--pos-border);
   border-radius: 12px;
-
   text-align: center;
 }
-
 
 .admin-pos-dispensing-count strong {
   display: block;
-
-  color:
-    var(--pos-heading);
-
-  font-size: 20px;
-
+  color: var(--pos-heading);
+  font-size: 23px;
   font-weight: 900;
 }
-
 
 .admin-pos-dispensing-count span {
   display: block;
-
-  margin-top: 4px;
-
-  color:
-    var(--pos-muted);
-
+  margin-top: 3px;
+  color: var(--pos-muted);
   font-size: 9px;
-
   font-weight: 900;
-
   text-transform: uppercase;
 }
 
-
 /* =========================================================
-   PRODUCT SEARCH
+   MEDICINE SEARCH
    ========================================================= */
 
 .admin-pos-product-search-row {
-  flex:
-    0
-    0
-    auto;
-
-  padding:
-    14px
-    16px;
-
-  border-bottom:
-    1px solid
-    var(--pos-border-soft);
+  padding: 15px 17px;
+  border-bottom: 1px solid var(--pos-border-soft);
 }
-
 
 .admin-pos-search {
-  min-height: 50px;
-
+  min-height: 52px;
   display: grid;
-
-  grid-template-columns:
-    42px
-    minmax(0, 1fr)
-    38px;
-
+  grid-template-columns: 46px minmax(0, 1fr) 38px;
   align-items: center;
-
-  border:
-    1px solid
-    var(--pos-border);
-
-  border-radius: 14px;
-
-  background:
-    var(--pos-soft);
+  border: 1px solid var(--pos-border);
+  border-radius: 13px;
+  background: var(--pos-soft);
 }
-
 
 .admin-pos-search > svg {
   justify-self: center;
-
-  color:
-    var(--pos-orange);
+  color: var(--pos-orange);
 }
-
 
 .admin-pos-search input {
   width: 100%;
-
-  height: 48px;
-
   min-width: 0;
-
-  padding: 0;
-
+  height: 50px;
   border: 0;
-
   outline: 0;
-
-  background:
-    transparent;
-
-  color:
-    var(--pos-heading);
-
+  background: transparent;
+  color: var(--pos-heading);
   font-family: inherit;
-
-  font-size: 14px;
-
+  font-size: 13px;
   font-weight: 750;
-
   text-align: center;
 }
-
 
 .admin-pos-search input::placeholder {
-  color:
-    var(--pos-muted);
-
-  text-align: center;
+  color: var(--pos-muted);
 }
-
 
 .admin-pos-search-clear {
   width: 30px;
   height: 30px;
-
   display: grid;
-
   place-items: center;
-
+  padding: 0;
   border: 0;
-
   border-radius: 8px;
-
-  background:
-    var(--pos-orange-soft);
-
-  color:
-    var(--pos-orange);
-
+  background: var(--pos-orange-soft);
+  color: var(--pos-orange);
   cursor: pointer;
 }
 
-
 /* =========================================================
-   PRODUCTS
+   AVAILABLE MEDICINES
    ========================================================= */
 
 .admin-pos-product-list {
-  flex:
-    1
-    1
-    auto;
-
+  flex: 1 1 auto;
   min-height: 0;
-
+  max-height: 760px;
   overflow-y: auto;
-  overflow-x: hidden;
-
-  padding: 10px;
-
-  scrollbar-width: none;
+  padding: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--pos-border) transparent;
 }
-
-
-.admin-pos-product-list::-webkit-scrollbar {
-  display: none;
-}
-
 
 .admin-pos-product-card {
   width: 100%;
-
-  min-height: 82px;
-
+  min-height: 85px;
   display: grid;
-
-  grid-template-columns:
-    46px
-    minmax(0, 1fr)
-    auto;
-
+  grid-template-columns: 47px minmax(0, 1fr) auto;
   align-items: center;
-
   gap: 13px;
-
-  margin-bottom: 8px;
-
-  padding:
-    13px
-    15px;
-
+  margin-bottom: 10px;
+  padding: 14px 15px;
   box-sizing: border-box;
-
-  border:
-    1px solid
-    var(--pos-border-soft);
-
+  border: 1px solid var(--pos-border-soft);
   border-radius: 14px;
-
-  background:
-    var(--pos-soft);
-
-  color:
-    var(--pos-text);
-
+  background: var(--pos-soft);
+  color: var(--pos-text);
+  font-family: inherit;
   text-align: left;
-
   cursor: pointer;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.15s ease;
 }
-
 
 .admin-pos-product-card:last-child {
   margin-bottom: 0;
 }
 
-
 .admin-pos-product-card:hover:not(:disabled) {
-  border-color:
-    color-mix(
-      in srgb,
-      var(--pos-orange)
-      45%,
-      var(--pos-border)
-    );
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--pos-orange-soft),
-      var(--pos-soft)
-    );
+  border-color: var(--pos-orange);
+  background: var(--pos-orange-soft);
+  transform: translateY(-1px);
 }
-
 
 .admin-pos-product-card:disabled {
   opacity: 0.5;
-
   cursor: not-allowed;
 }
-
 
 .admin-pos-product-icon {
   width: 44px;
   height: 44px;
-
   display: grid;
-
   place-items: center;
-
   border-radius: 12px;
-
-  background:
-    var(--pos-orange-soft);
-
-  color:
-    var(--pos-orange);
+  background: var(--pos-orange-soft);
+  color: var(--pos-orange);
 }
-
 
 .admin-pos-product-main {
   min-width: 0;
 }
 
-
 .admin-pos-product-main strong {
   display: block;
-
-  color:
-    var(--pos-heading);
-
-  font-size: 15px;
-
+  color: var(--pos-heading);
+  font-size: 14px;
   font-weight: 900;
 }
 
-
 .admin-pos-product-main span {
   display: block;
-
-  margin-top: 4px;
-
-  color:
-    var(--pos-muted);
-
+  margin-top: 5px;
+  color: var(--pos-muted);
   font-size: 11px;
 }
-
 
 .admin-pos-product-meta {
   text-align: right;
 }
 
-
 .admin-pos-product-meta strong {
   display: block;
-
-  color:
-    var(--pos-heading);
-
+  color: var(--pos-heading);
   font-size: 13px;
-
   font-weight: 900;
 }
-
 
 .admin-pos-product-meta span {
   display: block;
-
-  margin-top: 4px;
-
-  color:
-    var(--pos-orange-dark);
-
+  margin-top: 5px;
+  color: var(--pos-orange-dark);
   font-size: 11px;
-
   font-weight: 900;
 }
 
-
 /* =========================================================
-   PATIENT / PAYMENT FORM
+   RECIPIENT & PAYMENT
    ========================================================= */
 
 .admin-pos-recipient-section {
-  flex:
-    0
-    0
-    auto;
-
-  padding:
-    13px
-    16px
-    14px;
-
-  border-bottom:
-    1px solid
-    var(--pos-border-soft);
+  padding: 17px 19px 19px;
+  border-bottom: 1px solid var(--pos-border-soft);
 }
 
-
-.admin-pos-field,
-.admin-pos-amount-field {
+.admin-pos-field {
   display: block;
-
-  margin-top: 11px;
+  margin-bottom: 17px;
 }
 
-
-.admin-pos-field:first-child {
-  margin-top: 0;
+.admin-pos-field:last-child {
+  margin-bottom: 0;
 }
 
-
-.admin-pos-field > span,
+.admin-pos-field-label,
 .admin-pos-amount-field > span {
   display: block;
-
-  margin-bottom: 6px;
-
-  color:
-    var(--pos-muted);
-
+  margin-bottom: 9px;
+  color: var(--pos-muted);
   font-size: 10px;
-
   font-weight: 900;
-
   letter-spacing: 0.8px;
-
   text-transform: uppercase;
 }
-
-
-/* =========================================================
-   PATIENT SEARCH
-   ========================================================= */
 
 .admin-pos-patient-picker,
 .admin-pos-payment-picker {
   position: relative;
 }
 
-
 .admin-pos-patient-picker {
   z-index: 60;
 }
-
 
 .admin-pos-payment-picker {
   z-index: 50;
 }
 
-
 .admin-pos-patient-input {
-  min-height: 50px;
-
+  min-height: 52px;
   display: grid;
-
-  grid-template-columns:
-    42px
-    minmax(0, 1fr)
-    38px;
-
+  grid-template-columns: 44px minmax(0, 1fr) 42px;
   align-items: center;
-
-  border:
-    1px solid
-    var(--pos-border);
-
+  border: 1px solid var(--pos-border);
   border-radius: 12px;
-
-  background:
-    var(--pos-soft);
+  background: var(--pos-soft);
 }
-
 
 .admin-pos-patient-input.is-open {
-  border-color:
-    var(--pos-blue);
-
-  box-shadow:
-    0
-    0
-    0
-    3px
-    color-mix(
-      in srgb,
-      var(--pos-blue)
-      12%,
-      transparent
-    );
+  border-color: var(--pos-blue);
+  box-shadow: 0 0 0 3px var(--pos-blue-soft);
 }
-
 
 .admin-pos-patient-input > svg {
   justify-self: center;
-
-  color:
-    var(--pos-blue);
+  color: var(--pos-blue);
 }
-
 
 .admin-pos-patient-input input {
   width: 100%;
-
-  height: 48px;
-
   min-width: 0;
-
-  padding: 0;
-
+  height: 50px;
   border: 0;
-
   outline: 0;
-
-  background:
-    transparent;
-
-  color:
-    var(--pos-heading);
-
+  background: transparent;
+  color: var(--pos-heading);
   font-family: inherit;
-
   font-size: 13px;
-
   font-weight: 800;
-
   text-align: center;
 }
-
 
 .admin-pos-patient-input input::placeholder {
-  color:
-    var(--pos-muted);
-
-  text-align: center;
+  color: var(--pos-muted);
 }
 
-
-.admin-pos-patient-clear,
-.admin-pos-patient-chevron {
-  width: 30px;
-  height: 30px;
-
+.admin-pos-patient-clear {
+  width: 32px;
+  height: 32px;
   display: grid;
-
   place-items: center;
-
   justify-self: center;
-
   padding: 0;
-
   border: 0;
-
   border-radius: 8px;
-
-  background:
-    transparent;
-
-  color:
-    var(--pos-muted);
-
+  background: transparent;
+  color: var(--pos-muted);
   cursor: pointer;
 }
 
+.admin-pos-patient-clear:hover {
+  background: var(--pos-blue-soft);
+  color: var(--pos-blue);
+}
 
 /* =========================================================
    PATIENT DROPDOWN
    ========================================================= */
 
-.admin-pos-patient-dropdown {
+.admin-pos-patient-dropdown,
+.admin-pos-payment-dropdown {
   position: absolute;
-
-  top:
-    calc(
-      100% + 7px
-    );
-
+  top: calc(100% + 7px);
   left: 0;
   right: 0;
-
-  z-index: 300;
-
   overflow: hidden;
-
-  border:
-    1px solid
-    var(--pos-border);
-
+  border: 1px solid var(--pos-border);
   border-radius: 15px;
-
-  background:
-    var(--pos-card);
-
-  box-shadow:
-    0
-    18px
-    44px
-    rgba(
-      3,
-      32,
-      46,
-      0.28
-    );
+  background: var(--pos-card);
+  box-shadow: 0 18px 44px rgba(3, 32, 46, 0.28);
 }
 
+.admin-pos-patient-dropdown {
+  z-index: 300;
+}
 
 .admin-pos-patient-dropdown-top {
-  min-height: 40px;
-
+  min-height: 42px;
   display: flex;
-
   align-items: center;
   justify-content: space-between;
-
-  padding:
-    0
-    12px;
-
-  border-bottom:
-    1px solid
-    var(--pos-border-soft);
-
-  background:
-    var(--pos-soft);
+  padding: 0 13px;
+  border-bottom: 1px solid var(--pos-border-soft);
+  background: var(--pos-soft);
 }
 
-
 .admin-pos-patient-dropdown-top span {
-  color:
-    var(--pos-muted);
-
+  color: var(--pos-muted);
   font-size: 10px;
-
   font-weight: 900;
-
   text-transform: uppercase;
 }
 
-
 .admin-pos-patient-dropdown-top strong {
-  padding:
-    5px
-    8px;
-
+  padding: 5px 9px;
   border-radius: 999px;
-
-  background:
-    var(--pos-blue-soft);
-
-  color:
-    var(--pos-blue);
-
+  background: var(--pos-blue-soft);
+  color: var(--pos-blue);
   font-size: 10px;
 }
 
-
 .admin-pos-patient-results {
-  max-height: 300px;
-
+  max-height: 295px;
   overflow-y: auto;
-
   padding: 7px;
-
-  scrollbar-width: none;
 }
-
-
-.admin-pos-patient-results::-webkit-scrollbar {
-  display: none;
-}
-
 
 .admin-pos-patient-option {
   width: 100%;
-
-  min-height: 56px;
-
+  min-height: 58px;
   display: grid;
-
-  grid-template-columns:
-    38px
-    minmax(0, 1fr)
-    auto;
-
+  grid-template-columns: 38px minmax(0, 1fr) auto;
   align-items: center;
-
   gap: 10px;
-
-  padding:
-    7px
-    9px;
-
   margin-bottom: 4px;
-
-  border:
-    1px solid
-    transparent;
-
+  padding: 8px 10px;
+  border: 1px solid transparent;
   border-radius: 11px;
-
-  background:
-    transparent;
-
-  color:
-    var(--pos-text);
-
+  background: transparent;
+  color: var(--pos-text);
+  font-family: inherit;
   text-align: left;
-
   cursor: pointer;
 }
 
-
 .admin-pos-patient-option:hover,
 .admin-pos-patient-option.is-highlighted {
-  border-color:
-    color-mix(
-      in srgb,
-      var(--pos-blue)
-      30%,
-      transparent
-    );
-
-  background:
-    var(--pos-blue-soft);
+  border-color: var(--pos-border);
+  background: var(--pos-blue-soft);
 }
-
 
 .admin-pos-patient-option.is-selected {
-  border-color:
-    color-mix(
-      in srgb,
-      var(--pos-green)
-      40%,
-      transparent
-    );
-
-  background:
-    var(--pos-green-soft);
+  background: var(--pos-green-soft);
 }
-
 
 .admin-pos-patient-option-icon {
-  width: 36px;
-  height: 36px;
-
+  width: 37px;
+  height: 37px;
   display: grid;
-
   place-items: center;
-
   border-radius: 10px;
-
-  background:
-    var(--pos-blue-soft);
-
-  color:
-    var(--pos-blue);
+  background: var(--pos-blue-soft);
+  color: var(--pos-blue);
 }
-
 
 .admin-pos-patient-option-main {
   min-width: 0;
 }
 
-
 .admin-pos-patient-option-main strong {
   display: block;
-
   overflow: hidden;
-
-  color:
-    var(--pos-heading);
-
+  color: var(--pos-heading);
   font-size: 13px;
-
   font-weight: 900;
-
   text-overflow: ellipsis;
-
   white-space: nowrap;
 }
 
-
 .admin-pos-patient-option-main small {
   display: block;
-
   margin-top: 3px;
-
-  color:
-    var(--pos-muted);
-
+  color: var(--pos-muted);
   font-size: 10px;
-
-  font-weight: 800;
 }
 
-
 .admin-pos-patient-option-type {
-  padding:
-    5px
-    8px;
-
-  border:
-    1px solid
-    var(--pos-border);
-
+  padding: 5px 8px;
+  border: 1px solid var(--pos-border);
   border-radius: 999px;
-
-  color:
-    var(--pos-muted);
-
+  color: var(--pos-muted);
   font-size: 9px;
-
   font-weight: 900;
 }
 
-
 .admin-pos-patient-empty {
-  min-height: 120px;
-
+  min-height: 125px;
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
   justify-content: center;
-
-  gap: 5px;
-
+  gap: 6px;
+  color: var(--pos-muted);
   text-align: center;
 }
 
+.admin-pos-patient-empty strong {
+  color: var(--pos-heading);
+  font-size: 13px;
+}
+
+.admin-pos-patient-empty span {
+  font-size: 11px;
+}
 
 /* =========================================================
-   CUSTOM PAYMENT PICKER
+   PAYMENT METHOD PICKER
    ========================================================= */
 
 .admin-pos-payment-trigger {
   width: 100%;
-
   min-height: 52px;
-
   display: grid;
-
-  grid-template-columns:
-    44px
-    minmax(0, 1fr)
-    42px;
-
+  grid-template-columns: 45px minmax(0, 1fr) 43px;
   align-items: center;
-
   padding: 0;
-
-  overflow: hidden;
-
-  border:
-    1px solid
-    var(--pos-border);
-
+  border: 1px solid var(--pos-border);
   border-radius: 12px;
-
-  background:
-    var(--pos-soft);
-
-  color:
-    var(--pos-heading);
-
+  background: var(--pos-soft);
+  color: var(--pos-heading);
   font-family: inherit;
-
   cursor: pointer;
 }
 
-
-.admin-pos-payment-trigger:hover {
-  border-color:
-    color-mix(
-      in srgb,
-      var(--pos-blue)
-      45%,
-      var(--pos-border)
-    );
-}
-
-
+.admin-pos-payment-trigger:hover,
 .admin-pos-payment-trigger.is-open {
-  border-color:
-    var(--pos-blue);
-
-  box-shadow:
-    0
-    0
-    0
-    3px
-    color-mix(
-      in srgb,
-      var(--pos-blue)
-      12%,
-      transparent
-    );
+  border-color: var(--pos-blue);
 }
-
 
 .admin-pos-payment-trigger-icon {
-  height: 100%;
-
+  height: 50px;
   display: grid;
-
   place-items: center;
-
-  border-right:
-    1px solid
-    var(--pos-border-soft);
-
-  color:
-    var(--pos-blue);
+  border-right: 1px solid var(--pos-border-soft);
+  color: var(--pos-blue);
 }
 
-
 .admin-pos-payment-trigger-text {
-  padding:
-    0
-    12px;
-
-  color:
-    var(--pos-heading);
-
+  padding: 0 12px;
+  color: var(--pos-heading);
   font-size: 13px;
-
   font-weight: 900;
-
   text-align: center;
 }
 
-
 .admin-pos-payment-trigger-chevron {
   display: grid;
-
   place-items: center;
-
-  color:
-    var(--pos-muted);
+  color: var(--pos-muted);
 }
-
 
 .admin-pos-payment-trigger.is-open
 .admin-pos-payment-trigger-chevron {
-  transform:
-    rotate(180deg);
+  transform: rotate(180deg);
 }
-
-
-/* =========================================================
-   PAYMENT DROPDOWN
-   ========================================================= */
 
 .admin-pos-payment-dropdown {
-  position: absolute;
-
-  top:
-    calc(
-      100% + 7px
-    );
-
-  left: 0;
-  right: 0;
-
   z-index: 250;
-
-  overflow: hidden;
-
-  border:
-    1px solid
-    var(--pos-border);
-
-  border-radius: 15px;
-
-  background:
-    var(--pos-card);
-
-  box-shadow:
-    0
-    18px
-    40px
-    rgba(
-      3,
-      32,
-      46,
-      0.26
-    );
 }
-
 
 .admin-pos-payment-dropdown-title {
-  padding:
-    11px
-    13px;
-
-  border-bottom:
-    1px solid
-    var(--pos-border-soft);
-
-  background:
-    var(--pos-soft);
-
-  color:
-    var(--pos-muted);
-
+  padding: 12px 13px;
+  border-bottom: 1px solid var(--pos-border-soft);
+  background: var(--pos-soft);
+  color: var(--pos-muted);
   font-size: 10px;
-
   font-weight: 900;
-
   letter-spacing: 0.8px;
-
   text-transform: uppercase;
 }
-
 
 .admin-pos-payment-options {
   padding: 7px;
 }
 
-
 .admin-pos-payment-option {
   width: 100%;
-
-  min-height: 62px;
-
+  min-height: 63px;
   display: grid;
-
-  grid-template-columns:
-    42px
-    minmax(0, 1fr)
-    34px;
-
+  grid-template-columns: 43px minmax(0, 1fr) 32px;
   align-items: center;
-
   gap: 10px;
-
   margin-bottom: 5px;
-
-  padding:
-    8px
-    10px;
-
-  box-sizing: border-box;
-
-  border:
-    1px solid
-    transparent;
-
+  padding: 8px 10px;
+  border: 1px solid transparent;
   border-radius: 12px;
-
-  background:
-    transparent;
-
-  color:
-    var(--pos-text);
-
+  background: transparent;
+  color: var(--pos-text);
   font-family: inherit;
-
   text-align: left;
-
   cursor: pointer;
 }
-
 
 .admin-pos-payment-option:last-child {
   margin-bottom: 0;
 }
 
-
 .admin-pos-payment-option:hover {
-  border-color:
-    color-mix(
-      in srgb,
-      var(--pos-blue)
-      25%,
-      transparent
-    );
-
-  background:
-    var(--pos-blue-soft);
+  background: var(--pos-blue-soft);
 }
-
 
 .admin-pos-payment-option.is-selected {
-  border-color:
-    color-mix(
-      in srgb,
-      var(--pos-green)
-      38%,
-      var(--pos-border)
-    );
-
-  background:
-    var(--pos-green-soft);
+  border-color: var(--pos-border);
+  background: var(--pos-green-soft);
 }
-
 
 .admin-pos-payment-option-icon {
   width: 40px;
   height: 40px;
-
   display: grid;
-
   place-items: center;
-
   border-radius: 11px;
-
-  background:
-    var(--pos-blue-soft);
-
-  color:
-    var(--pos-blue);
+  background: var(--pos-blue-soft);
+  color: var(--pos-blue);
 }
-
 
 .admin-pos-payment-option.is-selected
 .admin-pos-payment-option-icon {
-  background:
-    var(--pos-card);
-
-  color:
-    var(--pos-green);
+  background: var(--pos-card);
+  color: var(--pos-green);
 }
-
 
 .admin-pos-payment-option-copy {
   min-width: 0;
 }
 
-
 .admin-pos-payment-option-copy strong {
   display: block;
-
-  color:
-    var(--pos-heading);
-
+  color: var(--pos-heading);
   font-size: 13px;
-
   font-weight: 900;
 }
 
-
 .admin-pos-payment-option-copy small {
   display: block;
-
-  margin-top: 3px;
-
-  color:
-    var(--pos-muted);
-
+  margin-top: 4px;
+  color: var(--pos-muted);
   font-size: 10px;
-
-  font-weight: 700;
 }
-
 
 .admin-pos-payment-option-check {
-  width: 28px;
-  height: 28px;
-
   display: grid;
-
   place-items: center;
-
-  border-radius: 50%;
-
-  color:
-    var(--pos-green);
+  color: var(--pos-green);
 }
-
 
 /* =========================================================
    SELECTED PATIENT SUMMARY
    ========================================================= */
 
 .admin-pos-patient-summary {
-  flex:
-    0
-    0
-    auto;
-
-  min-height: 70px;
-
   display: grid;
-
-  grid-template-columns:
-    44px
-    minmax(0, 1fr)
-    auto
-    32px;
-
+  grid-template-columns: 44px minmax(0, 1fr) auto 31px;
   align-items: center;
-
-  gap: 11px;
-
-  padding:
-    10px
-    15px;
-
+  gap: 12px;
+  min-height: 77px;
+  padding: 12px 17px;
   box-sizing: border-box;
-
-  border-bottom:
-    1px solid
-    var(--pos-border-soft);
-
-  background:
-    linear-gradient(
-      100deg,
-      var(--pos-green-soft),
-      color-mix(
-        in srgb,
-        var(--pos-card)
-        94%,
-        var(--pos-green-soft)
-      )
-    );
+  border-bottom: 1px solid var(--pos-border-soft);
+  background: var(--pos-green-soft);
 }
-
 
 .admin-pos-patient-summary-avatar {
-  width: 42px;
-  height: 42px;
-
+  width: 43px;
+  height: 43px;
   display: grid;
-
   place-items: center;
-
-  border:
-    1px solid
-    color-mix(
-      in srgb,
-      var(--pos-green)
-      28%,
-      var(--pos-border)
-    );
-
+  border: 1px solid var(--pos-border);
   border-radius: 12px;
-
-  background:
-    var(--pos-card);
-
-  color:
-    var(--pos-green);
+  background: var(--pos-card);
+  color: var(--pos-green);
 }
-
 
 .admin-pos-patient-summary-copy {
   min-width: 0;
 }
 
-
 .admin-pos-patient-summary-label {
   display: block;
-
-  margin-bottom: 2px;
-
-  color:
-    var(--pos-muted);
-
-  font-size: 8px;
-
+  margin-bottom: 3px;
+  color: var(--pos-muted);
+  font-size: 9px;
   font-weight: 900;
-
-  letter-spacing: 0.75px;
-
   text-transform: uppercase;
 }
 
-
 .admin-pos-patient-summary-copy strong {
   display: block;
-
   overflow: hidden;
-
-  color:
-    var(--pos-heading);
-
+  color: var(--pos-heading);
   font-size: 13px;
-
   font-weight: 900;
-
   text-overflow: ellipsis;
-
   white-space: nowrap;
 }
 
-
 .admin-pos-patient-summary-copy small {
   display: block;
-
-  margin-top: 2px;
-
-  color:
-    var(--pos-muted);
-
+  margin-top: 3px;
+  color: var(--pos-muted);
   font-size: 10px;
-
-  font-weight: 800;
 }
-
 
 .admin-pos-patient-summary-plan {
-  min-width: 82px;
-
-  padding:
-    7px
-    10px;
-
-  box-sizing: border-box;
-
-  border:
-    1px solid
-    color-mix(
-      in srgb,
-      var(--pos-blue)
-      24%,
-      var(--pos-border)
-    );
-
+  padding: 8px 11px;
+  border: 1px solid var(--pos-border);
   border-radius: 10px;
-
-  background:
-    var(--pos-card);
-
+  background: var(--pos-card);
   text-align: center;
 }
-
 
 .admin-pos-patient-summary-plan span {
   display: block;
-
-  color:
-    var(--pos-blue);
-
+  color: var(--pos-blue);
   font-size: 10px;
-
   font-weight: 900;
 }
-
 
 .admin-pos-patient-summary-plan small {
   display: block;
-
-  margin-top: 2px;
-
-  color:
-    var(--pos-muted);
-
-  font-size: 8px;
-
-  font-weight: 700;
+  margin-top: 3px;
+  color: var(--pos-muted);
+  font-size: 9px;
 }
-
 
 .admin-pos-patient-summary-check {
-  width: 29px;
-  height: 29px;
-
+  width: 30px;
+  height: 30px;
   display: grid;
-
   place-items: center;
-
   border-radius: 50%;
-
-  background:
-    var(--pos-green);
-
-  color:
-    #ffffff;
+  background: var(--pos-green);
+  color: #ffffff;
 }
 
-
 /* =========================================================
-   SELECTED MEDICINES HEADING
+   SELECTED MEDICINES
    ========================================================= */
 
 .admin-pos-selected-heading {
-  flex:
-    0
-    0
-    auto;
-
-  min-height: 46px;
-
+  min-height: 53px;
   display: flex;
-
   align-items: center;
   justify-content: space-between;
-
   gap: 10px;
-
-  padding:
-    9px
-    16px;
-
-  box-sizing: border-box;
-
-  border-bottom:
-    1px solid
-    var(--pos-border-soft);
-
-  background:
-    var(--pos-soft);
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--pos-border-soft);
+  background: var(--pos-soft);
 }
-
 
 .admin-pos-selected-heading strong {
-  color:
-    var(--pos-heading);
-
+  color: var(--pos-heading);
   font-size: 13px;
-
   font-weight: 900;
 }
-
 
 .admin-pos-selected-count {
-  padding:
-    6px
-    9px;
-
-  border:
-    1px solid
-    var(--pos-border);
-
+  padding: 6px 10px;
+  border: 1px solid var(--pos-border);
   border-radius: 999px;
-
-  color:
-    var(--pos-blue);
-
+  color: var(--pos-blue);
   font-size: 10px;
-
   font-weight: 900;
 }
 
-
-/* =========================================================
-   CART
-   ========================================================= */
-
 .admin-pos-cart-items {
-  flex:
-    1
-    1
-    auto;
-
-  min-height: 170px;
-
+  flex: 1 1 auto;
+  min-height: 180px;
+  max-height: 430px;
   overflow-y: auto;
-  overflow-x: hidden;
-
-  padding:
-    11px
-    13px;
-
+  padding: 14px 16px;
   box-sizing: border-box;
-
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--pos-border) transparent;
 }
-
-
-.admin-pos-cart-items::-webkit-scrollbar {
-  display: none;
-}
-
 
 .admin-pos-cart-empty {
-  width: 100%;
-  height: 100%;
-
-  min-height: 140px;
-
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
   justify-content: center;
-
-  gap: 7px;
-
+  gap: 10px;
+  min-height: 165px;
   text-align: center;
 }
 
-
 .admin-pos-cart-empty-icon {
-  width: 48px;
-  height: 48px;
-
+  width: 54px;
+  height: 54px;
   display: grid;
-
   place-items: center;
-
-  border-radius: 13px;
-
-  background:
-    var(--pos-blue-soft);
-
-  color:
-    var(--pos-blue);
+  border-radius: 14px;
+  background: var(--pos-blue-soft);
+  color: var(--pos-blue);
 }
 
-
 .admin-pos-cart-empty strong {
-  color:
-    var(--pos-heading);
-
+  color: var(--pos-heading);
   font-size: 14px;
-
   font-weight: 900;
 }
 
-
 .admin-pos-cart-empty span {
   max-width: 260px;
-
-  color:
-    var(--pos-muted);
-
-  font-size: 11px;
-
-  line-height: 1.45;
+  color: var(--pos-muted);
+  font-size: 12px;
+  line-height: 1.6;
 }
-
 
 /* =========================================================
    CART ITEM
@@ -1943,1098 +1034,600 @@
 
 .admin-pos-cart-item {
   position: relative;
-
   width: 100%;
-
-  padding:
-    13px
-    14px;
-
-  margin-bottom: 9px;
-
+  margin-bottom: 10px;
+  padding: 16px 17px;
   box-sizing: border-box;
-
-  border:
-    1px solid
-    color-mix(
-      in srgb,
-      var(--pos-blue)
-      25%,
-      var(--pos-border)
-    );
-
+  border: 1px solid var(--pos-border);
   border-radius: 14px;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--pos-soft),
-      color-mix(
-        in srgb,
-        var(--pos-blue-soft)
-        28%,
-        var(--pos-soft)
-      )
-    );
+  background: var(--pos-soft);
 }
 
+.admin-pos-cart-item:last-child {
+  margin-bottom: 0;
+}
 
 .admin-pos-cart-item::before {
   content: "";
-
   position: absolute;
-
   top: 0;
   bottom: 0;
   left: 0;
-
   width: 4px;
-
-  border-radius:
-    14px
-    0
-    0
-    14px;
-
-  background:
-    var(--pos-blue);
+  border-radius: 14px 0 0 14px;
+  background: var(--pos-blue);
 }
-
 
 .admin-pos-cart-item-top,
 .admin-pos-cart-item-bottom {
   display: flex;
-
   align-items: center;
   justify-content: space-between;
-
-  gap: 10px;
+  gap: 12px;
 }
-
-
-.admin-pos-cart-item-bottom {
-  margin-top: 11px;
-
-  padding-top: 10px;
-
-  border-top:
-    1px solid
-    var(--pos-border-soft);
-}
-
 
 .admin-pos-cart-item-copy {
   min-width: 0;
-
-  padding-left: 5px;
+  padding-left: 4px;
 }
-
 
 .admin-pos-cart-item-copy strong {
   display: block;
-
-  color:
-    var(--pos-heading);
-
+  color: var(--pos-heading);
   font-size: 14px;
-
   font-weight: 900;
 }
-
 
 .admin-pos-cart-item-copy span {
   display: block;
-
-  margin-top: 3px;
-
-  color:
-    var(--pos-muted);
-
-  font-size: 10px;
+  margin-top: 5px;
+  color: var(--pos-muted);
+  font-size: 11px;
 }
-
 
 .admin-pos-remove-button {
-  width: 32px;
-  height: 32px;
-
+  width: 35px;
+  height: 35px;
   display: grid;
-
   place-items: center;
-
-  border:
-    1px solid
-    rgba(
-      201,
-      80,
-      80,
-      0.18
-    );
-
-  border-radius: 9px;
-
-  background:
-    var(--pos-red-soft);
-
-  color:
-    var(--pos-red);
-
-  cursor: pointer;
-}
-
-
-.admin-pos-quantity {
-  display:
-    inline-grid;
-
-  grid-template-columns:
-    32px
-    38px
-    32px;
-
-  overflow: hidden;
-
-  border:
-    1px solid
-    var(--pos-border);
-
+  border: 1px solid rgba(201, 80, 80, 0.2);
   border-radius: 10px;
-}
-
-
-.admin-pos-quantity button {
-  width: 32px;
-  height: 32px;
-
-  display: grid;
-
-  place-items: center;
-
-  border: 0;
-
-  background:
-    transparent;
-
-  color:
-    var(--pos-blue);
-
+  background: var(--pos-red-soft);
+  color: var(--pos-red);
   cursor: pointer;
 }
 
-
-.admin-pos-quantity span {
-  display: grid;
-
-  place-items: center;
-
-  border-left:
-    1px solid
-    var(--pos-border);
-
-  border-right:
-    1px solid
-    var(--pos-border);
-
-  color:
-    var(--pos-heading);
-
-  font-size: 12px;
-
-  font-weight: 900;
-}
-
-
-.admin-pos-cart-line-total {
-  color:
-    var(--pos-heading);
-
-  font-size: 14px;
-
-  font-weight: 900;
-}
-
-
-/* =========================================================
-   SUMMARY
-   ========================================================= */
-
-.admin-pos-summary {
-  flex:
-    0
-    0
-    auto;
-
-  padding:
-    12px
-    16px
-    14px;
-
-  border-top:
-    1px solid
-    var(--pos-border-soft);
-
-  background:
-    linear-gradient(
-      180deg,
-      var(--pos-soft),
-      var(--pos-card)
-    );
-}
-
-
-.admin-pos-summary-row {
-  display: flex;
-
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 10px;
-
-  padding:
-    3px
-    0
-    7px;
-}
-
-
-.admin-pos-summary-row span {
-  color:
-    var(--pos-muted);
-
-  font-size: 11px;
-
-  font-weight: 800;
-}
-
-
-.admin-pos-summary-row strong {
-  color:
-    var(--pos-heading);
-
-  font-size: 16px;
-
-  font-weight: 900;
-}
-
-
-.admin-pos-amount-field {
-  margin-top: 6px;
-}
-
-
-.admin-pos-input-wrap {
-  min-height: 48px;
-
-  display: grid;
-
-  grid-template-columns:
-    42px
-    minmax(0, 1fr);
-
-  align-items: center;
-
-  overflow: hidden;
-
-  border:
-    1px solid
-    var(--pos-border);
-
-  border-radius: 12px;
-
-  background:
-    var(--pos-soft);
-}
-
-
-.admin-pos-input-wrap > svg {
-  justify-self: center;
-
-  color:
-    var(--pos-blue);
-}
-
-
-.admin-pos-input-wrap input {
-  width: 100%;
-
-  height: 46px;
-
-  min-width: 0;
-
-  padding:
-    0
-    42px
-    0
-    0;
-
-  box-sizing: border-box;
-
-  border: 0;
-
-  outline: 0;
-
-  background:
-    transparent;
-
-  color:
-    var(--pos-heading);
-
-  font-family: inherit;
-
-  font-size: 13px;
-
-  font-weight: 800;
-
-  text-align: center;
-}
-
-
-.admin-pos-input-wrap input::placeholder {
-  color:
-    var(--pos-muted);
-
-  text-align: center;
-}
-
-
-.admin-pos-summary-row--change {
-  margin-top: 6px;
-
-  padding-top: 9px;
-
-  border-top:
-    1px dashed
-    var(--pos-border);
-}
-
-
-.admin-pos-summary-row--change strong {
-  color:
-    var(--pos-blue);
-}
-
-
-/* =========================================================
-   COMPLETE BUTTON
-   ========================================================= */
-
-.admin-pos-checkout-button {
-  width: 100%;
-
-  min-height: 48px;
-
-  display: inline-flex;
-
-  align-items: center;
-  justify-content: center;
-
-  gap: 8px;
-
-  margin-top: 5px;
-
-  border:
-    1px solid
-    #0f9f98;
-
-  border-radius: 11px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #18bfc0,
-      #0e8f8b
-    );
-
-  color: #ffffff;
-
-  font-family: inherit;
-
-  font-size: 12px;
-
-  font-weight: 900;
-
-  cursor: pointer;
-}
-
-
-.admin-pos-checkout-button:disabled {
-  opacity: 0.48;
-
+.admin-pos-remove-button:disabled {
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
+.admin-pos-cart-item-bottom {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--pos-border-soft);
+}
+
+.admin-pos-quantity {
+  display: inline-grid;
+  grid-template-columns: 36px 41px 36px;
+  overflow: hidden;
+  border: 1px solid var(--pos-border);
+  border-radius: 10px;
+}
+
+.admin-pos-quantity button {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--pos-blue);
+  cursor: pointer;
+}
+
+.admin-pos-quantity button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.admin-pos-quantity span {
+  display: grid;
+  place-items: center;
+  border-left: 1px solid var(--pos-border);
+  border-right: 1px solid var(--pos-border);
+  color: var(--pos-heading);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.admin-pos-cart-line-total {
+  color: var(--pos-heading);
+  font-size: 14px;
+  font-weight: 900;
+}
 
 /* =========================================================
-   RECENT DISPENSING
-   FINAL HEADER / FIRST ROW FIX
+   PAYMENT SUMMARY — IMPROVED SPACING
+   ========================================================= */
+
+.admin-pos-summary {
+  flex: 0 0 auto;
+  padding: 19px 20px 22px;
+  box-sizing: border-box;
+  border-top: 1px solid var(--pos-border-soft);
+  border-radius: 0 0 17px 17px;
+  background: linear-gradient(
+    180deg,
+    var(--pos-soft),
+    var(--pos-card)
+  );
+}
+
+.admin-pos-summary-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 17px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--pos-border-soft);
+  color: var(--pos-blue);
+}
+
+.admin-pos-summary-heading span {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--pos-muted);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+}
+
+.admin-pos-summary-heading strong {
+  display: block;
+  color: var(--pos-heading);
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.admin-pos-summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.admin-pos-summary-row span {
+  color: var(--pos-muted);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.admin-pos-summary-row strong {
+  color: var(--pos-heading);
+  font-size: 15px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.admin-pos-summary-row--total {
+  margin-bottom: 13px;
+}
+
+.admin-pos-summary-row--total strong {
+  font-size: 20px;
+}
+
+.admin-pos-amount-field {
+  display: block;
+  margin: 14px 0 18px;
+}
+
+.admin-pos-input-wrap {
+  min-height: 54px;
+  display: grid;
+  grid-template-columns: 47px minmax(0, 1fr);
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid var(--pos-border);
+  border-radius: 12px;
+  background: var(--pos-soft);
+}
+
+.admin-pos-input-wrap:focus-within {
+  border-color: var(--pos-blue);
+  box-shadow: 0 0 0 3px var(--pos-blue-soft);
+}
+
+.admin-pos-input-wrap > svg {
+  justify-self: center;
+  color: var(--pos-blue);
+}
+
+.admin-pos-input-wrap input {
+  width: 100%;
+  min-width: 0;
+  height: 52px;
+  padding: 0 18px 0 0;
+  box-sizing: border-box;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--pos-heading);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.admin-pos-input-wrap input::placeholder {
+  color: var(--pos-muted);
+}
+
+.admin-pos-payment-breakdown {
+  margin-top: 10px;
+  padding: 11px 14px;
+  border: 1px solid var(--pos-border);
+  border-radius: 12px;
+  background: var(--pos-soft);
+}
+
+.admin-pos-payment-breakdown
+.admin-pos-summary-row strong {
+  color: var(--pos-blue);
+}
+
+.admin-pos-summary-row--remaining {
+  margin-top: 7px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--pos-border);
+}
+
+.admin-pos-summary-row--remaining strong {
+  color: var(--pos-red) !important;
+}
+
+/* =========================================================
+   COMPLETE DISPENSING — SEPARATE SPACED AREA
+   ========================================================= */
+
+.admin-pos-checkout-area {
+  margin-top: 22px;
+  padding-top: 19px;
+  border-top: 1px solid var(--pos-border-soft);
+}
+
+.admin-pos-checkout-button {
+  width: 100%;
+  min-height: 59px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 11px;
+  padding: 14px 20px;
+  box-sizing: border-box;
+  border: 1px solid #0f9f98;
+  border-radius: 13px;
+  background: linear-gradient(
+    135deg,
+    #18bfc0,
+    #0e8f8b
+  );
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.35;
+  cursor: pointer;
+  box-shadow: 0 7px 18px rgba(14, 143, 139, 0.16);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.admin-pos-checkout-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(14, 143, 139, 0.22);
+}
+
+.admin-pos-checkout-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.admin-pos-checkout-button:focus-visible {
+  outline: 3px solid var(--pos-blue);
+  outline-offset: 3px;
+}
+
+.admin-pos-checkout-help {
+  margin: 13px 0 0;
+  color: var(--pos-muted);
+  font-size: 11px;
+  font-weight: 650;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* =========================================================
+   DISPENSING HISTORY
    ========================================================= */
 
 .admin-pos-recent-sales
 .admin-pos-panel-header {
   position: relative;
-
-  z-index: 20;
-
-  flex:
-    0
-    0
-    auto;
-
-  background:
-    linear-gradient(
-      110deg,
-      var(--panel-soft),
-      var(--pos-card)
-      62%
-    );
+  z-index: 2;
 }
-
 
 .admin-pos-sales-table-wrap {
-  position: relative;
-
-  flex:
-    1
-    1
-    auto;
-
-  min-height: 0;
-
   width: 100%;
-
-  overflow-y: auto;
-  overflow-x: hidden;
-
-  padding:
-    0
-    14px
-    18px;
-
+  max-height: 480px;
+  overflow: auto;
+  padding: 0 15px 17px;
   box-sizing: border-box;
-
-  background:
-    var(--pos-card);
-
-  scrollbar-width: none;
-
-  -ms-overflow-style: none;
+  background: var(--pos-card);
+  scrollbar-width: thin;
+  scrollbar-color: var(--pos-border) transparent;
 }
-
-
-.admin-pos-sales-table-wrap::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-
-  display: none;
-}
-
-
-/* =========================================================
-   HISTORY TABLE
-   ========================================================= */
 
 .admin-pos-sales-table {
   width: 100%;
-
-  min-width: 0;
-
+  min-width: 650px;
   margin: 0;
-
   table-layout: fixed;
-
-  border-collapse:
-    separate;
-
-  border-spacing:
-    0
-    8px;
+  border-collapse: separate;
+  border-spacing: 0 8px;
 }
-
-
-/* =========================================================
-   IMPORTANT FIX:
-   DO NOT MAKE THE ENTIRE THEAD STICKY
-   ========================================================= */
 
 .admin-pos-sales-table thead {
   position: static;
-
-  display: table-header-group;
 }
-
-
-.admin-pos-sales-table thead tr {
-  position: static;
-}
-
-
-/* =========================================================
-   ONLY THE HEADER CELLS ARE STICKY
-   ========================================================= */
 
 .admin-pos-sales-table th {
   position: sticky;
-
   top: 0;
-
-  z-index: 10;
-
-  height: 46px;
-
-  padding:
-    0
-    12px;
-
-  box-sizing: border-box;
-
-  border-top: 0;
-  border-left: 0;
-  border-right: 0;
-
-  border-bottom:
-    1px solid
-    var(--pos-border-soft);
-
-  background:
-    var(--pos-card);
-
-  color:
-    var(--pos-muted);
-
+  z-index: 3;
+  height: 47px;
+  padding: 0 12px;
+  border-bottom: 1px solid var(--pos-border-soft);
+  background: var(--pos-card);
+  color: var(--pos-muted);
   font-size: 10px;
-
   font-weight: 900;
-
-  text-align: left;
-
   letter-spacing: 0.7px;
-
+  text-align: left;
   text-transform: uppercase;
-
   white-space: nowrap;
-
-  vertical-align: middle;
-
-  box-shadow:
-    0
-    7px
-    12px
-    -12px
-    rgba(
-      15,
-      47,
-      70,
-      0.35
-    );
 }
 
-
-/* =========================================================
-   REMOVE PREVIOUS FAKE TABLE SPACER
-   ========================================================= */
-
-.admin-pos-sales-table tbody {
-  position: static;
-}
-
-
-.admin-pos-sales-table tbody::before {
-  content: none;
-
-  display: none;
-}
-
-
-.admin-pos-sales-table tbody tr {
-  position: static;
-}
-
-
-/* =========================================================
-   COLUMN WIDTHS
-   ========================================================= */
-
-.admin-pos-sales-table
-th:nth-child(1) {
+.admin-pos-sales-table th:nth-child(1) {
   width: 16%;
 }
 
-
-.admin-pos-sales-table
-th:nth-child(2) {
+.admin-pos-sales-table th:nth-child(2) {
   width: 25%;
 }
 
-
-.admin-pos-sales-table
-th:nth-child(3) {
+.admin-pos-sales-table th:nth-child(3) {
   width: 18%;
 }
 
-
-.admin-pos-sales-table
-th:nth-child(4) {
+.admin-pos-sales-table th:nth-child(4) {
   width: 23%;
 }
 
-
-.admin-pos-sales-table
-th:nth-child(5) {
+.admin-pos-sales-table th:nth-child(5) {
   width: 18%;
 }
 
-
-/* =========================================================
-   HISTORY CELLS
-   ========================================================= */
-
 .admin-pos-sales-table td {
-  padding:
-    14px
-    12px;
-
-  box-sizing: border-box;
-
-  border-top:
-    1px solid
-    var(--pos-border-soft);
-
-  border-bottom:
-    1px solid
-    var(--pos-border-soft);
-
-  background:
-    var(--pos-soft);
-
-  color:
-    var(--pos-text);
-
+  padding: 14px 12px;
+  border-top: 1px solid var(--pos-border-soft);
+  border-bottom: 1px solid var(--pos-border-soft);
+  background: var(--pos-soft);
+  color: var(--pos-text);
   font-size: 12px;
-
   font-weight: 700;
-
   vertical-align: middle;
-
   white-space: nowrap;
 }
 
-
-.admin-pos-sales-table
-td:first-child {
-  border-left:
-    1px solid
-    var(--pos-border-soft);
-
-  border-radius:
-    13px
-    0
-    0
-    13px;
+.admin-pos-sales-table td:first-child {
+  border-left: 1px solid var(--pos-border-soft);
+  border-radius: 13px 0 0 13px;
 }
 
-
-.admin-pos-sales-table
-td:last-child {
-  border-right:
-    1px solid
-    var(--pos-border-soft);
-
-  border-radius:
-    0
-    13px
-    13px
-    0;
+.admin-pos-sales-table td:last-child {
+  border-right: 1px solid var(--pos-border-soft);
+  border-radius: 0 13px 13px 0;
 }
 
-
-.admin-pos-sales-table
-tbody tr:hover td {
-  border-color:
-    color-mix(
-      in srgb,
-      var(--pos-violet)
-      20%,
-      var(--pos-border-soft)
-    );
-
-  background:
-    color-mix(
-      in srgb,
-      var(--pos-violet-soft)
-      30%,
-      var(--pos-soft)
-    );
+.admin-pos-sales-table tbody tr:hover td {
+  background: var(--pos-soft-2);
 }
-
-
-/* =========================================================
-   HISTORY RECORD
-   ========================================================= */
 
 .admin-pos-sale-number {
   display: inline-flex;
-
   align-items: center;
-
   min-height: 32px;
-
-  padding:
-    0
-    10px;
-
-  border:
-    1px solid
-    var(--pos-border);
-
+  padding: 0 10px;
+  border: 1px solid var(--pos-border);
   border-radius: 8px;
-
-  background:
-    var(--pos-card);
-
-  color:
-    var(--pos-heading);
-
+  background: var(--pos-card);
+  color: var(--pos-heading);
   font-size: 11px;
-
   font-weight: 900;
 }
 
-
 .admin-pos-patient-cell {
   display: flex;
-
   align-items: center;
-
-  gap: 8px;
-
+  gap: 9px;
   min-width: 0;
 }
-
 
 .admin-pos-patient-cell__icon {
   width: 32px;
   height: 32px;
-
-  flex:
-    0
-    0
-    32px;
-
+  flex: 0 0 32px;
   display: grid;
-
   place-items: center;
-
   border-radius: 9px;
-
-  background:
-    var(--pos-violet-soft);
-
-  color:
-    var(--pos-violet);
+  background: var(--pos-violet-soft);
+  color: var(--pos-violet);
 }
 
-
-.admin-pos-patient-cell
-> span:last-child {
+.admin-pos-patient-cell > span:last-child {
   min-width: 0;
-
   overflow: hidden;
-
-  color:
-    var(--pos-heading);
-
+  color: var(--pos-heading);
   font-weight: 800;
-
   text-overflow: ellipsis;
-
   white-space: nowrap;
 }
-
 
 .admin-pos-sale-total {
-  color:
-    var(--pos-heading);
-
+  color: var(--pos-heading);
   font-size: 13px;
-
   font-weight: 900;
-
-  white-space: nowrap;
 }
-
 
 .admin-pos-status {
-  min-width: 96px;
-
   display: inline-flex;
-
   align-items: center;
   justify-content: center;
-
-  gap: 5px;
-
-  padding:
-    7px
-    10px;
-
+  gap: 6px;
+  min-height: 31px;
+  padding: 7px 10px;
   box-sizing: border-box;
-
-  border:
-    1px solid
-    rgba(
-      59,
-      148,
-      114,
-      0.2
-    );
-
+  border: 1px solid var(--pos-border);
   border-radius: 999px;
-
-  background:
-    var(--pos-green-soft);
-
-  color:
-    var(--pos-green);
-
+  background: var(--pos-green-soft);
+  color: var(--pos-green);
   font-size: 10px;
-
   font-weight: 900;
 }
 
-
 /* =========================================================
-   EMPTY / LOADING
+   EMPTY & LOADING STATES
    ========================================================= */
 
 .admin-pos-empty-state {
-  min-height: 150px;
-
+  min-height: 155px;
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
   justify-content: center;
-
-  gap: 7px;
-
+  gap: 8px;
+  padding: 20px;
+  box-sizing: border-box;
+  color: var(--pos-muted);
   text-align: center;
 }
 
-
 .admin-pos-empty-state strong {
-  color:
-    var(--pos-heading);
-
+  color: var(--pos-heading);
   font-size: 14px;
-
   font-weight: 900;
 }
 
-
 .admin-pos-empty-state span {
-  color:
-    var(--pos-muted);
-
+  color: var(--pos-muted);
   font-size: 11px;
+  line-height: 1.5;
 }
-
 
 .admin-pos-empty-cell {
-  padding:
-    0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
 }
-
 
 .admin-pos-loading {
   min-height: 430px;
-
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
   justify-content: center;
-
-  gap: 8px;
+  gap: 11px;
+  text-align: center;
 }
-
 
 .admin-pos-loading-icon {
-  width: 60px;
-  height: 60px;
-
+  width: 65px;
+  height: 65px;
   display: grid;
-
   place-items: center;
-
   border-radius: 17px;
-
-  background:
-    var(--pos-orange-soft);
-
-  color:
-    var(--pos-orange);
+  background: var(--pos-orange-soft);
+  color: var(--pos-orange);
 }
 
-
-/* =========================================================
-   DARK MODE TEXT SAFETY
-   ========================================================= */
-
-[data-admin-theme="dark"]
-.admin-pos-panel-heading h2,
-
-[data-admin-theme="dark"]
-.admin-pos-dispensing-header__main h2,
-
-[data-admin-theme="dark"]
-.admin-pos-product-main strong,
-
-[data-admin-theme="dark"]
-.admin-pos-product-meta strong,
-
-[data-admin-theme="dark"]
-.admin-pos-dispensing-count strong,
-
-[data-admin-theme="dark"]
-.admin-pos-payment-trigger-text,
-
-[data-admin-theme="dark"]
-.admin-pos-payment-option-copy strong,
-
-[data-admin-theme="dark"]
-.admin-pos-patient-summary-copy strong,
-
-[data-admin-theme="dark"]
-.admin-pos-selected-heading strong,
-
-[data-admin-theme="dark"]
-.admin-pos-cart-empty strong,
-
-[data-admin-theme="dark"]
-.admin-pos-cart-item-copy strong,
-
-[data-admin-theme="dark"]
-.admin-pos-cart-line-total,
-
-[data-admin-theme="dark"]
-.admin-pos-summary-row strong,
-
-[data-admin-theme="dark"]
-.admin-pos-sale-number,
-
-[data-admin-theme="dark"]
-.admin-pos-patient-cell
-> span:last-child,
-
-[data-admin-theme="dark"]
-.admin-pos-sale-total,
-
-[data-admin-theme="dark"]
-.admin-pos-empty-state strong {
-  color:
-    #f4fbfc !important;
-
-  -webkit-text-fill-color:
-    #f4fbfc !important;
+.admin-pos-loading strong {
+  color: var(--pos-heading);
+  font-size: 18px;
 }
 
-
-/* =========================================================
-   125%
-   ========================================================= */
-
-@media (max-width: 1280px) {
-  .admin-pos-products,
-  .admin-pos-dispensing {
-    height: 730px;
-    min-height: 730px;
-    max-height: 730px;
-  }
-
-  .admin-pos-recent-sales {
-    height: 500px;
-    min-height: 500px;
-    max-height: 500px;
-  }
-
-  .admin-pos-sales-table th {
-    padding:
-      0
-      10px;
-
-    font-size: 9px;
-  }
-
-  .admin-pos-sales-table td {
-    padding:
-      13px
-      10px;
-
-    font-size: 11px;
-  }
+.admin-pos-loading span {
+  color: var(--pos-muted);
+  font-size: 13px;
 }
 
-
 /* =========================================================
-   150% ZOOM
+   RESPONSIVE DESKTOP / TABLET
    ========================================================= */
+
+@media (max-width: 1250px) {
+  .admin-pos-workspace {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .admin-pos-panel-header,
+  .admin-pos-dispensing-header {
+    padding: 16px 15px;
+  }
+
+  .admin-pos-summary {
+    padding: 17px 16px 20px;
+  }
+
+  .admin-pos-product-card {
+    grid-template-columns: 43px minmax(0, 1fr) auto;
+    gap: 9px;
+    padding: 12px;
+  }
+}
 
 @media (max-width: 1050px) {
   .admin-pos-page {
-    width:
-      calc(
-        100vw - 32px
-      );
-
-    max-width:
-      calc(
-        100vw - 32px
-      );
-
-    margin-left: auto;
-    margin-right: auto;
-
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 6px;
+    padding-right: 6px;
   }
-
 
   .admin-pos-workspace {
-    grid-template-columns:
-      1fr;
+    grid-template-columns: 1fr;
   }
-
 
   .admin-pos-products,
   .admin-pos-dispensing {
-    width: 100%;
-
-    height: 700px;
-    min-height: 700px;
-    max-height: 700px;
+    min-height: 0;
   }
 
-
-  .admin-pos-recent-sales {
-    width: 100%;
-
-    height: 465px;
-    min-height: 465px;
-    max-height: 465px;
+  .admin-pos-product-list {
+    max-height: 490px;
   }
 
-
-  .admin-pos-sales-table {
-    width: 100%;
-
-    min-width: 0;
-
-    table-layout: fixed;
+  .admin-pos-cart-items {
+    min-height: 160px;
+    max-height: 380px;
   }
 }
-
 
 /* =========================================================
    MOBILE
@@ -3043,80 +1636,143 @@ tbody tr:hover td {
 @media (max-width: 760px) {
   .admin-pos-page {
     width: 100%;
-
-    max-width: 100%;
-
-    padding:
-      0
-      7px
-      24px;
+    padding: 0 5px 28px;
   }
 
-
-  .admin-pos-products,
-  .admin-pos-dispensing {
-    height: 680px;
-    min-height: 680px;
-    max-height: 680px;
+  .admin-pos-workspace {
+    gap: 15px;
+    padding-top: 15px;
   }
 
-
-  .admin-pos-recent-sales {
-    height: 430px;
-    min-height: 430px;
-    max-height: 430px;
+  .admin-pos-message {
+    gap: 10px;
+    padding: 12px;
   }
 
+  .admin-pos-message__icon {
+    width: 36px;
+    height: 36px;
+    flex-basis: 36px;
+  }
+
+  .admin-pos-message__content strong {
+    font-size: 12px;
+  }
+
+  .admin-pos-message__content span {
+    font-size: 11px;
+  }
+
+  .admin-pos-panel-header,
+  .admin-pos-dispensing-header {
+    min-height: 77px;
+    padding: 13px 12px;
+  }
+
+  .admin-pos-panel-heading,
+  .admin-pos-dispensing-header__main {
+    gap: 9px;
+  }
+
+  .admin-pos-panel-icon,
+  .admin-pos-dispensing-icon {
+    width: 41px;
+    height: 41px;
+    flex-basis: 41px;
+  }
+
+  .admin-pos-panel-heading h2,
+  .admin-pos-dispensing-header__main h2 {
+    font-size: 18px;
+  }
+
+  .admin-pos-product-count,
+  .admin-pos-sales-count {
+    min-height: 32px;
+    padding: 0 8px;
+    font-size: 9px;
+  }
+
+  .admin-pos-product-card {
+    min-height: 78px;
+    grid-template-columns: 40px minmax(0, 1fr) auto;
+    gap: 8px;
+    padding: 10px;
+  }
+
+  .admin-pos-product-icon {
+    width: 39px;
+    height: 39px;
+  }
+
+  .admin-pos-product-main strong {
+    font-size: 12px;
+  }
+
+  .admin-pos-product-main span {
+    font-size: 9px;
+  }
+
+  .admin-pos-product-meta strong {
+    font-size: 11px;
+  }
+
+  .admin-pos-product-meta span {
+    font-size: 9px;
+  }
+
+  .admin-pos-recipient-section {
+    padding: 14px 12px;
+  }
 
   .admin-pos-patient-summary {
-    grid-template-columns:
-      42px
-      minmax(0, 1fr)
-      30px;
+    grid-template-columns: 42px minmax(0, 1fr) 30px;
+    gap: 9px;
+    padding: 11px 12px;
   }
-
 
   .admin-pos-patient-summary-plan {
     display: none;
   }
 
-
   .admin-pos-patient-option {
-    grid-template-columns:
-      36px
-      minmax(0, 1fr);
+    grid-template-columns: 36px minmax(0, 1fr);
   }
-
 
   .admin-pos-patient-option-type {
     grid-column: 2;
-
     justify-self: start;
   }
 
+  .admin-pos-cart-items {
+    padding: 12px;
+  }
+
+  .admin-pos-summary {
+    padding: 16px 13px 20px;
+  }
+
+  .admin-pos-checkout-button {
+    min-height: 56px;
+    font-size: 13px;
+  }
 
   .admin-pos-sales-table-wrap {
     overflow-x: auto;
+    padding: 0 10px 14px;
   }
-
 
   .admin-pos-sales-table {
-    min-width: 720px;
+    min-width: 710px;
   }
 }
-
 
 /* =========================================================
    REDUCED MOTION
    ========================================================= */
 
-@media (
-  prefers-reduced-motion:
-    reduce
-) {
+@media (prefers-reduced-motion: reduce) {
   .admin-pos-product-card,
-  .admin-pos-payment-trigger,
-  .admin-pos-payment-option,
   .admin-pos-checkout-button {
     transition: none;
   }
