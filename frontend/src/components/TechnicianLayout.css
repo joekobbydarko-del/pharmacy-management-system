@@ -1,0 +1,280 @@
+/* ============================================================
+   DR. EVANS PHARMACY — TECHNICIAN PORTAL LAYOUT
+   Desktop-only shell. No responsive rules by design.
+   ============================================================ */
+
+.tech-shell {
+  --tech-navy: #173a5e;
+  --tech-navy-2: #1e4a75;
+  --tech-navy-hover: #24537f;
+  --tech-navy-active: #2f6ea8;
+  --tech-border: #e6ebf1;
+  --tech-text: #1c2b3a;
+  --tech-muted: #7c8896;
+  --tech-bg: #f4f6fa;
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--tech-bg);
+  color: var(--tech-text);
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* ---------- Top header ---------- */
+.tech-header {
+  height: 74px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  padding: 0 28px;
+  background: #ffffff;
+  border-bottom: 1px solid var(--tech-border);
+  box-sizing: border-box;
+}
+
+.tech-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 250px;
+}
+
+.tech-header__logo {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eaf1f8;
+  overflow: hidden;
+}
+
+.tech-header__logo img {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.tech-header__titles {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.tech-header__titles strong {
+  font-size: 16px;
+  color: var(--tech-navy);
+  letter-spacing: 0.2px;
+}
+
+.tech-header__titles span {
+  font-size: 12.5px;
+  color: var(--tech-muted);
+  margin-top: 2px;
+}
+
+.tech-header__search {
+  flex: 1;
+  max-width: 560px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 16px;
+  border: 1px solid var(--tech-border);
+  border-radius: 10px;
+  background: #f7f9fc;
+  color: var(--tech-muted);
+}
+
+.tech-header__search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  color: var(--tech-text);
+}
+
+.tech-header__search input::placeholder {
+  color: var(--tech-muted);
+}
+
+.tech-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.tech-header__icon {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--tech-border);
+  border-radius: 10px;
+  background: #ffffff;
+  color: #47586b;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.tech-header__icon:hover {
+  background: #f2f5f9;
+  border-color: #d6dee7;
+}
+
+.tech-header__badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+.tech-header__user {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding-left: 8px;
+  color: #47586b;
+}
+
+.tech-header__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #2f6ea8, #173a5e);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.tech-header__meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.tech-header__meta strong {
+  font-size: 14px;
+  color: var(--tech-text);
+}
+
+.tech-header__meta span {
+  font-size: 12px;
+  color: var(--tech-muted);
+}
+
+/* ---------- Body: sidebar + content ---------- */
+.tech-body {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  min-height: 0;
+}
+
+.tech-sidebar {
+  flex: 0 0 250px;
+  width: 250px;
+  background: var(--tech-navy);
+  display: flex;
+  flex-direction: column;
+  padding: 18px 14px;
+  box-sizing: border-box;
+}
+
+.tech-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tech-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  color: #c7d6e5;
+  font-size: 14.5px;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tech-nav-item svg {
+  flex: 0 0 auto;
+  opacity: 0.9;
+}
+
+.tech-nav-item:hover {
+  background: var(--tech-navy-hover);
+  color: #ffffff;
+}
+
+.tech-nav-item.is-active {
+  background: var(--tech-navy-active);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 6px 14px rgba(23, 58, 94, 0.35);
+}
+
+.tech-nav-item.is-active::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 20%;
+  bottom: 20%;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: #ffffff;
+}
+
+.tech-sidebar__logout {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 11px 14px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #c7d6e5;
+  font-size: 14.5px;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.tech-sidebar__logout:hover {
+  background: var(--tech-navy-hover);
+  color: #ffffff;
+}
+
+.tech-content {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 26px 30px 34px;
+  box-sizing: border-box;
+}

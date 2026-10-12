@@ -1,0 +1,31 @@
+# Dr. Evans Pharmacy — Backend API dependencies
+#
+# FastAPI application (main.py) plus the remote-pharmacy services
+# (patient_medications, prescription_processing,
+# prescription_verification, staff_portals).
+#
+# Prescription OCR also requires the Tesseract binary to be
+# installed on the host system (not a Python package):
+#   https://github.com/tesseract-ocr/tesseract
+# The backend looks for Tesseract at the default Windows path or
+# the path set in the TESSERACT_CMD environment variable.
+
+fastapi==0.142.2
+uvicorn==0.54.0
+starlette==1.7.0
+pydantic==2.13.5
+email-validator==2.3.0
+
+SQLAlchemy==2.1.1
+psycopg==3.3.6
+
+PyJWT==2.15.1
+pwdlib==0.3.1
+argon2-cffi==25.1.0
+
+python-dotenv==1.2.3
+
+# Prescription OCR / PDF text extraction
+pillow==12.3.0
+pytesseract==0.3.13
+pymupdf==1.28.2

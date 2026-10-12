@@ -1,0 +1,24 @@
+/* =========================================================
+   PHARMACIST PORTAL — LANDING PAGE
+
+   Page-level styles for the empty Pharmacist landing page.
+   The shell (sidebar, topbar, gate) is styled by
+   components/PharmacistLayout.css. Shared design tokens are
+   inherited from that file's :root definitions.
+   ========================================================= */
+
+.pharm-gate strong {
+  color: var(--pharm-heading, #0b2f3f);
+  font-size: 17px;
+}
+
+.pharm-gate p {
+  margin: 0;
+  max-width: 420px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* The landing card and its children are defined in the layout
+   stylesheet. This keeps the page import self-contained while
+   avoiding duplicate rules. */

@@ -72,6 +72,28 @@ function LoginPage() {
           return;
         }
 
+        if (role === "pharmacist") {
+          navigate(
+            "/pharmacist",
+            {
+              replace: true,
+            }
+          );
+
+          return;
+        }
+
+        if (role === "technician") {
+          navigate(
+            "/technician",
+            {
+              replace: true,
+            }
+          );
+
+          return;
+        }
+
         navigate(
           "/patient",
           {

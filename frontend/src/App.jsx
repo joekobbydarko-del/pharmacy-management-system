@@ -52,6 +52,15 @@ import AdminProfilePage from "./pages/AdminProfilePage";
 import AdminSupportPage from "./pages/AdminSupportPage";
 
 /* =========================================================
+   STAFF PORTAL PAGES
+   ========================================================= */
+
+import PharmacistLayout from "./components/PharmacistLayout";
+import PharmacistDashboard from "./pages/PharmacistDashboard";
+import TechnicianLayout from "./components/TechnicianLayout";
+import TechnicianDashboard from "./pages/TechnicianDashboard";
+
+/* =========================================================
    LAYOUTS
    ========================================================= */
 
@@ -113,6 +122,56 @@ function ProtectedAdminRoute({ children }) {
     .toLowerCase();
 
   if (!loggedIn || role !== "admin") {
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    );
+  }
+
+  return children;
+}
+
+/* =========================================================
+   PHARMACIST PORTAL ROUTE PROTECTION
+   ========================================================= */
+
+function ProtectedPharmacistRoute({ children }) {
+  const loggedIn = isLoggedIn();
+
+  const role = String(
+    getStoredUserRole() || ""
+  )
+    .trim()
+    .toLowerCase();
+
+  if (!loggedIn || role !== "pharmacist") {
+    return (
+      <Navigate
+        to="/login"
+        replace
+      />
+    );
+  }
+
+  return children;
+}
+
+/* =========================================================
+   PHARMACY TECHNICIAN PORTAL ROUTE PROTECTION
+   ========================================================= */
+
+function ProtectedTechnicianRoute({ children }) {
+  const loggedIn = isLoggedIn();
+
+  const role = String(
+    getStoredUserRole() || ""
+  )
+    .trim()
+    .toLowerCase();
+
+  if (!loggedIn || role !== "technician") {
     return (
       <Navigate
         to="/login"
@@ -328,6 +387,50 @@ function App() {
           <Route
             path="settings"
             element={<AdminSettingsPage />}
+          />
+        </Route>
+
+        {/* ================================================
+            PHARMACIST PORTAL
+
+            Authentication and an empty landing page only.
+            Operational features are added later once the
+            doctors provide their requirements.
+           ================================================ */}
+
+        <Route
+          path="/pharmacist"
+          element={
+            <ProtectedPharmacistRoute>
+              <PharmacistLayout />
+            </ProtectedPharmacistRoute>
+          }
+        >
+          <Route
+            index
+            element={<PharmacistDashboard />}
+          />
+        </Route>
+
+        {/* ================================================
+            PHARMACY TECHNICIAN PORTAL
+
+            Authentication and an empty landing page only.
+            Operational features are added later once the
+            doctors provide their requirements.
+           ================================================ */}
+
+        <Route
+          path="/technician"
+          element={
+            <ProtectedTechnicianRoute>
+              <TechnicianLayout />
+            </ProtectedTechnicianRoute>
+          }
+        >
+          <Route
+            index
+            element={<TechnicianDashboard />}
           />
         </Route>
 

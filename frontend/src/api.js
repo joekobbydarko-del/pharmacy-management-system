@@ -302,6 +302,29 @@ export async function getUserPrescriptions(userId) {
   return apiRequest(`/prescriptions/${userId}`);
 }
 
+// Clinically-approved, pharmacist-verified current medications
+// for the authenticated patient (no user id needed; the backend
+// scopes to the token's patient).
+export async function getCurrentMedications() {
+  return apiRequest("/patient/medications/current");
+}
+
+// ============================================================
+// STAFF PORTAL IDENTITY
+//
+// Confirms who is signed in for the Pharmacist and Pharmacy
+// Technician portals. Used only to authorize the empty landing
+// pages. No operational data.
+// ============================================================
+
+export async function getPharmacistMe() {
+  return apiRequest("/staff/pharmacist/me");
+}
+
+export async function getTechnicianMe() {
+  return apiRequest("/staff/technician/me");
+}
+
 // ============================================================
 // REFILL REQUESTS
 // ============================================================
