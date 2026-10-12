@@ -1,0 +1,237 @@
+/* =========================================================
+   UNDER DEVELOPMENT PLACEHOLDER
+   Shared by Payment & Billing and Delivery Tracking.
+
+   Uses the same Dr. Evans teal / navy design tokens and
+   supports both light and dark themes via [data-theme].
+   ========================================================= */
+
+.under-dev {
+  width: 100%;
+
+  min-height: calc(
+    100vh -
+    var(--patient-topbar-height)
+  );
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  padding: 34px 32px 48px;
+}
+
+
+.under-dev__card {
+  width: 100%;
+  max-width: 720px;
+
+  box-sizing: border-box;
+
+  padding: 38px 40px 34px;
+
+  border: 1px solid var(--patient-border);
+  border-radius: 22px;
+
+  background: var(--patient-card);
+  box-shadow: var(--patient-shadow);
+}
+
+
+.under-dev__icon {
+  width: 66px;
+  height: 66px;
+
+  display: grid;
+  place-items: center;
+
+  margin-bottom: 20px;
+
+  border-radius: 18px;
+
+  color: #ffffff;
+}
+
+
+.under-dev__icon--teal {
+  background: linear-gradient(
+    135deg,
+    #0f9f98 0%,
+    #087f7a 100%
+  );
+}
+
+
+.under-dev__icon--navy {
+  background: linear-gradient(
+    135deg,
+    #0f6f86 0%,
+    #073b4c 100%
+  );
+}
+
+
+.under-dev__badge {
+  display: inline-flex;
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 6px 13px;
+
+  margin-bottom: 16px;
+
+  border-radius: 999px;
+
+  border: 1px solid
+    rgba(15, 159, 152, 0.28);
+
+  background:
+    rgba(15, 159, 152, 0.09);
+
+  color: #0f9f98;
+
+  font-size: 10px;
+  font-weight: 900;
+
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
+}
+
+
+[data-theme="dark"]
+.under-dev__badge {
+  border-color:
+    rgba(74, 208, 200, 0.24);
+
+  background:
+    rgba(74, 208, 200, 0.1);
+
+  color: #62ded6;
+}
+
+
+.under-dev__card h1 {
+  margin: 0 0 12px;
+
+  color: var(--patient-heading);
+
+  font-size: 27px;
+  font-weight: 900;
+
+  letter-spacing: -0.4px;
+}
+
+
+.under-dev__lead {
+  margin: 0 0 26px;
+
+  max-width: 620px;
+
+  color: var(--patient-text);
+
+  font-size: 13.5px;
+  font-weight: 500;
+
+  line-height: 1.65;
+}
+
+
+.under-dev__list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 12px;
+
+  margin-bottom: 24px;
+}
+
+
+.under-dev__list-item {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 14px;
+
+  padding: 15px 17px;
+
+  border: 1px solid var(--patient-border);
+  border-radius: 14px;
+
+  background:
+    rgba(15, 159, 152, 0.025);
+}
+
+
+[data-theme="dark"]
+.under-dev__list-item {
+  background:
+    rgba(255, 255, 255, 0.02);
+}
+
+
+.under-dev__list-icon {
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 38px;
+
+  border-radius: 11px;
+
+  background:
+    rgba(15, 159, 152, 0.1);
+
+  color: #0f9f98;
+}
+
+
+[data-theme="dark"]
+.under-dev__list-icon {
+  background:
+    rgba(74, 208, 200, 0.12);
+
+  color: #62ded6;
+}
+
+
+.under-dev__list-item strong {
+  display: block;
+
+  margin-bottom: 3px;
+
+  color: var(--patient-heading);
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+
+.under-dev__list-item small {
+  display: block;
+
+  color: var(--patient-text);
+
+  font-size: 12px;
+  font-weight: 500;
+
+  line-height: 1.55;
+}
+
+
+.under-dev__note {
+  margin: 0;
+
+  padding-top: 18px;
+
+  border-top: 1px solid var(--patient-border);
+
+  color: var(--patient-muted);
+
+  font-size: 11.5px;
+  font-weight: 600;
+
+  line-height: 1.6;
+}

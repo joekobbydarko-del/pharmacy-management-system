@@ -18,6 +18,14 @@
   --patient-teal: #0f9f98;
   --patient-teal-dark: #087f7a;
 
+  --patient-navy: #073b4c;
+  --patient-navy-deep: #05222b;
+
+  /* Accessible danger red for Logout hover states. */
+  --patient-danger: #d64545;
+  --patient-danger-strong: #b93232;
+  --patient-danger-soft: rgba(214, 69, 69, 0.12);
+
   --patient-sidebar-start: #087e83;
   --patient-sidebar-end: #0b9690;
 
@@ -46,6 +54,10 @@
     );
 
   --patient-topbar: #0c455d;
+
+  --patient-danger: #f06a6a;
+  --patient-danger-strong: #e04b4b;
+  --patient-danger-soft: rgba(240, 106, 106, 0.16);
 
   --patient-shadow:
     0 10px 30px
@@ -257,13 +269,39 @@
 }
 
 
+/* =========================================================
+   SIDEBAR NAVIGATION
+========================================================= */
+
+.patient-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.patient-sidebar__section {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.patient-sidebar__section
++ .patient-sidebar__section {
+  margin-top: 16px;
+}
+
+
 .patient-sidebar__label {
   display: block;
 
   margin:
     0
     10px
-    10px;
+    6px;
 
   color:
     rgba(
@@ -280,15 +318,14 @@
 }
 
 
-/* =========================================================
-   SIDEBAR NAVIGATION
-========================================================= */
+/* Navigation item rendered as a <button> (Technical Support) */
 
-.patient-sidebar__nav {
-  display: flex;
-  flex-direction: column;
+.patient-nav-link--button {
+  font-family: inherit;
 
-  gap: 7px;
+  text-align: left;
+
+  cursor: pointer;
 }
 
 
@@ -469,12 +506,13 @@
 
   transition:
     background 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
     transform 0.18s ease;
 }
 
 
-.patient-support-button:hover,
-.patient-logout-button:hover {
+.patient-support-button:hover {
   background:
     rgba(
       255,
@@ -485,6 +523,31 @@
 
   transform:
     translateY(-1px);
+}
+
+
+/* Logout: professional, readable red hover treatment. */
+.patient-logout-button:hover {
+  border-color:
+    var(--patient-danger);
+
+  background:
+    var(--patient-danger);
+
+  transform:
+    translateY(-1px);
+}
+
+
+.patient-logout-button:focus-visible {
+  outline: none;
+
+  border-color:
+    var(--patient-danger-strong);
+
+  box-shadow:
+    0 0 0 3px
+    var(--patient-danger-soft);
 }
 
 
@@ -507,6 +570,25 @@
       255,
       0.12
     );
+
+  color: #ffffff;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
+}
+
+
+.patient-logout-button:hover > span {
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.22
+    );
+
+  color: #ffffff;
 }
 
 
@@ -518,6 +600,11 @@
 
   font-size: 12px;
   font-weight: 900;
+}
+
+
+.patient-logout-button:hover strong {
+  color: #ffffff;
 }
 
 

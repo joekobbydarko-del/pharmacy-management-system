@@ -21,7 +21,6 @@ import ResetPasswordPage from "./pages/ResetPasswordPage";
    ========================================================= */
 
 import PatientDashboard from "./pages/PatientDashboard";
-import AppointmentsPage from "./pages/AppointmentsPage";
 import PrescriptionsPage from "./pages/PrescriptionsPage";
 import OrderMedicinesPage from "./pages/OrderMedicinesPage";
 import RefillRequestsPage from "./pages/RefillRequestsPage";
@@ -31,6 +30,8 @@ import ContactPharmacistPage from "./pages/ContactPharmacistPage";
 import PatientProfilePage from "./pages/PatientProfilePage";
 import PatientSettingsPage from "./pages/PatientSettingsPage";
 import TechnicalSupportPage from "./pages/TechnicalSupportPage";
+import PaymentBillingPage from "./pages/PaymentBillingPage";
+import DeliveryTrackingPage from "./pages/DeliveryTrackingPage";
 
 /* =========================================================
    PHARMACIST / ADMIN PAGES
@@ -253,11 +254,6 @@ function App() {
           />
 
           <Route
-            path="appointments"
-            element={<AppointmentsPage />}
-          />
-
-          <Route
             path="prescriptions"
             element={<PrescriptionsPage />}
           />
@@ -275,6 +271,16 @@ function App() {
           <Route
             path="order-history"
             element={<OrderHistoryPage />}
+          />
+
+          <Route
+            path="billing"
+            element={<PaymentBillingPage />}
+          />
+
+          <Route
+            path="delivery"
+            element={<DeliveryTrackingPage />}
           />
 
           <Route

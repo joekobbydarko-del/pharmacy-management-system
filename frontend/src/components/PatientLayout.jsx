@@ -133,6 +133,31 @@ function Icon({ name, size = 20 }) {
     chevron: (
       <path d="m7 10 5 5 5-5" />
     ),
+
+    upload: (
+      <>
+        <path d="M12 16V5" />
+        <path d="m7 10 5-5 5 5" />
+        <path d="M5 17v2a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-2" />
+      </>
+    ),
+
+    billing: (
+      <>
+        <rect x="2.5" y="5.5" width="19" height="13" rx="2.5" />
+        <path d="M2.5 10h19" />
+        <path d="M6 14.5h4" />
+      </>
+    ),
+
+    truck: (
+      <>
+        <path d="M3 7h11v9H3z" />
+        <path d="M14 10h3.5l3 3v3h-6.5z" />
+        <circle cx="7" cy="18" r="1.6" />
+        <circle cx="17" cy="18" r="1.6" />
+      </>
+    ),
   };
 
   return (
@@ -145,37 +170,82 @@ function Icon({ name, size = 20 }) {
 // ============================================================
 // PATIENT SIDEBAR NAVIGATION
 //
-// Keep existing route URLs for compatibility.
-// Appointments are hidden from patient navigation.
+// Approved order and grouping:
+//   Overview            -> Dashboard, My Medications
+//   Pharmacy Services   -> Upload Prescription, Order Medicines,
+//                          Refill Requests, My Orders
+//   Payments & Delivery -> Payment & Billing, Delivery Tracking
+//   Support             -> Technical Support
+//   Bottom              -> Logout
+//
+// Existing route URLs are preserved. Appointments and
+// laboratory items are intentionally absent from the
+// patient navigation.
 // ============================================================
 
 const navigation = [
+  // OVERVIEW
   {
     label: "Dashboard",
     to: "/patient",
     icon: "dashboard",
+    section: "Overview",
     end: true,
   },
   {
     label: "My Medications",
     to: "/patient/prescriptions",
     icon: "pill",
+    section: "Overview",
+  },
+
+  // PHARMACY SERVICES
+  {
+    label: "Upload Prescription",
+    to: "/patient/prescriptions",
+    icon: "upload",
+    section: "Pharmacy Services",
   },
   {
     label: "Order Medicines",
     to: "/patient/orders",
     icon: "cart",
+    section: "Pharmacy Services",
   },
   {
     label: "Refill Requests",
     to: "/patient/refills",
     icon: "refresh",
+    section: "Pharmacy Services",
   },
   {
     label: "My Orders",
     to: "/patient/order-history",
     icon: "orders",
+    section: "Pharmacy Services",
   },
+
+  // PAYMENTS & DELIVERY
+  {
+    label: "Payment & Billing",
+    to: "/patient/billing",
+    icon: "billing",
+    section: "Payments & Delivery",
+  },
+  {
+    label: "Delivery Tracking",
+    to: "/patient/delivery",
+    icon: "truck",
+    section: "Payments & Delivery",
+  },
+];
+
+// Render navigation grouped by its section label, keeping
+// the approved top-to-bottom order.
+const navigationSections = [
+  "Overview",
+  "Pharmacy Services",
+  "Payments & Delivery",
 ];
 
 // ============================================================
@@ -225,6 +295,22 @@ const searchablePages = [
     icon: "orders",
     keywords:
       "orders order history pending processing completed deliveries",
+  },
+  {
+    title: "Payment & Billing",
+    description: "Invoices, payments and receipts",
+    path: "/patient/billing",
+    icon: "billing",
+    keywords:
+      "payment billing invoice receipt momo mobile money bank transfer balance",
+  },
+  {
+    title: "Delivery Tracking",
+    description: "Track your medicine deliveries",
+    path: "/patient/delivery",
+    icon: "truck",
+    keywords:
+      "delivery tracking rider dispatch shipment address",
   },
   {
     title: "Activity History",
@@ -436,62 +522,77 @@ function PatientLayout() {
 
         <div className="patient-sidebar__divider" />
 
-        <span className="patient-sidebar__label">
-          MAIN MENU
-        </span>
-
         <nav
           className="patient-sidebar__nav"
           aria-label="Patient navigation"
         >
-          {navigation.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.end}
-              className={({ isActive }) =>
-                `patient-nav-link ${
-                  isActive ? "is-active" : ""
-                }`
-              }
-              onClick={closeMobileNavigation}
+          {navigationSections.map((sectionName) => (
+            <div
+              key={sectionName}
+              className="patient-sidebar__section"
+            >
+              <span className="patient-sidebar__label">
+                {sectionName.toUpperCase()}
+              </span>
+
+              {navigation
+                .filter(
+                  (item) => item.section === sectionName
+                )
+                .map((item) => (
+                  <NavLink
+                    key={item.label}
+                    to={item.to}
+                    end={item.end}
+                    className={({ isActive }) =>
+                      `patient-nav-link ${
+                        isActive ? "is-active" : ""
+                      }`
+                    }
+                    onClick={closeMobileNavigation}
+                  >
+                    <span className="patient-nav-link__icon">
+                      <Icon
+                        name={item.icon}
+                        size={19}
+                      />
+                    </span>
+
+                    <span>{item.label}</span>
+                  </NavLink>
+                ))}
+            </div>
+          ))}
+
+          {/* SUPPORT SECTION */}
+          <div className="patient-sidebar__section">
+            <span className="patient-sidebar__label">
+              SUPPORT
+            </span>
+
+            <button
+              type="button"
+              className="patient-nav-link patient-nav-link--button"
+              onClick={() => {
+                closeMobileNavigation();
+                navigate("/patient/support");
+              }}
             >
               <span className="patient-nav-link__icon">
                 <Icon
-                  name={item.icon}
+                  name="support"
                   size={19}
                 />
               </span>
 
-              <span>{item.label}</span>
-            </NavLink>
-          ))}
+              <span>Technical Support</span>
+            </button>
+          </div>
         </nav>
 
         {/* SIDEBAR FOOTER */}
 
         <div className="patient-sidebar__bottom">
-          <button
-            type="button"
-            className="patient-support-button"
-            onClick={() => {
-              closeMobileNavigation();
-              navigate("/patient/support");
-            }}
-          >
-            <span>
-              <Icon
-                name="support"
-                size={18}
-              />
-            </span>
-
-            <div>
-              <strong>Technical Support</strong>
-              <small>Need help?</small>
-            </div>
-          </button>
-
           <button
             type="button"
             className="patient-logout-button"

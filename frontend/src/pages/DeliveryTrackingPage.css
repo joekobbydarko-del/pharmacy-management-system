@@ -1,0 +1,7 @@
+/* Delivery Tracking placeholder shares the
+   "under development" styling defined in
+   PaymentBillingPage.css so both routes stay
+   visually consistent. That stylesheet is imported
+   here as well to keep each page self-contained. */
+
+@import "./PaymentBillingPage.css";
