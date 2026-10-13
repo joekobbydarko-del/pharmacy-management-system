@@ -12,8 +12,6 @@ import PatientDateCard from "../components/PatientDateCard";
 import PatientIcon from "../components/PatientIcon";
 
 import {
-  getUserAppointments,
-  getUserLabResults,
   getUserOrders,
   getUserPrescriptions,
   getUserRefillRequests,
@@ -66,18 +64,6 @@ function PatientDashboard() {
 
 
   const [
-    appointments,
-    setAppointments,
-  ] = useState([]);
-
-
-  const [
-    labResults,
-    setLabResults,
-  ] = useState([]);
-
-
-  const [
     reminders,
     setReminders,
   ] = useState([]);
@@ -122,8 +108,6 @@ function PatientDashboard() {
           prescriptionData,
           refillData,
           orderData,
-          appointmentData,
-          labResultData,
           reminderData,
         ] = await Promise.all([
           getUserPrescriptions(
@@ -135,14 +119,6 @@ function PatientDashboard() {
           ),
 
           getUserOrders(
-            userId
-          ),
-
-          getUserAppointments(
-            userId
-          ),
-
-          getUserLabResults(
             userId
           ),
 
@@ -180,24 +156,6 @@ function PatientDashboard() {
             orderData
           )
             ? orderData
-            : []
-        );
-
-
-        setAppointments(
-          Array.isArray(
-            appointmentData
-          )
-            ? appointmentData
-            : []
-        );
-
-
-        setLabResults(
-          Array.isArray(
-            labResultData
-          )
-            ? labResultData
             : []
         );
 
@@ -273,68 +231,7 @@ function PatientDashboard() {
 
 
   /* =========================================================
-     UPCOMING APPOINTMENTS
-  ========================================================= */
-
-  const upcomingAppointments =
-    useMemo(() => {
-      return appointments
-        .filter(
-          (appointment) => {
-            const status =
-              String(
-                appointment.status ||
-                  ""
-              ).toLowerCase();
-
-
-            return ![
-              "completed",
-              "cancelled",
-              "rejected",
-            ].includes(status);
-          }
-        )
-        .sort(
-          (a, b) => {
-            const dateA =
-              new Date(
-                `${a.appointment_date}T00:00:00`
-              );
-
-
-            const dateB =
-              new Date(
-                `${b.appointment_date}T00:00:00`
-              );
-
-
-            return dateA - dateB;
-          }
-        );
-    }, [appointments]);
-
-
-  const nextAppointment =
-    upcomingAppointments[0] ||
-    null;
-
-
-  /* =========================================================
-     LAB RESULTS
-  ========================================================= */
-
-  const recentLabResults =
-    useMemo(() => {
-      return labResults.slice(
-        0,
-        3
-      );
-    }, [labResults]);
-
-
-  /* =========================================================
-     REMINDERS
+     PENDING REMINDERS
   ========================================================= */
 
   const pendingReminders =
@@ -365,68 +262,6 @@ function PatientDashboard() {
   const nextReminder =
     pendingReminders[0] ||
     null;
-
-
-  /* =========================================================
-     FORMATTERS
-  ========================================================= */
-
-  const formatAppointmentDate = (
-    dateString
-  ) => {
-    if (!dateString) {
-      return "";
-    }
-
-
-    const date =
-      new Date(
-        `${dateString}T00:00:00`
-      );
-
-
-    return date.toLocaleDateString(
-      "en-GB",
-      {
-        weekday: "short",
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      }
-    );
-  };
-
-
-  const formatGeneralDate = (
-    dateString
-  ) => {
-    if (!dateString) {
-      return "";
-    }
-
-
-    const date =
-      new Date(dateString);
-
-
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
-      return "";
-    }
-
-
-    return date.toLocaleDateString(
-      "en-GB",
-      {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      }
-    );
-  };
 
 
   /* =========================================================
@@ -509,70 +344,6 @@ function PatientDashboard() {
       );
 
 
-      appointments.forEach(
-        (appointment) => {
-          activities.push({
-            id:
-              `appointment-${appointment.appointment_id}`,
-
-            icon:
-              "calendar",
-
-            title:
-              "Appointment request submitted",
-
-            description:
-              `${appointment.appointment_type} • ${formatAppointmentDate(
-                appointment.appointment_date
-              )} • ${appointment.appointment_time}`,
-
-            status:
-              appointment.status ||
-              "pending",
-
-            sortValue:
-              Number(
-                appointment.appointment_id ||
-                  0
-              ) * 5 + 2,
-          });
-        }
-      );
-
-
-      labResults.forEach(
-        (result) => {
-          activities.push({
-            id:
-              `lab-${result.lab_result_id}`,
-
-            icon:
-              "medicine",
-
-            title:
-              "Lab result available",
-
-            description:
-              `${result.test_name} • ${result.result_value}${
-                result.unit
-                  ? ` ${result.unit}`
-                  : ""
-              }`,
-
-            status:
-              result.status ||
-              "available",
-
-            sortValue:
-              Number(
-                result.lab_result_id ||
-                  0
-              ) * 5 + 3,
-          });
-        }
-      );
-
-
       reminders.forEach(
         (reminder) => {
           activities.push({
@@ -618,8 +389,6 @@ function PatientDashboard() {
       orders,
       refillRequests,
       prescriptions,
-      appointments,
-      labResults,
       reminders,
     ]);
 
@@ -673,8 +442,8 @@ function PatientDashboard() {
           <p>
             Manage your prescriptions,
             medicine orders, refill
-            requests, appointments, and
-            pharmacy services from one
+            requests and pharmacy
+            services from one
             secure place.
           </p>
 
@@ -712,14 +481,14 @@ function PatientDashboard() {
 
       <div className="dashboard-stats-grid">
 
-        {/* APPOINTMENTS */}
+        {/* ACTIVE ORDERS */}
 
         <article className="dashboard-stat-card">
 
           <span className="dashboard-stat-icon dashboard-stat-icon--blue">
 
             <PatientIcon
-              name="calendar"
+              name="cart"
               size={23}
             />
 
@@ -728,28 +497,23 @@ function PatientDashboard() {
 
           <div>
 
-            <span>
-              UPCOMING APPOINTMENT
-            </span>
+            <span>ACTIVE ORDERS</span>
 
 
             <strong>
-              {loading
-                ? "..."
-                : upcomingAppointments.length}
+              {loading ? "..." : orders.length}
             </strong>
 
 
             <small>
-              {nextAppointment
-                ? nextAppointment.appointment_type
-                : "No upcoming appointment"}
+              {orders.length > 0
+                ? "Medicine orders placed"
+                : "No medicine orders yet"}
             </small>
 
           </div>
 
         </article>
-
 
         {/* PRESCRIPTIONS */}
 
@@ -781,49 +545,6 @@ function PatientDashboard() {
 
             <small>
               Current medications
-            </small>
-
-          </div>
-
-        </article>
-
-
-        {/* LAB RESULTS */}
-
-        <article className="dashboard-stat-card">
-
-          <span className="dashboard-stat-icon dashboard-stat-icon--purple">
-
-            <PatientIcon
-              name="medicine"
-              size={23}
-            />
-
-          </span>
-
-
-          <div>
-
-            <span>
-              LAB RESULTS
-            </span>
-
-
-            <strong>
-              {loading
-                ? "..."
-                : labResults.length}
-            </strong>
-
-
-            <small>
-              {labResults.length > 0
-                ? `${labResults.length} result${
-                    labResults.length === 1
-                      ? ""
-                      : "s"
-                  } available`
-                : "No new results"}
             </small>
 
           </div>
@@ -877,334 +598,6 @@ function PatientDashboard() {
       ===================================================== */}
 
       <div className="dashboard-main-grid">
-
-        {/* UPCOMING APPOINTMENT */}
-
-        <article className="dashboard-panel">
-
-          <div className="dashboard-panel-header">
-
-            <div>
-
-              <span className="dashboard-panel-icon">
-
-                <PatientIcon
-                  name="calendar"
-                  size={20}
-                />
-
-              </span>
-
-
-              <h2>
-                Upcoming Appointment
-              </h2>
-
-            </div>
-
-
-            <button
-              type="button"
-              onClick={() =>
-                navigate(
-                  "/patient/appointments"
-                )
-              }
-            >
-              View All →
-            </button>
-
-          </div>
-
-
-          <div className="dashboard-panel-body">
-
-            {loading ? (
-
-              <div className="dashboard-empty-state">
-
-                <span className="dashboard-empty-icon">
-
-                  <PatientIcon
-                    name="refresh"
-                    size={27}
-                  />
-
-                </span>
-
-                <h3>
-                  Loading appointment
-                </h3>
-
-              </div>
-
-            ) : nextAppointment ? (
-
-              <div className="dashboard-upcoming-appointment">
-
-                <div className="dashboard-upcoming-icon">
-
-                  <PatientIcon
-                    name="calendar"
-                    size={24}
-                  />
-
-                </div>
-
-
-                <div className="dashboard-upcoming-content">
-
-                  <span>
-                    NEXT APPOINTMENT
-                  </span>
-
-
-                  <h3>
-                    {
-                      nextAppointment.appointment_type
-                    }
-                  </h3>
-
-
-                  <p>
-                    {formatAppointmentDate(
-                      nextAppointment.appointment_date
-                    )}
-
-                    {" • "}
-
-                    {
-                      nextAppointment.appointment_time
-                    }
-                  </p>
-
-                </div>
-
-
-                <span className="dashboard-upcoming-status">
-
-                  {
-                    nextAppointment.status ||
-                    "pending"
-                  }
-
-                </span>
-
-              </div>
-
-            ) : (
-
-              <div className="dashboard-empty-state">
-
-                <span className="dashboard-empty-icon">
-
-                  <PatientIcon
-                    name="calendar"
-                    size={27}
-                  />
-
-                </span>
-
-
-                <h3>
-                  No upcoming appointment
-                </h3>
-
-
-                <p>
-                  Your upcoming appointments
-                  will appear here when they
-                  are scheduled.
-                </p>
-
-
-                <button
-                  type="button"
-                  className="dashboard-empty-action"
-                  onClick={() =>
-                    navigate(
-                      "/patient/appointments"
-                    )
-                  }
-                >
-                  Book an appointment →
-                </button>
-
-              </div>
-
-            )}
-
-          </div>
-
-        </article>
-
-
-        {/* LAB RESULTS */}
-
-        <article className="dashboard-panel">
-
-          <div className="dashboard-panel-header">
-
-            <div>
-
-              <span className="dashboard-panel-icon">
-
-                <PatientIcon
-                  name="medicine"
-                  size={20}
-                />
-
-              </span>
-
-
-              <h2>
-                Recent Lab Results
-              </h2>
-
-            </div>
-
-
-            <span className="dashboard-panel-label">
-
-              {loading
-                ? "Loading"
-                : labResults.length > 0
-                  ? `${labResults.length} result${
-                      labResults.length === 1
-                        ? ""
-                        : "s"
-                    }`
-                  : "No results"}
-
-            </span>
-
-          </div>
-
-
-          <div className="dashboard-panel-body">
-
-            {loading ? (
-
-              <div className="dashboard-empty-state">
-
-                <span className="dashboard-empty-icon">
-
-                  <PatientIcon
-                    name="refresh"
-                    size={27}
-                  />
-
-                </span>
-
-
-                <h3>
-                  Loading lab results
-                </h3>
-
-              </div>
-
-            ) : recentLabResults.length ===
-              0 ? (
-
-              <div className="dashboard-empty-state">
-
-                <span className="dashboard-empty-icon">
-
-                  <PatientIcon
-                    name="medicine"
-                    size={27}
-                  />
-
-                </span>
-
-
-                <h3>
-                  No recent lab results
-                </h3>
-
-
-                <p>
-                  Your recent laboratory
-                  results will appear here
-                  when they become
-                  available.
-                </p>
-
-              </div>
-
-            ) : (
-
-              <div className="dashboard-prescription-list">
-
-                {recentLabResults.map(
-                  (result) => (
-
-                    <div
-                      key={
-                        result.lab_result_id
-                      }
-                      className="dashboard-prescription-item"
-                    >
-
-                      <span className="dashboard-prescription-icon">
-
-                        <PatientIcon
-                          name="medicine"
-                          size={19}
-                        />
-
-                      </span>
-
-
-                      <div className="dashboard-prescription-info">
-
-                        <strong>
-                          {result.test_name}
-                        </strong>
-
-
-                        <small>
-
-                          {result.result_value}
-
-                          {result.unit
-                            ? ` ${result.unit}`
-                            : ""}
-
-                          {result.result_date
-                            ? ` • ${formatGeneralDate(
-                                result.result_date
-                              )}`
-                            : ""}
-
-                        </small>
-
-                      </div>
-
-
-                      <span
-                        className={`dashboard-activity-status dashboard-activity-status--${String(
-                          result.status ||
-                            "normal"
-                        ).toLowerCase()}`}
-                      >
-                        {result.status ||
-                          "normal"}
-                      </span>
-
-                    </div>
-
-                  )
-                )}
-
-              </div>
-
-            )}
-
-          </div>
-
-        </article>
-
 
         {/* PRESCRIPTIONS */}
 
@@ -1539,7 +932,7 @@ function PatientDashboard() {
             type="button"
             onClick={() =>
               navigate(
-                "/patient/appointments"
+                "/patient/orders"
               )
             }
           >
@@ -1547,7 +940,7 @@ function PatientDashboard() {
             <span>
 
               <PatientIcon
-                name="calendar"
+                name="cart"
                 size={21}
               />
 
@@ -1557,11 +950,11 @@ function PatientDashboard() {
             <div>
 
               <strong>
-                Book Appointment
+                Order Medicines
               </strong>
 
               <small>
-                Schedule a pharmacy visit
+                Browse and order medicines
               </small>
 
             </div>

@@ -11,7 +11,6 @@
 
   --patient-heading: #073b4c;
   --patient-text: #466a78;
-  --patient-muted: #7894a7;
 
   --patient-border: #d9e7ea;
 
@@ -844,6 +843,9 @@
 
   font-size: 12px;
   font-weight: 600;
+
+  /* Requirement 17.4: keep entered search text centered. */
+  text-align: center;
 }
 
 
@@ -851,6 +853,9 @@
   color: #87a2ae;
 
   font-weight: 500;
+
+  /* Keep placeholder text horizontally centered. */
+  text-align: center;
 }
 
 
@@ -1403,7 +1408,7 @@
 
   background: transparent;
 
-  color: #df6262;
+  color: var(--patient-danger);
 
   font-family: inherit;
 
@@ -1411,17 +1416,21 @@
   font-weight: 900;
 
   cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease;
 }
 
 
-.profile-menu__logout:hover {
+.profile-menu__logout:hover,
+.profile-menu__logout:focus-visible {
+  outline: none;
+
   background:
-    rgba(
-      223,
-      98,
-      98,
-      0.06
-    );
+    var(--patient-danger-soft);
+
+  color: var(--patient-danger-strong);
 }
 
 
@@ -2383,9 +2392,7 @@
 
 
 [data-theme="dark"]
-.patient-support-button:hover,
-[data-theme="dark"]
-.patient-logout-button:hover {
+.patient-support-button:hover {
   background:
     rgba(
       74,
@@ -2393,6 +2400,31 @@
       200,
       0.09
     );
+}
+
+
+/* Keep the Logout red hover in dark mode too. */
+[data-theme="dark"]
+.patient-logout-button:hover {
+  border-color:
+    var(--patient-danger);
+
+  background:
+    var(--patient-danger-strong);
+}
+
+
+[data-theme="dark"]
+.patient-logout-button:hover > span {
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.22
+    );
+
+  color: #ffffff;
 }
 
 
